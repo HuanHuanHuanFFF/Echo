@@ -1,0 +1,12 @@
+{
+  "database": "../.echo/sample.sqlite",
+  "collections": [
+    {
+      "id": "sample",
+      "root": "./notes"
+    }
+  ],
+  "retrieval": {
+    "mode": "bm25"
+  }
+}

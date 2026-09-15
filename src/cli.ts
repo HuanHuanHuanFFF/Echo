@@ -5,11 +5,12 @@ import { loadConfig } from './config.js';
 import { syncIndex } from './sync.js';
 import { openDatabase } from './database.js';
 import { indexStatus } from './store.js';
+import { searchIndex } from './retrieval.js';
 
 async function main() {
   if (process.argv.includes('--help')) {
     console.log(
-      'Echo Markdown evidence MCP\nUsage: echo-mcp serve | sync | status [--config echo.config.json]\nSync writes missing UUID v4 IDs into configured Markdown files.',
+      'Echo Markdown evidence MCP\nUsage: echo-mcp serve | sync | status | search --query TEXT [--config echo.config.json]\nSync writes missing UUID v4 IDs into configured Markdown files.',
     );
     return;
   }
@@ -34,6 +35,22 @@ async function main() {
     } finally {
       process.removeListener('SIGINT', cancel);
     }
+  } else if (command === 'search') {
+    const queryAt = process.argv.indexOf('--query');
+    if (queryAt < 0 || !process.argv[queryAt + 1])
+      throw new Error('search requires --query');
+    const optionAt = process.argv.indexOf('--overrides');
+    const filtersAt = process.argv.indexOf('--filters');
+    const input = {
+      query: process.argv[queryAt + 1],
+      ...(optionAt < 0
+        ? {}
+        : { overrides: JSON.parse(process.argv[optionAt + 1] ?? '') }),
+      ...(filtersAt < 0
+        ? {}
+        : { filters: JSON.parse(process.argv[filtersAt + 1] ?? '') }),
+    };
+    console.log(JSON.stringify(await searchIndex(config, input), null, 2));
   } else if (command === 'status') {
     const db = openDatabase(config.database);
     try {

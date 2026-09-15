@@ -27,6 +27,7 @@ async function fixture() {
     root,
     config: parseConfig({
       database: join(dir, 'index.sqlite'),
+      retrieval: { mode: 'bm25' },
       collections: [{ id: 'test', root }],
     }),
   };
