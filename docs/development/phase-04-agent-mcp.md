@@ -1,6 +1,6 @@
 # 阶段 4：Agent 查询完整流程
 
-日期：2026-09-15。状态：本地实现与 45 项检查通过，双人压力审查和当前 PR CI 待完成。
+日期：2026-09-15。状态：本地 49 项检查与双人压力复审通过，待当前 PR 双平台 CI。
 从阶段 3 合并提交 71a2bde 开始；承接[计划](../project/2026-09-15-development-plan.md)。
 本文件落定[Agent 接口草案](../design/agent-interface.md)中的字段、查询组织、失败与预算；不增加专用读取工具或引用链。
 
@@ -35,9 +35,9 @@ Agent 使用宿主已有文件工具读取 path 的片段或章节范围，自�
 
 ## 执行、取消与状态
 
-[executor.ts](../../src/executor.ts)与[search-worker.ts](../../src/search-worker.ts)把 SQLite 检索放到独立 worker，
+[executor.ts](../../src/executor.ts)与[search-worker.ts](../../src/search-worker.ts)把 SQLite 检索和状态读取放到独立 worker，
 避免主 MCP 通道被同步数据库计算阻塞。默认最多 2 个在途搜索（runtime.max_concurrent_searches，1–8）；
-超过容量明确 busy。总请求期限 runtime.search_timeout_ms 默认 120000（1–600000），与 API 超时分别生效。
+超过容量明确 busy；状态读取另限 1 个在途任务，锁等待不占用主通道。总请求期限 runtime.search_timeout_ms 默认 120000（1–600000），与 API 超时分别生效。
 
 MCP 取消信号传入 worker 的 AbortController，继续传给 fetch；随后等待 worker 结束，
 必要时调用 terminate。不能把返回等待结束理解为远端模型服务必然停止计费，也不声称原生 C 计算能在任意指令处立即中断。
@@ -62,3 +62,13 @@ echo_status 可在查询等待 API 时响应；embedding_configured 仅说明配
 ### 本轮 Agent 实际调用与补读
 
 构建后运行标准 SDK 客户端调用 echo_search，收到 recovery/custom 两个 query_id 各自的证据及绝对路径。随后本 Agent 使用宿主 PowerShell 文件工具读取 transactions.md 第 6–12 行（补得 WAL 说明）及 chunking.md 第 9–12 行；与搜索片段一致，额外上下文可读。该证据是 SDK 桥接调用加宿主补读，不表示桌面应用已安装或长期注册 Echo。
+
+## 独立压力审查
+
+两位只读审查者以 2fd39d4 为基线，针对 25e4444 复审均通过。
+确认并修复：stdin EOF 未触发在途取消、状态数据库锁等待进入主通道、转义后错误消息超预算。
+新增回归先复现失败，再修复；本地完整检查为 49 项测试、格式、类型和构建通过。
+两位各自复跑 9 项 MCP 测试，并验证排他锁下主通道响应、状态任务容量恢复、完整多子问题错误归属及错误字符边界。
+当前 PR 双平台 CI 仍是阶段最终门槛。
+
+输入流 end/close 及退出信号会显式关闭 MCP server，取消在途请求并等待 worker 回收。transport.ts 将 SDK 和工具回调的普通错误规范成不超过 256 字符的实际 JSON；已按请求预算打包的完整搜索失败保留各 query_id 的诊断。
