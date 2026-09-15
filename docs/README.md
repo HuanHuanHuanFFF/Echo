@@ -1,8 +1,8 @@
 # Echo 文档入口
 
-更新日期：2026-09-09。
+更新日期：2026-09-15。
 
-Echo 是面向个人 Markdown 知识库的轻量检索 MCP。**项目名 echo、TypeScript＋SQLite 已确认；代码尚未在本会话初始化，具体依赖、接口和参数仍待设计与验证。**
+Echo 是面向个人 Markdown 知识库的轻量检索 MCP。**项目名 echo、TypeScript＋SQLite 已确认；代码尚未在本会话初始化，具体依赖、接口细节和参数默认值仍待设计与验证。**
 
 ## 从这里继续
 
@@ -11,8 +11,11 @@ Echo 是面向个人 Markdown 知识库的轻量检索 MCP。**项目名 echo、
 | 了解定位、约束、选型与下一步 | [项目基线](D:/CodingProject/echo/docs/project/baseline.md) | 已确认决定、当前建议、现有资产和未决事项 |
 | 讨论搜索工具、混合召回、文档分组及证据覆盖 | [检索设计草案](D:/CodingProject/echo/docs/design/retrieval.md) | 算法流程、工具边界和实现前需确定的契约 |
 | 了解 Agent 搜索、补读与定位的参考实现 | [2026-09-09 接口调研](research/2026-09-09-agent-retrieval-interfaces.md) | 四个代表方案、证据等级、参考版本和采用边界 |
-| 讨论 Agent 如何按范围补读原文 | [Agent 接口草案](design/agent-interface.md) | 返回字段、工具指示、版本与截断行为、验收场景；尚未定稿 |
+| 比较查询融合、关系导航与轻量工具边界 | [2026-09-15 三项目补充调研](research/2026-09-15-retrieval-reference-comparison.md) | QMD、Basic Memory、Qdrant MCP 的固定源码、差异及采用建议 |
+| 讨论搜索定位与宿主文件工具补读 | [Agent 接口草案](design/agent-interface.md) | 路径与行范围、同步前提、验收场景；首版不提供专用读取工具 |
 | 查看现有 Chroma 测试、失败案例及对照方案 | [2026-09-05 探索性基线](D:/CodingProject/echo/docs/evals/2026-09-05-chroma-baseline.md) | 评测快照、证据边界与下一轮实验 |
+
+本轮已确认的本地读取范围、默认切块与召回参数组合及自定义能力见[项目基线 §1.3–1.4](project/baseline.md#13-本地读取与同步边界2026-09-15-已确认尚未实现)。日期调研保留当时的候选建议，实施范围以当前基线为准。
 
 ## 目录约定
 
