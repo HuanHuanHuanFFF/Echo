@@ -1,6 +1,6 @@
 # 阶段 3：混合检索与配置
 
-日期：2026-09-15。状态：本地 40 项测试与完整检查通过，两位独立压力审查复审通过，待当前 PR 双平台 CI。
+日期：2026-09-15。状态：已验收并合并。PR #4 当前提交 7308b23 双平台 CI 全部通过，合并提交 71a2bde。
 从阶段 2 合并提交 b6703d7 开始，沿用[计划](../project/2026-09-15-development-plan.md)与[配置契约](../design/configuration.md)。
 本阶段将默认 embedding 落定为用户配置的 API；不下载本地 embedding 模型。
 
@@ -70,3 +70,5 @@ max_context_chars 限制**整个规范结果 JSON 的 UTF-16 长度**（含路�
 搜索现用只读连接，旧 schema 明确要求 sync；向量在稳定缩放/单位化后转 Float32，转换版本计入指纹。
 本地 npm run check：40 项测试、格式、类型、构建通过；构建后的样本 CLI 同步 2 篇/4 块，关键词搜索返回定位正确的原文。
 两个审查者各自复跑 17 项检索测试及针对性样本；最终远程 CI 仍以 PR 当前提交为准。
+
+[PR #4](https://github.com/HuanHuanHuanFFF/Echo/pull/4)；[PR CI](https://github.com/HuanHuanHuanFFF/Echo/actions/runs/34957619729)；[push CI](https://github.com/HuanHuanHuanFFF/Echo/actions/runs/34957613378)。GitHub 合并接口停留在进行中后，按授权本地普通合并并核验合并树与已审查头一致，再正常推送 main；远程确认 PR 为 MERGED。

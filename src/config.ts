@@ -76,6 +76,13 @@ const configSchema = z
       .default({ version: '1', options: { max_chars: 1000 } }),
     embedding: embeddingSchema.default(embeddingSchema.parse({})),
     lexical: lexicalSchema.default(lexicalSchema.parse({})),
+    runtime: z
+      .object({
+        search_timeout_ms: positive(600000).default(120000),
+        max_concurrent_searches: positive(8).default(2),
+      })
+      .strict()
+      .default({ search_timeout_ms: 120000, max_concurrent_searches: 2 }),
     retrieval: retrievalSchema.default(retrievalSchema.parse({})),
   })
   .strict()

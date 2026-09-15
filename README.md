@@ -18,7 +18,7 @@ node dist/cli.js serve
 
 `serve` 以 stdio 运行，标准输出仅承载 MCP。用支持 MCP 的宿主启动
 `node /absolute/path/to/echo/dist/cli.js serve`。
-MCP 当前提供 `echo_status` 连通性工具；CLI 已支持导入与同步，真实检索随后续阶段交付。
+MCP 提供 `echo_search` 和 `echo_status`；CLI 支持导入、同步和搜索。
 
 - 格式：`npm run format` / `npm run format:check`
 - 类型：`npm run typecheck`
@@ -40,7 +40,7 @@ node dist/cli.js sync --config echo.config.json
 node dist/cli.js status --config echo.config.json
 ```
 
-当前同步覆盖原文、身份与 chunks；阶段 3 接入本地 BM25 与 API embedding。
+同步原文、身份、chunks、本地 BM25 与 API embedding，失败时保留旧索引。
 [自定义切块示例](examples/paragraph-chunker.mjs)通过 chunker.module 加载，详情见[阶段 2 契约](docs/development/phase-02-import-sync.md)。
 
 ## 本地样本搜索
@@ -52,3 +52,28 @@ node dist/cli.js search --config examples/echo.bm25.example.json --query "事务
 
 这个样本使用本地 BM25，不需要 key。实际 hybrid 使用配置示例中的 API 地址、模型、维度和 key 环境变量，完成同步后搜索。
 搜索支持 --overrides 与 --filters 的 JSON 参数；完整范围与预算说明见[阶段 3](docs/development/phase-03-hybrid-retrieval.md)。
+
+## MCP 接入
+
+服务入口为 `node /absolute/path/to/echo/dist/cli.js serve --config /absolute/path/to/echo/echo.config.json`。
+在宿主中将它注册为 stdio MCP 服务，并把 API key 的环境变量传给该子进程；不要把真实 key 提交到 Git。
+
+```json
+{
+  "mcpServers": {
+    "echo": {
+      "command": "node",
+      "args": [
+        "D:/CodingProject/echo/dist/cli.js",
+        "serve",
+        "--config",
+        "D:/CodingProject/echo/echo.config.json"
+      ]
+    }
+  }
+}
+```
+
+不同宿主的配置入口可能不同；也可直接运行 `node examples/mcp-client.mjs` 验证标准客户端调用。
+Agent 调用 echo_search 后，用宿主已有文件工具按返回的 path 和行范围补读。
+[完整查询契约](docs/development/phase-04-agent-mcp.md)包含子问题、变体、失败、输出预算和取消语义。

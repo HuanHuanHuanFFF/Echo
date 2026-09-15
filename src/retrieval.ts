@@ -70,6 +70,7 @@ export interface QueryCandidates {
   status: 'ok' | 'empty' | 'error' | 'partial_failure';
   error?: string;
   candidates: Candidate[];
+  variants?: { index: number; status: string; error?: string }[];
   counts: { bm25: number; dense: number; fused: number };
 }
 interface Row extends Omit<Evidence, 'heading_path' | 'matched_query_ids'> {
@@ -235,6 +236,7 @@ export function packResults(
       status: q.status,
       ...(q.error ? { error: q.error } : {}),
       candidates: q.counts,
+      ...(q.variants ? { variants: q.variants } : {}),
       returned: results.filter((e) => e.matched_query_ids.includes(q.query_id))
         .length,
     }));
@@ -318,15 +320,43 @@ export function packResults(
     );
   return response();
 }
+export const querySpecSchema = z
+  .object({
+    query_id: z.string().trim().min(1).max(64),
+    text: z.string().trim().min(1).max(2000),
+    variants: z.array(z.string().trim().min(1).max(2000)).max(3).default([]),
+  })
+  .strict();
+export const searchSchema = z
+  .object({
+    query: z.string().trim().min(1).max(2000).optional(),
+    queries: z.array(querySpecSchema).min(1).max(8).optional(),
+    filters: filtersSchema.optional(),
+    overrides: z.record(z.string(), z.unknown()).optional(),
+  })
+  .strict()
+  .superRefine((v, ctx) => {
+    if ((v.query === undefined) === (v.queries === undefined))
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Provide exactly one of query or queries',
+      });
+    if (
+      v.queries &&
+      new Set(v.queries.map((q) => q.query_id)).size !== v.queries.length
+    )
+      ctx.addIssue({
+        code: 'custom',
+        message: 'query_id values must be unique',
+      });
+  });
 export async function searchIndex(
   config: EchoConfig,
   rawInput: unknown,
   signal?: AbortSignal,
   customProvider?: EmbeddingProvider | null,
 ) {
-  const input = singleSearchSchema.parse(rawInput);
-  if (!input.query.trim() || input.query.length > 2000)
-    throw new Error('query must contain 1-2000 characters');
+  const input = searchSchema.parse(rawInput);
   const options = retrievalOptions(config.retrieval, input.overrides);
   let provider = customProvider ?? null,
     providerError: string | undefined;
@@ -347,18 +377,89 @@ export async function searchIndex(
       getMeta(db, 'lexical_fingerprint') !== lexicalFingerprint(config.lexical)
     )
       throw new Error('Lexical configuration differs from index; run sync');
-    const query = await retrieveQuery(
-      db,
-      config,
-      'q0',
-      input.query,
-      input.filters ?? {},
-      options,
-      provider,
-      signal,
-      providerError,
-    );
-    return packResults([query], options);
+    const specs = input.queries ?? [
+      { query_id: 'q0', text: input.query!, variants: [] },
+    ];
+    const queries: QueryCandidates[] = [];
+    for (const spec of specs) {
+      signal?.throwIfAborted();
+      const expressions = [...new Set([spec.text, ...spec.variants])];
+      const attempts: QueryCandidates[] = [];
+      for (const expression of expressions)
+        attempts.push(
+          await retrieveQuery(
+            db,
+            config,
+            spec.query_id,
+            expression,
+            input.filters ?? {},
+            options,
+            provider,
+            signal,
+            providerError,
+          ),
+        );
+      const merged = new Map<string, Candidate>();
+      for (const attempt of attempts)
+        for (const c of attempt.candidates) {
+          const old = merged.get(c.evidence.chunk_id);
+          if (!old)
+            merged.set(c.evidence.chunk_id, {
+              ...c,
+              score: c.score / expressions.length,
+            });
+          else {
+            old.score += c.score / expressions.length;
+            if (c.bm25_rank !== undefined)
+              old.bm25_rank = Math.min(old.bm25_rank ?? Infinity, c.bm25_rank);
+            if (c.dense_rank !== undefined)
+              old.dense_rank = Math.min(
+                old.dense_rank ?? Infinity,
+                c.dense_rank,
+              );
+            if (c.similarity !== undefined)
+              old.similarity = Math.max(
+                old.similarity ?? -Infinity,
+                c.similarity,
+              );
+          }
+        }
+      const candidates = [...merged.values()].sort(
+        (a, b) =>
+          b.score - a.score ||
+          a.evidence.chunk_id.localeCompare(b.evidence.chunk_id),
+      );
+      const failures = attempts.filter((a) => a.error);
+      queries.push({
+        query_id: spec.query_id,
+        status: failures.length
+          ? attempts.every((a) => a.status === 'error')
+            ? 'error'
+            : 'partial_failure'
+          : candidates.length
+            ? 'ok'
+            : 'empty',
+        ...(failures.length
+          ? { error: [...new Set(failures.map((a) => a.error!))].join('; ') }
+          : {}),
+        candidates,
+        counts: {
+          bm25: attempts.reduce((s, a) => s + a.counts.bm25, 0),
+          dense: attempts.reduce((s, a) => s + a.counts.dense, 0),
+          fused: candidates.length,
+        },
+        ...(expressions.length > 1
+          ? {
+              variants: attempts.map((a, index) => ({
+                index,
+                status: a.status,
+                ...(a.error ? { error: a.error } : {}),
+              })),
+            }
+          : {}),
+      });
+    }
+    return packResults(queries, options);
   } finally {
     if (db.inTransaction) db.exec('ROLLBACK');
     db.close();
