@@ -1,10 +1,14 @@
 import { resolve } from 'node:path';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { loadConfig } from '../dist/config.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
 const configPath = resolve(
   process.argv[2] ?? 'examples/echo.bm25.example.json',
 );
+const profile = await loadConfig(configPath);
+const keyName = profile.embedding.api_key_env;
+const key = process.env[keyName];
 const client = new Client({ name: 'echo-example-agent', version: '1.0.0' });
 try {
   await client.connect(
@@ -12,6 +16,7 @@ try {
       command: process.execPath,
       args: [resolve('dist/cli.js'), 'serve', '--config', configPath],
       stderr: 'pipe',
+      ...(key ? { env: { [keyName]: key } } : {}),
     }),
   );
   const response = await client.callTool({

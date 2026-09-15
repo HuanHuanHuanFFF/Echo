@@ -57,3 +57,72 @@ it('requires an explicit API configuration and request budget for real evaluatio
     'Real evaluation requires',
   );
 });
+
+it('stops before exceeding the authorized API call count and records failure usage', async () => {
+  const { createServer } = await import('node:http');
+  const { writeFile, readFile } = await import('node:fs/promises');
+  const dir = await mkdtemp(join(tmpdir(), 'echo-eval-budget-'));
+  let calls = 0;
+  const server = createServer((req, res) => {
+    const parts: Buffer[] = [];
+    req.on('data', (part) => parts.push(part as Buffer));
+    req.on('end', () => {
+      calls++;
+      const input = (
+        JSON.parse(Buffer.concat(parts).toString()) as { input: string[] }
+      ).input;
+      res.setHeader('content-type', 'application/json');
+      res.end(
+        JSON.stringify({
+          data: input.map((_, index) => ({ index, embedding: [1, 0] })),
+          usage: { total_tokens: 7 },
+        }),
+      );
+    });
+  });
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const address = server.address();
+  if (!address || typeof address === 'string') throw new Error('No address');
+  const key = 'ECHO_EVAL_PROTOCOL_KEY';
+  process.env[key] = 'test-only';
+  try {
+    const configPath = join(dir, 'profile.json'),
+      outputDir = join(dir, 'run');
+    await writeFile(
+      configPath,
+      JSON.stringify({
+        embedding: {
+          base_url: 'http://127.0.0.1:' + address.port + '/v1',
+          model: 'protocol-test',
+          dimensions: 2,
+          api_key_env: key,
+        },
+      }),
+    );
+    await expect(
+      runEvaluation({
+        lexicalOnly: false,
+        configPath,
+        outputDir,
+        maxApiCalls: 1,
+      }),
+    ).rejects.toThrow('Authorized API request budget exhausted');
+    expect(calls).toBe(1);
+    const failure = JSON.parse(
+      await readFile(join(outputDir, 'failure.json'), 'utf8'),
+    ) as {
+      status: string;
+      api_usage: { requests: number; reported_tokens: number };
+    };
+    expect(failure.status).toBe('incomplete');
+    expect(failure.api_usage).toMatchObject({
+      requests: 1,
+      reported_tokens: 7,
+    });
+  } finally {
+    delete process.env[key];
+    server.closeAllConnections();
+    await new Promise<void>((resolve) => server.close(() => resolve()));
+    await rm(dir, { recursive: true, force: true });
+  }
+});

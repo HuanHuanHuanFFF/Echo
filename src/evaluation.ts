@@ -422,7 +422,7 @@ export async function runEvaluation(options: {
               (r) => r.status === 'error' || r.status === 'partial_failure',
             )
           ? 'incomplete'
-          : 'real_api_measured',
+          : 'api_completed',
       created_at: new Date().toISOString(),
       dataset: dataset.name,
       scope: dataset.description,
@@ -460,6 +460,8 @@ export async function runEvaluation(options: {
       },
       budget_chars_per_query: budget,
       preparation_ms: preparationMs,
+      latency_scope:
+        'Warm in-process searchIndex; excludes MCP startup/stdio and API preparation',
       api_usage: base?.usage?.() ?? null,
       cache_misses: cacheMisses,
       sync,
@@ -474,7 +476,7 @@ export async function runEvaluation(options: {
       limitations: [
         '固定自编小样本，无盲测或全库代表性。',
         '按原文事实片段匹配评估证据覆盖，不评估生成答案。',
-        '延迟为同一批预热 query embedding 的检索耗时；准备阶段 API 成本另列。',
+        'API 模式预热同一批 query embedding；延迟只计进程内检索，API 准备与 MCP 启动/传输另计。本地模式没有 embedding。',
         '累计预算包含规范请求/响应及补读请求/响应的 UTF-16 长度，不是 tokenizer token。',
         ...(options.lexicalOnly
           ? ['未使用真实 embedding，不能确认默认 hybrid 的语义效果或相对收益。']
