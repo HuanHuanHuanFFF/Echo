@@ -3,6 +3,7 @@ import {
   mkdtemp,
   mkdir,
   readFile,
+  realpath,
   writeFile,
   rename,
   rm,
@@ -173,7 +174,7 @@ describe('incremental snapshots', () => {
     await rename(a, b);
     expect(await syncIndex(config)).toMatchObject({ updated: 1 });
     expect(rows(config.database)[0]).toMatchObject({
-      path: b,
+      path: await realpath(b),
       source_id: id,
       chunk_id: first[0]!.chunk_id,
     });

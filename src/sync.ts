@@ -82,6 +82,7 @@ export async function syncIndex(
     for (const collection of config.collections) {
       signal?.throwIfAborted();
       const paths = await listMarkdown(collection.root);
+      const canonicalRoot = await realpath(collection.root);
       inventories.push({ root: collection.root, paths });
       for (const path of paths) {
         signal?.throwIfAborted();
@@ -93,7 +94,7 @@ export async function syncIndex(
             'Duplicate echo_id: ' + source.sourceId + ' at ' + path,
           );
         seen.add(source.sourceId);
-        const relativePath = relative(collection.root, path).replaceAll(
+        const relativePath = relative(canonicalRoot, path).replaceAll(
           String.fromCharCode(92),
           '/',
         );
