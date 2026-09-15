@@ -24,7 +24,7 @@ Keep decisions in their owning document and experiments in dated snapshots. Exte
 
 For each development phase, maintain a concise record under `docs/` before marking it complete: what was implemented, module responsibilities, scope boundaries and remaining gaps, plus verification results with relevant code or test links. Organize by phase and topic; link to existing decisions rather than repeating them or keeping a chronological work log.
 
-No `package.json`, application entry point, formatter, linter, or build/test scripts exist yet. During scaffolding, document executable install, development, build, and test commands with their configuration.
+No `package.json`, application entry point, formatter, linter, or build/test scripts exist yet. During phase 1 scaffolding, document executable install, development, build, and test commands, and configure CI to run formatting, type checking, tests, and build on Windows and Linux.
 
 For documentation changes, inspect `git status --short`, review tracked edits with `git diff`, inspect new files separately, and run `git diff --check`. Verify referenced paths and report checks actually performed.
 
@@ -40,4 +40,4 @@ Compare retrieval experiments with fixed queries, corpus, embedding configuratio
 
 Follow the initial commit's type-prefixed format: `docs: 整理 Echo 项目基线与检索设计`. Keep commits focused. PRs should state the problem, change, validation, and limitations, with relevant design or issue links.
 
-During authorized development, commit each small, coherent increment after its relevant checks pass. At the end of every phase, complete its documentation and validation, then push the task branch to `https://github.com/HuanHuanHuanFFF/Echo.git` via HTTPS and verify the remote commit. This cadence is authorized without repeated confirmation; later user restrictions take precedence. Keep credentials, personal notes, and generated indexes outside commits. Editing external notes or rebuilding their indexes requires task authorization; documentation work does not grant it.
+For each development phase, create a new `codex/` branch from the preceding phase's integrated state, normally updated `main` after its PR is merged. Commit each small, coherent increment after relevant checks pass. Complete phase documentation and validation, push via HTTPS to `https://github.com/HuanHuanHuanFFF/Echo.git`, verify the remote commit, and open a PR targeting `main`. Commit, push, and PR creation follow this standing authorization; merging requires user authorization. Later user restrictions take precedence. Keep credentials, personal notes, and generated indexes outside commits. Editing external notes or rebuilding their indexes requires task authorization; documentation work does not grant it.
