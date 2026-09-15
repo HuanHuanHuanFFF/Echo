@@ -48,7 +48,15 @@ export function createEmbeddingProvider(
     throw new Error(
       'Embedding base_url must be an HTTP(S) URL without credentials, query or fragment',
     );
+  const usage = { requests: 0, texts: 0, input_chars: 0 };
+  let knownUsageRequests = 0,
+    reportedTokens = 0;
   return {
+    usage: () => ({
+      ...usage,
+      reported_tokens:
+        knownUsageRequests === usage.requests ? reportedTokens : null,
+    }),
     dimensions,
     fingerprint: hash(
       JSON.stringify({
@@ -69,6 +77,12 @@ export function createEmbeddingProvider(
           purpose === 'query' ? config.query_prefix : config.document_prefix;
         const timeout = AbortSignal.timeout(config.timeout_ms);
         const combined = signal ? AbortSignal.any([signal, timeout]) : timeout;
+        usage.requests++;
+        usage.texts += batch.length;
+        usage.input_chars += batch.reduce(
+          (sum, text) => sum + prefix.length + text.length,
+          0,
+        );
         const response = await fetch(endpoint, {
           method: 'POST',
           redirect: 'error',
@@ -93,6 +107,20 @@ export function createEmbeddingProvider(
           );
         }
         const body: unknown = await response.json();
+        if (
+          body &&
+          typeof body === 'object' &&
+          'usage' in body &&
+          body.usage &&
+          typeof body.usage === 'object' &&
+          'total_tokens' in body.usage &&
+          typeof body.usage.total_tokens === 'number' &&
+          Number.isSafeInteger(body.usage.total_tokens) &&
+          body.usage.total_tokens >= 0
+        ) {
+          knownUsageRequests++;
+          reportedTokens += body.usage.total_tokens;
+        }
         if (
           !body ||
           typeof body !== 'object' ||

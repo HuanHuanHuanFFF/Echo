@@ -29,5 +29,11 @@ export interface EmbeddingProvider {
     purpose: 'query' | 'document',
     signal?: AbortSignal,
   ): Promise<number[][]>;
+  usage?(): Readonly<{
+    requests: number;
+    texts: number;
+    input_chars: number;
+    reported_tokens: number | null;
+  }>;
   dispose?(): Promise<void>;
 }

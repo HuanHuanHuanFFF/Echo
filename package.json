@@ -17,7 +17,8 @@
     "test": "vitest run",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "npm run format:check && npm run typecheck && npm test && npm run build"
+    "check": "npm run format:check && npm run typecheck && npm test && npm run build",
+    "eval": "npm run build && node dist/eval-cli.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.30.0",
