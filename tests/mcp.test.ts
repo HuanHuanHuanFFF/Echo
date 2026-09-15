@@ -334,3 +334,203 @@ it('deduplicates same-intent variants while keeping one query identity', async (
     result.results.every((e) => e.matched_query_ids.join(',') === 'fruit'),
   ).toBe(true);
 });
+
+it('status lock waits do not stall the main MCP channel', async () => {
+  const { config, configPath } = await fixture();
+  const { openDatabase } = await import('../src/database.js');
+  const client = await clientFor(configPath);
+  const writer = openDatabase(config.database);
+  writer.pragma('locking_mode = EXCLUSIVE');
+  writer.exec('BEGIN EXCLUSIVE');
+  let unlocked = false;
+  const unlock = () => {
+    if (!unlocked) {
+      unlocked = true;
+      writer.exec('ROLLBACK');
+      writer.close();
+    }
+  };
+  const timer = setTimeout(unlock, 1500);
+  try {
+    const status = client.callTool({ name: 'echo_status', arguments: {} });
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    const start = Date.now();
+    await client.listTools();
+    expect(Date.now() - start).toBeLessThan(900);
+    unlock();
+    await status;
+  } finally {
+    clearTimeout(timer);
+    unlock();
+    await client.close();
+  }
+});
+it.each(['inner', 'outer'])(
+  'bounds escaped %s validation errors as actual JSON text',
+  async (placement) => {
+    const { configPath } = await fixture();
+    const client = await clientFor(configPath);
+    try {
+      const unknown = String.fromCharCode(92).repeat(400);
+      const argumentsValue =
+        placement === 'inner'
+          ? {
+              query: '苹果',
+              overrides: { max_context_chars: 256, [unknown]: true },
+            }
+          : {
+              query: '苹果',
+              overrides: { max_context_chars: 256 },
+              [unknown]: true,
+            };
+      const response = await client.callTool({
+        name: 'echo_search',
+        arguments: argumentsValue,
+      });
+      expect(response.isError).toBe(true);
+      expect(
+        (response.content as { text: string }[])[0]!.text.length,
+      ).toBeLessThanOrEqual(256);
+    } finally {
+      await client.close();
+    }
+  },
+);
+
+async function deadline<T>(promise: Promise<T>, ms: number): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      promise,
+      new Promise<never>((_, reject) => {
+        timer = setTimeout(() => reject(new Error('Deadline exceeded')), ms);
+      }),
+    ]);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
+it('stdin EOF closes the MCP process and cancels its downstream request', async () => {
+  const { config, configPath } = await fixture();
+  const { spawn } = await import('node:child_process');
+  let reachedResolve!: () => void, closedResolve!: () => void;
+  const reached = new Promise<void>((resolve) => {
+    reachedResolve = resolve;
+  });
+  const closed = new Promise<void>((resolve) => {
+    closedResolve = resolve;
+  });
+  const api = createHttpServer((req, res) => {
+    const parts: Buffer[] = [];
+    req.on('data', (part) => parts.push(part as Buffer));
+    req.on('end', () => {
+      const input = (
+        JSON.parse(Buffer.concat(parts).toString()) as { input: string[] }
+      ).input;
+      if (input.some((text) => text.includes('STALL'))) {
+        res.on('close', closedResolve);
+        reachedResolve();
+        return;
+      }
+      res.setHeader('content-type', 'application/json');
+      res.end(
+        JSON.stringify({
+          data: input.map((_, index) => ({ index, embedding: [1, 0] })),
+        }),
+      );
+    });
+  });
+  await new Promise<void>((resolve) => api.listen(0, '127.0.0.1', resolve));
+  const address = api.address();
+  if (!address || typeof address === 'string') throw new Error('No address');
+  const key = 'ECHO_EOF_TEST_KEY';
+  process.env[key] = 'test-only';
+  let child: ReturnType<typeof spawn> | undefined,
+    exited: Promise<void> | undefined;
+  try {
+    config.embedding = {
+      ...config.embedding,
+      base_url: 'http://127.0.0.1:' + address.port + '/v1',
+      model: 'test',
+      dimensions: 2,
+      api_key_env: key,
+      timeout_ms: 10000,
+    };
+    config.retrieval.mode = 'hybrid';
+    await syncIndex(config);
+    await writeFile(configPath, JSON.stringify(config));
+    child = spawn(
+      process.execPath,
+      [
+        '--import',
+        import.meta.resolve('tsx'),
+        resolve('src/cli.ts'),
+        'serve',
+        '--config',
+        configPath,
+      ],
+      {
+        stdio: ['pipe', 'pipe', 'pipe'],
+        windowsHide: true,
+        env: { ...process.env, [key]: 'test-only' },
+      },
+    );
+    exited = new Promise<void>((resolve) =>
+      child!.once('exit', () => resolve()),
+    );
+    child.stderr!.resume();
+    let initializedResolve!: () => void;
+    const initialized = new Promise<void>((resolve) => {
+      initializedResolve = resolve;
+    });
+    let buffer = '';
+    child.stdout!.on('data', (chunk) => {
+      buffer += String(chunk);
+      let newline: number;
+      while ((newline = buffer.indexOf('\n')) >= 0) {
+        const line = buffer.slice(0, newline);
+        buffer = buffer.slice(newline + 1);
+        if (line && (JSON.parse(line) as { id?: number }).id === 1)
+          initializedResolve();
+      }
+    });
+    child.stdin!.write(
+      JSON.stringify({
+        jsonrpc: '2.0',
+        id: 1,
+        method: 'initialize',
+        params: {
+          protocolVersion: '2025-11-25',
+          capabilities: {},
+          clientInfo: { name: 'eof-test', version: '1' },
+        },
+      }) + '\n',
+    );
+    await deadline(initialized, 3000);
+    child.stdin!.write(
+      JSON.stringify({ jsonrpc: '2.0', method: 'notifications/initialized' }) +
+        '\n',
+    );
+    child.stdin!.write(
+      JSON.stringify({
+        jsonrpc: '2.0',
+        id: 2,
+        method: 'tools/call',
+        params: {
+          name: 'echo_search',
+          arguments: { query: 'STALL', overrides: { mode: 'dense' } },
+        },
+      }) + '\n',
+    );
+    await deadline(reached, 3000);
+    child.stdin!.end();
+    await deadline(exited, 2000);
+    await deadline(closed, 1000);
+  } finally {
+    if (child && child.exitCode === null) child.kill();
+    if (exited) await deadline(exited, 3000);
+    delete process.env[key];
+    api.closeAllConnections();
+    await new Promise<void>((resolve) => api.close(() => resolve()));
+  }
+});

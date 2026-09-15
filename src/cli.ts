@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { existsSync } from 'node:fs';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { EchoStdioTransport } from './transport.js';
 import { createServer } from './server.js';
 import { loadConfig } from './config.js';
 import { syncIndex } from './sync.js';
@@ -25,7 +25,21 @@ async function main() {
       configIndex >= 0 || existsSync(configPath)
         ? await loadConfig(configPath)
         : undefined;
-    await createServer(serverConfig).connect(new StdioServerTransport());
+    const server = createServer(serverConfig);
+    let closing = false;
+    const close = () => {
+      if (closing) return;
+      closing = true;
+      void server.close().catch((error) => {
+        console.error(error instanceof Error ? error.message : String(error));
+        process.exitCode = 1;
+      });
+    };
+    process.stdin.once('end', close);
+    process.stdin.once('close', close);
+    process.once('SIGINT', close);
+    process.once('SIGTERM', close);
+    await server.connect(new EchoStdioTransport());
     return;
   }
   const config = await loadConfig(configPath);

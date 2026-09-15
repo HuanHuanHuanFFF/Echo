@@ -1,12 +1,28 @@
 import { Worker } from 'node:worker_threads';
 import type { EchoConfig } from './config.js';
 import type { searchIndex } from './retrieval.js';
+import type { indexStatus } from './store.js';
+import type { databaseCapabilities } from './database.js';
 type SearchResult = Awaited<ReturnType<typeof searchIndex>>;
+type StatusResult = ReturnType<typeof indexStatus> & {
+  capabilities: ReturnType<typeof databaseCapabilities>;
+};
 export function runSearchInWorker(
   config: EchoConfig,
   input: unknown,
   signal?: AbortSignal,
-): Promise<SearchResult> {
+) {
+  return runIndexJob<SearchResult>(config, input, signal, 'search');
+}
+export function runStatusInWorker(config: EchoConfig, signal?: AbortSignal) {
+  return runIndexJob<StatusResult>(config, undefined, signal, 'status');
+}
+function runIndexJob<T>(
+  config: EchoConfig,
+  input: unknown,
+  signal: AbortSignal | undefined,
+  kind: 'search' | 'status',
+): Promise<T> {
   if (signal?.aborted) return Promise.reject(signal.reason);
   return new Promise((resolve, reject) => {
     const worker = new Worker(
@@ -17,7 +33,7 @@ export function runSearchInWorker(
         import.meta.url,
       ),
       {
-        workerData: { config, input },
+        workerData: { config, input, kind },
         stdout: true,
         stderr: true,
       },
@@ -27,7 +43,7 @@ export function runSearchInWorker(
     let settled = false;
     let cancelReason: Error | undefined;
     let forced: ReturnType<typeof setTimeout> | undefined;
-    const finish = (error: Error | undefined, result?: SearchResult) => {
+    const finish = (error: Error | undefined, result?: T) => {
       if (settled) return;
       settled = true;
       clearTimeout(timeout);
@@ -53,7 +69,7 @@ export function runSearchInWorker(
     if (signal?.aborted) abort();
     worker.once(
       'message',
-      (message: { ok: boolean; result?: SearchResult; error?: string }) => {
+      (message: { ok: boolean; result?: T; error?: string }) => {
         if (cancelReason) finish(cancelReason);
         else if (message.ok) finish(undefined, message.result);
         else finish(new Error(message.error ?? 'Search failed'));

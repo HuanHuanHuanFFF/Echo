@@ -1,25 +1,19 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { openDatabase, databaseCapabilities } from './database.js';
+import { boundedErrorText } from './transport.js';
 import type { EchoConfig } from './config.js';
-import { indexStatus } from './store.js';
 import { searchSchema } from './retrieval.js';
-import { runSearchInWorker } from './executor.js';
+import { runSearchInWorker, runStatusInWorker } from './executor.js';
 
 export function createServer(config?: EchoConfig) {
   const server = new McpServer({ name: 'echo', version: '0.1.0' });
-  let activeSearches = 0;
+  let activeSearches = 0,
+    activeStatuses = 0;
   const errorResult = (error: unknown) => ({
     isError: true,
     content: [
       {
         type: 'text' as const,
-        text: JSON.stringify({
-          status: 'error',
-          error: (error instanceof Error ? error.message : String(error)).slice(
-            0,
-            180,
-          ),
-        }),
+        text: boundedErrorText(error),
       },
     ],
   });
@@ -35,7 +29,7 @@ export function createServer(config?: EchoConfig) {
         openWorldHint: false,
       },
     },
-    async () => {
+    async (_input, extra) => {
       if (!config)
         return {
           content: [
@@ -48,29 +42,29 @@ export function createServer(config?: EchoConfig) {
             },
           ],
         };
+      if (activeStatuses >= 1)
+        return errorResult(new Error('Echo status busy; retry later'));
+      activeStatuses++;
       try {
-        const db = openDatabase(config.database, { readOnly: true });
-        try {
-          const result = {
-            configured: true,
-            ...indexStatus(db),
-            capabilities: databaseCapabilities(db),
-            active_searches: activeSearches,
-            embedding_configured: Boolean(
-              config.embedding.base_url &&
-              config.embedding.model &&
-              config.embedding.dimensions &&
-              process.env[config.embedding.api_key_env],
-            ),
-          };
-          return {
-            content: [{ type: 'text' as const, text: JSON.stringify(result) }],
-          };
-        } finally {
-          db.close();
-        }
+        const status = await runStatusInWorker(config, extra.signal);
+        const result = {
+          configured: true,
+          ...status,
+          active_searches: activeSearches,
+          embedding_configured: Boolean(
+            config.embedding.base_url &&
+            config.embedding.model &&
+            config.embedding.dimensions &&
+            process.env[config.embedding.api_key_env],
+          ),
+        };
+        return {
+          content: [{ type: 'text' as const, text: JSON.stringify(result) }],
+        };
       } catch (error) {
         return errorResult(error);
+      } finally {
+        activeStatuses--;
       }
     },
   );
