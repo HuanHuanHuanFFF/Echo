@@ -165,10 +165,8 @@ export async function runChunker(chunker: Chunker, input: ChunkerInput) {
       throw new Error('Invalid section bounds');
     // A plugin receives sourceId as metadata but cannot inject it into retrieval headings.
     if (
-      range.headingPath.some(
-        (h) =>
-          h.toLowerCase().includes(input.sourceId.toLowerCase()) ||
-          h.includes('echo_id'),
+      range.headingPath.some((h) =>
+        h.toLowerCase().includes(input.sourceId.toLowerCase()),
       )
     )
       throw new Error('Identity in chunk headings');

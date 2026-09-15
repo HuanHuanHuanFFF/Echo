@@ -93,6 +93,10 @@ export async function syncIndex(
             'Duplicate echo_id: ' + source.sourceId + ' at ' + path,
           );
         seen.add(source.sourceId);
+        const relativePath = relative(collection.root, path).replaceAll(
+          String.fromCharCode(92),
+          '/',
+        );
         const old = previous.get(source.sourceId);
         const unchangedContent =
           old?.source_version === source.sourceVersion &&
@@ -100,7 +104,8 @@ export async function syncIndex(
         if (
           unchangedContent &&
           old.path === path &&
-          old.collection_id === collection.id
+          old.collection_id === collection.id &&
+          old.relative_path === relativePath
         ) {
           result.unchanged++;
           continue;
@@ -115,7 +120,7 @@ export async function syncIndex(
           source.sourceId,
           collection.id,
           path,
-          relative(collection.root, path).replaceAll('\\', '/'),
+          relativePath,
           source.sourceVersion,
           fingerprint,
         );

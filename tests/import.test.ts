@@ -323,3 +323,47 @@ it('rejects invalid UTF-8 without rewriting file bytes or replacing the index', 
   expect(await readFile(path)).toEqual(bytes);
   expect(rows(config.database)).toEqual(before);
 });
+
+it('refreshes relative_path when the same collection changes its root', async () => {
+  const { dir, root, config } = await fixture();
+  await writeFile(join(root, 'a.md'), '# A\nbody');
+  await syncIndex(config);
+  config.collections[0]!.root = dir;
+  await syncIndex(config);
+  const db = openDatabase(config.database);
+  try {
+    expect(db.prepare('SELECT relative_path FROM sources').get()).toEqual({
+      relative_path: 'notes/a.md',
+    });
+  } finally {
+    db.close();
+  }
+});
+it('indexes ordinary body headings mentioning echo_id', async () => {
+  const { root, config } = await fixture();
+  await writeFile(
+    join(root, 'identity.md'),
+    '# echo_id handling\nUUID documentation',
+  );
+  await expect(syncIndex(config)).resolves.toMatchObject({ added: 1 });
+  expect(rows(config.database)[0]!.text).toContain('# echo_id handling');
+});
+
+it.each([
+  '  title: A\n',
+  '!!map\ntitle: A\n',
+  '&root\ntitle: A\n',
+  '!!map\n  title: A\n',
+])(
+  'preserves valid block mapping prefixes and indentation: %s',
+  async (yaml) => {
+    const { root } = await fixture();
+    const path = join(root, 'yaml.md');
+    const original = '---\n' + yaml + '---\n# Body\ncontent';
+    await writeFile(path, original);
+    const prepared = await prepareSource(path);
+    expect(prepared.sourceId).toMatch(uuidV4);
+    expect(prepared.raw).toContain(yaml);
+    expect(prepared.raw.endsWith('---\n# Body\ncontent')).toBe(true);
+  },
+);

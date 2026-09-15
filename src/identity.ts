@@ -18,9 +18,14 @@ export function parseSource(raw: string) {
   const bom = raw.startsWith('\uFEFF') ? '\uFEFF' : '';
   const text = raw.slice(bom.length);
   const lines = text.split(/\r\n|\n|\r/);
+  const lineStarts = [
+    0,
+    ...[...text.matchAll(/\r\n|\n|\r/g)].map((m) => m.index + m[0].length),
+  ];
   let frontmatterEnd = -1;
   let sourceId: string | undefined;
-  let flowStart: number | undefined;
+  let flowInsertAt: number | undefined;
+  let blockIndent = '';
   if (lines[0]?.trim() === '---') {
     frontmatterEnd = lines.findIndex(
       (line, i) => i > 0 && /^(---|\.\.\.)\s*$/.test(line),
@@ -39,10 +44,28 @@ export function parseSource(raw: string) {
           throw new Error('echo_id must be a UUID v4 string');
         sourceId = value.toLowerCase();
       }
-      if (doc.contents.flow) flowStart = doc.contents.range?.[0];
+      const prefixLines = yaml
+        .slice(0, doc.contents.range?.[0] ?? 0)
+        .split('\n');
+      blockIndent = prefixLines.at(-1)!.match(/^[ \t]*/)?.[0] ?? '';
+      if (doc.contents.flow) {
+        flowInsertAt =
+          lineStarts[prefixLines.length]! + prefixLines.at(-1)!.length + 1;
+        if (text[flowInsertAt - 1] !== '{')
+          throw new Error('Unsupported flow frontmatter');
+      }
     }
   }
-  return { bom, text, lines, frontmatterEnd, sourceId, flowStart };
+  return {
+    bom,
+    text,
+    lines,
+    lineStarts,
+    frontmatterEnd,
+    sourceId,
+    flowInsertAt,
+    blockIndent,
+  };
 }
 export async function prepareSource(path: string): Promise<PreparedSource> {
   const info = await lstat(path);
@@ -70,32 +93,22 @@ export async function prepareSource(path: string): Promise<PreparedSource> {
         '---' +
         eol +
         parsed.text;
-    } else if (parsed.flowStart !== undefined) {
-      // Source ranges are measured in normalized YAML; preserve original bytes by locating the opening brace.
-      const firstEol = parsed.text.indexOf(eol) + eol.length;
-      const yamlOriginal = parsed.text.slice(firstEol);
-      const prefix = parsed.lines
-        .slice(1, parsed.frontmatterEnd)
-        .join('\n')
-        .slice(0, parsed.flowStart);
-      const offset = firstEol + prefix.replaceAll('\n', eol).length + 1;
-      if (parsed.text[offset - 1] !== '{' || !yamlOriginal.length)
-        throw new Error('Unsupported flow frontmatter');
-      const rest = parsed.text.slice(offset);
+    } else if (parsed.flowInsertAt !== undefined) {
+      const rest = parsed.text.slice(parsed.flowInsertAt);
       updated =
         parsed.bom +
-        parsed.text.slice(0, offset) +
+        parsed.text.slice(0, parsed.flowInsertAt) +
         'echo_id: ' +
         id +
         (rest.trimStart().startsWith('}') ? '' : ', ') +
         rest;
     } else {
-      const firstEol = parsed.text.indexOf(eol);
-      if (firstEol < 0) throw new Error('Invalid frontmatter line ending');
-      const insertAt = firstEol + eol.length;
+      // Append a sibling key inside the existing mapping, preserving root tags, anchors and indentation.
+      const insertAt = parsed.lineStarts[parsed.frontmatterEnd]!;
       updated =
         parsed.bom +
         parsed.text.slice(0, insertAt) +
+        parsed.blockIndent +
         'echo_id: ' +
         id +
         eol +
