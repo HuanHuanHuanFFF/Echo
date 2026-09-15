@@ -2,7 +2,11 @@ import { expect, it } from 'vitest';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { coveredFacts, runEvaluation } from '../src/evaluation.js';
+import {
+  aggregateRows,
+  coveredFacts,
+  runEvaluation,
+} from '../src/evaluation.js';
 
 it('counts facts only from the labelled source and actual quoted text', () => {
   const facts = [{ id: 'a', source: 'a.md', text: 'required fact' }];
@@ -38,6 +42,12 @@ it('runs the full fixed lexical dataset without a model and enforces cumulative 
     expect(report.status).toBe('lexical_only');
     expect(report.api_usage).toBeNull();
     expect(report.rows).toHaveLength(42);
+    expect(
+      aggregateRows([
+        { ...report.rows[0]!, latency_ms: 1 },
+        { ...report.rows[0]!, latency_ms: 9 },
+      ]).median_latency_ms,
+    ).toBe(5);
     for (const row of report.rows) {
       expect(row.total_context_chars).toBe(
         row.request_chars + row.search_chars + row.read_chars,
@@ -115,6 +125,22 @@ it('stops before exceeding the authorized API call count and records failure usa
       api_usage: { requests: number; reported_tokens: number };
     };
     expect(failure.status).toBe('incomplete');
+    const previousFailure = await readFile(
+      join(outputDir, 'failure.json'),
+      'utf8',
+    );
+    await expect(
+      runEvaluation({
+        lexicalOnly: false,
+        configPath,
+        outputDir,
+        maxApiCalls: 1,
+      }),
+    ).rejects.toThrow('empty');
+    expect(calls).toBe(1);
+    expect(await readFile(join(outputDir, 'failure.json'), 'utf8')).toBe(
+      previousFailure,
+    );
     expect(failure.api_usage).toMatchObject({
       requests: 1,
       reported_tokens: 7,

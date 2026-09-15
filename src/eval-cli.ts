@@ -7,10 +7,18 @@ const value = (name: string) => {
 try {
   const configPath = value('--config'),
     outputDir = value('--output');
+  const requestedScenario = value('--scenario');
+  if (
+    requestedScenario !== undefined &&
+    !['default', 'long-context'].includes(requestedScenario)
+  )
+    throw new Error('Invalid evaluation scenario');
+  const scenario = requestedScenario as 'default' | 'long-context' | undefined;
   const maximum = value('--max-api-calls'),
     budget = value('--budget');
   const { output, report } = await runEvaluation({
     lexicalOnly: args.includes('--lexical-only'),
+    ...(scenario ? { scenario } : {}),
     ...(configPath ? { configPath } : {}),
     ...(outputDir ? { outputDir } : {}),
     ...(maximum ? { maxApiCalls: Number(maximum) } : {}),

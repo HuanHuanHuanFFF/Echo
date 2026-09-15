@@ -1,12 +1,19 @@
-import { readFile, readdir, mkdir, writeFile } from 'node:fs/promises';
-import { join, resolve } from 'node:path';
+import {
+  readFile,
+  readdir,
+  mkdir,
+  writeFile,
+  realpath,
+  rename,
+} from 'node:fs/promises';
+import { join, resolve, relative, isAbsolute, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import { z } from 'zod';
 import { parseConfig, loadConfig, type EchoConfig } from './config.js';
 import type { EmbeddingProvider } from './contracts.js';
 import { createEmbeddingProvider } from './embedding.js';
-import { syncIndex } from './sync.js';
+import { syncIndex, listMarkdown } from './sync.js';
 import { searchIndex, type Evidence } from './retrieval.js';
 import { hash, parseSource } from './identity.js';
 import { loadChunker } from './chunker.js';
@@ -104,7 +111,11 @@ export function aggregateRows(rows: Row[]) {
       rows.reduce((n, r) => n + r.distinct_sources, 0) / rows.length,
     mean_max_source_occupancy:
       rows.reduce((n, r) => n + r.max_source_occupancy, 0) / rows.length,
-    median_latency_ms: latencies[Math.floor(latencies.length / 2)] ?? 0,
+    median_latency_ms: latencies.length
+      ? (latencies[Math.floor((latencies.length - 1) / 2)]! +
+          latencies[Math.floor(latencies.length / 2)]!) /
+        2
+      : 0,
     cumulative_context_chars: rows.reduce(
       (n, r) => n + r.total_context_chars,
       0,
@@ -142,17 +153,44 @@ async function supplement(
     ? { piece: chosen, cost: requestChars + JSON.stringify(chosen).length }
     : null;
 }
+export async function corpusSnapshot(
+  root: string,
+): Promise<Record<string, string>> {
+  const canonicalRoot = await realpath(root);
+  const hashes: Record<string, string> = {};
+  for (const path of await listMarkdown(root)) {
+    const text = await readFile(path, 'utf8');
+    if (!parseSource(text).sourceId)
+      throw new Error(
+        'Evaluation corpus requires stable UUID v4 identities: ' + path,
+      );
+    hashes[relative(canonicalRoot, path).split(sep).join('/')] = hash(text);
+  }
+  return hashes;
+}
 export async function runEvaluation(options: {
   configPath?: string;
   outputDir?: string;
   lexicalOnly: boolean;
   maxApiCalls?: number;
   budgetChars?: number;
+  scenario?: 'default' | 'long-context';
 }) {
   const root = fileURLToPath(new URL('../', import.meta.url));
-  const corpusRoot = join(root, 'evals', 'corpus');
+  if (
+    options.scenario !== undefined &&
+    !['default', 'long-context'].includes(options.scenario)
+  )
+    throw new Error('Invalid evaluation scenario');
+  const extended = options.scenario === 'long-context';
+  const corpusRoot = join(root, 'evals', extended ? 'scenarios' : 'corpus');
   const dataset = datasetSchema.parse(
-    JSON.parse(await readFile(join(root, 'evals', 'dataset.json'), 'utf8')),
+    JSON.parse(
+      await readFile(
+        join(root, 'evals', extended ? 'context-dataset.json' : 'dataset.json'),
+        'utf8',
+      ),
+    ),
   );
   if (!dataset.facts.length || !dataset.queries.length)
     throw new Error('Evaluation dataset must not be empty');
@@ -171,18 +209,19 @@ export async function runEvaluation(options: {
       if (!dataset.facts.some((f) => f.id === id))
         throw new Error('Unknown fact ' + id);
   }
-  const fileHashes: Record<string, string> = {};
-  for (const name of (await readdir(corpusRoot))
-    .filter((n) => n.endsWith('.md'))
-    .sort())
-    fileHashes[name] = hash(await readFile(join(corpusRoot, name), 'utf8'));
-  for (const fact of dataset.facts)
+  const fileHashes = await corpusSnapshot(corpusRoot);
+  for (const fact of dataset.facts) {
+    if (!Object.hasOwn(fileHashes, fact.source))
+      throw new Error(
+        'Fact source is outside the indexed corpus: ' + fact.source,
+      );
     if (
       !(await readFile(join(corpusRoot, fact.source), 'utf8')).includes(
         fact.text,
       )
     )
       throw new Error('Fact is absent from corpus: ' + fact.id);
+  }
   const budget = options.budgetChars ?? 8000;
   if (!Number.isInteger(budget) || budget < 2000 || budget > 100000)
     throw new Error('Evaluation budget must be 2000-100000 characters');
@@ -209,12 +248,27 @@ export async function runEvaluation(options: {
       ),
   );
   await mkdir(output, { recursive: true });
-  try {
-    await readFile(join(output, 'report.json'));
-    throw new Error('Output already contains a report; choose a new directory');
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
-  }
+  const outputRelative = relative(
+    await realpath(corpusRoot),
+    await realpath(output),
+  );
+  if (!(
+    isAbsolute(outputRelative) ||
+    outputRelative === '..' ||
+    outputRelative.startsWith('..' + sep)
+  ))
+    throw new Error('Evaluation output must be outside the corpus');
+  if ((await readdir(output)).length)
+    throw new Error('Output directory must be empty; choose a new directory');
+  await writeFile(
+    join(output, '.attempt.json'),
+    JSON.stringify({
+      started_at: new Date().toISOString(),
+      mode: options.lexicalOnly ? 'lexical_only' : 'api',
+      api_request_limit: options.maxApiCalls ?? null,
+    }),
+    { flag: 'wx' },
+  );
   const config: EchoConfig = {
     ...profile,
     database: join(output, 'index.sqlite'),
@@ -260,6 +314,21 @@ export async function runEvaluation(options: {
   const started = performance.now();
   try {
     const sync = await syncIndex(config, undefined, provider);
+    const verifyDb = openDatabase(config.database, { readOnly: true });
+    try {
+      const indexed = verifyDb
+        .prepare('SELECT relative_path,source_version FROM sources')
+        .all() as { relative_path: string; source_version: string }[];
+      if (
+        indexed.length !== Object.keys(fileHashes).length ||
+        indexed.some(
+          (row) => fileHashes[row.relative_path] !== row.source_version,
+        )
+      )
+        throw new Error('Indexed corpus does not match the recorded snapshot');
+    } finally {
+      verifyDb.close();
+    }
     if (provider)
       await provider.embed(
         [
@@ -392,6 +461,7 @@ export async function runEvaluation(options: {
       commit = execFileSync('git', ['rev-parse', 'HEAD'], {
         cwd: root,
         encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'ignore'],
       }).trim();
     } catch {
       /* Git metadata is optional for unpacked source copies. */
@@ -412,9 +482,15 @@ export async function runEvaluation(options: {
         execFileSync('git', ['status', '--porcelain'], {
           cwd: root,
           encoding: 'utf8',
+          stdio: ['ignore', 'pipe', 'ignore'],
         }).trim(),
       );
     } catch {}
+    if (
+      JSON.stringify(await corpusSnapshot(corpusRoot)) !==
+      JSON.stringify(fileHashes)
+    )
+      throw new Error('Corpus changed during evaluation');
     const report = {
       status: options.lexicalOnly
         ? 'lexical_only'
@@ -449,11 +525,7 @@ export async function runEvaluation(options: {
         retrieval: config.retrieval,
         embedding: base
           ? {
-              model: config.embedding.model,
-              dimensions: config.embedding.dimensions,
-              base_url: config.embedding.base_url,
-              document_prefix: config.embedding.document_prefix,
-              query_prefix: config.embedding.query_prefix,
+              ...config.embedding,
               fingerprint: base.fingerprint,
             }
           : null,
@@ -462,6 +534,7 @@ export async function runEvaluation(options: {
       preparation_ms: preparationMs,
       latency_scope:
         'Warm in-process searchIndex; excludes MCP startup/stdio and API preparation',
+      api_request_limit: options.maxApiCalls ?? null,
       api_usage: base?.usage?.() ?? null,
       cache_misses: cacheMisses,
       sync,
@@ -483,10 +556,6 @@ export async function runEvaluation(options: {
           : []),
       ],
     };
-    await writeFile(
-      join(output, 'report.json'),
-      JSON.stringify(report, null, 2),
-    );
     if (base)
       await writeFile(
         join(output, 'vectors.json'),
@@ -528,24 +597,39 @@ export async function runEvaluation(options: {
       '完整配置、逐题结果、标签和哈希见同目录 report.json。',
     );
     await writeFile(join(output, 'report.md'), lines.join('\n') + '\n');
+    await writeFile(
+      join(output, 'report.json.tmp'),
+      JSON.stringify(report, null, 2),
+      { flag: 'wx' },
+    );
+    await rename(join(output, 'report.json.tmp'), join(output, 'report.json'));
     return { output, report };
   } catch (error) {
-    await writeFile(
-      join(output, 'failure.json'),
-      JSON.stringify(
-        {
-          status: 'incomplete',
-          error: error instanceof Error ? error.message : String(error),
-          api_usage: base?.usage?.() ?? null,
-          cache_misses: cacheMisses,
-        },
-        null,
-        2,
-      ),
-    );
+    let recorded = true;
+    try {
+      await writeFile(
+        join(output, 'failure.json'),
+        JSON.stringify(
+          {
+            status: 'incomplete',
+            error: error instanceof Error ? error.message : String(error),
+            api_request_limit: options.maxApiCalls ?? null,
+            api_usage: base?.usage?.() ?? null,
+            cache_misses: cacheMisses,
+          },
+          null,
+          2,
+        ),
+        { flag: 'wx' },
+      );
+    } catch {
+      recorded = false;
+    }
     throw new Error(
-      'Evaluation failed; see ' +
-        join(output, 'failure.json') +
+      'Evaluation failed' +
+        (recorded
+          ? '; see ' + join(output, 'failure.json')
+          : '; failure ledger could not be saved') +
         ': ' +
         (error instanceof Error ? error.message : String(error)),
     );

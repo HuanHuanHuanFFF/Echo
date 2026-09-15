@@ -64,6 +64,7 @@ export function createEmbeddingProvider(
         endpoint: endpoint.href,
         model,
         dimensions,
+        sendDimensions: config.send_dimensions,
         documentPrefix: config.document_prefix,
         queryPrefix: config.query_prefix,
       }),
