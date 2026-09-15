@@ -50,7 +50,9 @@ export async function prepareSource(path: string): Promise<PreparedSource> {
     throw new Error('Only regular Markdown files can be imported');
   if (info.size > 10 * 1024 * 1024)
     throw new Error('Markdown file exceeds 10 MiB');
-  let raw = await readFile(path, 'utf8');
+  let raw = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(
+    await readFile(path),
+  );
   let parsed = parseSource(raw);
   let wroteId = false;
   if (!parsed.sourceId) {

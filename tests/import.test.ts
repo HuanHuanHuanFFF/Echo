@@ -272,3 +272,54 @@ it('survives abrupt process exit after UUID write-back and retries without chang
     true,
   );
 });
+
+it('indexes a custom module and rebuilds when its source changes', async () => {
+  const { root, dir, config } = await fixture();
+  const path = join(root, 'custom.md');
+  await writeFile(path, '# title\nfirst paragraph\n\nlast paragraph');
+  const module = join(dir, 'custom.mjs');
+  await writeFile(
+    module,
+    "export default {id:'custom',version:'1',chunk:({lines})=>[{startLine:lines[1].number,endLine:lines[1].number,headingPath:[]}]}",
+  );
+  config.chunker.module = module;
+  expect(await syncIndex(config)).toMatchObject({ added: 1, chunks: 1 });
+  expect(rows(config.database)[0]!.text).toBe('first paragraph');
+  await writeFile(
+    module,
+    "export default {id:'custom',version:'1',chunk:({lines})=>[{startLine:lines.at(-1).number,endLine:lines.at(-1).number,headingPath:[]}]}",
+  );
+  expect(await syncIndex(config)).toMatchObject({ updated: 1 });
+  expect(rows(config.database)[0]!.text).toBe('last paragraph');
+});
+
+it('does not allow a custom chunker to change the quoted source text', async () => {
+  const input = {
+    sourceId: 'uuid',
+    path: '',
+    lines: [{ number: 1, text: 'original' }],
+    options: {},
+  };
+  const chunker = {
+    id: 'mutating',
+    version: '1',
+    chunk() {
+      input.lines[0]!.text = 'fabricated';
+      return [{ startLine: 1, endLine: 1, headingPath: [] }];
+    },
+  };
+  expect((await runChunker(chunker, input))[0]!.text).toBe('original');
+});
+
+it('rejects invalid UTF-8 without rewriting file bytes or replacing the index', async () => {
+  const { root, config } = await fixture();
+  const path = join(root, 'bad.md');
+  await writeFile(path, '# Valid\nold');
+  await syncIndex(config);
+  const before = rows(config.database);
+  const bytes = Buffer.from([0x23, 0x20, 0xff, 0xfe, 0x0a]);
+  await writeFile(path, bytes);
+  await expect(syncIndex(config)).rejects.toThrow();
+  expect(await readFile(path)).toEqual(bytes);
+  expect(rows(config.database)).toEqual(before);
+});
