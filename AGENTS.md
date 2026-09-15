@@ -11,9 +11,12 @@ BM25, vector retrieval, RRF, and subquestion queries are goals. Drivers, SDK ver
 The repository currently contains documentation only, with no source, test, or asset directories. Load references by task:
 
 - Scope or dependency changes: `docs/project/baseline.md`.
+- Development phases and acceptance: `docs/project/2026-09-15-development-plan.md`; follow applicable newer revisions.
 - Retrieval, grouping, or MCP interface design: `docs/design/retrieval.md`.
 - Retrieval experiments or improvement claims: `docs/evals/2026-09-05-chroma-baseline.md`.
 - Documentation additions: follow `docs/README.md` and update its index for long-term documents.
+
+Follow the latest explicit user requirements. When a newer applicable plan or decision revises an older plan, or the two conflict in a way that blocks execution, follow the newer document for that scope. Record its date, status, superseded scope, and links to prior documents; retain older documents without wholesale rewrites. A newer research note or unconfirmed proposal alone does not override confirmed requirements.
 
 Keep decisions in their owning document and experiments in dated snapshots. External vault paths are local references; verify accessibility before relying on them.
 
