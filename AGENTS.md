@@ -19,6 +19,8 @@ Keep decisions in their owning document and experiments in dated snapshots. Exte
 
 ## Development & Validation
 
+For each development phase, maintain a concise record under `docs/` before marking it complete: what was implemented, module responsibilities, scope boundaries and remaining gaps, plus verification results with relevant code or test links. Organize by phase and topic; link to existing decisions rather than repeating them or keeping a chronological work log.
+
 No `package.json`, application entry point, formatter, linter, or build/test scripts exist yet. During scaffolding, document executable install, development, build, and test commands with their configuration.
 
 For documentation changes, inspect `git status --short`, review tracked edits with `git diff`, inspect new files separately, and run `git diff --check`. Verify referenced paths and report checks actually performed.
@@ -35,4 +37,4 @@ Compare retrieval experiments with fixed queries, corpus, embedding configuratio
 
 Follow the initial commit's type-prefixed format: `docs: 整理 Echo 项目基线与检索设计`. Keep commits focused. PRs should state the problem, change, validation, and limitations, with relevant design or issue links.
 
-Commit and push within current user authorization; use HTTPS for `https://github.com/HuanHuanHuanFFF/Echo.git`. Keep credentials, personal notes, and generated indexes outside commits. Editing external notes or rebuilding their indexes requires task authorization; documentation work does not grant it.
+During authorized development, commit each small, coherent increment after its relevant checks pass. At the end of every phase, complete its documentation and validation, then push the task branch to `https://github.com/HuanHuanHuanFFF/Echo.git` via HTTPS and verify the remote commit. This cadence is authorized without repeated confirmation; later user restrictions take precedence. Keep credentials, personal notes, and generated indexes outside commits. Editing external notes or rebuilding their indexes requires task authorization; documentation work does not grant it.
