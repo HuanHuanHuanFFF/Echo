@@ -38,4 +38,4 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 - [阶段 3 混合检索与参数](development/phase-03-hybrid-retrieval.md)
 - [阶段 4 Agent MCP 完整流程](development/phase-04-agent-mcp.md)
 - [阶段 5 评测与交付状态](development/phase-05-evaluation-delivery.md)
-- [Echo 本地评测快照](evals/2026-09-15-echo-local-evaluation.md)
+- [Echo 本地评测快照](evals/2026-09-15-echo-local-evaluation-r2.md)

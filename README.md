@@ -108,7 +108,7 @@ API 模式先预热相同 query embedding，再比较 dense/hybrid/来源限制/
 记录调用尝试数、服务报告 token（缺失为 null）、语料/代码哈希、逐题事实覆盖与累计上下文预算。
 
 - [第五阶段状态与缺口](docs/development/phase-05-evaluation-delivery.md)
-- [本地评测快照](docs/evals/2026-09-15-echo-local-evaluation.md)
+- [本地评测快照](docs/evals/2026-09-15-echo-local-evaluation-r2.md)
 - [全部文档](docs/README.md)
 
 ## 常见问题与限制
@@ -122,3 +122,5 @@ API 模式先预热相同 query embedding，再比较 dense/hybrid/来源限制/
 - 扫描跳过隐藏目录、node_modules 和符号链接；单文件上限 10 MiB。
 - 默认切块按整行，单行可以超过软尺寸；向量采用范围内精确扫描，大规模性能尚未验证。
 - 小样本事实覆盖不等于全库质量、生成答案正确率或线上性能。当前真实语义效果仍未验收。
+
+补读场景：`npm run eval -- --lexical-only --scenario long-context`。每次评测使用空输出目录；已有失败记录也不能覆盖。`report.json` 是所有必需产物完成后的发布标记，缺少它表示本次未完整交付。
