@@ -8,7 +8,7 @@ Echo 是面向个人 Markdown 知识库的轻量检索 MCP。**项目名 echo、
 
 | 目的 | 文档 | 内容归属 |
 |---|---|---|
-| 查看开发阶段、职责与验收条件 | [首版开发计划](project/2026-09-15-development-plan.md) | 五阶段安排、交付标准及后续修订入口 |
+| 查看开发阶段、职责与验收条件 | [首版开发计划](project/2026-09-15-development-plan.md) | 五阶段安排、第一阶段基础 CI、分支／PR 节奏与交付标准 |
 | 了解定位、约束、选型与下一步 | [项目基线](D:/CodingProject/echo/docs/project/baseline.md) | 已确认决定、当前建议、现有资产和未决事项 |
 | 讨论搜索工具、混合召回、文档分组及证据覆盖 | [检索设计草案](D:/CodingProject/echo/docs/design/retrieval.md) | 算法流程、工具边界和实现前需确定的契约 |
 | 了解 Agent 搜索、补读与定位的参考实现 | [2026-09-09 接口调研](research/2026-09-09-agent-retrieval-interfaces.md) | 四个代表方案、证据等级、参考版本和采用边界 |
