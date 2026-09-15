@@ -11,6 +11,7 @@ export const retrievalSchema = z
     bm25_candidates: positive(1000).default(60),
     dense_candidates: positive(1000).default(60),
     rrf_k: positive(1000).default(60),
+    title_weight: z.number().min(0).max(20).default(2),
     bm25_weight: z.number().min(0).max(10).default(1),
     dense_weight: z.number().min(0).max(10).default(1),
     max_context_chars: positive(100000).min(256).default(12000),
@@ -30,6 +31,26 @@ const embeddingSchema = z
     api_key_env: z.string().min(1).default('ECHO_EMBEDDING_API_KEY'),
     timeout_ms: positive(600000).default(30000),
     batch_size: positive(128).default(8),
+    document_prefix: z.string().max(2000).default(''),
+    query_prefix: z.string().max(2000).default(''),
+    send_dimensions: z.boolean().default(true),
+  })
+  .strict();
+const lexicalSchema = z
+  .object({
+    locale: z
+      .string()
+      .min(2)
+      .max(50)
+      .refine((v) => {
+        try {
+          return Intl.getCanonicalLocales(v).length === 1;
+        } catch {
+          return false;
+        }
+      }, 'Invalid locale')
+      .default('zh-CN'),
+    dictionary: z.array(z.string().min(1).max(200)).max(1000).default([]),
   })
   .strict();
 const configSchema = z
@@ -54,6 +75,7 @@ const configSchema = z
       .strict()
       .default({ version: '1', options: { max_chars: 1000 } }),
     embedding: embeddingSchema.default(embeddingSchema.parse({})),
+    lexical: lexicalSchema.default(lexicalSchema.parse({})),
     retrieval: retrievalSchema.default(retrievalSchema.parse({})),
   })
   .strict()

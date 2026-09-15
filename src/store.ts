@@ -2,7 +2,7 @@ import type Database from 'better-sqlite3';
 
 export function initializeStore(db: Database.Database) {
   const version = db.pragma('user_version', { simple: true });
-  if (version !== 0 && version !== 1)
+  if (version !== 0 && version !== 1 && version !== 2)
     throw new Error('Unsupported index schema; use a new database');
   db.exec(`
     CREATE TABLE IF NOT EXISTS sources (
@@ -18,7 +18,15 @@ export function initializeStore(db: Database.Database) {
     );
     CREATE INDEX IF NOT EXISTS chunks_source ON chunks(source_id);
     CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
-    PRAGMA user_version = 1;
+    CREATE VIRTUAL TABLE IF NOT EXISTS chunk_fts USING fts5(title,body);
+    CREATE TABLE IF NOT EXISTS embeddings (
+      chunk_rowid INTEGER PRIMARY KEY REFERENCES chunks(rowid) ON DELETE CASCADE,
+      embedding BLOB NOT NULL
+    );
+    CREATE TRIGGER IF NOT EXISTS chunks_delete AFTER DELETE ON chunks BEGIN
+      DELETE FROM chunk_fts WHERE rowid=old.rowid;
+    END;
+    PRAGMA user_version = 2;
   `);
 }
 export function indexStatus(db: Database.Database) {
@@ -29,6 +37,9 @@ export function indexStatus(db: Database.Database) {
     ).n,
     chunks: (
       db.prepare('SELECT count(*) AS n FROM chunks').get() as { n: number }
+    ).n,
+    embeddings: (
+      db.prepare('SELECT count(*) AS n FROM embeddings').get() as { n: number }
     ).n,
     metadata: Object.fromEntries(
       (

@@ -5,6 +5,9 @@ import { loadChunker, runChunker } from './chunker.js';
 import { openDatabase } from './database.js';
 import { hash, prepareSource } from './identity.js';
 import { initializeStore, setMeta } from './store.js';
+import type { EmbeddingProvider } from './contracts.js';
+import { createEmbeddingProvider, validateVectors } from './embedding.js';
+import { tokenize, lexicalFingerprint } from './lexical.js';
 
 interface SourceRow {
   source_id: string;
@@ -52,9 +55,16 @@ export interface SyncResult {
 export async function syncIndex(
   config: EchoConfig,
   signal?: AbortSignal,
+  customProvider?: EmbeddingProvider | null,
 ): Promise<SyncResult> {
   if (!config.collections.length)
     throw new Error('Configure at least one collection before sync');
+  const provider =
+    customProvider === undefined
+      ? config.retrieval.mode === 'bm25'
+        ? null
+        : createEmbeddingProvider(config.embedding)
+      : customProvider;
   const db = openDatabase(config.database);
   const result: SyncResult = {
     status: 'ok',
@@ -69,7 +79,17 @@ export async function syncIndex(
     initializeStore(db);
     // Hold a single writer reservation across preparation. WAL readers keep the previous committed snapshot.
     db.exec('BEGIN IMMEDIATE');
-    const { chunker, fingerprint } = await loadChunker(config.chunker);
+    const { chunker, fingerprint: chunkerFingerprint } = await loadChunker(
+      config.chunker,
+    );
+    const lexicalVersion = lexicalFingerprint(config.lexical);
+    const fingerprint = hash(
+      JSON.stringify([
+        chunkerFingerprint,
+        lexicalVersion,
+        provider?.fingerprint ?? 'bm25-only',
+      ]),
+    );
     const previous = new Map(
       (db.prepare('SELECT * FROM sources').all() as SourceRow[]).map((s) => [
         s.source_id,
@@ -132,8 +152,21 @@ export async function syncIndex(
           lines: source.lines,
           options: config.chunker.options,
         });
+        const vectors = provider
+          ? validateVectors(
+              await provider.embed(
+                chunks.map((c) =>
+                  [basename(path, '.md'), ...c.headingPath, c.text].join('\n'),
+                ),
+                'document',
+                signal,
+              ),
+              chunks.length,
+              provider.dimensions,
+            )
+          : null;
         db.prepare('DELETE FROM chunks WHERE source_id=?').run(source.sourceId);
-        for (const chunk of chunks) {
+        for (const [index, chunk] of chunks.entries()) {
           const chunkId = hash(
             JSON.stringify([
               source.sourceId,
@@ -147,20 +180,37 @@ export async function syncIndex(
             ...chunk.headingPath,
             chunk.text,
           ].join('\n');
-          db.prepare(
-            `INSERT INTO chunks(chunk_id,source_id,text,retrieval_text,heading_path,start_line,end_line,section_start_line,section_end_line)
+          const inserted = db
+            .prepare(
+              `INSERT INTO chunks(chunk_id,source_id,text,retrieval_text,heading_path,start_line,end_line,section_start_line,section_end_line)
             VALUES (?,?,?,?,?,?,?,?,?)`,
+            )
+            .run(
+              chunkId,
+              source.sourceId,
+              chunk.text,
+              retrievalText,
+              JSON.stringify(chunk.headingPath),
+              chunk.startLine,
+              chunk.endLine,
+              chunk.sectionStartLine ?? null,
+              chunk.sectionEndLine ?? null,
+            );
+          db.prepare(
+            'INSERT INTO chunk_fts(rowid,title,body) VALUES (?,?,?)',
           ).run(
-            chunkId,
-            source.sourceId,
-            chunk.text,
-            retrievalText,
-            JSON.stringify(chunk.headingPath),
-            chunk.startLine,
-            chunk.endLine,
-            chunk.sectionStartLine ?? null,
-            chunk.sectionEndLine ?? null,
+            inserted.lastInsertRowid,
+            tokenize(
+              [basename(path, '.md'), ...chunk.headingPath].join('\n'),
+              config.lexical,
+            ).join(' '),
+            tokenize(chunk.text, config.lexical).join(' '),
           );
+          if (vectors)
+            db.prepare('INSERT INTO embeddings VALUES (?,?)').run(
+              inserted.lastInsertRowid,
+              new Float32Array(vectors[index]!),
+            );
         }
       }
     }
@@ -184,7 +234,9 @@ export async function syncIndex(
       db.prepare('SELECT count(*) AS n FROM chunks').get() as { n: number }
     ).n;
     setMeta(db, 'last_sync', new Date().toISOString());
-    setMeta(db, 'chunker_fingerprint', fingerprint);
+    setMeta(db, 'chunker_fingerprint', chunkerFingerprint);
+    setMeta(db, 'lexical_fingerprint', lexicalVersion);
+    setMeta(db, 'embedding_fingerprint', provider?.fingerprint ?? '');
     db.exec('COMMIT');
     return result;
   } catch (error) {
