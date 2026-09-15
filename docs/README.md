@@ -2,7 +2,7 @@
 
 更新日期：2026-09-15。
 
-Echo 是面向个人 Markdown 知识库的轻量检索 MCP。**项目名 echo、TypeScript＋SQLite 已确认；代码尚未在本会话初始化，具体依赖、接口细节和参数默认值仍待设计与验证。**
+Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前四阶段已合并并通过双平台 CI；第五阶段工具和本地样本评测已具备，真实 API 默认方案验收仍待配置与额度。安装使用从[README](../README.md)开始，当前配置以[配置契约](design/configuration.md)为准。
 
 ## 从这里继续
 
@@ -37,3 +37,5 @@ Echo 是面向个人 Markdown 知识库的轻量检索 MCP。**项目名 echo、
 - [阶段 2 导入与同步](development/phase-02-import-sync.md)
 - [阶段 3 混合检索与参数](development/phase-03-hybrid-retrieval.md)
 - [阶段 4 Agent MCP 完整流程](development/phase-04-agent-mcp.md)
+- [阶段 5 评测与交付状态](development/phase-05-evaluation-delivery.md)
+- [Echo 本地评测快照](evals/2026-09-15-echo-local-evaluation.md)

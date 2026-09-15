@@ -1,62 +1,53 @@
 # Echo
 
-面向本地 Markdown 的轻量证据检索 MCP，TypeScript + 嵌入式 SQLite。
-Agent 拆问题、补读原文件并生成答案；Echo 负责索引与证据。
-embedding 默认由用户配置 API 服务与 key；BM25 分词在本地运行。
+本地 Markdown 证据检索 MCP：TypeScript + 嵌入式 SQLite，支持本地 BM25、API embedding、RRF 和 Agent 子问题查询。
+Agent 负责拆问题、补读与回答；Echo 返回原文证据和定位。
 
-## 开发入口
+**前四阶段已合并并通过 Windows/Linux CI。第五阶段工具已实现，真实 API 默认方案评测尚待配置及调用额度。**
 
-要求 Node.js **24.15.0（24 LTS）**、npm 11、Windows x64 或 Linux x64。
+## 先跑一个无 key 的样本
+
+要求 Node.js 24.15.0（24 LTS）、npm 11；已验证 Windows x64 / Linux x64。
 
 ```sh
 npm ci
-npm run dev -- --help
-npm run check
 npm run build
-node dist/cli.js serve
-```
-
-`serve` 以 stdio 运行，标准输出仅承载 MCP。用支持 MCP 的宿主启动
-`node /absolute/path/to/echo/dist/cli.js serve`。
-MCP 提供 `echo_search` 和 `echo_status`；CLI 支持导入、同步和搜索。
-
-- 格式：`npm run format` / `npm run format:check`
-- 类型：`npm run typecheck`
-- 测试：`npm test`（仅 tests/，临时数据库）
-- 构建：`npm run build`
-- [配置与切块契约](docs/design/configuration.md)
-- [阶段验收](docs/development/phase-01-foundation.md)
-- [项目文档](docs/README.md)
-
-个人笔记、凭据和数据库不提交；`echo.config.json`、`.echo/` 已忽略。
-
-## 显式同步（阶段 2）
-
-先复制 [配置示例](examples/echo.config.example.json) 为 echo.config.json，将 collection.root 改为自己的 Markdown 目录。
-路径相对配置文件位置解析。sync 会向缺少身份的文件写入 UUID v4；首次尝试请用笔记副本。
-
-```sh
-node dist/cli.js sync --config echo.config.json
-node dist/cli.js status --config echo.config.json
-```
-
-同步原文、身份、chunks、本地 BM25 与 API embedding，失败时保留旧索引。
-[自定义切块示例](examples/paragraph-chunker.mjs)通过 chunker.module 加载，详情见[阶段 2 契约](docs/development/phase-02-import-sync.md)。
-
-## 本地样本搜索
-
-```sh
 node dist/cli.js sync --config examples/echo.bm25.example.json
-node dist/cli.js search --config examples/echo.bm25.example.json --query "事务失败怎么恢复"
+node examples/mcp-client.mjs
 ```
 
-这个样本使用本地 BM25，不需要 key。实际 hybrid 使用配置示例中的 API 地址、模型、维度和 key 环境变量，完成同步后搜索。
-搜索支持 --overrides 与 --filters 的 JSON 参数；完整范围与预算说明见[阶段 3](docs/development/phase-03-hybrid-retrieval.md)。
+最后一步启动真实 stdio MCP 客户端并搜索两项样本证据。生成索引位于被 Git 忽略的 .echo/。
 
-## MCP 接入
+## 配置自己的笔记与 API
 
-服务入口为 `node /absolute/path/to/echo/dist/cli.js serve --config /absolute/path/to/echo/echo.config.json`。
-在宿主中将它注册为 stdio MCP 服务，并把 API key 的环境变量传给该子进程；不要把真实 key 提交到 Git。
+复制 [配置示例](examples/echo.config.example.json) 为 echo.config.json，填写：
+
+- collections：每个知识库的 id 与本地 root。
+- embedding：服务 base_url、model、dimensions，以及存放 key 的环境变量名。
+- database：SQLite 文件路径。相对路径均以配置文件目录为基准。
+
+API 接口为 base_url/embeddings，发送标准 input 数组。key 不写入配置或索引；
+默认环境变量名为 ECHO_EMBEDDING_API_KEY。PowerShell 示例：
+
+```powershell
+$env:ECHO_EMBEDDING_API_KEY = '<你的 key>'
+node dist/cli.js sync --config echo.config.json
+node dist/cli.js search --config echo.config.json --query '索引更新失败怎样恢复'
+```
+
+sync 会向缺少 echo_id 的 Markdown 写入 UUID v4。已有身份保持不变；
+正文、路径、规则或模型改变后重新 sync。同步失败保留旧索引，已写回的 ID 会被重试复用。
+未配置 API 时可明确设置 retrieval.mode 为 bm25；hybrid 查询的模型故障会报告部分失败，不冒充正常混合检索。
+
+## MCP 接入与 Agent 使用
+
+将以下 stdio 命令注册到支持 MCP 的宿主，并把 key 环境变量传给该子进程：
+
+```text
+node /absolute/path/to/echo/dist/cli.js serve --config /absolute/path/to/echo/echo.config.json
+```
+
+通用配置示例（具体配置入口由宿主决定）：
 
 ```json
 {
@@ -74,6 +65,60 @@ node dist/cli.js search --config examples/echo.bm25.example.json --query "事务
 }
 ```
 
-不同宿主的配置入口可能不同；也可直接运行 `node examples/mcp-client.mjs` 验证标准客户端调用。
-Agent 调用 echo_search 后，用宿主已有文件工具按返回的 path 和行范围补读。
-[完整查询契约](docs/development/phase-04-agent-mcp.md)包含子问题、变体、失败、输出预算和取消语义。
+- echo_search：单 query，或带 query_id 的多个独立问题及同意图 variants。
+- echo_status：索引、配置与在途状态；不会发起计费健康检查。
+- 用返回的绝对 path 和 1-based 行范围，通过宿主文件工具补读；Echo 不提供专用读取或链接导航工具。
+- matched_query_ids 表示召回关联；有命中不代表答案完整。
+
+[完整 MCP 契约](docs/development/phase-04-agent-mcp.md)。
+
+## 默认与自定义方案
+
+默认：标题感知 max_chars=1000，hybrid，每路候选 60，RRF k=60、权重 1/1，
+topk=8、每篇最多 2、最低余弦相似度 0.3、完整结果 JSON 预算 12000 字符。
+这些 hybrid 数值仍是待真实模型评测的起点。
+
+配置支持部分覆盖；单次搜索可传 overrides 和 filters。
+topk 与每篇上限同时生效，数量不足时不放宽约束填满。
+
+完整自定义切块通过 chunker.module 加载可信本地模块：
+[段落示例](examples/paragraph-chunker.mjs)、[结构父标题候选](examples/structural-heading-chunker.mjs)
+及其[组合配置](examples/echo.structural-heading.example.json)。
+自定义结果仍需提供连续原文行范围；原文内容由 Echo 生成并验证。
+
+[配置契约与合法范围](docs/design/configuration.md)。
+
+## 评测与开发
+
+```sh
+npm run check
+npm run eval -- --lexical-only
+npm run eval -- --lexical-only --config examples/echo.structural-heading.example.json
+```
+
+真实 API 评测必须显式指定配置与已获授权的调用上限：
+
+```sh
+npm run eval -- --config echo.config.json --max-api-calls 40
+```
+
+40 是命令示例，不表示已授权本任务付费调用。评测只使用 evals/corpus 的固定自编样本，
+不读取配置中的个人 collections；输出到 .echo/evals，默认不覆盖已有报告。
+API 模式先预热相同 query embedding，再比较 dense/hybrid/来源限制/子问题与补读。
+记录调用尝试数、服务报告 token（缺失为 null）、语料/代码哈希、逐题事实覆盖与累计上下文预算。
+
+- [第五阶段状态与缺口](docs/development/phase-05-evaluation-delivery.md)
+- [本地评测快照](docs/evals/2026-09-15-echo-local-evaluation.md)
+- [全部文档](docs/README.md)
+
+## 常见问题与限制
+
+- 报重复/无效 UUID：修正冲突后重试；整次索引更新不会部分提交。
+- 报模型/分词配置不同：重新 sync，不能直接混用不同配置的向量。
+- 改名/修改后位置旧：确认 sync 已成功；搜索后再次编辑的时窗不提供额外一致性协议。
+- 数据库不存在或旧 schema：先 sync 创建或迁移；搜索只读，不隐式重建。
+- API 超时/不可用：检查地址、model、dimensions、key 环境变量；服务不接受 dimensions 时设置 send_dimensions=false。
+- 自定义模块依赖变化：提升版本并重新同步。
+- 扫描跳过隐藏目录、node_modules 和符号链接；单文件上限 10 MiB。
+- 默认切块按整行，单行可以超过软尺寸；向量采用范围内精确扫描，大规模性能尚未验证。
+- 小样本事实覆盖不等于全库质量、生成答案正确率或线上性能。当前真实语义效果仍未验收。

@@ -1,6 +1,6 @@
 # 阶段 4：Agent 查询完整流程
 
-日期：2026-09-15。状态：本地 49 项检查与双人压力复审通过，待当前 PR 双平台 CI。
+日期：2026-09-15。状态：已验收并合并。PR #5 当前提交 089e9b7 双平台 CI 全部通过；合并提交 ae4f7cc。
 从阶段 3 合并提交 71a2bde 开始；承接[计划](../project/2026-09-15-development-plan.md)。
 本文件落定[Agent 接口草案](../design/agent-interface.md)中的字段、查询组织、失败与预算；不增加专用读取工具或引用链。
 
@@ -72,3 +72,5 @@ echo_status 可在查询等待 API 时响应；embedding_configured 仅说明配
 当前 PR 双平台 CI 仍是阶段最终门槛。
 
 输入流 end/close 及退出信号会显式关闭 MCP server，取消在途请求并等待 worker 回收。transport.ts 将 SDK 和工具回调的普通错误规范成不超过 256 字符的实际 JSON；已按请求预算打包的完整搜索失败保留各 query_id 的诊断。
+
+[PR #5](https://github.com/HuanHuanHuanFFF/Echo/pull/5)；[PR CI](https://github.com/HuanHuanHuanFFF/Echo/actions/runs/34960438600)；[push CI](https://github.com/HuanHuanHuanFFF/Echo/actions/runs/34960431151)。
