@@ -81,28 +81,35 @@ describe('foundation', () => {
     ).toThrow();
   });
   it('a real stdio MCP client discovers and calls the tool', async () => {
+    const dir = await mkdtemp(join(tmpdir(), 'echo-unconfigured-'));
     const client = new Client({ name: 'echo-test', version: '1.0.0' });
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: ['--import', 'tsx', resolve('src/cli.ts'), 'serve'],
+      args: [
+        '--import',
+        import.meta.resolve('tsx'),
+        resolve('src/cli.ts'),
+        'serve',
+      ],
+      cwd: dir,
       stderr: 'pipe',
     });
     try {
       await client.connect(transport);
-      expect((await client.listTools()).tools.map((t) => t.name)).toEqual([
-        'echo_status',
-      ]);
+      expect(
+        (await client.listTools()).tools.map((t) => t.name).sort(),
+      ).toEqual(['echo_search', 'echo_status']);
       const result = await client.callTool({
         name: 'echo_status',
         arguments: {},
       });
       expect(result.isError).not.toBe(true);
-      expect(result.structuredContent).toMatchObject({ phase: 'foundation' });
       expect(
         JSON.parse((result.content as { text: string }[])[0]!.text),
-      ).toEqual(result.structuredContent);
+      ).toMatchObject({ configured: false });
     } finally {
       await client.close();
+      await rm(dir, { recursive: true, force: true });
     }
   });
 });

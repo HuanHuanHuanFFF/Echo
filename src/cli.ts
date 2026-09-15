@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { existsSync } from 'node:fs';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { createServer } from './server.js';
 import { loadConfig } from './config.js';
@@ -20,7 +21,11 @@ async function main() {
     configIndex < 0 ? 'echo.config.json' : process.argv[configIndex + 1];
   if (!configPath) throw new Error('--config requires a file path');
   if (command === 'serve') {
-    await createServer().connect(new StdioServerTransport());
+    const serverConfig =
+      configIndex >= 0 || existsSync(configPath)
+        ? await loadConfig(configPath)
+        : undefined;
+    await createServer(serverConfig).connect(new StdioServerTransport());
     return;
   }
   const config = await loadConfig(configPath);
