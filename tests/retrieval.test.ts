@@ -395,3 +395,18 @@ it('deletes both retrieval indexes together and rejects malformed scopes', async
     searchIndex(config, { query: 'x', filters: { unknown: true } }),
   ).rejects.toThrow();
 });
+
+it('reads the previous committed snapshot while another connection prepares a sync', async () => {
+  const { config } = await fixture();
+  const writer = openDatabase(config.database);
+  writer.exec('BEGIN IMMEDIATE');
+  try {
+    const before = Date.now();
+    const result = await searchIndex(config, { query: '苹果' });
+    expect(result.results.length).toBeGreaterThan(0);
+    expect(Date.now() - before).toBeLessThan(1000);
+  } finally {
+    writer.exec('ROLLBACK');
+    writer.close();
+  }
+});

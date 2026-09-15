@@ -325,7 +325,7 @@ export async function searchIndex(
       providerError = (error as Error).message;
     }
   }
-  const db = openDatabase(config.database);
+  const db = openDatabase(config.database, { readOnly: true });
   try {
     initializeStore(db);
     db.exec('BEGIN');

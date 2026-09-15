@@ -2,6 +2,8 @@ import type Database from 'better-sqlite3';
 
 export function initializeStore(db: Database.Database) {
   const version = db.pragma('user_version', { simple: true });
+  if (version === 2) return;
+  if (db.readonly) throw new Error('Index requires migration; run sync');
   if (version !== 0 && version !== 1 && version !== 2)
     throw new Error('Unsupported index schema; use a new database');
   db.exec(`
