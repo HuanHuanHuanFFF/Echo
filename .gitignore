@@ -1,1 +1,13 @@
 /references/
+
+node_modules/
+dist/
+coverage/
+.echo/
+.env
+.env.*
+!.env.example
+*.sqlite*
+*.db
+echo.config.json
+*.tsbuildinfo
