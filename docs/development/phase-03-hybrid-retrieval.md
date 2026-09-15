@@ -1,6 +1,6 @@
 # 阶段 3：混合检索与配置
 
-日期：2026-09-15。状态：本地验收进行中，双人压力审查和 PR CI 待完成。
+日期：2026-09-15。状态：本地 40 项测试与完整检查通过，两位独立压力审查复审通过，待当前 PR 双平台 CI。
 从阶段 2 合并提交 b6703d7 开始，沿用[计划](../project/2026-09-15-development-plan.md)与[配置契约](../design/configuration.md)。
 本阶段将默认 embedding 落定为用户配置的 API；不下载本地 embedding 模型。
 
@@ -61,3 +61,12 @@ max_context_chars 限制**整个规范结果 JSON 的 UTF-16 长度**（含路�
 [Node ICU 支持](https://nodejs.org/api/intl.html)、
 [阿里云 embedding API](https://www.alibabacloud.com/help/en/model-studio/text-embedding-synchronous-api)。
 通用 HTTP 形状已在本地服务验证，具体供应商/模型由用户配置后做真实验收。
+
+## 独立压力审查与验收
+
+两位只读审查者以 699dd44 为基线，针对 3d14627 / 4c0cb56 复审通过。
+修复并建立失败回归：同步写者存在时搜索误写 schema 导致锁冲突、UUID 范围大小写不一致、
+极端有限向量产生 SQL NULL 距离后误报为空、dense 全失败顶层状态不准确。
+搜索现用只读连接，旧 schema 明确要求 sync；向量在稳定缩放/单位化后转 Float32，转换版本计入指纹。
+本地 npm run check：40 项测试、格式、类型、构建通过；构建后的样本 CLI 同步 2 篇/4 块，关键词搜索返回定位正确的原文。
+两个审查者各自复跑 17 项检索测试及针对性样本；最终远程 CI 仍以 PR 当前提交为准。
