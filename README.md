@@ -18,7 +18,7 @@ node dist/cli.js serve
 
 `serve` 以 stdio 运行，标准输出仅承载 MCP。用支持 MCP 的宿主启动
 `node /absolute/path/to/echo/dist/cli.js serve`。
-当前阶段 1 仅提供 `echo_status` 连通性工具，真实检索随后续阶段交付。
+MCP 当前提供 `echo_status` 连通性工具；CLI 已支持导入与同步，真实检索随后续阶段交付。
 
 - 格式：`npm run format` / `npm run format:check`
 - 类型：`npm run typecheck`
@@ -29,3 +29,16 @@ node dist/cli.js serve
 - [项目文档](docs/README.md)
 
 个人笔记、凭据和数据库不提交；`echo.config.json`、`.echo/` 已忽略。
+
+## 显式同步（阶段 2）
+
+先复制 [配置示例](examples/echo.config.example.json) 为 echo.config.json，将 collection.root 改为自己的 Markdown 目录。
+路径相对配置文件位置解析。sync 会向缺少身份的文件写入 UUID v4；首次尝试请用笔记副本。
+
+```sh
+node dist/cli.js sync --config echo.config.json
+node dist/cli.js status --config echo.config.json
+```
+
+当前同步覆盖原文、身份与 chunks；阶段 3 接入本地 BM25 与 API embedding。
+[自定义切块示例](examples/paragraph-chunker.mjs)通过 chunker.module 加载，详情见[阶段 2 契约](docs/development/phase-02-import-sync.md)。
