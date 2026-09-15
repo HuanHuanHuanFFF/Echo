@@ -1,0 +1,26 @@
+{
+  "database": "../.echo/index.sqlite",
+  "collections": [
+    {
+      "id": "sample",
+      "root": "./notes"
+    }
+  ],
+  "chunker": {
+    "options": {
+      "max_chars": 1000
+    }
+  },
+  "embedding": {
+    "provider": "http",
+    "base_url": "https://your-provider.example/v1",
+    "model": "your-embedding-model",
+    "dimensions": 1024,
+    "api_key_env": "ECHO_EMBEDDING_API_KEY"
+  },
+  "retrieval": {
+    "mode": "hybrid",
+    "topk": 8,
+    "max_chunks_per_source": 2
+  }
+}

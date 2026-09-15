@@ -1,6 +1,6 @@
 # 阶段 1：工程基础与接口
 
-日期：2026-09-15。状态：Windows 本地验收通过，待当前 PR 的 Windows/Linux CI。
+日期：2026-09-15。状态：已验收并合并。PR #2 当前提交 dfd39fc 的 Windows/Linux push 与 PR CI 均成功；合并提交 03d8f23。
 承接[开发计划](../project/2026-09-15-development-plan.md)；最新用户授权替代旧计划“仅编写计划”和“合并需另行授权”的任务范围。
 
 ## 实现与责任
@@ -22,3 +22,7 @@
 当前只有基础 echo_status；导入/UUID/切块/同步在阶段 2，混合检索和 API 接入在阶段 3，
 Agent 完整查询在阶段 4，真实模型对照和最终默认参数在阶段 5。
 固定向量仅验证数据库/接口，不是语义评测。没有操作个人笔记或旧 Chroma。
+
+## 远程证据
+
+[PR #2](https://github.com/HuanHuanHuanFFF/Echo/pull/2)；[PR CI](https://github.com/HuanHuanHuanFFF/Echo/actions/runs/34949638069)；[push CI](https://github.com/HuanHuanHuanFFF/Echo/actions/runs/34949632710)。

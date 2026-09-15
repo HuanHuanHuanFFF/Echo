@@ -34,3 +34,4 @@ Echo 是面向个人 Markdown 知识库的轻量检索 MCP。**项目名 echo、
 - [阶段 1 工程基础验收](development/phase-01-foundation.md)
 - [配置与模块契约](design/configuration.md)
 - [安装开发入口](../README.md)
+- [阶段 2 导入与同步](development/phase-02-import-sync.md)
