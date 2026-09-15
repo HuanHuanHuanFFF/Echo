@@ -42,3 +42,13 @@ node dist/cli.js status --config echo.config.json
 
 当前同步覆盖原文、身份与 chunks；阶段 3 接入本地 BM25 与 API embedding。
 [自定义切块示例](examples/paragraph-chunker.mjs)通过 chunker.module 加载，详情见[阶段 2 契约](docs/development/phase-02-import-sync.md)。
+
+## 本地样本搜索
+
+```sh
+node dist/cli.js sync --config examples/echo.bm25.example.json
+node dist/cli.js search --config examples/echo.bm25.example.json --query "事务失败怎么恢复"
+```
+
+这个样本使用本地 BM25，不需要 key。实际 hybrid 使用配置示例中的 API 地址、模型、维度和 key 环境变量，完成同步后搜索。
+搜索支持 --overrides 与 --filters 的 JSON 参数；完整范围与预算说明见[阶段 3](docs/development/phase-03-hybrid-retrieval.md)。

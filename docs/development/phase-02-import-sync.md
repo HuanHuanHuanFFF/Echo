@@ -1,6 +1,6 @@
 # 阶段 2：导入、切块与同步
 
-日期：2026-09-15。状态：本地格式、类型、23 项测试和构建通过；两位独立压力审查复审通过，待当前 PR 双平台 CI。
+日期：2026-09-15。状态：已验收并合并。PR #3 当前提交 7d937d0 的双平台 CI 全部通过，合并提交 b6703d7。
 承接[五阶段计划](../project/2026-09-15-development-plan.md)，从阶段 1 合并提交 03d8f23 开始。
 全程按用户指定 huan-dev 工作流推进；审查产生的验收问题在本阶段修复与复验。
 
@@ -67,3 +67,5 @@ embedding 和全文倒排更新将在阶段 3 接入同一恢复边界；当前�
 ### Windows CI 路径别名修复
 
 PR 首轮 Windows CI 使用 RUNNER~1 短路径临时目录，暴露扫描后的真实路径与配置别名混算问题；Linux 已通过。597b459 将根目录同样 realpath 化后计算 relative_path，并以真实路径核对绝对定位；原相对路径断言保留。此问题须由更新后双平台 CI 复验，不忽略首轮失败。
+
+[PR #3](https://github.com/HuanHuanHuanFFF/Echo/pull/3)；[最终 PR CI](https://github.com/HuanHuanHuanFFF/Echo/actions/runs/34955952776)；[最终 push CI](https://github.com/HuanHuanHuanFFF/Echo/actions/runs/34955948452)。

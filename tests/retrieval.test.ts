@@ -338,3 +338,60 @@ it('calls a real local HTTP server with the configured key, handles ordering, an
     await new Promise<void>((resolve) => server.close(() => resolve()));
   }
 });
+
+it('reports exact weighted RRF contributions for returned evidence', async () => {
+  const { config } = await fixture();
+  const result = await searchIndex(
+    config,
+    {
+      query: '苹果',
+      overrides: {
+        mode: 'hybrid',
+        bm25_weight: 2,
+        dense_weight: 0.5,
+        rrf_k: 20,
+      },
+    },
+    undefined,
+    mock,
+  );
+  for (const evidence of result.results) {
+    const rank = evidence.rankings![0]!;
+    expect(rank.rrf_score).toBeCloseTo(
+      2 / (20 + rank.bm25_rank!) + 0.5 / (20 + rank.dense_rank!),
+      12,
+    );
+  }
+});
+it('deletes both retrieval indexes together and rejects malformed scopes', async () => {
+  const { config, root } = await fixture();
+  await rm(join(root, 'a.md'));
+  await syncIndex(config, undefined, mock);
+  expect(
+    (
+      await searchIndex(
+        config,
+        { query: '苹果', overrides: { mode: 'hybrid' } },
+        undefined,
+        mock,
+      )
+    ).results,
+  ).toEqual([]);
+  const db = openDatabase(config.database);
+  try {
+    expect(db.prepare('SELECT count(*) n FROM chunk_fts').get()).toEqual(
+      db.prepare('SELECT count(*) n FROM chunks').get(),
+    );
+  } finally {
+    db.close();
+  }
+  await expect(
+    searchIndex(config, {
+      query: 'x',
+      filters: { source_ids: ['not-a-uuid'] },
+    }),
+  ).rejects.toThrow();
+  await expect(
+    searchIndex(config, { query: 'x', filters: { unknown: true } }),
+  ).rejects.toThrow();
+});
