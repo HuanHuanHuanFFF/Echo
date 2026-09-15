@@ -410,3 +410,89 @@ it('reads the previous committed snapshot while another connection prepares a sy
     writer.close();
   }
 });
+
+it('treats uppercase and lowercase UUID filters as the same identity', async () => {
+  const { config, root } = await fixture();
+  const id = 'ABCDEFAB-1234-4ABC-8ABC-ABCDEFABCDEF';
+  await writeFile(
+    join(root, 'upper.md'),
+    '---\necho_id: ' + id + '\n---\n# 苹果\n苹果规范化样本',
+  );
+  await syncIndex(config, undefined, mock);
+  const lower = await searchIndex(config, {
+    query: '苹果',
+    filters: { source_ids: [id.toLowerCase()] },
+  });
+  const upper = await searchIndex(config, {
+    query: '苹果',
+    filters: { source_ids: [id] },
+  });
+  expect(lower.results).toHaveLength(1);
+  expect(upper.results).toEqual(lower.results);
+});
+it('reports complete dense failure as error at the top level', async () => {
+  const { config } = await fixture();
+  const broken = {
+    ...mock,
+    async embed(): Promise<number[][]> {
+      throw new Error('model unavailable');
+    },
+  };
+  expect(
+    (
+      await searchIndex(
+        config,
+        { query: '苹果', overrides: { mode: 'dense' } },
+        undefined,
+        broken,
+      )
+    ).status,
+  ).toBe('error');
+});
+it.each([1e30, 1e-30])(
+  'normalizes extreme vector magnitude before SQLite cosine: %s',
+  async (magnitude) => {
+    const vector = validateVectors([[magnitude, 0]], 1, 2)[0]!;
+    const db = openDatabase(':memory:');
+    try {
+      expect(
+        db
+          .prepare('SELECT vec_distance_cosine(?,?) AS d')
+          .get(new Float32Array(vector), new Float32Array(vector)),
+      ).toEqual({ d: 0 });
+    } finally {
+      db.close();
+    }
+  },
+);
+
+it.each([1e30, 1e-30])(
+  'retrieves equal extreme vectors after a complete sync: %s',
+  async (magnitude) => {
+    const { config } = await fixture();
+    const provider: EmbeddingProvider = {
+      fingerprint: 'extreme-' + magnitude,
+      dimensions: 2,
+      async embed(texts) {
+        return texts.map(() => [magnitude, 0]);
+      },
+    };
+    await syncIndex(config, undefined, provider);
+    const result = await searchIndex(
+      config,
+      {
+        query: 'same vector',
+        overrides: {
+          mode: 'dense',
+          topk: 100,
+          max_chunks_per_source: 100,
+          min_dense_similarity: 0.999,
+        },
+      },
+      undefined,
+      provider,
+    );
+    expect(result.results).toHaveLength(5);
+    expect(result.queries[0]!.status).toBe('ok');
+  },
+);

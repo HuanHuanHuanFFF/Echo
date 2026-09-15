@@ -16,11 +16,12 @@ export function validateVectors(
       vector.some((n) => typeof n !== 'number' || !Number.isFinite(n))
     )
       throw new Error('Embedding response has invalid dimensions or values');
-    const floats = new Float32Array(vector as number[]);
-    const norm = Math.hypot(...floats);
-    if (!Number.isFinite(norm) || norm === 0)
+    const scale = Math.max(...(vector as number[]).map(Math.abs));
+    if (scale === 0)
       throw new Error('Embedding response has zero or invalid norm');
-    return Array.from(floats);
+    const scaled = (vector as number[]).map((value) => value / scale);
+    const norm = Math.hypot(...scaled);
+    return Array.from(new Float32Array(scaled.map((value) => value / norm)));
   });
 }
 export function createEmbeddingProvider(
@@ -51,6 +52,7 @@ export function createEmbeddingProvider(
     dimensions,
     fingerprint: hash(
       JSON.stringify({
+        vector_transform: 'unit-float32-v1',
         endpoint: endpoint.href,
         model,
         dimensions,

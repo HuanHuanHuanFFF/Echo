@@ -12,7 +12,15 @@ import { lexicalFingerprint, matchExpression } from './lexical.js';
 export const filtersSchema = z
   .object({
     collections: z.array(z.string().min(1).max(100)).max(32).optional(),
-    source_ids: z.array(z.string().regex(uuidV4)).max(100).optional(),
+    source_ids: z
+      .array(
+        z
+          .string()
+          .regex(uuidV4)
+          .transform((value) => value.toLowerCase()),
+      )
+      .max(100)
+      .optional(),
     path_prefix: z
       .string()
       .max(1000)
@@ -231,7 +239,11 @@ export function packResults(
         .length,
     }));
   const response = () => ({
-    status: queries.some((q) => q.error) ? 'partial_failure' : 'ok',
+    status: queries.every((q) => q.status === 'error')
+      ? 'error'
+      : queries.some((q) => q.error)
+        ? 'partial_failure'
+        : 'ok',
     results,
     queries: reports(),
     applied: options,
