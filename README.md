@@ -32,7 +32,7 @@ node /absolute/path/to/echo/dist/cli.js config show
 
 - config/sources.json：填写 collections 的 id/root，可设 include/exclude/max_file_bytes。
 - config/embedding/default.json：填写 base_url、model、dimensions；其余模型调用参数也放在此文件，API key 仍通过 api_key_env 引用环境变量。
-- config use：一次切换一项或多项配置；已有 MCP 下一请求生效，在途请求保留原配置。数据库路径或运行参数变化需重启。
+- config use：一次切换一项或多项配置；已有 MCP 下一请求生效，在途请求保留原配置。数据库路径或运行参数变化需重启。升级 Echo 程序本身后也应启动新版本服务。
 
 ```powershell
 $env:ECHO_EMBEDDING_API_KEY = '<你的 key>'

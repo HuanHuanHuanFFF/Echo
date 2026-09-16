@@ -125,7 +125,7 @@ sources JSON 形如：
 }
 ```
 
-只扫描 Markdown 和真实目录/文件，不跟随符号链接。include 未指定表示全部 Markdown；指定空数组表示无匹配。glob 使用 Node path.matchesGlob，路径统一为 /。exclude 未指定时沿用隐藏项/node_modules 默认排除；显式提供 exclude（包括空数组）后以其规则为准。超过 max_file_bytes 的文件令本次同步失败，保留旧索引；被过滤的笔记不会补写 UUID，成功同步会从所选索引移除其旧记录并使不兼容组合失效。
+只扫描 Markdown 和真实目录/文件，不跟随符号链接。include 未指定表示全部 Markdown；指定空数组表示无匹配。glob 使用 Node path.matchesGlob，路径统一为 /。exclude 未指定时沿用隐藏项/node_modules 默认排除；显式提供 exclude（包括空数组）后以其规则为准。max_file_bytes 包含补写 UUID 后的完整 UTF-8 文件；超过上限在写入前令本次同步失败，保留旧索引；被过滤的笔记不会补写 UUID，成功同步会从所选索引移除其旧记录并使不兼容组合失效。
 
 runtime 文件包含 search_timeout_ms=120000、max_concurrent_searches=2、sqlite_busy_timeout_ms=5000。模型自己的请求超时与批量参数仍放在 embedding 文件。
 
@@ -141,7 +141,7 @@ logging 文件包含 level（off/error/warn/info/debug）、可选 file、max_fi
 | FTS            | chunk 身份、tokenizer ID/指纹           | 换模型不重建词项         |
 | vectors        | chunk 身份、embedding ID、维度/模型指纹 | 换分词不调用 embedding   |
 
-表名可读部分含相应 ID，并附完整哈希；登记表保存完整身份，碰撞/不一致会报错。不同组合的数据保留，sync 只填所选组合的缺失数据。内容/路径/范围变化成功同步后，其他组合以其来源快照识别为失效；查询明确要求同步，不把新路径配旧片段。失败回滚索引、状态和新建索引表；已补写的 UUID 仍按既有规则保留供重试。
+表名可读部分含相应 ID，并附完整哈希；登记表保存完整身份，碰撞/不一致会报错。不同组合的数据保留，sync 只填所选组合的缺失数据。共享 chunk 变动时，依赖的旧 FTS/向量持续失效，直到各自显式同步完成；仅恢复相同内容哈希不能让缺行索引重新可用。内容/路径/范围变化成功同步后，其他组合以其来源快照识别为失效；查询明确要求同步，不把新路径配旧片段。失败回滚索引、状态和新建索引表；已补写的 UUID 仍按既有规则保留供重试。
 
 ## 旧配置与数据
 
@@ -153,7 +153,7 @@ logging 文件包含 level（off/error/warn/info/debug）、可选 file、max_fi
 
 就绪时直接调用 echo_search({query})，不要求先列配置或 status。selection 给出本请求四类 ID、配置 revision 和来源快照；返回原文、路径、行号、来源版本和子问题归属，补读仍由宿主文件工具完成。
 
-code/next 区分 CONFIG_RELOAD、RESTART_REQUIRED、INDEX_REQUIRED、INDEX_STALE、MODEL_CONFIG、MODEL_KEY_MISSING、MODEL_UNAVAILABLE、BUSY、TIMEOUT、CANCELLED 和 CONTEXT_BUDGET。正常无命中是 queries 中的 empty；模型部分失败保留仍可用证据。echo_status 展示活动组合、ready、原因与上次同步，不进行付费健康检查。
+code/next 区分 CONFIG_RELOAD、RESTART_REQUIRED、SOURCE_LIMIT、INDEX_REQUIRED、INDEX_STALE、MODEL_CONFIG、MODEL_KEY_MISSING、MODEL_UNAVAILABLE、BUSY、TIMEOUT、CANCELLED 和 CONTEXT_BUDGET。正常无命中是 queries 中的 empty；模型部分失败保留仍可用证据。echo_status 展示活动组合、ready、原因与上次同步，不进行付费健康检查。
 
 真实模型效果仍需用户提供 API 配置和调用额度；本轮确定性模型回归只证明配置、复用和调用流程。
 

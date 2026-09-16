@@ -29,7 +29,7 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 当前正式讨论基线已从 NoteRAG 迁入这里。旧文档只保留迁移指引，避免双份维护。文档链接按当前 Windows 工作区绝对路径记录，变更根目录时需一并更新。外部知识库修改与索引重建以任务授权为准；阶段提交、推送和文档要求遵循 [AGENTS.md](../AGENTS.md)。
 
-## 待集中调整
+## 配置修订
 
 - [当前配置组织决定（2026-09-16）](project/2026-09-16-configuration-decisions.md)：固定切块策略、多模型/多召回配置、按 ID 选择；已获授权进入开发，见[修订开发记录](development/2026-09-16-configuration-revision.md)。
 - [前版调整草案（2026-09-15）](project/2026-09-15-pending-adjustments.md)：保留被修订范围和其他索引隔离背景。
@@ -48,3 +48,4 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 - [v2 配置、固定策略与索引契约](design/configuration-profiles.md)
 - [配置修订开发与验收](development/2026-09-16-configuration-revision.md)
+- [v2 固定样本 BM25 检查](evals/2026-09-16-configuration-bm25-check.md)
