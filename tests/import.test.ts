@@ -425,3 +425,20 @@ it('applies declared scan policies through the legacy compatibility entrypoint t
   await writeFile(join(root, 'large.md'), 'x'.repeat(1001));
   await expect(syncIndex(config)).rejects.toThrow('max_file_bytes');
 });
+
+it('applies the configured SQLite wait timeout in legacy sync', async () => {
+  const { root, config } = await fixture();
+  await writeFile(join(root, 'a.md'), '# Note\ncontent');
+  await syncIndex(config);
+  const writer = openDatabase(config.database);
+  writer.exec('BEGIN IMMEDIATE');
+  config.runtime.sqlite_busy_timeout_ms = 0;
+  try {
+    const started = performance.now();
+    await expect(syncIndex(config)).rejects.toThrow('locked');
+    expect(performance.now() - started).toBeLessThan(2000);
+  } finally {
+    writer.exec('ROLLBACK');
+    writer.close();
+  }
+});

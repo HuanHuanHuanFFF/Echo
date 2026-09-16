@@ -88,7 +88,9 @@ export async function syncIndex(
         ? null
         : createEmbeddingProvider(config.embedding)
       : customProvider;
-  const db = openDatabase(config.database);
+  const db = openDatabase(config.database, {
+    busyTimeout: config.runtime.sqlite_busy_timeout_ms,
+  });
   const result: SyncResult = {
     status: 'ok',
     added: 0,

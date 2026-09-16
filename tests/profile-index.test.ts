@@ -290,3 +290,61 @@ it('reuses verified legacy chunks and vectors during profile adoption', async ()
     syncIndex(legacy, undefined, provider.provider),
   ).rejects.toMatchObject({ code: 'LEGACY_CONFIG' });
 });
+
+it.each(['edit', 'delete', 'exclude'])(
+  'does not revive incomplete inactive FTS/vectors when source state returns: %s',
+  async (change) => {
+    const { dir, path, notes, config } = await fixture(),
+      first = model(config);
+    await syncIndex(config, undefined, first.provider);
+    const original = await readFile(join(notes, 'a.md'), 'utf8');
+    await writeFile(
+      join(dir, 'tokenizers/words.mjs'),
+      "export default {id:'words',version:'1',tokenize(text){return text.toLowerCase().split(/[^a-z]+/).filter(Boolean)}}",
+    );
+    await writeFile(
+      join(dir, 'config/embedding/second.json'),
+      JSON.stringify({
+        id: 'second',
+        model: 'other',
+        dimensions: 3,
+        base_url: config.embedding.base_url,
+      }),
+    );
+    await useProfiles(path, { tokenizer: 'words', embedding: 'second' });
+    const second = await loadConfig(path),
+      other = model(second);
+    await syncIndex(second, undefined, other.provider);
+    let changed = second;
+    if (change === 'edit')
+      await writeFile(join(notes, 'a.md'), original.replace('apple', 'banana'));
+    else if (change === 'delete') await rm(join(notes, 'a.md'));
+    else
+      changed = {
+        ...second,
+        collections: second.collections.map((c) => ({ ...c, exclude: ['**'] })),
+      };
+    await syncIndex(changed, undefined, other.provider);
+    await writeFile(join(notes, 'a.md'), original);
+    await syncIndex(second, undefined, other.provider);
+    for (const mode of ['bm25', 'dense'] as const)
+      await expect(
+        searchIndex(
+          config,
+          { query: 'apple', overrides: { mode } },
+          undefined,
+          first.provider,
+        ),
+      ).rejects.toMatchObject({ code: 'INDEX_STALE' });
+    first.calls.length = 0;
+    await syncIndex(config, undefined, first.provider);
+    expect(first.calls.flatMap((c) => c.texts)).toHaveLength(1);
+    expect(
+      (await searchIndex(config, { query: 'apple' }, undefined, first.provider))
+        .results,
+    ).toHaveLength(1);
+    other.calls.length = 0;
+    await syncIndex(second, undefined, other.provider);
+    expect(other.calls).toEqual([]);
+  },
+);

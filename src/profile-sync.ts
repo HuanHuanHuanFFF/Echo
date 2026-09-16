@@ -207,6 +207,15 @@ export async function syncProfiles(
         s,
       ]),
     );
+    let invalidated = false;
+    const invalidateChildren = () => {
+      if (invalidated) return;
+      // A restored corpus hash cannot revive FTS/vector rows removed by cascades.
+      db.prepare("UPDATE echo_indexes SET corpus='' WHERE parent=?").run(
+        t.chunk.key,
+      );
+      invalidated = true;
+    };
     const chunker = await profileChunker(config.profile!.chunker);
     for (const item of prepared) {
       signal?.throwIfAborted();
@@ -222,6 +231,7 @@ export async function syncProfiles(
         result.unchanged++;
         continue;
       }
+      invalidateChildren();
       if (old) result.updated++;
       else result.added++;
       db.prepare(
@@ -267,6 +277,7 @@ export async function syncProfiles(
     }
     for (const old of previous.values())
       if (!seen.has(old.source_id)) {
+        invalidateChildren();
         db.prepare('DELETE FROM ' + sources + ' WHERE source_id=?').run(
           old.source_id,
         );
