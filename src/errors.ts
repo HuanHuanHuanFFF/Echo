@@ -12,6 +12,11 @@ export function failureInfo(error: unknown): { code: string; next: string } {
   )
     return { code: error.code, next: error.next.slice(0, 100) };
   const message = error instanceof Error ? error.message : String(error);
+  if (/max_file_bytes/i.test(message))
+    return {
+      code: 'SOURCE_LIMIT',
+      next: 'Increase max_file_bytes or exclude the oversized file',
+    };
   if (/max_context_chars/i.test(message))
     return {
       code: 'CONTEXT_BUDGET',

@@ -126,7 +126,15 @@ export function createEmbeddingProvider(
               '; check endpoint, model and key',
           );
         }
-        const body: unknown = await response.json();
+        let body: unknown;
+        try {
+          body = await response.json();
+        } catch {
+          combined.throwIfAborted();
+          throw new Error(
+            'Embedding response is not valid JSON; check the model service',
+          );
+        }
         if (
           body &&
           typeof body === 'object' &&

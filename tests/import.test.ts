@@ -442,3 +442,21 @@ it('applies the configured SQLite wait timeout in legacy sync', async () => {
     writer.close();
   }
 });
+
+it.each(['a'.repeat(79), '文'.repeat(26)])(
+  'rejects UUID insertion beyond the byte limit before changing the note',
+  async (raw) => {
+    const { root } = await fixture(),
+      path = join(root, 'boundary.md');
+    await writeFile(path, raw);
+    await expect(prepareSource(path, 80)).rejects.toThrow('max_file_bytes');
+    expect(await readFile(path, 'utf8')).toBe(raw);
+    expect(parseSource(raw).sourceId).toBeUndefined();
+    const first = await prepareSource(path, 200);
+    expect(first.wroteId).toBe(true);
+    expect(Buffer.byteLength(first.raw, 'utf8')).toBeLessThanOrEqual(200);
+    const second = await prepareSource(path, 200);
+    expect(second.wroteId).toBe(false);
+    expect(second.raw).toBe(first.raw);
+  },
+);

@@ -364,3 +364,81 @@ it('preserves complete legacy custom logic and freezes its previous options duri
   );
   expect(chunks[0]!.text).toBe('first\nsecond');
 });
+
+it('reports malformed model JSON as a model failure while preserving hybrid evidence', async () => {
+  const { dir, path } = await fixture();
+  const { createServer } = await import('node:http');
+  const { embeddingFingerprint } = await import('../src/embedding.js');
+  const api = createServer((_req, res) => {
+    res.setHeader('content-type', 'text/html');
+    res.end('<html>gateway failure</html>');
+  });
+  for (let attempt = 0; attempt < 50; attempt++) {
+    try {
+      await new Promise<void>((resolve, reject) => {
+        const failure = (error: Error) => {
+          api.removeListener('listening', ready);
+          reject(error);
+        };
+        const ready = () => {
+          api.removeListener('error', failure);
+          resolve();
+        };
+        api.once('error', failure);
+        api.once('listening', ready);
+        api.listen(20000 + Math.floor(Math.random() * 40000), '127.0.0.1');
+      });
+      break;
+    } catch (error) {
+      if (attempt === 49) throw error;
+    }
+  }
+  const address = api.address();
+  if (!address || typeof address === 'string')
+    throw new Error('No model address');
+  const client = new Client({ name: 'malformed-model-user', version: '1' });
+  try {
+    await writeFile(
+      join(dir, 'config/embedding/default.json'),
+      JSON.stringify({
+        id: 'default',
+        model: 'test',
+        dimensions: 2,
+        base_url: 'http://127.0.0.1:' + address.port + '/v1',
+        api_key_env: 'ECHO_MALFORMED_JSON_TEST',
+      }),
+    );
+    await useProfiles(path, { retrieval: 'balanced' });
+    const config = await loadConfig(path);
+    await syncIndex(config, undefined, {
+      fingerprint: embeddingFingerprint(config.embedding),
+      dimensions: 2,
+      async embed(texts) {
+        return texts.map(() => [1, 0]);
+      },
+    });
+    await client.connect(
+      new StdioClientTransport({
+        command: process.execPath,
+        args: ['--import', tsx, cli, 'serve', '--config', path],
+        stderr: 'pipe',
+        env: { ECHO_MALFORMED_JSON_TEST: 'synthetic-key' },
+      }),
+    );
+    const result = decode(
+      await client.callTool({
+        name: 'echo_search',
+        arguments: { query: 'apple' },
+      }),
+    );
+    expect(result.status).toBe('partial_failure');
+    expect(result.results).toHaveLength(2);
+    expect(result.queries[0].code).toBe('MODEL_UNAVAILABLE');
+    expect(result.queries[0].next).toMatch(/model|API/);
+    expect(result.queries[0].error).not.toContain('<html>');
+  } finally {
+    await client.close();
+    api.closeAllConnections();
+    await new Promise<void>((resolve) => api.close(() => resolve()));
+  }
+});

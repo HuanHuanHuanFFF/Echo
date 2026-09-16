@@ -126,6 +126,11 @@ export async function prepareSource(
         eol +
         parsed.text.slice(insertAt);
     }
+    if (Buffer.byteLength(updated, 'utf8') > maxFileBytes)
+      throw new Error(
+        'UUID insertion would exceed configured max_file_bytes: ' +
+          maxFileBytes,
+      );
     if (parseSource(updated).sourceId !== id)
       throw new Error('UUID insertion validation failed');
     const temporary = path + '.echo-' + randomUUID() + '.tmp';
