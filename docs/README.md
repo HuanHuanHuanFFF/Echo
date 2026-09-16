@@ -64,3 +64,5 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 - [实现与验证](development/2026-09-16-single-turn-evaluation.md)。
 - [benchmark方法参考](research/2026-09-16-single-turn-benchmark-methods.md)：时间、更新、比较、证据和无答案题。
 - [2026年正文候选落地](evals/2026-09-16-corpus-preparation.md)：198篇外部候选、分库/混合库BM25准备，规模及D库题量仍待审计。
+
+- [成对统计与标注准备](development/2026-09-16-paired-evaluation-statistics.md)：冻结报告比较、意图组区间、父子题分组。

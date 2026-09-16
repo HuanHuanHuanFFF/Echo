@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "date": "2026-09-16",
   "status": "allocation_defined_questions_not_yet_written",
   "meaning_of_mixed": "Different source libraries combined in one searchable corpus; distinct from BM25+dense hybrid ranking.",
@@ -13,7 +13,7 @@
         "C": 15,
         "D": 0
       },
-      "types": {
+      "provisional_types": {
         "exact_terms": 14,
         "semantic_expression": 21,
         "boundaries": 14,
@@ -47,7 +47,7 @@
         "C": 25,
         "D": 30
       },
-      "types": {
+      "provisional_types": {
         "exact_terms": 28,
         "semantic_expression": 42,
         "boundaries": 28,
@@ -80,10 +80,11 @@
     "Paired interference cases retain the same required facts in both scopes; valid alternative supporting sources are relabeled before inspecting retrieval output.",
     "Questions whose answerability changes after mixing are cross-library coverage cases, not pure interference pairs.",
     "D does not enter development scope or influence tuning.",
-    "All cases use the same 12000-character cumulative request/response/host-read budget.",
+    "All cases use the same 12000-character cumulative single-turn request/response budget.",
     "Optional aggregate uses predeclared 70% separate and 30% mixed weights and never substitutes for disaggregated results.",
     "30% applies to the 100/200 primary unique questions; paired diagnostic reruns remain separate and are excluded from that share and aggregate."
   ],
-  "updated_at": "2026-09-16T08:07:51.473Z",
-  "supersedes": "question-allocation-v2.json: 40% mixed allocation replaced by user-confirmed 30%; four mixed category proportions retained"
+  "updated_at": "2026-09-16T10:13:28.339Z",
+  "supersedes": "v3: user-confirmed single-turn scope removes host-read from this round and allows subtype refinements; primary counts and mixed 30% unchanged",
+  "type_policy": "Single-library subtype counts are provisional guidance, to be frozen from source-grounded annotation before retrieval results; totals 100/200 and mixed 30% remain fixed."
 }
