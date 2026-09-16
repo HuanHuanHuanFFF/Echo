@@ -1,5 +1,12 @@
 import { randomUUID, createHash } from 'node:crypto';
-import { lstat, readFile, rename, rm, writeFile } from 'node:fs/promises';
+import {
+  chmod,
+  lstat,
+  readFile,
+  rename,
+  rm,
+  writeFile,
+} from 'node:fs/promises';
 import { isMap, parseDocument } from 'yaml';
 import type { SourceLine } from './contracts.js';
 
@@ -119,6 +126,9 @@ export async function prepareSource(path: string): Promise<PreparedSource> {
     const temporary = path + '.echo-' + randomUUID() + '.tmp';
     try {
       await writeFile(temporary, updated, { flag: 'wx', mode: info.mode });
+      // File creation applies umask even when mode is supplied. Restore POSIX bits before replacement.
+      if (process.platform !== 'win32')
+        await chmod(temporary, info.mode & 0o7777);
       if ((await readFile(path, 'utf8')) !== raw)
         throw new Error('Source changed during UUID insertion; retry sync');
       await rename(temporary, path);

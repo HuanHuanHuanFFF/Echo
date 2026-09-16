@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import {
+  chmod,
+  lstat,
   mkdtemp,
   mkdir,
   readFile,
@@ -367,5 +369,45 @@ it.each([
     expect(prepared.sourceId).toMatch(uuidV4);
     expect(prepared.raw).toContain(yaml);
     expect(prepared.raw.endsWith('---\n# Body\ncontent')).toBe(true);
+  },
+);
+
+it.skipIf(process.platform === 'win32')(
+  'preserves note permissions when UUID insertion runs under a restrictive umask',
+  async () => {
+    const { root } = await fixture();
+    const { execFile } = await import('node:child_process');
+    const { promisify } = await import('node:util');
+    // A child process owns its umask; changing it in a Vitest worker is unsupported.
+    const child = `
+      import { prepareSource } from ${JSON.stringify(import.meta.resolve('../src/identity.ts'))};
+      process.umask(0o077);
+      const prepared = await prepareSource(process.argv[1]);
+      console.log(JSON.stringify({ wroteId: prepared.wroteId, sourceId: prepared.sourceId }));
+    `;
+    for (const mode of [0o666, 0o640, 0o600]) {
+      const path = join(root, 'mode-' + mode.toString(8) + '.md');
+      await writeFile(path, '# Note\noriginal text\n');
+      await chmod(path, mode);
+      const run = () =>
+        promisify(execFile)(process.execPath, [
+          '--import',
+          'tsx',
+          '--input-type=module',
+          '-e',
+          child,
+          path,
+        ]);
+      const first = JSON.parse((await run()).stdout);
+      expect(first.wroteId).toBe(true);
+      expect(first.sourceId).toMatch(uuidV4);
+      expect((await lstat(path)).mode & 0o777).toBe(mode);
+      const raw = await readFile(path, 'utf8');
+      expect(raw).toContain('# Note\noriginal text\n');
+      const second = JSON.parse((await run()).stdout);
+      expect(second).toEqual({ wroteId: false, sourceId: first.sourceId });
+      expect((await lstat(path)).mode & 0o777).toBe(mode);
+      expect(await readFile(path, 'utf8')).toBe(raw);
+    }
   },
 );
