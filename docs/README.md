@@ -4,6 +4,10 @@
 
 Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前四阶段已合并并通过双平台 CI；第五阶段已完成独立安装、真实文档向量及100题开发对照；默认组合选择与最终评测仍待验收。安装使用从[README](../README.md)开始，当前配置以[v2 配置契约](design/configuration-profiles.md)为准。
 
+## 当前下一步
+
+- [小范围排查与问题清单](project/2026-09-17-small-scope-retrieval-investigation.md)：按用户最新要求，先记录疑点；下一次优先用6道开发题比较完整问句与固定子题，暂缓最终评测及默认冻结。
+
 ## 从这里继续
 
 | 目的                                       | 文档                                                                               | 内容归属                                                 |
