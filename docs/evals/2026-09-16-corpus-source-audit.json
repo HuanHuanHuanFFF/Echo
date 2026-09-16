@@ -1,0 +1,87 @@
+{
+  "date": "2026-09-16T08:20:31.892Z",
+  "status": "candidate_inventory_no_corpus_import",
+  "candidates": [
+    {
+      "repo": "simonw/til",
+      "url": "https://github.com/simonw/til",
+      "branch": "main",
+      "commit": "908013b1abaa4f6c0a7d439086cfbfb57d990bf8",
+      "tree_sha": "1a2a645eb89ba226ce8c00d491f24f95548e3f13",
+      "commit_date": "2026-09-11T03:37:07Z",
+      "license_from_repository_metadata": "Apache-2.0",
+      "markdown_files": 580,
+      "markdown_bytes": 2370286,
+      "largest_markdown_bytes": 82205,
+      "top_groups": [
+        ["python", 64],
+        ["sqlite", 55],
+        ["github-actions", 30],
+        ["llms", 26],
+        ["macos", 26],
+        ["pytest", 23],
+        ["django", 19],
+        ["github", 19]
+      ],
+      "status": "candidate_inventory_only_not_selected"
+    },
+    {
+      "repo": "lyz-code/blue-book",
+      "url": "https://github.com/lyz-code/blue-book",
+      "branch": "main",
+      "commit": "6221f26036ce31033747cebef9646c89808502c5",
+      "tree_sha": "e0df8fd8def5d1bd6721a4b2cfabdb13d103b927",
+      "commit_date": "2026-09-07T15:49:32Z",
+      "license_from_repository_metadata": "CC0-1.0",
+      "markdown_files": 1122,
+      "markdown_bytes": 10907856,
+      "largest_markdown_bytes": 504591,
+      "top_groups": [
+        ["docs", 1121],
+        ["(root)", 1]
+      ],
+      "status": "candidate_inventory_only_not_selected"
+    },
+    {
+      "repo": "oldwinter/knowledge-garden",
+      "url": "https://github.com/oldwinter/knowledge-garden",
+      "branch": "main",
+      "commit": "2ad252e3820b775040d726298ea9b05821e86783",
+      "tree_sha": "841ddd2ad3163b2e17a2ac901bdc33f96c18d33b",
+      "commit_date": "2025-09-05T14:02:47Z",
+      "license_from_repository_metadata": "MIT",
+      "markdown_files": 961,
+      "markdown_bytes": 2578432,
+      "largest_markdown_bytes": 939763,
+      "top_groups": [
+        ["Spaces", 377],
+        ["Cards", 209],
+        ["🍀 花园导览", 173],
+        ["Sources", 141],
+        ["Extras", 34],
+        ["Atlas", 10],
+        ["Calendar", 9],
+        ["(root)", 5]
+      ],
+      "status": "candidate_inventory_only_not_selected"
+    },
+    {
+      "repo": "dunwu/blog",
+      "url": "https://github.com/dunwu/blog",
+      "branch": "master",
+      "commit": "d8d945e015e6eaee94ea745447917287f1281a84",
+      "tree_sha": "700899c98c727221cf1860a692ed2c5eea14bbeb",
+      "commit_date": "2025-09-13T09:51:59Z",
+      "license_from_repository_metadata": "CC-BY-SA-4.0",
+      "markdown_files": 607,
+      "markdown_bytes": 10442075,
+      "largest_markdown_bytes": 101468,
+      "top_groups": [
+        ["source", 603],
+        ["scaffolds", 3],
+        ["(root)", 1]
+      ],
+      "status": "candidate_inventory_only_not_selected"
+    }
+  ]
+}

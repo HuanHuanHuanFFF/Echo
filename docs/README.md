@@ -2,7 +2,7 @@
 
 更新日期：2026-09-16。
 
-Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前四阶段已合并并通过双平台 CI；第五阶段工具和本地样本评测已具备，真实 API 默认方案验收仍待配置与额度。安装使用从[README](../README.md)开始，当前配置以[v2 配置契约](design/configuration-profiles.md)为准。
+Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前四阶段已合并并通过双平台 CI；第五阶段工具与本地样本评测已具备，独立安装及真实API短文本探针已通过；正式跨库默认方案效果仍待验收。安装使用从[README](../README.md)开始，当前配置以[v2 配置契约](design/configuration-profiles.md)为准。
 
 ## 从这里继续
 
@@ -49,3 +49,11 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 - [v2 配置、固定策略与索引契约](design/configuration-profiles.md)
 - [配置修订开发与验收](development/2026-09-16-configuration-revision.md)
 - [v2 固定样本 BM25 检查](evals/2026-09-16-configuration-bm25-check.md)
+
+## 正式默认方案评测（2026-09-16）
+
+- [执行决定与验收边界](project/2026-09-16-evaluation-revision.md)：产品/面试双目标、E盘独立运行、仓库文档职责。
+- [个人知识库评测协议](evals/2026-09-16-personal-knowledge-protocol.md)：开发100/最终200题、分库70%/混合30%、标签/预算/统计和执行顺序。
+- [机器可读题量配额](evals/2026-09-16-question-allocation.json)。
+- [已完成的准备验证](evals/2026-09-16-evaluation-readiness.md)及[公开证据清单](evals/2026-09-16-preparation.manifest.json)：不包含私有笔记或密钥，不代表正式语义评测已完成。
+- [外部笔记来源初筛](evals/2026-09-16-corpus-source-audit.md)：公开候选固定提交与Markdown规模，尚未入库。

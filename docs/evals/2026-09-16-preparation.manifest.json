@@ -1,0 +1,89 @@
+{
+  "date": "2026-09-16",
+  "status": "preparation_verified_not_semantic_evaluation",
+  "code": "990644e592d6f5b634bf859cd8a3e247b224fc13",
+  "node": "v24.15.0",
+  "icu": "78.2",
+  "source_archive_sha256": "cca65f18cae85724b1abfff6f1420784478e9fc1b12143dc8841c9e08bff6d48",
+  "lock_sha256": "a76624a04889b3298091597533603516eaffed87b3d916931e691d881fe6e688",
+  "dist_sha256": "b32fbf5f987d859375bbc534497ecba6419b382041aeb74fa6fba580f23560de",
+  "corpus": {
+    "access": "private_local_only",
+    "copied_files": 153,
+    "indexed_files": 150,
+    "sha256": "1a3c2cd1488ef50ced83be725f34d1660be177fad1269429ce4eedd7e82af81b"
+  },
+  "strategies": [
+    {
+      "id": "heading-1000",
+      "sources": 150,
+      "chunks": 1674,
+      "chars": {
+        "median": 100,
+        "p95": 254,
+        "max": 999
+      },
+      "heading_only": 181,
+      "strategy_sha256": "951eeafe867019a04f81586c8a02009ff25a34a3bb727852f07067df16a99c37",
+      "configuration_revision": "2d5818fa257242562cc842d6305429445ed533e25a089337531adc1d03b38901"
+    },
+    {
+      "id": "heading-500",
+      "sources": 150,
+      "chunks": 1690,
+      "chars": {
+        "median": 101,
+        "p95": 260,
+        "max": 497
+      },
+      "heading_only": 181,
+      "strategy_sha256": "73b140673f54a4aca8f4eb5da9ccd68a3b76f15b4c2838c85d18c414ce1e0aa5",
+      "configuration_revision": "22243e46279a117326c7ff78d814198d1c7ed40909bbc89173f1f626d2499ee0"
+    },
+    {
+      "id": "heading-1000-structural",
+      "sources": 150,
+      "chunks": 1493,
+      "chars": {
+        "median": 109,
+        "p95": 261,
+        "max": 999
+      },
+      "heading_only": 0,
+      "strategy_sha256": "c2c279a279d8619809b918ae29fbbae37bd9b3204a3b6cef586420c5447a8357",
+      "configuration_revision": "413272d8a0f56af2a56747a4efc8a0c815959c9634b99bbcec6e4f379065d07c"
+    },
+    {
+      "id": "bagu-paragraph-800-lines",
+      "sources": 150,
+      "chunks": 1492,
+      "chars": {
+        "median": 92,
+        "p95": 244,
+        "max": 1293
+      },
+      "heading_only": 0,
+      "strategy_sha256": "c3b2bab2adf1d759600aee9236d1d8d763b2200ce66b2e36b8624b1e8521d33a",
+      "configuration_revision": "87944bd68d06ea8afd5fd6b8e298efa2ff2249e1617507b5fbfb2fa3a4cef595"
+    }
+  ],
+  "model_probe": {
+    "status": "passed",
+    "model": "qwen3.7-text-embedding",
+    "dimensions": 1024,
+    "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+    "send_dimensions": true,
+    "actual_dimensions": [1024, 1024],
+    "usage": {
+      "requests": 1,
+      "texts": 2,
+      "input_chars": 39,
+      "reported_tokens": 56
+    }
+  },
+  "limitations": [
+    "No private note text, filenames, labels, API keys, vectors or indexes are included.",
+    "Local checks and one short-text API probe are not a semantic retrieval benchmark.",
+    "Full private-corpus results cannot be reproduced from this public summary alone."
+  ]
+}
