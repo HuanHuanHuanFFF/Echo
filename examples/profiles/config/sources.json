@@ -1,0 +1,9 @@
+{
+  "collections": [
+    {
+      "id": "sample",
+      "root": "../notes",
+      "max_file_bytes": 10485760
+    }
+  ]
+}

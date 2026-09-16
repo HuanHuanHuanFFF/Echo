@@ -1,3 +1,5 @@
+import { profileStatus } from './profile-store.js';
+import { failureInfo } from './errors.js';
 import { parentPort, workerData } from 'node:worker_threads';
 import type { EchoConfig } from './config.js';
 import { searchIndex } from './retrieval.js';
@@ -15,9 +17,17 @@ parentPort?.on('message', () =>
 try {
   let result: unknown;
   if (data.kind === 'status') {
-    const db = openDatabase(data.config.database, { readOnly: true });
+    const db = openDatabase(data.config.database, {
+      readOnly: true,
+      busyTimeout: data.config.runtime.sqlite_busy_timeout_ms,
+    });
     try {
-      result = { ...indexStatus(db), capabilities: databaseCapabilities(db) };
+      result = {
+        ...(data.config.profile
+          ? profileStatus(db, data.config)
+          : indexStatus(db)),
+        capabilities: databaseCapabilities(db),
+      };
     } finally {
       db.close();
     }
@@ -27,6 +37,7 @@ try {
   parentPort?.postMessage({
     ok: false,
     error: error instanceof Error ? error.message : 'Search failed',
+    ...failureInfo(error),
   });
 } finally {
   parentPort?.close();

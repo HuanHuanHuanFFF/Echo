@@ -1,8 +1,11 @@
+import { failureInfo } from './errors.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import type { JSONRPCMessage } from '@modelcontextprotocol/sdk/types.js';
 
 export function boundedErrorText(value: unknown, limit = 256): string {
   const message = value instanceof Error ? value.message : String(value);
+  const info = failureInfo(value);
+  const metadata = { code: info.code, next: info.next.slice(0, 90) };
   const chars = Array.from(message).slice(0, 4096);
   let low = 0,
     high = chars.length;
@@ -10,6 +13,7 @@ export function boundedErrorText(value: unknown, limit = 256): string {
     const middle = Math.ceil((low + high) / 2);
     const text = JSON.stringify({
       status: 'error',
+      ...metadata,
       error: chars.slice(0, middle).join(''),
     });
     if (text.length <= limit) low = middle;
@@ -17,6 +21,7 @@ export function boundedErrorText(value: unknown, limit = 256): string {
   }
   return JSON.stringify({
     status: 'error',
+    ...metadata,
     error: chars.slice(0, low).join(''),
   });
 }
@@ -66,7 +71,22 @@ export class EchoStdioTransport extends StdioServerTransport {
         ...message,
         result: {
           ...result,
-          content: [{ type: 'text', text: boundedErrorText(reason) }],
+          content: [
+            {
+              type: 'text',
+              text: boundedErrorText(
+                parsed &&
+                  typeof parsed === 'object' &&
+                  'code' in parsed &&
+                  'next' in parsed
+                  ? Object.assign(new Error(reason), {
+                      code: parsed.code,
+                      next: parsed.next,
+                    })
+                  : reason,
+              ),
+            },
+          ],
         },
       });
     }

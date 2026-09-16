@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { dirname, isAbsolute, resolve } from 'node:path';
 import { z } from 'zod';
+import type { ProfileSnapshot } from './profile-types.js';
 
 const positive = (max: number) => z.number().int().min(1).max(max);
 export const retrievalSchema = z
@@ -62,6 +63,9 @@ const configSchema = z
           .object({
             id: z.string().min(1).max(100),
             root: z.string().min(1),
+            include: z.array(z.string().min(1)).optional(),
+            exclude: z.array(z.string().min(1)).optional(),
+            max_file_bytes: positive(1024 * 1024 * 1024).optional(),
           })
           .strict(),
       )
@@ -80,9 +84,21 @@ const configSchema = z
       .object({
         search_timeout_ms: positive(600000).default(120000),
         max_concurrent_searches: positive(8).default(2),
+        sqlite_busy_timeout_ms: z.number().int().min(0).max(600000).optional(),
       })
       .strict()
       .default({ search_timeout_ms: 120000, max_concurrent_searches: 2 }),
+    logging: z
+      .object({
+        level: z
+          .enum(['off', 'error', 'warn', 'info', 'debug'])
+          .default('warn'),
+        file: z.string().min(1).optional(),
+        max_file_bytes: positive(100 * 1024 * 1024).default(1048576),
+        retain: positive(20).default(3),
+      })
+      .strict()
+      .default({ level: 'warn', max_file_bytes: 1048576, retain: 3 }),
     retrieval: retrievalSchema.default(retrievalSchema.parse({})),
   })
   .strict()
@@ -94,7 +110,9 @@ const configSchema = z
         path: ['collections'],
       });
   });
-export type EchoConfig = z.infer<typeof configSchema>;
+export type EchoConfig = z.infer<typeof configSchema> & {
+  profile?: ProfileSnapshot;
+};
 export type RetrievalConfig = z.infer<typeof retrievalSchema>;
 export function parseConfig(value: unknown): EchoConfig {
   return configSchema.parse(value);
@@ -107,7 +125,10 @@ export function retrievalOptions(
   return retrievalSchema.parse({ ...base, ...partial });
 }
 export async function loadConfig(path: string): Promise<EchoConfig> {
-  const config = parseConfig(JSON.parse(await readFile(path, 'utf8')));
+  const raw: unknown = JSON.parse(await readFile(path, 'utf8'));
+  if (raw && typeof raw === 'object' && 'version' in raw && raw.version === 2)
+    return (await import('./profiles.js')).loadProfileConfig(path);
+  const config = parseConfig(raw);
   const base = dirname(resolve(path));
   const absolute = (p: string) => (isAbsolute(p) ? p : resolve(base, p));
   config.database = absolute(config.database);
@@ -115,6 +136,7 @@ export async function loadConfig(path: string): Promise<EchoConfig> {
     ...c,
     root: absolute(c.root),
   }));
+  if (config.logging.file) config.logging.file = absolute(config.logging.file);
   if (config.chunker.module)
     config.chunker.module = absolute(config.chunker.module);
   return config;

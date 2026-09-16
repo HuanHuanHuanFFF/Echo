@@ -12,32 +12,37 @@ Agent 负责拆问题、补读与回答；Echo 返回原文证据和定位。
 ```sh
 npm ci
 npm run build
-node dist/cli.js sync --config examples/echo.bm25.example.json
-node examples/mcp-client.mjs
+node dist/cli.js sync --config examples/profiles/example.json
+node dist/cli.js search --config examples/profiles/example.json --query '事务失败怎样恢复'
 ```
 
-最后一步启动真实 stdio MCP 客户端并搜索两项样本证据。生成索引位于被 Git 忽略的 .echo/。
+样本使用本地分词与 BM25，不需要模型 key。生成索引位于被 Git 忽略的 .echo/。
 
 ## 配置自己的笔记与 API
 
-复制 [配置示例](examples/echo.config.example.json) 为 echo.config.json，填写：
+在自己的工作目录初始化：
 
-- collections：每个知识库的 id 与本地 root。
-- embedding：服务 base_url、model、dimensions，以及存放 key 的环境变量名。
-- database：SQLite 文件路径。相对路径均以配置文件目录为基准；复制到项目根目录的示例使用 .echo/index.sqlite。
+```sh
+node /absolute/path/to/echo/dist/cli.js init
+node /absolute/path/to/echo/dist/cli.js config list
+node /absolute/path/to/echo/dist/cli.js config show
+```
 
-API 接口为 base_url/embeddings，发送标准 input 数组。key 不写入配置或索引；
-默认环境变量名为 ECHO_EMBEDDING_API_KEY。PowerShell 示例：
+主入口 echo.config.json 按 ID 选择 chunker、tokenizer、embedding、retrieval。切块/分词是各自目录中的固定 .mjs 策略；模型与召回各用一个 JSON 文件，可保存多份。笔记范围、运行参数与日志也分别保存。
+
+- config/sources.json：填写 collections 的 id/root，可设 include/exclude/max_file_bytes。
+- config/embedding/default.json：填写 base_url、model、dimensions；其余模型调用参数也放在此文件，API key 仍通过 api_key_env 引用环境变量。
+- config use：一次切换一项或多项配置；已有 MCP 下一请求生效，在途请求保留原配置。数据库路径或运行参数变化需重启。升级 Echo 程序本身后也应启动新版本服务。
 
 ```powershell
 $env:ECHO_EMBEDDING_API_KEY = '<你的 key>'
-node dist/cli.js sync --config echo.config.json
-node dist/cli.js search --config echo.config.json --query '索引更新失败怎样恢复'
+node /absolute/path/to/echo/dist/cli.js sync
+node /absolute/path/to/echo/dist/cli.js config use --chunker heading-500 --retrieval balanced
 ```
 
-sync 会向缺少 echo_id 的 Markdown 写入 UUID v4。已有身份保持不变；
-正文、路径、规则或模型改变后重新 sync。同步失败保留旧索引，已写回的 ID 会被重试复用。
-未配置 API 时可明确设置 retrieval.mode 为 bm25；hybrid 查询的模型故障会报告部分失败，不冒充正常混合检索。
+没有模型时可显式选择 --retrieval bm25 后同步。切换不会隐式构建索引，config show 会显示是否需要 sync。sync 会给缺少 echo_id 的笔记补写 UUID v4；已有身份不变，失败保留旧索引。
+
+[完整 v2 配置、策略接口与迁移说明](docs/design/configuration-profiles.md)。旧配置可执行 config migrate；迁移前可先备份数据库。参数会固化进新的固定策略，不被静默丢弃。
 
 ## MCP 接入与 Agent 使用
 
@@ -78,15 +83,12 @@ node /absolute/path/to/echo/dist/cli.js serve --config /absolute/path/to/echo/ec
 topk=8、每篇最多 2、最低余弦相似度 0.3、完整结果 JSON 预算 12000 字符。
 这些 hybrid 数值仍是待真实模型评测的起点。
 
-配置支持部分覆盖；单次搜索可传 overrides 和 filters。
+召回配置支持部分覆盖；单次搜索可传 overrides 和 filters。切块策略的规则固定，改变数字应另建策略 ID。
 topk 与每篇上限同时生效，数量不足时不放宽约束填满。
 
-完整自定义切块通过 chunker.module 加载可信本地模块：
-[段落示例](examples/paragraph-chunker.mjs)、[结构父标题候选](examples/structural-heading-chunker.mjs)
-及其[组合配置](examples/echo.structural-heading.example.json)。
-自定义结果仍需提供连续原文行范围；原文内容由 Echo 生成并验证。
+完整自定义切块通过 chunkers/ 下的同名 ID 模块加载；tokenizers/ 同样可提供完整分词实现。来源、chunk、FTS 与不同模型向量按依赖隔离；更换分词不会重切或重新 embedding，已存在且有效的组合直接复用。
 
-[配置契约与合法范围](docs/design/configuration.md)。
+[当前配置契约](docs/design/configuration-profiles.md)；[旧格式与历史自定义示例](docs/design/configuration.md)。
 
 ## 评测与开发
 
@@ -125,8 +127,8 @@ API 模式先预热相同 query embedding，再比较 dense/hybrid/来源限制/
 
 补读场景：`npm run eval -- --lexical-only --scenario long-context`。每次评测使用空输出目录；已有失败记录也不能覆盖。`report.json` 是所有必需产物完成后的发布标记，缺少它表示本次未完整交付。
 
-## 升级提示（2026-09-16）
+## 历史版本升级提示（P2 修复）
 
-分词规则已补齐 HTTPServer 等缩写边界，旧索引需显式 sync。当前 hybrid/dense 同步会重新调用 embedding；
+分词规则已补齐 HTTPServer 等缩写边界，旧索引需显式 sync。旧格式 hybrid/dense 同步会重新调用 embedding；v2 按各索引依赖复用已有数据。
 旧示例中 database=../.echo/index.sqlite 的用户请先改为项目内 .echo/index.sqlite。
 已有配置和父目录中的数据库不会自动改动，详见 [P2 修复与升级说明](docs/development/2026-09-16-pr-review-fixes.md)。

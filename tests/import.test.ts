@@ -411,3 +411,52 @@ it.skipIf(process.platform === 'win32')(
     }
   },
 );
+
+it('applies declared scan policies through the legacy compatibility entrypoint too', async () => {
+  const { root, config } = await fixture();
+  await mkdir(join(root, 'private'));
+  const excluded = join(root, 'private/skip.md');
+  await writeFile(excluded, 'private unchanged');
+  await writeFile(join(root, 'keep.md'), '# Public\napple');
+  config.collections[0]!.exclude = ['private/**'];
+  config.collections[0]!.max_file_bytes = 1000;
+  expect(await syncIndex(config)).toMatchObject({ added: 1 });
+  expect(await readFile(excluded, 'utf8')).toBe('private unchanged');
+  await writeFile(join(root, 'large.md'), 'x'.repeat(1001));
+  await expect(syncIndex(config)).rejects.toThrow('max_file_bytes');
+});
+
+it('applies the configured SQLite wait timeout in legacy sync', async () => {
+  const { root, config } = await fixture();
+  await writeFile(join(root, 'a.md'), '# Note\ncontent');
+  await syncIndex(config);
+  const writer = openDatabase(config.database);
+  writer.exec('BEGIN IMMEDIATE');
+  config.runtime.sqlite_busy_timeout_ms = 0;
+  try {
+    const started = performance.now();
+    await expect(syncIndex(config)).rejects.toThrow('locked');
+    expect(performance.now() - started).toBeLessThan(2000);
+  } finally {
+    writer.exec('ROLLBACK');
+    writer.close();
+  }
+});
+
+it.each(['a'.repeat(79), '文'.repeat(26)])(
+  'rejects UUID insertion beyond the byte limit before changing the note',
+  async (raw) => {
+    const { root } = await fixture(),
+      path = join(root, 'boundary.md');
+    await writeFile(path, raw);
+    await expect(prepareSource(path, 80)).rejects.toThrow('max_file_bytes');
+    expect(await readFile(path, 'utf8')).toBe(raw);
+    expect(parseSource(raw).sourceId).toBeUndefined();
+    const first = await prepareSource(path, 200);
+    expect(first.wroteId).toBe(true);
+    expect(Buffer.byteLength(first.raw, 'utf8')).toBeLessThanOrEqual(200);
+    const second = await prepareSource(path, 200);
+    expect(second.wroteId).toBe(false);
+    expect(second.raw).toBe(first.raw);
+  },
+);

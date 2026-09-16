@@ -1,10 +1,13 @@
+import type { profileStatus } from './profile-store.js';
 import { Worker } from 'node:worker_threads';
 import type { EchoConfig } from './config.js';
 import type { searchIndex } from './retrieval.js';
 import type { indexStatus } from './store.js';
 import type { databaseCapabilities } from './database.js';
 type SearchResult = Awaited<ReturnType<typeof searchIndex>>;
-type StatusResult = ReturnType<typeof indexStatus> & {
+type StatusResult = (
+  ReturnType<typeof indexStatus> | ReturnType<typeof profileStatus>
+) & {
   capabilities: ReturnType<typeof databaseCapabilities>;
 };
 export function runSearchInWorker(
@@ -69,10 +72,22 @@ function runIndexJob<T>(
     if (signal?.aborted) abort();
     worker.once(
       'message',
-      (message: { ok: boolean; result?: T; error?: string }) => {
+      (message: {
+        ok: boolean;
+        result?: T;
+        error?: string;
+        code?: string;
+        next?: string;
+      }) => {
         if (cancelReason) finish(cancelReason);
         else if (message.ok) finish(undefined, message.result);
-        else finish(new Error(message.error ?? 'Search failed'));
+        else
+          finish(
+            Object.assign(new Error(message.error ?? 'Search failed'), {
+              code: message.code,
+              next: message.next,
+            }),
+          );
       },
     );
     worker.once('error', (error) => finish(error));

@@ -74,12 +74,17 @@ export function parseSource(raw: string) {
     blockIndent,
   };
 }
-export async function prepareSource(path: string): Promise<PreparedSource> {
+export async function prepareSource(
+  path: string,
+  maxFileBytes = 10 * 1024 * 1024,
+): Promise<PreparedSource> {
   const info = await lstat(path);
   if (!info.isFile() || info.isSymbolicLink())
     throw new Error('Only regular Markdown files can be imported');
-  if (info.size > 10 * 1024 * 1024)
-    throw new Error('Markdown file exceeds 10 MiB');
+  if (info.size > maxFileBytes)
+    throw new Error(
+      'Markdown file exceeds configured max_file_bytes: ' + maxFileBytes,
+    );
   let raw = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(
     await readFile(path),
   );
@@ -121,6 +126,11 @@ export async function prepareSource(path: string): Promise<PreparedSource> {
         eol +
         parsed.text.slice(insertAt);
     }
+    if (Buffer.byteLength(updated, 'utf8') > maxFileBytes)
+      throw new Error(
+        'UUID insertion would exceed configured max_file_bytes: ' +
+          maxFileBytes,
+      );
     if (parseSource(updated).sourceId !== id)
       throw new Error('UUID insertion validation failed');
     const temporary = path + '.echo-' + randomUUID() + '.tmp';
