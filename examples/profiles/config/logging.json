@@ -1,0 +1,6 @@
+{
+  "level": "warn",
+  "file": "../../.echo/profile-example/echo.jsonl",
+  "max_file_bytes": 1048576,
+  "retain": 3
+}

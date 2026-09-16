@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
 import { parseConfig, type EchoConfig } from './config.js';
 import { hash } from './identity.js';
@@ -133,12 +134,22 @@ export async function loadProfileConfig(path: string): Promise<EchoConfig> {
     const resources: Record<string, string> = {};
     for (const [name, resource] of Object.entries(declarations))
       resources[name] = await read(resolve(dirname(file), resource));
+    const helperFile = fileURLToPath(
+      new URL(
+        './' +
+          (kind === 'chunker' ? 'chunker' : 'lexical') +
+          (import.meta.url.endsWith('.ts') ? '.ts' : '.js'),
+        import.meta.url,
+      ),
+    );
+    const helperCode = (await read(helperFile)).replaceAll('\r\n', '\n');
     const fingerprint = hash(
       JSON.stringify({
         id,
         version: module.version,
         code,
         resources,
+        helper_sha256: hash(helperCode),
         engine:
           kind === 'chunker'
             ? 'heading-lines-1'
@@ -169,6 +180,19 @@ export async function loadProfileConfig(path: string): Promise<EchoConfig> {
     runtime,
     logging,
   });
+  if (config.embedding.base_url) {
+    const url = new URL(config.embedding.base_url);
+    if (
+      !['http:', 'https:'].includes(url.protocol) ||
+      url.username ||
+      url.password ||
+      url.search ||
+      url.hash
+    )
+      throw new Error(
+        'Embedding base_url must be HTTP(S) without credentials, query or fragment',
+      );
+  }
   config.collections = config.collections.map((c) => ({
     ...c,
     root: resolve(base, c.root),

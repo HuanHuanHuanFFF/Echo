@@ -1,3 +1,4 @@
+import { failureInfo } from './errors.js';
 import type Database from 'better-sqlite3';
 import { z } from 'zod';
 import { existsSync } from 'node:fs';
@@ -280,7 +281,7 @@ export function packResults(
     queries.map((q) => ({
       query_id: q.query_id,
       status: q.status,
-      ...(q.error ? { error: q.error } : {}),
+      ...(q.error ? { error: q.error, ...failureInfo(q.error) } : {}),
       candidates: q.counts,
       ...(q.variants ? { variants: q.variants } : {}),
       returned: results.filter((e) => e.matched_query_ids.includes(q.query_id))

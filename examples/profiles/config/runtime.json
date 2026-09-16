@@ -1,0 +1,5 @@
+{
+  "search_timeout_ms": 120000,
+  "max_concurrent_searches": 2,
+  "sqlite_busy_timeout_ms": 5000
+}

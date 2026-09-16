@@ -50,6 +50,14 @@ it('selects profiles atomically and rejects mismatched IDs and parameter overlay
   );
   expect(await readFile(path, 'utf8')).toBe(old);
   await writeFile(
+    join(dir, 'config/embedding/invalid.json'),
+    JSON.stringify({ id: 'invalid', base_url: 'ftp://provider.example' }),
+  );
+  await expect(useProfiles(path, { embedding: 'invalid' })).rejects.toThrow(
+    'HTTP(S)',
+  );
+  expect(await readFile(path, 'utf8')).toBe(old);
+  await writeFile(
     path,
     JSON.stringify({
       ...JSON.parse(old),

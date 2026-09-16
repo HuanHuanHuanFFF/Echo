@@ -157,3 +157,124 @@ export async function useProfiles(
     await rm(lockPath, { force: true });
   }
 }
+
+export async function migrateConfiguration(path: string) {
+  const configPath = resolve(path),
+    base = dirname(configPath),
+    original = await readFile(configPath, 'utf8');
+  const raw = JSON.parse(original) as { version?: number };
+  if (raw.version === 2)
+    return {
+      status: 'ok',
+      changed: false,
+      next: 'Configuration already uses profiles',
+    };
+  const legacy = await loadConfig(configPath);
+  const { hash } = await import('./identity.js');
+  const { loadChunker } = await import('./chunker.js');
+  await loadChunker(legacy.chunker); // Validate the old behavior before producing a replacement.
+  let chunkId: string, chunkCode: string;
+  if (legacy.chunker.module) {
+    const source = await readFile(legacy.chunker.module, 'utf8');
+    chunkId =
+      'legacy-' +
+      hash(JSON.stringify([source, legacy.chunker.options])).slice(0, 16);
+    chunkCode =
+      "const old=(await import('data:text/javascript;base64," +
+      Buffer.from(source).toString('base64') +
+      "')).default;\nexport default {id:" +
+      JSON.stringify(chunkId) +
+      ',version:old.version,chunk(input){return old.chunk({...input,options:' +
+      JSON.stringify(legacy.chunker.options) +
+      '});}};\n';
+  } else {
+    const max = Number(legacy.chunker.options.max_chars ?? 1000);
+    chunkId = 'heading-' + max;
+    chunkCode = headingStrategy(max);
+  }
+  const tokenId = 'legacy-' + hash(JSON.stringify(legacy.lexical)).slice(0, 16);
+  const tokenizer =
+    'export default {id:' +
+    JSON.stringify(tokenId) +
+    ",version:'1',tokenize(text,context){return context.icu(text," +
+    JSON.stringify(legacy.lexical) +
+    ');}};\n';
+  const modelId =
+    'legacy-' + hash(JSON.stringify(legacy.embedding)).slice(0, 16);
+  const retrievalId =
+    'legacy-' + hash(JSON.stringify(legacy.retrieval)).slice(0, 16);
+  const main = {
+    ...defaultMain,
+    database: legacy.database,
+    active: {
+      chunker: chunkId,
+      tokenizer: tokenId,
+      embedding: modelId,
+      retrieval: retrievalId,
+    },
+  };
+  const json = (value: unknown) => JSON.stringify(value, null, 2) + '\n';
+  const files: Record<string, string> = {
+    ['chunkers/' + chunkId + '.mjs']: chunkCode,
+    ['tokenizers/' + tokenId + '.mjs']: tokenizer,
+    ['config/embedding/' + modelId + '.json']: json({
+      id: modelId,
+      ...legacy.embedding,
+    }),
+    ['config/retrieval/' + retrievalId + '.json']: json({
+      id: retrievalId,
+      ...legacy.retrieval,
+    }),
+    'config/sources.json': json({ collections: legacy.collections }),
+    'config/runtime.json': json(legacy.runtime),
+    'config/logging.json': json(legacy.logging),
+  };
+  const lock = await open(configPath + '.lock', 'wx'),
+    temporary = configPath + '.' + randomUUID() + '.tmp';
+  try {
+    for (const [relative, content] of Object.entries(files)) {
+      const target = resolve(base, relative);
+      await mkdir(dirname(target), { recursive: true });
+      try {
+        await writeFile(target, content, { flag: 'wx' });
+      } catch (error) {
+        if (
+          (error as NodeJS.ErrnoException).code !== 'EEXIST' ||
+          (await readFile(target, 'utf8')) !== content
+        )
+          throw new Error(
+            'Migration will not overwrite existing file: ' + target,
+          );
+      }
+    }
+    await writeFile(temporary, json(main), { flag: 'wx' });
+    await loadConfig(temporary); // Self-contained legacy modules can be wrapped; unsupported imports fail before replacement.
+    if ((await readFile(configPath, 'utf8')) !== original)
+      throw new Error('Configuration changed during migration; retry');
+    const backup =
+      configPath + '.legacy-' + hash(original).slice(0, 16) + '.json';
+    try {
+      await writeFile(backup, original, { flag: 'wx', mode: 0o600 });
+    } catch (error) {
+      if (
+        (error as NodeJS.ErrnoException).code !== 'EEXIST' ||
+        (await readFile(backup, 'utf8')) !== original
+      )
+        throw error;
+    }
+    if (process.platform !== 'win32')
+      await chmod(temporary, (await stat(configPath)).mode & 0o7777);
+    await rename(temporary, configPath);
+    return {
+      status: 'ok',
+      changed: true,
+      backup,
+      active: main.active,
+      next: 'Run sync. Compatible old chunks and vectors are reused; other data may require new embedding calls.',
+    };
+  } finally {
+    await rm(temporary, { force: true });
+    await lock.close();
+    await rm(configPath + '.lock', { force: true });
+  }
+}

@@ -1,3 +1,5 @@
+import { profileTables, profileStatus, sqlName } from './profile-store.js';
+import { profileChunker } from './profiles.js';
 import {
   readFile,
   readdir,
@@ -317,7 +319,12 @@ export async function runEvaluation(options: {
     const verifyDb = openDatabase(config.database, { readOnly: true });
     try {
       const indexed = verifyDb
-        .prepare('SELECT relative_path,source_version FROM sources')
+        .prepare(
+          'SELECT relative_path,source_version FROM ' +
+            (config.profile
+              ? sqlName(profileTables(config, provider).sources)
+              : 'sources'),
+        )
         .all() as { relative_path: string; source_version: string }[];
       if (
         indexed.length !== Object.keys(fileHashes).length ||
@@ -452,7 +459,7 @@ export async function runEvaluation(options: {
     const db = openDatabase(config.database, { readOnly: true });
     let index;
     try {
-      index = indexStatus(db);
+      index = config.profile ? profileStatus(db, config) : indexStatus(db);
     } finally {
       db.close();
     }
@@ -466,7 +473,12 @@ export async function runEvaluation(options: {
     } catch {
       /* Git metadata is optional for unpacked source copies. */
     }
-    const chunkerInfo = await loadChunker(config.chunker);
+    const chunkerInfo = config.profile
+      ? {
+          chunker: await profileChunker(config.profile.chunker),
+          fingerprint: config.profile.chunker.fingerprint,
+        }
+      : await loadChunker(config.chunker);
     const codeHashes: Record<string, string> = {};
     for (const name of [
       'chunker.ts',
@@ -474,6 +486,9 @@ export async function runEvaluation(options: {
       'lexical.ts',
       'embedding.ts',
       'evaluation.ts',
+      'profiles.ts',
+      'profile-store.ts',
+      'profile-sync.ts',
     ])
       codeHashes[name] = hash(await readFile(join(root, 'src', name), 'utf8'));
     let dirty: boolean | null = null;
@@ -515,7 +530,18 @@ export async function runEvaluation(options: {
         arch: process.arch,
       },
       profile: {
-        chunker: config.chunker,
+        ...(config.profile
+          ? {
+              selected_profiles: config.profile.active,
+              strategy_snapshots: {
+                chunker: config.profile.chunker,
+                tokenizer: config.profile.tokenizer,
+              },
+            }
+          : {}),
+        chunker: config.profile
+          ? { strategy_id: config.profile.active.chunker }
+          : config.chunker,
         chunker_implementation: {
           id: chunkerInfo.chunker.id,
           version: chunkerInfo.chunker.version,

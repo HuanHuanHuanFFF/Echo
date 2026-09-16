@@ -19,4 +19,14 @@
 
 ## 验收证据
 
-本轮已有小闭环：配置/资源快照、幂等初始化、失败不半切换；按策略依赖登记和增量同步已接入检索。定向回归覆盖分词切换不改变 chunk/向量且新增模型调用为零、多模型维度/切块组合复用、改名/编辑/删除使旧组合失效、失败回滚、过滤/文件上限，以及兼容旧 chunks/向量的无新增调用迁移。模拟 provider 只证明调用次数和接口行为，不证明语义效果。CLI 接入、运行日志、热重载和 Agent 完整流程仍在开发。普通验证只使用隔离样本和临时数据库，不访问个人笔记或真实模型。
+本轮已有小闭环：配置/资源快照、幂等初始化、失败不半切换；按策略依赖登记和增量同步已接入检索。定向回归覆盖分词切换不改变 chunk/向量且新增模型调用为零、多模型维度/切块组合复用、改名/编辑/删除使旧组合失效、失败回滚、过滤/文件上限，以及兼容旧 chunks/向量的无新增调用迁移。模拟 provider 只证明调用次数和接口行为，不证明语义效果。CLI、迁移、日志、热重载和对应真实 MCP 回归已接入；首次使用的独立 Agent 验证与两位审查仍待完成。普通验证只使用隔离样本和临时数据库，不访问个人笔记或真实模型。
+
+## 当前模块与使用入口
+
+profiles/profile-types 捕获配置和固定策略；profile-manager 承担幂等初始化、发现、原子切换及旧配置迁移；profile-store/profile-sync 管理表身份、来源快照和事务复用；config-runtime/server/executor 管理每请求快照与工作线程；errors/transport 给出有界恢复信息；logging 轮转只含事件/计数的本地日志。
+
+使用从 [README](../../README.md)、[v2 契约](../design/configuration-profiles.md)和[可直接运行的样本](../../examples/profiles/example.json)开始。旧配置保留兼容，旧参数通过迁移固化。
+
+构建 CLI 的样本同步已验证 2 篇/4 块、wrote_ids=0；查询返回真实原文路径和行号。普通完整检查已通过 77 项测试，Windows 跳过 1 项 POSIX 专项。Linux 和最终提交 CI 尚待发布验证。
+
+[交互 SDK 桥](../../examples/mcp-agent-session.mjs)可用于首次 Agent 验收，不修改宿主长期 MCP 配置：先 npm run build，再 node examples/mcp-agent-session.mjs --config 配置路径，逐行发送其打印的 list/call/close 命令；它统计调用数和实际 SDK 返回字符量。

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "database": "../../.echo/profile-example/index.sqlite",
+  "active": {
+    "chunker": "heading-1000",
+    "tokenizer": "icu-zh",
+    "embedding": "default",
+    "retrieval": "bm25"
+  }
+}

@@ -136,6 +136,7 @@ export async function loadConfig(path: string): Promise<EchoConfig> {
     ...c,
     root: absolute(c.root),
   }));
+  if (config.logging.file) config.logging.file = absolute(config.logging.file);
   if (config.chunker.module)
     config.chunker.module = absolute(config.chunker.module);
   return config;

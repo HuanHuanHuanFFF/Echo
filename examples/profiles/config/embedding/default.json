@@ -1,0 +1,5 @@
+{
+  "id": "default",
+  "provider": "http",
+  "api_key_env": "ECHO_EMBEDDING_API_KEY"
+}
