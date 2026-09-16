@@ -1167,5 +1167,23 @@
     "Private inputs/full responses remain in E; public summary alone cannot reproduce full corpus.",
     "Latencies exclude validation, Agent and MCP transport; initial A-heading30 repeated, no cold-start claim.",
     "API null is no provider for verified BM25, not zero cost inference for model runs."
+  ],
+  "reviews": [
+    {
+      "reviewer": "luna-a",
+      "model": "gpt-5.6-luna",
+      "reasoning": "max",
+      "sha256": "624fb1872eba565a31baa6640c328b1111892d468bbd071cd9204f354bb223d4",
+      "scope": "BM25 development and paired development results only",
+      "decision": "No substantiated acceptance blocker; semantic/default/final evaluation remains outside acceptance."
+    },
+    {
+      "reviewer": "luna-b",
+      "model": "gpt-5.6-luna",
+      "reasoning": "max",
+      "sha256": "6bbfc7d8de560fd7c1143de9969d2ffed879de8286589e43b63ad81b9c9f2383",
+      "scope": "BM25 development and paired development results only",
+      "decision": "No substantiated acceptance blocker; semantic/default/final evaluation remains outside acceptance."
+    }
   ]
 }
