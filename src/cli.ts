@@ -89,6 +89,9 @@ async function main() {
         format: config.profile ? 2 : 1,
         active: config.profile?.active ?? null,
         revision: config.profile?.revision ?? null,
+        files: config.profile?.files ?? { main: configPath },
+        embedding: config.embedding,
+        retrieval: config.retrieval,
         sources: config.collections,
         runtime: config.runtime,
         logging: config.logging,
@@ -97,7 +100,6 @@ async function main() {
           config.embedding.base_url &&
           config.embedding.dimensions,
         ),
-        api_key_env: config.embedding.api_key_env,
         index: status(config),
       });
     } else throw new Error('Use config list, show, use, or migrate');

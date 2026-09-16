@@ -58,7 +58,7 @@ async function fixture() {
 const decode = (r: unknown) =>
   JSON.parse((r as { content: { text: string }[] }).content[0]!.text);
 it('CLI initializes, discovers, switches and shows profiles without exposing key values', async () => {
-  const { path, run } = await fixture();
+  const { dir, path, run } = await fixture();
   expect(JSON.parse((await run('init')).stdout).created).toEqual([]);
   expect(
     JSON.parse((await run('config', 'list')).stdout).active.retrieval,
@@ -71,6 +71,9 @@ it('CLI initializes, discovers, switches and shows profiles without exposing key
   await run('sync');
   const show = JSON.parse((await run('config', 'show')).stdout);
   expect(show.index.ready).toBe(true);
+  expect(show.files.embedding).toBe(join(dir, 'config/embedding/default.json'));
+  expect(show.embedding.api_key_env).toBe('ECHO_EMBEDDING_API_KEY');
+  expect(show.retrieval.mode).toBe('bm25');
   expect(show).not.toHaveProperty('api_key');
   expect(
     JSON.parse((await run('search', '--query', 'apple')).stdout).results.length,

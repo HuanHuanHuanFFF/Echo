@@ -205,6 +205,31 @@ export async function loadProfileConfig(path: string): Promise<EchoConfig> {
   config.profile = {
     configPath,
     active: main.active,
+    files: {
+      chunker: resolve(
+        base,
+        main.directories.chunkers,
+        main.active.chunker + '.mjs',
+      ),
+      tokenizer: resolve(
+        base,
+        main.directories.tokenizers,
+        main.active.tokenizer + '.mjs',
+      ),
+      embedding: resolve(
+        base,
+        main.directories.embedding,
+        main.active.embedding + '.json',
+      ),
+      retrieval: resolve(
+        base,
+        main.directories.retrieval,
+        main.active.retrieval + '.json',
+      ),
+      sources: resolve(base, main.sources),
+      runtime: resolve(base, main.runtime),
+      logging: resolve(base, main.logging),
+    },
     chunker,
     tokenizer,
     revision: hash(

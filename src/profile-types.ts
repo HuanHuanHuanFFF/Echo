@@ -8,6 +8,7 @@ export interface StrategySnapshot {
 export interface ProfileSnapshot {
   configPath: string;
   revision: string;
+  files: Record<string, string>;
   active: {
     chunker: string;
     tokenizer: string;
