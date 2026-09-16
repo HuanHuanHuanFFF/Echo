@@ -24,7 +24,7 @@ node examples/mcp-client.mjs
 
 - collections：每个知识库的 id 与本地 root。
 - embedding：服务 base_url、model、dimensions，以及存放 key 的环境变量名。
-- database：SQLite 文件路径。相对路径均以配置文件目录为基准。
+- database：SQLite 文件路径。相对路径均以配置文件目录为基准；复制到项目根目录的示例使用 .echo/index.sqlite。
 
 API 接口为 base_url/embeddings，发送标准 input 数组。key 不写入配置或索引；
 默认环境变量名为 ECHO_EMBEDDING_API_KEY。PowerShell 示例：
@@ -124,3 +124,9 @@ API 模式先预热相同 query embedding，再比较 dense/hybrid/来源限制/
 - 小样本事实覆盖不等于全库质量、生成答案正确率或线上性能。当前真实语义效果仍未验收。
 
 补读场景：`npm run eval -- --lexical-only --scenario long-context`。每次评测使用空输出目录；已有失败记录也不能覆盖。`report.json` 是所有必需产物完成后的发布标记，缺少它表示本次未完整交付。
+
+## 升级提示（2026-09-16）
+
+分词规则已补齐 HTTPServer 等缩写边界，旧索引需显式 sync。当前 hybrid/dense 同步会重新调用 embedding；
+旧示例中 database=../.echo/index.sqlite 的用户请先改为项目内 .echo/index.sqlite。
+已有配置和父目录中的数据库不会自动改动，详见 [P2 修复与升级说明](docs/development/2026-09-16-pr-review-fixes.md)。

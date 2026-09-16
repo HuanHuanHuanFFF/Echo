@@ -503,3 +503,87 @@ it.each([1e30, 1e-30])(
     expect(result.queries[0]!.status).toBe('ok');
   },
 );
+
+async function acronymFixture() {
+  const dir = await realpath(await mkdtemp(join(tmpdir(), 'echo-acronyms-')));
+  dirs.push(dir);
+  const root = join(dir, 'notes');
+  await mkdir(root);
+  const config = parseConfig({
+    database: join(dir, 'index.sqlite'),
+    collections: [{ id: 'test', root }],
+    retrieval: { mode: 'bm25' },
+  });
+  await writeFile(
+    join(root, 'sample.md'),
+    '# Components\nHTTPServer URLParser parseHTTPResponse',
+  );
+  await syncIndex(config);
+  return config;
+}
+it('retrieves acronym-prefixed identifiers by full name and component words', async () => {
+  const config = await acronymFixture();
+  for (const query of [
+    'server',
+    'http',
+    'url',
+    'parser',
+    'parse',
+    'response',
+    'HTTPServer',
+    'URLParser',
+    'parseHTTPResponse',
+  ]) {
+    const result = await searchIndex(config, { query });
+    expect(result.results, query).toHaveLength(1);
+    expect(result.results[0]!.text).toContain(
+      'HTTPServer URLParser parseHTTPResponse',
+    );
+  }
+});
+it('requires sync for a legacy tokenizer index and rebuilds unchanged notes', async () => {
+  const config = await acronymFixture();
+  const { hash } = await import('../src/identity.js');
+  const { loadChunker } = await import('../src/chunker.js');
+  // Seed the previous release's persisted metadata and unsplit identifier terms.
+  // These are upgrade inputs; assertions below use normal sync/search interfaces.
+  const oldLexical = hash(
+    JSON.stringify({
+      version: 'icu-word-cjk-bigram-identifiers-1',
+      icu: process.versions.icu,
+      config: config.lexical,
+    }),
+  );
+  const oldSourceFingerprint = hash(
+    JSON.stringify([
+      (await loadChunker(config.chunker)).fingerprint,
+      oldLexical,
+      'bm25-only',
+    ]),
+  );
+  const db = openDatabase(config.database);
+  try {
+    db.prepare('UPDATE meta SET value=? WHERE key=?').run(
+      oldLexical,
+      'lexical_fingerprint',
+    );
+    db.prepare('UPDATE sources SET chunker_fingerprint=?').run(
+      oldSourceFingerprint,
+    );
+    db.prepare("UPDATE chunk_fts SET title='', body=?").run(
+      ['httpserver', 'urlparser', 'parsehttpresponse', 'parse', 'httpresponse']
+        .map((t) => 't' + Buffer.from(t).toString('hex'))
+        .join(' '),
+    );
+  } finally {
+    db.close();
+  }
+  await expect(searchIndex(config, { query: 'server' })).rejects.toThrow(
+    'run sync',
+  );
+  expect(await syncIndex(config)).toMatchObject({ updated: 1, unchanged: 0 });
+  expect((await searchIndex(config, { query: 'server' })).results).toHaveLength(
+    1,
+  );
+  expect(await syncIndex(config)).toMatchObject({ updated: 0, unchanged: 1 });
+});
