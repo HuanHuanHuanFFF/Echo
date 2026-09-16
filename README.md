@@ -33,7 +33,7 @@ MCP 提供 `echo_search` 和 `echo_status`；CLI 支持导入、同步和搜索�
 ## 显式同步（阶段 2）
 
 先复制 [配置示例](examples/echo.config.example.json) 为 echo.config.json，将 collection.root 改为自己的 Markdown 目录。
-路径相对配置文件位置解析。sync 会向缺少身份的文件写入 UUID v4；首次尝试请用笔记副本。
+路径相对配置文件位置解析；复制到项目根目录的示例使用 .echo/index.sqlite。sync 会向缺少身份的文件写入 UUID v4；首次尝试请用笔记副本。
 
 ```sh
 node dist/cli.js sync --config echo.config.json
@@ -77,3 +77,9 @@ node dist/cli.js search --config examples/echo.bm25.example.json --query "事务
 不同宿主的配置入口可能不同；也可直接运行 `node examples/mcp-client.mjs` 验证标准客户端调用。
 Agent 调用 echo_search 后，用宿主已有文件工具按返回的 path 和行范围补读。
 [完整查询契约](docs/development/phase-04-agent-mcp.md)包含子问题、变体、失败、输出预算和取消语义。
+
+## 升级提示（2026-09-16）
+
+分词规则已补齐 HTTPServer 等缩写边界，旧索引需显式 sync。当前 hybrid/dense 同步会重新调用 embedding；
+旧示例中 database=../.echo/index.sqlite 的用户请先改为项目内 .echo/index.sqlite。
+已有配置和父目录中的数据库不会自动改动，详见 [P2 修复与升级说明](docs/development/2026-09-16-pr-review-fixes.md)。

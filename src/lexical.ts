@@ -18,7 +18,7 @@ const stopwords = new Set([
 export function lexicalFingerprint(config: EchoConfig['lexical']) {
   return hash(
     JSON.stringify({
-      version: 'icu-word-cjk-bigram-identifiers-1',
+      version: 'icu-word-cjk-bigram-identifiers-2',
       icu: process.versions.icu,
       config,
     }),
@@ -41,6 +41,7 @@ export function tokenize(
   for (const match of normalized.matchAll(/[A-Za-z][A-Za-z0-9_.$-]*/g)) {
     add(match[0]);
     for (const part of match[0]
+      .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
       .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
       .split(/[^A-Za-z0-9]+/))
       add(part);

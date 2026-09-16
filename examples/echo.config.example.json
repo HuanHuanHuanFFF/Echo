@@ -1,5 +1,5 @@
 {
-  "database": "../.echo/index.sqlite",
+  "database": ".echo/index.sqlite",
   "collections": [
     {
       "id": "sample",

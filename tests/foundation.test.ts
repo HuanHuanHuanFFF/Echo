@@ -1,11 +1,21 @@
 import { describe, expect, it } from 'vitest';
-import { mkdtemp, rm } from 'node:fs/promises';
+import {
+  mkdir,
+  mkdtemp,
+  readFile,
+  realpath,
+  rm,
+  writeFile,
+} from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { openDatabase, databaseCapabilities } from '../src/database.js';
-import { parseConfig, retrievalOptions } from '../src/config.js';
+import { loadConfig, parseConfig, retrievalOptions } from '../src/config.js';
+
+import { syncIndex } from '../src/sync.js';
+import { searchIndex } from '../src/retrieval.js';
 
 describe('foundation', () => {
   it('persists FTS5 and vec0 data and rolls both back atomically', async () => {
@@ -112,4 +122,50 @@ describe('foundation', () => {
       await rm(dir, { recursive: true, force: true });
     }
   });
+});
+
+it('copied example configurations keep sibling checkout indexes independent', async () => {
+  const dir = await realpath(
+    await mkdtemp(join(tmpdir(), 'echo-config-copy-')),
+  );
+  try {
+    const example = JSON.parse(
+      await readFile('examples/echo.config.example.json', 'utf8'),
+    );
+    // Exercise the documented copy workflow without contacting a model.
+    example.retrieval.mode = 'bm25';
+    const configs = [];
+    for (const [name, text] of [
+      ['checkout-a', 'alphaxylophone'],
+      ['checkout-b', 'betazucchini'],
+    ]) {
+      const checkout = join(dir, name!);
+      await mkdir(join(checkout, 'notes'), { recursive: true });
+      const path = join(checkout, 'echo.config.json');
+      await writeFile(path, JSON.stringify(example));
+      await writeFile(join(checkout, 'notes', 'sample.md'), '# Note\n' + text);
+      configs.push(await loadConfig(path));
+    }
+    for (const config of configs) await syncIndex(config);
+    for (const [index, query] of ['alphaxylophone', 'betazucchini'].entries()) {
+      const result = await searchIndex(configs[index]!, { query });
+      expect(result.results).toHaveLength(1);
+      expect(result.results[0]!.path).toBe(
+        join(
+          dir,
+          index === 0 ? 'checkout-a' : 'checkout-b',
+          'notes',
+          'sample.md',
+        ),
+      );
+    }
+    expect(configs[0]!.database).toBe(
+      join(dir, 'checkout-a', '.echo', 'index.sqlite'),
+    );
+    expect(configs[1]!.database).toBe(
+      join(dir, 'checkout-b', '.echo', 'index.sqlite'),
+    );
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
 });
