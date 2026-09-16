@@ -132,3 +132,11 @@ API 模式先预热相同 query embedding，再比较 dense/hybrid/来源限制/
 分词规则已补齐 HTTPServer 等缩写边界，旧索引需显式 sync。旧格式 hybrid/dense 同步会重新调用 embedding；v2 按各索引依赖复用已有数据。
 旧示例中 database=../.echo/index.sqlite 的用户请先改为项目内 .echo/index.sqlite。
 已有配置和父目录中的数据库不会自动改动，详见 [P2 修复与升级说明](docs/development/2026-09-16-pr-review-fixes.md)。
+
+## 自有语料的单轮召回评测
+
+已同步的 v2 索引可用 `npm run eval:retrieval -- --help` 查看入口。
+先用 `snapshot` 冻结文件清单，再用 `run` 执行有原文证据标签的独立问题；固定子问题放在同一请求中。
+脚本校验语料、索引和引用，记录父子题覆盖、延迟、上下文用量与 API 调用；不会逐题运行 Agent。
+
+[脚本接口与题集格式](docs/design/retrieval-evaluation.md) · [实现验证与边界](docs/development/2026-09-16-single-turn-evaluation.md)。

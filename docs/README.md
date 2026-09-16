@@ -57,3 +57,10 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 - [机器可读题量配额](evals/2026-09-16-question-allocation.json)。
 - [已完成的准备验证](evals/2026-09-16-evaluation-readiness.md)及[公开证据清单](evals/2026-09-16-preparation.manifest.json)：不包含私有笔记或密钥，不代表正式语义评测已完成。
 - [外部笔记来源初筛](evals/2026-09-16-corpus-source-audit.md)：公开候选固定提交与Markdown规模，尚未入库。
+
+## 单轮脚本评测
+
+- [评测脚本契约](design/retrieval-evaluation.md)：独立题目、固定子问题、原文范围标签、只读运行。
+- [实现与验证](development/2026-09-16-single-turn-evaluation.md)。
+- [benchmark方法参考](research/2026-09-16-single-turn-benchmark-methods.md)：时间、更新、比较、证据和无答案题。
+- [2026年正文候选落地](evals/2026-09-16-corpus-preparation.md)：198篇外部候选、分库/混合库BM25准备，规模及D库题量仍待审计。
