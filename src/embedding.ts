@@ -24,6 +24,35 @@ export function validateVectors(
     return Array.from(new Float32Array(scaled.map((value) => value / norm)));
   });
 }
+export function embeddingFingerprint(config: EchoConfig['embedding']): string {
+  const { base_url: baseUrl, model, dimensions } = config;
+  if (!baseUrl || !model || !dimensions)
+    throw new Error(
+      'Embedding not configured: set base_url, model and dimensions',
+    );
+  const endpoint = new URL(baseUrl.replace(/\/$/, '') + '/embeddings');
+  if (
+    !['http:', 'https:'].includes(endpoint.protocol) ||
+    endpoint.username ||
+    endpoint.password ||
+    endpoint.search ||
+    endpoint.hash
+  )
+    throw new Error(
+      'Embedding base_url must be an HTTP(S) URL without credentials, query or fragment',
+    );
+  return hash(
+    JSON.stringify({
+      vector_transform: 'unit-float32-v1',
+      endpoint: endpoint.href,
+      model,
+      dimensions,
+      sendDimensions: config.send_dimensions,
+      documentPrefix: config.document_prefix,
+      queryPrefix: config.query_prefix,
+    }),
+  );
+}
 export function createEmbeddingProvider(
   config: EchoConfig['embedding'],
 ): EmbeddingProvider {
@@ -58,17 +87,7 @@ export function createEmbeddingProvider(
         knownUsageRequests === usage.requests ? reportedTokens : null,
     }),
     dimensions,
-    fingerprint: hash(
-      JSON.stringify({
-        vector_transform: 'unit-float32-v1',
-        endpoint: endpoint.href,
-        model,
-        dimensions,
-        sendDimensions: config.send_dimensions,
-        documentPrefix: config.document_prefix,
-        queryPrefix: config.query_prefix,
-      }),
-    ),
+    fingerprint: embeddingFingerprint(config),
     async embed(texts, purpose, signal) {
       const vectors: number[][] = [];
       for (let offset = 0; offset < texts.length; offset += config.batch_size) {

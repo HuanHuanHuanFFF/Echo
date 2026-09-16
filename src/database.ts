@@ -5,7 +5,7 @@ import * as sqliteVec from 'sqlite-vec';
 
 export function openDatabase(
   path: string,
-  options: { readOnly?: boolean } = {},
+  options: { readOnly?: boolean; busyTimeout?: number | undefined } = {},
 ): Database.Database {
   const readOnly = options.readOnly ?? false;
   if (!readOnly && path !== ':memory:')
@@ -16,7 +16,10 @@ export function openDatabase(
   });
   try {
     db.pragma('foreign_keys = ON');
-    db.pragma('busy_timeout = 5000');
+    const timeout = options.busyTimeout ?? 5000;
+    if (!Number.isInteger(timeout) || timeout < 0 || timeout > 600000)
+      throw new Error('Invalid SQLite busy timeout');
+    db.pragma('busy_timeout = ' + timeout);
     if (!readOnly) db.pragma('journal_mode = WAL');
     sqliteVec.load(db);
     return db;

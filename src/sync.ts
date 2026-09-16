@@ -1,5 +1,6 @@
+import { hasProfiles, EchoError } from './profile-store.js';
 import { lstat, readFile, readdir, realpath } from 'node:fs/promises';
-import { basename, relative, resolve } from 'node:path';
+import { basename, relative, resolve, matchesGlob } from 'node:path';
 import type { EchoConfig } from './config.js';
 import { loadChunker, runChunker } from './chunker.js';
 import { openDatabase } from './database.js';
@@ -17,7 +18,10 @@ interface SourceRow {
   source_version: string;
   chunker_fingerprint: string;
 }
-export async function listMarkdown(root: string): Promise<string[]> {
+export async function listMarkdown(
+  root: string,
+  policy?: EchoConfig['collections'][number],
+): Promise<string[]> {
   const info = await lstat(root);
   if (!info.isDirectory() || info.isSymbolicLink())
     throw new Error('Collection root must be a real directory: ' + root);
@@ -28,20 +32,33 @@ export async function listMarkdown(root: string): Promise<string[]> {
       if (entry.isSymbolicLink()) continue;
       if (
         entry.isDirectory() &&
-        !entry.name.startsWith('.') &&
-        entry.name !== 'node_modules'
+        (policy?.exclude !== undefined ||
+          (!entry.name.startsWith('.') && entry.name !== 'node_modules'))
       )
         await walk(resolve(dir, entry.name));
       else if (
         entry.isFile() &&
-        !entry.name.startsWith('.') &&
+        (policy?.exclude !== undefined || !entry.name.startsWith('.')) &&
         /\.md$/i.test(entry.name)
       )
         files.push(resolve(dir, entry.name));
     }
   }
   await walk(await realpath(root));
-  return files.sort();
+  const canonical = await realpath(root);
+  return files
+    .filter((file) => {
+      const name = relative(canonical, file).replaceAll(
+        String.fromCharCode(92),
+        '/',
+      );
+      return (
+        (!policy?.include ||
+          policy.include.some((pattern) => matchesGlob(name, pattern))) &&
+        !policy?.exclude?.some((pattern) => matchesGlob(name, pattern))
+      );
+    })
+    .sort();
 }
 export interface SyncResult {
   status: 'ok';
@@ -57,6 +74,12 @@ export async function syncIndex(
   signal?: AbortSignal,
   customProvider?: EmbeddingProvider | null,
 ): Promise<SyncResult> {
+  if (config.profile)
+    return (await import('./profile-sync.js')).syncProfiles(
+      config,
+      signal,
+      customProvider,
+    );
   if (!config.collections.length)
     throw new Error('Configure at least one collection before sync');
   const provider =
@@ -76,6 +99,12 @@ export async function syncIndex(
     chunks: 0,
   };
   try {
+    if (hasProfiles(db))
+      throw new EchoError(
+        'LEGACY_CONFIG',
+        'This database contains profile indexes',
+        'Use the version 2 configuration',
+      );
     initializeStore(db);
     // Hold a single writer reservation across preparation. WAL readers keep the previous committed snapshot.
     db.exec('BEGIN IMMEDIATE');

@@ -1,5 +1,15 @@
 import type Database from 'better-sqlite3';
 import { z } from 'zod';
+import { existsSync } from 'node:fs';
+import {
+  profileTables,
+  checkProfiles,
+  sqlName,
+  hasProfiles,
+  EchoError,
+  corpusState,
+} from './profile-store.js';
+import { profileTokenizer } from './profiles.js';
 import { uuidV4 } from './identity.js';
 import type { EchoConfig, RetrievalConfig } from './config.js';
 import { retrievalOptions } from './config.js';
@@ -111,6 +121,26 @@ export function getMeta(
       { value: string } | undefined
   )?.value;
 }
+interface RetrievalIndex {
+  sources: string;
+  chunks: string;
+  fts: string;
+  vectors?: string;
+  embeddingFingerprint?: string;
+  tokenize: (text: string) => Promise<string[]>;
+}
+function indexSql(sql: string, index?: RetrievalIndex) {
+  if (!index) return sql;
+  const names: Record<string, string> = {
+    sources: index.sources,
+    chunks: index.chunks,
+    chunk_fts: index.fts,
+    embeddings: index.vectors ?? 'missing_vectors',
+  };
+  return sql.replace(/\b(sources|chunks|chunk_fts|embeddings)\b/g, (name) =>
+    sqlName(names[name]!),
+  );
+}
 export async function retrieveQuery(
   db: Database.Database,
   config: EchoConfig,
@@ -121,6 +151,7 @@ export async function retrieveQuery(
   provider: EmbeddingProvider | null,
   signal?: AbortSignal,
   providerError?: string,
+  index?: RetrievalIndex,
 ): Promise<QueryCandidates> {
   signal?.throwIfAborted();
   const filter = scope(filters),
@@ -155,15 +186,23 @@ export async function retrieveQuery(
     });
   };
   if (options.mode !== 'dense') {
-    const expression = matchExpression(query, config.lexical);
+    const expression = index
+      ? [...new Set(await index.tokenize(query))]
+          .slice(0, 128)
+          .map((t) => JSON.stringify(t))
+          .join(' OR ')
+      : matchExpression(query, config.lexical);
     const rows = expression
       ? (db
           .prepare(
-            'SELECT ' +
-              columns +
-              ' FROM chunk_fts JOIN chunks c ON c.rowid=chunk_fts.rowid JOIN sources s USING(source_id) WHERE chunk_fts MATCH ?' +
-              filter.sql +
-              ' ORDER BY bm25(chunk_fts,?,1),c.chunk_id LIMIT ?',
+            indexSql(
+              'SELECT ' +
+                columns +
+                ' FROM chunk_fts JOIN chunks c ON c.rowid=chunk_fts.rowid JOIN sources s USING(source_id) WHERE chunk_fts MATCH ?' +
+                filter.sql +
+                ' ORDER BY bm25(chunk_fts,?,1),c.chunk_id LIMIT ?',
+              index,
+            ),
           )
           .all(
             expression,
@@ -179,7 +218,10 @@ export async function retrieveQuery(
     try {
       if (!provider)
         throw new Error(providerError ?? 'Embedding provider unavailable');
-      if (getMeta(db, 'embedding_fingerprint') !== provider.fingerprint)
+      if (
+        (index?.embeddingFingerprint ??
+          getMeta(db, 'embedding_fingerprint')) !== provider.fingerprint
+      )
         throw new Error('Embedding configuration differs from index; run sync');
       const vector = validateVectors(
         await provider.embed([query], 'query', signal),
@@ -189,11 +231,14 @@ export async function retrieveQuery(
       signal?.throwIfAborted();
       const rows = db
         .prepare(
-          'SELECT ' +
-            columns +
-            ',vec_distance_cosine(v.embedding,?) AS distance FROM embeddings v JOIN chunks c ON c.rowid=v.chunk_rowid JOIN sources s USING(source_id) WHERE 1' +
-            filter.sql +
-            ' AND vec_distance_cosine(v.embedding,?) <= ? ORDER BY distance,c.chunk_id LIMIT ?',
+          indexSql(
+            'SELECT ' +
+              columns +
+              ',vec_distance_cosine(v.embedding,?) AS distance FROM embeddings v JOIN chunks c ON c.rowid=v.chunk_rowid JOIN sources s USING(source_id) WHERE 1' +
+              filter.sql +
+              ' AND vec_distance_cosine(v.embedding,?) <= ? ORDER BY distance,c.chunk_id LIMIT ?',
+            index,
+          ),
         )
         .all(
           new Float32Array(vector),
@@ -225,6 +270,7 @@ export async function retrieveQuery(
 export function packResults(
   queries: QueryCandidates[],
   options: RetrievalConfig,
+  selection?: Record<string, unknown>,
 ) {
   const results: Evidence[] = [];
   const selected = new Map<string, Evidence>(),
@@ -250,6 +296,7 @@ export function packResults(
     queries: reports(),
     applied: options,
     excluded: counts,
+    ...(selection ? { selection } : {}),
   });
   const matching = new Map<string, string[]>();
   const rankingMap = new Map<string, NonNullable<Evidence['rankings']>>();
@@ -367,16 +414,48 @@ export async function searchIndex(
       providerError = (error as Error).message;
     }
   }
-  const db = openDatabase(config.database, { readOnly: true });
+  if (config.profile && !existsSync(config.database))
+    throw new EchoError(
+      'INDEX_REQUIRED',
+      'Index database is missing',
+      'Run echo-mcp sync',
+    );
+  const db = openDatabase(config.database, {
+    readOnly: true,
+    busyTimeout: config.runtime.sqlite_busy_timeout_ms,
+  });
   try {
     initializeStore(db);
     db.exec('BEGIN');
-    if (!getMeta(db, 'last_sync'))
-      throw new Error('Index is not synchronized; run sync');
-    if (
-      getMeta(db, 'lexical_fingerprint') !== lexicalFingerprint(config.lexical)
-    )
-      throw new Error('Lexical configuration differs from index; run sync');
+    let index: RetrievalIndex | undefined;
+    let selection: Record<string, unknown> | undefined;
+    if (config.profile) {
+      const tables = profileTables(config, customProvider);
+      checkProfiles(db, config, tables, options.mode);
+      index = {
+        ...tables,
+        tokenize: await profileTokenizer(config.profile.tokenizer),
+      };
+      selection = {
+        ...config.profile.active,
+        revision: config.profile.revision,
+        source_snapshot: corpusState(db),
+      };
+    } else {
+      if (hasProfiles(db))
+        throw new EchoError(
+          'LEGACY_CONFIG',
+          'This database contains profile indexes',
+          'Use the version 2 configuration',
+        );
+      if (!getMeta(db, 'last_sync'))
+        throw new Error('Index is not synchronized; run sync');
+      if (
+        getMeta(db, 'lexical_fingerprint') !==
+        lexicalFingerprint(config.lexical)
+      )
+        throw new Error('Lexical configuration differs from index; run sync');
+    }
     const specs = input.queries ?? [
       { query_id: 'q0', text: input.query!, variants: [] },
     ];
@@ -397,6 +476,7 @@ export async function searchIndex(
             provider,
             signal,
             providerError,
+            index,
           ),
         );
       const merged = new Map<string, Candidate>();
@@ -459,7 +539,7 @@ export async function searchIndex(
           : {}),
       });
     }
-    return packResults(queries, options);
+    return packResults(queries, options, selection);
   } finally {
     if (db.inTransaction) db.exec('ROLLBACK');
     db.close();
