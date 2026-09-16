@@ -48,7 +48,9 @@ export function pairedBootstrap(
     g.push(r);
     groups.set(r.group, g);
   }
-  const grouped = [...groups.values()];
+  const grouped = [...groups.values()].filter((g) =>
+    g.some((r) => r.baseline.expected > 0),
+  );
   const rates = (items: PairedFactCount[]) => {
     let expected = 0,
       b = 0,
@@ -114,6 +116,7 @@ export function pairedBootstrap(
     questions: rows.length,
     answerable: rows.filter((r) => r.baseline.expected > 0).length,
     independent_groups: groups.size,
+    answerable_independent_groups: grouped.length,
     iterations: options.iterations,
     seed: options.seed,
     method:
@@ -142,6 +145,22 @@ const same = (a: unknown, b: unknown) =>
   JSON.stringify(a) === JSON.stringify(b);
 const strings = z.array(z.string().min(1));
 const count = z.number().int().nonnegative();
+const corpusEntry = z
+  .object({
+    collection_id: z.string(),
+    path: z.string(),
+    sha256: z.string().regex(/^[a-f0-9]{64}$/),
+  })
+  .strict();
+function normalizedCorpus(corpus: z.infer<typeof corpusEntry>[]) {
+  const key = (c: z.infer<typeof corpusEntry>) =>
+    JSON.stringify([c.collection_id, c.path]);
+  if (new Set(corpus.map(key)).size !== corpus.length)
+    throw Error('Duplicate corpus identity');
+  return corpus
+    .slice()
+    .sort((a, b) => (key(a) < key(b) ? -1 : key(a) > key(b) ? 1 : 0));
+}
 const scenario = z.object({
   id: z.string(),
   kind: z.enum(['separate', 'mixed']),
@@ -193,7 +212,7 @@ const manifestSchema = z
       scenario,
       sha256: z.string(),
     }),
-    corpus: z.array(z.unknown()),
+    corpus: z.array(corpusEntry),
     runtime: z.object({ sha256: z.string() }).passthrough(),
     budget_chars: z.number().int().positive(),
     retrieval: z.unknown(),
@@ -206,7 +225,7 @@ const dataSchema = z.object({
   name: z.string(),
   split: z.enum(['development', 'test']),
   scenario,
-  corpus: z.array(z.unknown()),
+  corpus: z.array(corpusEntry),
   facts: z.array(z.object({ id: z.string() })),
   questions: z
     .array(
@@ -260,7 +279,7 @@ async function loadRun(directory: string) {
     manifest.dataset.name !== dataset.name ||
     manifest.dataset.split !== dataset.split ||
     !same(manifest.dataset.scenario, dataset.scenario) ||
-    !same(manifest.corpus, dataset.corpus)
+    !same(normalizedCorpus(manifest.corpus), normalizedCorpus(dataset.corpus))
   )
     throw Error('Manifest dataset/corpus binding differs');
   if (
@@ -291,6 +310,12 @@ async function loadRun(directory: string) {
     )
       throw Error('Row labels differ from frozen dataset');
     assertFacts(r.expected_facts, r.covered_facts);
+    if (
+      !r.result.results.length &&
+      (r.covered_facts.length ||
+        r.subquery_coverage.some((s) => s.covered_facts.length))
+    )
+      throw Error('Claimed coverage has no returned evidence');
     const { overrides: _, ...payload } = r.request;
     const expectedPayload = q.subquestions
       ? {
@@ -313,6 +338,11 @@ async function loadRun(directory: string) {
       )
         throw Error('Subquery labels differ');
       assertFacts(s.expected_facts, s.covered_facts);
+      if (
+        s.expected_facts.some((f) => !r.expected_facts.includes(f)) ||
+        s.covered_facts.some((f) => !r.covered_facts.includes(f))
+      )
+        throw Error('Child coverage contradicts parent coverage');
     }
     if (
       r.status !== r.result.status ||
@@ -367,7 +397,10 @@ export async function compareRetrievalRuns(
   ]);
   if (
     a.manifest.dataset.sha256 !== b.manifest.dataset.sha256 ||
-    !same(a.manifest.corpus, b.manifest.corpus)
+    !same(
+      normalizedCorpus(a.manifest.corpus),
+      normalizedCorpus(b.manifest.corpus),
+    )
   )
     throw Error('Paired dataset/corpus must be identical');
   if (a.manifest.budget_chars !== b.manifest.budget_chars)

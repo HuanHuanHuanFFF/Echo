@@ -309,3 +309,74 @@ it('keeps fixed child questions in their parent intent group', async () => {
     await rm(root, { recursive: true, force: true });
   }
 });
+
+it('cannot manufacture an answerable confidence interval by adding unanswerable groups', () => {
+  const r = pairedBootstrap(
+    [
+      {
+        id: 'answer',
+        group: 'one',
+        baseline: { covered: 0, expected: 1 },
+        candidate: { covered: 1, expected: 1 },
+      },
+      {
+        id: 'absent',
+        group: 'two',
+        baseline: { covered: 0, expected: 0 },
+        candidate: { covered: 0, expected: 0 },
+      },
+    ],
+    { iterations: 1000, seed: 7 },
+  );
+  expect(r.independent_groups).toBe(2);
+  expect(r.fact_coverage.ci95).toBeNull();
+  expect(r.fact_coverage.valid_resamples).toBe(0);
+});
+it('accepts equivalent corpus manifests in producer-normalized order', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'echo-corpus-order-'));
+  try {
+    const dirs = [
+      await fixtureRun(root, 'a', false),
+      await fixtureRun(root, 'b', true),
+    ];
+    for (const dir of dirs) {
+      const d = JSON.parse(await readFile(join(dir, 'dataset.json'), 'utf8'));
+      d.corpus = [
+        { collection_id: 'a', path: 'z.md', sha256: 'c'.repeat(64) },
+        ...d.corpus,
+      ];
+      const raw = JSON.stringify(d);
+      await writeFile(join(dir, 'dataset.json'), raw);
+      const m = JSON.parse(await readFile(join(dir, 'manifest.json'), 'utf8'));
+      m.corpus = d.corpus.slice().reverse();
+      m.dataset.sha256 = createHash('sha256').update(raw).digest('hex');
+      await writeFile(join(dir, 'manifest.json'), JSON.stringify(m));
+    }
+    const r = await compareRetrievalRuns(dirs[0]!, dirs[1]!);
+    expect(r.paired.fact_coverage.delta).toBe(1);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+it('rejects claimed coverage when the recorded retrieval returned no evidence', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'echo-impossible-'));
+  try {
+    const a = await fixtureRun(root, 'a', false),
+      b = await fixtureRun(root, 'b', true);
+    const p = join(b, 'report.json'),
+      r = JSON.parse(await readFile(p, 'utf8')),
+      row = r.rows[0];
+    row.status = 'empty';
+    row.result = { status: 'empty', results: [] };
+    row.response_chars = JSON.stringify(row.result).length;
+    row.context_chars = row.request_chars + row.response_chars;
+    await writeFile(p, JSON.stringify(r));
+    await writeFile(join(b, 'rows.jsonl'), JSON.stringify(row) + '\n');
+    await expect(compareRetrievalRuns(a, b)).rejects.toThrow(
+      /coverage|evidence/,
+    );
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
