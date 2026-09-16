@@ -69,4 +69,5 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 - [2026年实质内容筛选修正](evals/2026-09-16-substantive-freshness-correction.md)：撤回仅链接/拼写更新的旧D候选，核查替代个人学习记录。
 
-- [语料v2与题库准备](evals/2026-09-16-corpus-v2-and-annotation-status.md)：364篇当前范围、真实新增来源、两策略BM25工程准备与未冻结作者稿。
+- [语料v2与题库准备快照](evals/2026-09-16-corpus-v2-and-annotation-status.md)：364篇范围、真实新增来源与冻结前复核问题。
+- [标签冻结与首轮开发集BM25对照](evals/2026-09-16-frozen-labels-and-development-bm25.md)：100/200标签冻结、两切块开发结果与同题干扰；[公开统计指纹](evals/2026-09-16-development-bm25.manifest.json)。真实语义与最终评测仍待完成。
