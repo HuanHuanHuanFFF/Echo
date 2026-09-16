@@ -127,15 +127,19 @@ export async function syncIndex(
     );
     const seen = new Set<string>();
     const checks: { path: string; version: string }[] = [];
-    const inventories: { root: string; paths: string[] }[] = [];
+    const inventories: {
+      root: string;
+      paths: string[];
+      collection: EchoConfig['collections'][number];
+    }[] = [];
     for (const collection of config.collections) {
       signal?.throwIfAborted();
-      const paths = await listMarkdown(collection.root);
+      const paths = await listMarkdown(collection.root, collection);
       const canonicalRoot = await realpath(collection.root);
-      inventories.push({ root: collection.root, paths });
+      inventories.push({ root: collection.root, paths, collection });
       for (const path of paths) {
         signal?.throwIfAborted();
-        const source = await prepareSource(path);
+        const source = await prepareSource(path, collection.max_file_bytes);
         checks.push({ path, version: source.sourceVersion });
         if (source.wroteId) result.wrote_ids++;
         if (seen.has(source.sourceId))
@@ -251,8 +255,9 @@ export async function syncIndex(
     // Reject a changing corpus instead of claiming the snapshot matches an incomplete scan.
     for (const inventory of inventories)
       if (
-        JSON.stringify(await listMarkdown(inventory.root)) !==
-        JSON.stringify(inventory.paths)
+        JSON.stringify(
+          await listMarkdown(inventory.root, inventory.collection),
+        ) !== JSON.stringify(inventory.paths)
       )
         throw new Error('Collection changed while syncing; retry');
     for (const check of checks)

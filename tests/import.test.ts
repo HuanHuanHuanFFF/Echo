@@ -411,3 +411,17 @@ it.skipIf(process.platform === 'win32')(
     }
   },
 );
+
+it('applies declared scan policies through the legacy compatibility entrypoint too', async () => {
+  const { root, config } = await fixture();
+  await mkdir(join(root, 'private'));
+  const excluded = join(root, 'private/skip.md');
+  await writeFile(excluded, 'private unchanged');
+  await writeFile(join(root, 'keep.md'), '# Public\napple');
+  config.collections[0]!.exclude = ['private/**'];
+  config.collections[0]!.max_file_bytes = 1000;
+  expect(await syncIndex(config)).toMatchObject({ added: 1 });
+  expect(await readFile(excluded, 'utf8')).toBe('private unchanged');
+  await writeFile(join(root, 'large.md'), 'x'.repeat(1001));
+  await expect(syncIndex(config)).rejects.toThrow('max_file_bytes');
+});
