@@ -2,7 +2,7 @@
 
 更新日期：2026-09-17。
 
-Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前四阶段已合并并通过双平台 CI；第五阶段工具与本地样本评测已具备，独立安装及真实API短文本探针已通过；正式跨库默认方案效果仍待验收。安装使用从[README](../README.md)开始，当前配置以[v2 配置契约](design/configuration-profiles.md)为准。
+Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前四阶段已合并并通过双平台 CI；第五阶段已完成独立安装、真实文档向量及100题开发对照；默认组合选择与最终评测仍待验收。安装使用从[README](../README.md)开始，当前配置以[v2 配置契约](design/configuration-profiles.md)为准。
 
 ## 从这里继续
 

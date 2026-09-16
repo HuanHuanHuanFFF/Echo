@@ -1,0 +1,2845 @@
+{
+  "version": 1,
+  "status": "complete",
+  "primary_questions": 100,
+  "paired_existing_questions": 20,
+  "parent_executions": 720,
+  "query_usage": {
+    "requests": 972,
+    "texts": 972,
+    "input_chars": 46908,
+    "reported_tokens": 38910
+  },
+  "final_queries": 0,
+  "predeclared_plan_sha256": "82e3f2ec53436efc303830d3a0854175e3696bd61e413c1b982085b1d1d8966f",
+  "script_sha256": "41a2c3716693b1fd2de2f6e12dee2576b70eb796a596ff639de45d523d2e8270",
+  "guard_sha256": "07e4131d35882db3ab3bdace67ef692ff9b5d523d6443f21304d2a40d98448e6",
+  "plan_sha256": "be570255e234394d8b0dd90b3d03e481e429e73b84f976e717ad046146885080",
+  "report_sha256": "3f0ccf2151f1464f1507faf19374acbc54ab029731863c5e043ac7e3a7566337",
+  "attempts_sha256": "2c154149c93a63855c65cc8485ac732047158842cbe2dc625b9f0ffc9d37b1ac",
+  "matrix": [
+    {
+      "scope": "A-development",
+      "chunker": "heading-1000",
+      "variant": "tune-wgt-05",
+      "changes": {
+        "bm25_weight": 0.5
+      },
+      "summary": {
+        "queries": 30,
+        "answerable": 28,
+        "fact_coverage": {
+          "covered": 64,
+          "expected": 67
+        },
+        "complete_evidence": {
+          "covered": 25,
+          "expected": 28
+        },
+        "no_answer": {
+          "queries": 2,
+          "nonempty": 2
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.7708333333333333,
+        "latency_ms": {
+          "p50": 249.00110000000018,
+          "p95": 674.7236999999996
+        },
+        "cumulative_context_chars": 249483
+      },
+      "api_usage": {
+        "requests": 41,
+        "texts": 41,
+        "input_chars": 1847,
+        "reported_tokens": 1570
+      },
+      "report_sha256": "af4dd9b6cba07106bd3a991cf6f76849c34eb3024aca5f99d0a9d74891c301dd",
+      "rows_sha256": "1fb9275b10018664bef64dc2492a29e4fb25d226ffbacfe1923988405879ffb1",
+      "dataset_sha256": "0ab3c960526eca7f958588d8219433ebdf8e804a8cc73a93863a598e0c7d0d70",
+      "config_revision": "b728b76b50a83ebba68aea3a85a7d3ead73586bb61e1fcabf4c86cec6344dc1d"
+    },
+    {
+      "scope": "A-development",
+      "chunker": "heading-1000",
+      "variant": "tune-src-03",
+      "changes": {
+        "max_chunks_per_source": 3
+      },
+      "summary": {
+        "queries": 30,
+        "answerable": 28,
+        "fact_coverage": {
+          "covered": 66,
+          "expected": 67
+        },
+        "complete_evidence": {
+          "covered": 27,
+          "expected": 28
+        },
+        "no_answer": {
+          "queries": 2,
+          "nonempty": 2
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8363095238095238,
+        "latency_ms": {
+          "p50": 199.53969999999936,
+          "p95": 591.3958999999995
+        },
+        "cumulative_context_chars": 248124
+      },
+      "api_usage": {
+        "requests": 41,
+        "texts": 41,
+        "input_chars": 1847,
+        "reported_tokens": 1570
+      },
+      "report_sha256": "a7178ebd5263a3c7603aaf3e6b93c959fc9ff1ce45d29dcbf52996a978cd7450",
+      "rows_sha256": "598c5d4121b1d3e991ee926f3d83acbd005210b49ecf57381092240de022fb40",
+      "dataset_sha256": "0ab3c960526eca7f958588d8219433ebdf8e804a8cc73a93863a598e0c7d0d70",
+      "config_revision": "f9874af0e29fbe6b68f6a02aa2cbe7b0bcfd7abc4e2f242dfa2d2222d3564491"
+    },
+    {
+      "scope": "A-development",
+      "chunker": "heading-1000",
+      "variant": "tune-rrf-10",
+      "changes": {
+        "rrf_k": 10
+      },
+      "summary": {
+        "queries": 30,
+        "answerable": 28,
+        "fact_coverage": {
+          "covered": 64,
+          "expected": 67
+        },
+        "complete_evidence": {
+          "covered": 25,
+          "expected": 28
+        },
+        "no_answer": {
+          "queries": 2,
+          "nonempty": 2
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8392857142857143,
+        "latency_ms": {
+          "p50": 291.4860000000008,
+          "p95": 822.6549999999988
+        },
+        "cumulative_context_chars": 248277
+      },
+      "api_usage": {
+        "requests": 41,
+        "texts": 41,
+        "input_chars": 1847,
+        "reported_tokens": 1570
+      },
+      "report_sha256": "8b332106f30c1782efb302ada89c333f71eb7698d373d3a5d08de9ad897242f3",
+      "rows_sha256": "9a394c5ca5ba8f6e4cef135fd64e79557ea42b23eaf544c564003516f845d737",
+      "dataset_sha256": "0ab3c960526eca7f958588d8219433ebdf8e804a8cc73a93863a598e0c7d0d70",
+      "config_revision": "191019ce694bf2d4f4c701f15cf4639c1ebc374e8cb9ef0957e742d37ac2da05"
+    },
+    {
+      "scope": "A-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-wgt-05",
+      "changes": {
+        "bm25_weight": 0.5
+      },
+      "summary": {
+        "queries": 30,
+        "answerable": 28,
+        "fact_coverage": {
+          "covered": 59,
+          "expected": 67
+        },
+        "complete_evidence": {
+          "covered": 22,
+          "expected": 28
+        },
+        "no_answer": {
+          "queries": 2,
+          "nonempty": 2
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.7045068027210883,
+        "latency_ms": {
+          "p50": 216.45349999999962,
+          "p95": 782.7251000000033
+        },
+        "cumulative_context_chars": 243975
+      },
+      "api_usage": {
+        "requests": 41,
+        "texts": 41,
+        "input_chars": 1847,
+        "reported_tokens": 1570
+      },
+      "report_sha256": "c98b1656c23635b7c1564daf2a052d290f728e796ca47deb10471f39dbc73e28",
+      "rows_sha256": "92b96ec6a2ae3fe3890181a5ae3b6e8d89739136af41b329e94360e867730635",
+      "dataset_sha256": "0ab3c960526eca7f958588d8219433ebdf8e804a8cc73a93863a598e0c7d0d70",
+      "config_revision": "56e2f2b7e02941c2ccf242d01ea4f2d0bc8c9f625d9bb0cef85c861d5352dc5c"
+    },
+    {
+      "scope": "A-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-src-03",
+      "changes": {
+        "max_chunks_per_source": 3
+      },
+      "summary": {
+        "queries": 30,
+        "answerable": 28,
+        "fact_coverage": {
+          "covered": 61,
+          "expected": 67
+        },
+        "complete_evidence": {
+          "covered": 23,
+          "expected": 28
+        },
+        "no_answer": {
+          "queries": 2,
+          "nonempty": 2
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.7142857142857143,
+        "latency_ms": {
+          "p50": 231.80879999999888,
+          "p95": 492.42460000000574
+        },
+        "cumulative_context_chars": 244281
+      },
+      "api_usage": {
+        "requests": 41,
+        "texts": 41,
+        "input_chars": 1847,
+        "reported_tokens": 1570
+      },
+      "report_sha256": "70a2a01bc05423f83faacac5cbb6bd1eebcd6f11f06aafe15112845a404f7fda",
+      "rows_sha256": "bf87eb9a4f29ce8454feb4f68bb28ea3038f759aa4271328ba4fd8093f66fa29",
+      "dataset_sha256": "0ab3c960526eca7f958588d8219433ebdf8e804a8cc73a93863a598e0c7d0d70",
+      "config_revision": "56774b9af2940a6bec7238864b3f0aa52e4b0e85d011c2a9efacb1db2b41f51f"
+    },
+    {
+      "scope": "A-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-rrf-10",
+      "changes": {
+        "rrf_k": 10
+      },
+      "summary": {
+        "queries": 30,
+        "answerable": 28,
+        "fact_coverage": {
+          "covered": 58,
+          "expected": 67
+        },
+        "complete_evidence": {
+          "covered": 21,
+          "expected": 28
+        },
+        "no_answer": {
+          "queries": 2,
+          "nonempty": 2
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.699404761904762,
+        "latency_ms": {
+          "p50": 203.00540000000183,
+          "p95": 666.4832999999999
+        },
+        "cumulative_context_chars": 243806
+      },
+      "api_usage": {
+        "requests": 41,
+        "texts": 41,
+        "input_chars": 1847,
+        "reported_tokens": 1570
+      },
+      "report_sha256": "acbf37ba5455c000553b4db05bbc81f7093247502c46b5573a1f01b9dc99865c",
+      "rows_sha256": "29c23f187383b160ed4c40dfc0184928aa939c070a177428da1a964cec40c5ed",
+      "dataset_sha256": "0ab3c960526eca7f958588d8219433ebdf8e804a8cc73a93863a598e0c7d0d70",
+      "config_revision": "28adf9e4562f67e0022fff0643ed0314bc25f073ee8987f60e133da721c535fb"
+    },
+    {
+      "scope": "B-development",
+      "chunker": "heading-1000",
+      "variant": "tune-wgt-05",
+      "changes": {
+        "bm25_weight": 0.5
+      },
+      "summary": {
+        "queries": 25,
+        "answerable": 25,
+        "fact_coverage": {
+          "covered": 44,
+          "expected": 50
+        },
+        "complete_evidence": {
+          "covered": 20,
+          "expected": 25
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.9,
+        "latency_ms": {
+          "p50": 175.0885999999955,
+          "p95": 617.2276999999958
+        },
+        "cumulative_context_chars": 277431
+      },
+      "api_usage": {
+        "requests": 33,
+        "texts": 33,
+        "input_chars": 1488,
+        "reported_tokens": 1291
+      },
+      "report_sha256": "ec2ce7996f51366887b874ac28505de3ef2b56581a96bffc98dd9dd5b6c0111c",
+      "rows_sha256": "73be2454dbb91a3f72ffd384101a8388a5715966511147a1ca57e0e79892b8f8",
+      "dataset_sha256": "8a0a85ff1016242a5094aceea4437691396957b402dbc97ea81dbaea22642925",
+      "config_revision": "bc5a55ef1578906e13881d3c4223674ba799fbf3eb21133adf204b04f4b7be1f"
+    },
+    {
+      "scope": "B-development",
+      "chunker": "heading-1000",
+      "variant": "tune-src-03",
+      "changes": {
+        "max_chunks_per_source": 3
+      },
+      "summary": {
+        "queries": 25,
+        "answerable": 25,
+        "fact_coverage": {
+          "covered": 47,
+          "expected": 50
+        },
+        "complete_evidence": {
+          "covered": 23,
+          "expected": 25
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.9213333333333332,
+        "latency_ms": {
+          "p50": 197.02150000000256,
+          "p95": 651.8126000000047
+        },
+        "cumulative_context_chars": 275762
+      },
+      "api_usage": {
+        "requests": 33,
+        "texts": 33,
+        "input_chars": 1488,
+        "reported_tokens": 1291
+      },
+      "report_sha256": "2b278694105b4a7e09b30ab3570362061dd068be3273d13a6361cbffa255e69e",
+      "rows_sha256": "2c690900052707579e813228c954506841412b752d2844a4c50fa4e4f39d373a",
+      "dataset_sha256": "8a0a85ff1016242a5094aceea4437691396957b402dbc97ea81dbaea22642925",
+      "config_revision": "2e853fe6a251e9f057cdc138621193b6e3857ac5555bd3c2999b7ec5e99014fd"
+    },
+    {
+      "scope": "B-development",
+      "chunker": "heading-1000",
+      "variant": "tune-rrf-10",
+      "changes": {
+        "rrf_k": 10
+      },
+      "summary": {
+        "queries": 25,
+        "answerable": 25,
+        "fact_coverage": {
+          "covered": 44,
+          "expected": 50
+        },
+        "complete_evidence": {
+          "covered": 20,
+          "expected": 25
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.9,
+        "latency_ms": {
+          "p50": 199.07559999999648,
+          "p95": 809.3590999999869
+        },
+        "cumulative_context_chars": 275836
+      },
+      "api_usage": {
+        "requests": 33,
+        "texts": 33,
+        "input_chars": 1488,
+        "reported_tokens": 1291
+      },
+      "report_sha256": "272d8e6ca31e669f378a7ec8ac1cbf96a3099db6c4b987530aa5b10b514971d4",
+      "rows_sha256": "1fb92e82469594fd6ab2714dc5415c0a1263aba29ed81868f510c1ab6e9777f7",
+      "dataset_sha256": "8a0a85ff1016242a5094aceea4437691396957b402dbc97ea81dbaea22642925",
+      "config_revision": "617e004ca2ad4b6617f3051038191adbf83ddae48f2aec41f2690306f5f4b423"
+    },
+    {
+      "scope": "B-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-wgt-05",
+      "changes": {
+        "bm25_weight": 0.5
+      },
+      "summary": {
+        "queries": 25,
+        "answerable": 25,
+        "fact_coverage": {
+          "covered": 47,
+          "expected": 50
+        },
+        "complete_evidence": {
+          "covered": 22,
+          "expected": 25
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.94,
+        "latency_ms": {
+          "p50": 183.24099999999453,
+          "p95": 719.9915999999939
+        },
+        "cumulative_context_chars": 282552
+      },
+      "api_usage": {
+        "requests": 33,
+        "texts": 33,
+        "input_chars": 1488,
+        "reported_tokens": 1291
+      },
+      "report_sha256": "3e84f73e87dd962d149a99ab76540280dc413bb9cc7d64e9a176e7e228b9cbcc",
+      "rows_sha256": "91d47f9fb3b6714159745fcc290ef42817af73571f42ece8bce626adc7a015b4",
+      "dataset_sha256": "8a0a85ff1016242a5094aceea4437691396957b402dbc97ea81dbaea22642925",
+      "config_revision": "9415e08e9cf662fb2a3ffd6bc92e03ebc2514b6a36af583c2d794d603a04bd7d"
+    },
+    {
+      "scope": "B-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-src-03",
+      "changes": {
+        "max_chunks_per_source": 3
+      },
+      "summary": {
+        "queries": 25,
+        "answerable": 25,
+        "fact_coverage": {
+          "covered": 48,
+          "expected": 50
+        },
+        "complete_evidence": {
+          "covered": 23,
+          "expected": 25
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.94,
+        "latency_ms": {
+          "p50": 282.3671000000031,
+          "p95": 829.2106000000058
+        },
+        "cumulative_context_chars": 283936
+      },
+      "api_usage": {
+        "requests": 33,
+        "texts": 33,
+        "input_chars": 1488,
+        "reported_tokens": 1291
+      },
+      "report_sha256": "33db9bd1851c1e85ed473c7c5b77be9caecd745d55bb736f54eb533e62e0024b",
+      "rows_sha256": "b8f9ab381c5ada934cc7b20251b2b26e02ecfa9ff5a68b372a097b3f3b6ccf10",
+      "dataset_sha256": "8a0a85ff1016242a5094aceea4437691396957b402dbc97ea81dbaea22642925",
+      "config_revision": "d132153868145b35522294479133cd2f37785ddf604411a46cedc633e8c0af05"
+    },
+    {
+      "scope": "B-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-rrf-10",
+      "changes": {
+        "rrf_k": 10
+      },
+      "summary": {
+        "queries": 25,
+        "answerable": 25,
+        "fact_coverage": {
+          "covered": 47,
+          "expected": 50
+        },
+        "complete_evidence": {
+          "covered": 22,
+          "expected": 25
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.94,
+        "latency_ms": {
+          "p50": 299.6226999999926,
+          "p95": 522.353099999993
+        },
+        "cumulative_context_chars": 282675
+      },
+      "api_usage": {
+        "requests": 33,
+        "texts": 33,
+        "input_chars": 1488,
+        "reported_tokens": 1291
+      },
+      "report_sha256": "d4a2353e92982748dca26097c280209122084b480fc86c5bd87bc2f684617d61",
+      "rows_sha256": "07eb3d8815a60969159e42e146c7bc3c39e508c7cc566f7e78f7c51b46bc9e6f",
+      "dataset_sha256": "8a0a85ff1016242a5094aceea4437691396957b402dbc97ea81dbaea22642925",
+      "config_revision": "19dda2d6c4743df71da70964f1f92bdc522932fd59d864c53504d4b0540c9d84"
+    },
+    {
+      "scope": "C-development",
+      "chunker": "heading-1000",
+      "variant": "tune-wgt-05",
+      "changes": {
+        "bm25_weight": 0.5
+      },
+      "summary": {
+        "queries": 15,
+        "answerable": 15,
+        "fact_coverage": {
+          "covered": 23,
+          "expected": 25
+        },
+        "complete_evidence": {
+          "covered": 14,
+          "expected": 15
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8333333333333334,
+        "latency_ms": {
+          "p50": 268.01549999999406,
+          "p95": 583.7010000000009
+        },
+        "cumulative_context_chars": 175139
+      },
+      "api_usage": {
+        "requests": 17,
+        "texts": 17,
+        "input_chars": 1017,
+        "reported_tokens": 784
+      },
+      "report_sha256": "15457b1f3bb47fc74f1d2a930f60cb6a1beae369448e11bcb31e47415e8e94ad",
+      "rows_sha256": "4ee18930c586c125d4d7cffab9da66482c4621b81728aa799b05c72ff0323ffd",
+      "dataset_sha256": "833b32f4d42fd15dd7ebb1aef875040901338f120a92ed731fdd3d53dca75391",
+      "config_revision": "190b5ebe38a7ae0350ec16899969ddbad9853466cc63b3c8afbe4334d55d363f"
+    },
+    {
+      "scope": "C-development",
+      "chunker": "heading-1000",
+      "variant": "tune-src-03",
+      "changes": {
+        "max_chunks_per_source": 3
+      },
+      "summary": {
+        "queries": 15,
+        "answerable": 15,
+        "fact_coverage": {
+          "covered": 24,
+          "expected": 25
+        },
+        "complete_evidence": {
+          "covered": 14,
+          "expected": 15
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8133333333333332,
+        "latency_ms": {
+          "p50": 241.83120000000054,
+          "p95": 622.2459999999992
+        },
+        "cumulative_context_chars": 175135
+      },
+      "api_usage": {
+        "requests": 17,
+        "texts": 17,
+        "input_chars": 1017,
+        "reported_tokens": 784
+      },
+      "report_sha256": "04727fb3899454e9103613f579dad7836b73fd785e5116ffceb74539021af1b0",
+      "rows_sha256": "e7c83e8f4d9f7b276c909aacef2040ad84f1264bfd5097bc011d0ecfb44373f7",
+      "dataset_sha256": "833b32f4d42fd15dd7ebb1aef875040901338f120a92ed731fdd3d53dca75391",
+      "config_revision": "d93864ce1d4b7abe3abcdad545f7ef9eb5df6317058017def91c89d3c2187331"
+    },
+    {
+      "scope": "C-development",
+      "chunker": "heading-1000",
+      "variant": "tune-rrf-10",
+      "changes": {
+        "rrf_k": 10
+      },
+      "summary": {
+        "queries": 15,
+        "answerable": 15,
+        "fact_coverage": {
+          "covered": 23,
+          "expected": 25
+        },
+        "complete_evidence": {
+          "covered": 14,
+          "expected": 15
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8,
+        "latency_ms": {
+          "p50": 167.11239999999816,
+          "p95": 796.1478999999963
+        },
+        "cumulative_context_chars": 175845
+      },
+      "api_usage": {
+        "requests": 17,
+        "texts": 17,
+        "input_chars": 1017,
+        "reported_tokens": 784
+      },
+      "report_sha256": "ff7fc78218fe7d676625f9c87e3ca6fe8ae6bc4f130d0753e31c75a2525ed5b4",
+      "rows_sha256": "ebe687bb68f4ae1334512823c1adb64a59989712ce226cf5c41334204053ded8",
+      "dataset_sha256": "833b32f4d42fd15dd7ebb1aef875040901338f120a92ed731fdd3d53dca75391",
+      "config_revision": "8f44444c9d751fd095e342b72fe1519457ee4e23da71043f1b06f90880869ead"
+    },
+    {
+      "scope": "C-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-wgt-05",
+      "changes": {
+        "bm25_weight": 0.5
+      },
+      "summary": {
+        "queries": 15,
+        "answerable": 15,
+        "fact_coverage": {
+          "covered": 25,
+          "expected": 25
+        },
+        "complete_evidence": {
+          "covered": 15,
+          "expected": 15
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 1,
+        "latency_ms": {
+          "p50": 167.32670000000508,
+          "p95": 794.9279999999999
+        },
+        "cumulative_context_chars": 173530
+      },
+      "api_usage": {
+        "requests": 17,
+        "texts": 17,
+        "input_chars": 1017,
+        "reported_tokens": 784
+      },
+      "report_sha256": "f1820c60647c11d579a5140c34880422132a0031b1b6ef8c453de3b91211557c",
+      "rows_sha256": "31e56bbb360a70f25739c59ece446920d6e358e6f7ffb5091cc5140130f374d5",
+      "dataset_sha256": "833b32f4d42fd15dd7ebb1aef875040901338f120a92ed731fdd3d53dca75391",
+      "config_revision": "0205f80b5ffe05031109e71e246c9b3efff2731f99c63ec84f871565e0d0a56f"
+    },
+    {
+      "scope": "C-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-src-03",
+      "changes": {
+        "max_chunks_per_source": 3
+      },
+      "summary": {
+        "queries": 15,
+        "answerable": 15,
+        "fact_coverage": {
+          "covered": 25,
+          "expected": 25
+        },
+        "complete_evidence": {
+          "covered": 15,
+          "expected": 15
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 1,
+        "latency_ms": {
+          "p50": 199.31380000000354,
+          "p95": 535.5547000000079
+        },
+        "cumulative_context_chars": 173504
+      },
+      "api_usage": {
+        "requests": 17,
+        "texts": 17,
+        "input_chars": 1017,
+        "reported_tokens": 784
+      },
+      "report_sha256": "d7c0eb6e1876a331a34b39042e27f6e48a1ffb41809dd35d49f7bad727c2775e",
+      "rows_sha256": "c1fac0055fec3a6569ff1e5d77017e9075eeb39ecfb168caae49122dc481c04c",
+      "dataset_sha256": "833b32f4d42fd15dd7ebb1aef875040901338f120a92ed731fdd3d53dca75391",
+      "config_revision": "099ee52ce4d5bb9958a5b9075a0699d8c9524a0aab5a7d4a590f9e55cdef5a47"
+    },
+    {
+      "scope": "C-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-rrf-10",
+      "changes": {
+        "rrf_k": 10
+      },
+      "summary": {
+        "queries": 15,
+        "answerable": 15,
+        "fact_coverage": {
+          "covered": 25,
+          "expected": 25
+        },
+        "complete_evidence": {
+          "covered": 15,
+          "expected": 15
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 1,
+        "latency_ms": {
+          "p50": 212.6134999999922,
+          "p95": 495.51729999999225
+        },
+        "cumulative_context_chars": 173404
+      },
+      "api_usage": {
+        "requests": 17,
+        "texts": 17,
+        "input_chars": 1017,
+        "reported_tokens": 784
+      },
+      "report_sha256": "19fa2a9ef3e504bcc10b7c77f16e2a3936cf7b0ef6bf1f8dc0a234bf6b7871a2",
+      "rows_sha256": "0f51317825c292dab0bc1afb4c901362450715feb5c3463c67a1c41705712de0",
+      "dataset_sha256": "833b32f4d42fd15dd7ebb1aef875040901338f120a92ed731fdd3d53dca75391",
+      "config_revision": "4b730a0b5c15e4b090dd8e64fee7a46d859b23ba0d0a9f600584f900d53a04cb"
+    },
+    {
+      "scope": "mixed-development",
+      "chunker": "heading-1000",
+      "variant": "tune-wgt-05",
+      "changes": {
+        "bm25_weight": 0.5
+      },
+      "summary": {
+        "queries": 30,
+        "answerable": 27,
+        "fact_coverage": {
+          "covered": 73,
+          "expected": 84
+        },
+        "complete_evidence": {
+          "covered": 19,
+          "expected": 27
+        },
+        "no_answer": {
+          "queries": 3,
+          "nonempty": 3
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8703703703703703,
+        "latency_ms": {
+          "p50": 367.02170000001206,
+          "p95": 648.6903999999922
+        },
+        "cumulative_context_chars": 301058
+      },
+      "api_usage": {
+        "requests": 44,
+        "texts": 44,
+        "input_chars": 2236,
+        "reported_tokens": 1788
+      },
+      "report_sha256": "4be88d671d00fd77cf87a806e03c538777e0b7f47aaae10ab683e91a74187e9f",
+      "rows_sha256": "5db402b054c22cafc25d2bb3417b05d947aa131a1975426c8cc1af946bee5692",
+      "dataset_sha256": "2501fbe85e44b8bfc905f42e4790ec71754e0cb6c05d9963a1641a949c135a76",
+      "config_revision": "d0744e50a8af29fed5ff110238f73616557005065dd8d6546d6c80e97a55b36c"
+    },
+    {
+      "scope": "mixed-development",
+      "chunker": "heading-1000",
+      "variant": "tune-src-03",
+      "changes": {
+        "max_chunks_per_source": 3
+      },
+      "summary": {
+        "queries": 30,
+        "answerable": 27,
+        "fact_coverage": {
+          "covered": 72,
+          "expected": 84
+        },
+        "complete_evidence": {
+          "covered": 20,
+          "expected": 27
+        },
+        "no_answer": {
+          "queries": 3,
+          "nonempty": 3
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8611111111111112,
+        "latency_ms": {
+          "p50": 339.531799999997,
+          "p95": 499.16339999999036
+        },
+        "cumulative_context_chars": 296296
+      },
+      "api_usage": {
+        "requests": 44,
+        "texts": 44,
+        "input_chars": 2236,
+        "reported_tokens": 1788
+      },
+      "report_sha256": "ed6ca5179bc3262e1a450e3f2185108c1867abce1acbf078f1201b8dfc0d1903",
+      "rows_sha256": "9ed090e3aeb91d7926082949b4a982600455378c17a8e41d8e1134559ad9346c",
+      "dataset_sha256": "2501fbe85e44b8bfc905f42e4790ec71754e0cb6c05d9963a1641a949c135a76",
+      "config_revision": "f20d055e14f6d5bde1b165c6caf5feefcc07c8809249a71b7b22fac5aba7b1dd"
+    },
+    {
+      "scope": "mixed-development",
+      "chunker": "heading-1000",
+      "variant": "tune-rrf-10",
+      "changes": {
+        "rrf_k": 10
+      },
+      "summary": {
+        "queries": 30,
+        "answerable": 27,
+        "fact_coverage": {
+          "covered": 74,
+          "expected": 84
+        },
+        "complete_evidence": {
+          "covered": 19,
+          "expected": 27
+        },
+        "no_answer": {
+          "queries": 3,
+          "nonempty": 3
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8672839506172839,
+        "latency_ms": {
+          "p50": 339.2116999999853,
+          "p95": 879.1113999999943
+        },
+        "cumulative_context_chars": 294304
+      },
+      "api_usage": {
+        "requests": 44,
+        "texts": 44,
+        "input_chars": 2236,
+        "reported_tokens": 1788
+      },
+      "report_sha256": "5b4e1ec4e7e2da0551a70b86a57379f2b08492a33e1607ca9d0dcaae414ffe3c",
+      "rows_sha256": "21035244b141891a7b16a0c0481207d5f9036548b0f79a033d5be588baceb592",
+      "dataset_sha256": "2501fbe85e44b8bfc905f42e4790ec71754e0cb6c05d9963a1641a949c135a76",
+      "config_revision": "9afd5d58a542ea9d6b8cda57a0c0d9fd28bcaf4b961210513e3774e5d986bdd0"
+    },
+    {
+      "scope": "mixed-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-wgt-05",
+      "changes": {
+        "bm25_weight": 0.5
+      },
+      "summary": {
+        "queries": 30,
+        "answerable": 27,
+        "fact_coverage": {
+          "covered": 75,
+          "expected": 84
+        },
+        "complete_evidence": {
+          "covered": 19,
+          "expected": 27
+        },
+        "no_answer": {
+          "queries": 3,
+          "nonempty": 3
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8571428571428571,
+        "latency_ms": {
+          "p50": 307.08949999997276,
+          "p95": 596.9224000000104
+        },
+        "cumulative_context_chars": 313109
+      },
+      "api_usage": {
+        "requests": 44,
+        "texts": 44,
+        "input_chars": 2236,
+        "reported_tokens": 1788
+      },
+      "report_sha256": "940bc5f656808e90d151003a982ae9ecf47a5b432e67b080ed07b06ec598b4a8",
+      "rows_sha256": "11d7b748ead1ed4172d9c1827b31adf4d40531f78a6e2c9b8b4433da90ea9474",
+      "dataset_sha256": "2501fbe85e44b8bfc905f42e4790ec71754e0cb6c05d9963a1641a949c135a76",
+      "config_revision": "88a006604647166492daf657c9490c31ad2174fde24e5e2ffa6a6f4f90db7f9d"
+    },
+    {
+      "scope": "mixed-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-src-03",
+      "changes": {
+        "max_chunks_per_source": 3
+      },
+      "summary": {
+        "queries": 30,
+        "answerable": 27,
+        "fact_coverage": {
+          "covered": 72,
+          "expected": 84
+        },
+        "complete_evidence": {
+          "covered": 20,
+          "expected": 27
+        },
+        "no_answer": {
+          "queries": 3,
+          "nonempty": 3
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8518518518518519,
+        "latency_ms": {
+          "p50": 327.88629999998375,
+          "p95": 776.0246999999799
+        },
+        "cumulative_context_chars": 303810
+      },
+      "api_usage": {
+        "requests": 44,
+        "texts": 44,
+        "input_chars": 2236,
+        "reported_tokens": 1788
+      },
+      "report_sha256": "da3f12cd216fae97286e3236f9bf9439d1827092e8cc59556b5e328f4b8325f0",
+      "rows_sha256": "d766036c850b3fe222bb277a1ab8d922aac624c123fe0a7ff4bf965d3e75965c",
+      "dataset_sha256": "2501fbe85e44b8bfc905f42e4790ec71754e0cb6c05d9963a1641a949c135a76",
+      "config_revision": "c17ae760eed10ef50765be351b6d0d493004349d75fa5a66bde22a069953bfbd"
+    },
+    {
+      "scope": "mixed-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-rrf-10",
+      "changes": {
+        "rrf_k": 10
+      },
+      "summary": {
+        "queries": 30,
+        "answerable": 27,
+        "fact_coverage": {
+          "covered": 77,
+          "expected": 84
+        },
+        "complete_evidence": {
+          "covered": 21,
+          "expected": 27
+        },
+        "no_answer": {
+          "queries": 3,
+          "nonempty": 3
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8611111111111112,
+        "latency_ms": {
+          "p50": 332.6847000000125,
+          "p95": 832.1662000000069
+        },
+        "cumulative_context_chars": 312987
+      },
+      "api_usage": {
+        "requests": 44,
+        "texts": 44,
+        "input_chars": 2236,
+        "reported_tokens": 1788
+      },
+      "report_sha256": "97b5debce8d3341b067db3a675c727776e1c639ead56d503de8e7c7ba605c8fb",
+      "rows_sha256": "28c59ed8023a6b98abc585fe44a4476aee357636938d4c275db4916c69550132",
+      "dataset_sha256": "2501fbe85e44b8bfc905f42e4790ec71754e0cb6c05d9963a1641a949c135a76",
+      "config_revision": "1f2cb30814b82f448288b36c1118189e4ce982c0aa02afa2c1e9c2bf80fc8f6c"
+    },
+    {
+      "scope": "paired-development",
+      "chunker": "heading-1000",
+      "variant": "tune-wgt-05",
+      "changes": {
+        "bm25_weight": 0.5
+      },
+      "summary": {
+        "queries": 20,
+        "answerable": 20,
+        "fact_coverage": {
+          "covered": 37,
+          "expected": 39
+        },
+        "complete_evidence": {
+          "covered": 18,
+          "expected": 20
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8141666666666666,
+        "latency_ms": {
+          "p50": 232.56299999999464,
+          "p95": 540.6978999999992
+        },
+        "cumulative_context_chars": 188305
+      },
+      "api_usage": {
+        "requests": 27,
+        "texts": 27,
+        "input_chars": 1230,
+        "reported_tokens": 1052
+      },
+      "report_sha256": "d0a4526c75213294f595abcf80e146a9b6ee867839c65a56cb8d37fa5d5166fe",
+      "rows_sha256": "c9eb2afcb0f1989d882ea41b35e3239478bcc23935d771c739a3770e74a6f582",
+      "dataset_sha256": "9cceb7e001985c7b4a8d150a687ebda8f1b4c35c746c5db63be9f731a42f9043",
+      "config_revision": "902d688b00b5c911eb76fdf6477ddf63e10123bebbc1c37ecc8bedea7a40d565"
+    },
+    {
+      "scope": "paired-development",
+      "chunker": "heading-1000",
+      "variant": "tune-src-03",
+      "changes": {
+        "max_chunks_per_source": 3
+      },
+      "summary": {
+        "queries": 20,
+        "answerable": 20,
+        "fact_coverage": {
+          "covered": 38,
+          "expected": 39
+        },
+        "complete_evidence": {
+          "covered": 19,
+          "expected": 20
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.83125,
+        "latency_ms": {
+          "p50": 175.8764000000083,
+          "p95": 612.2881999999809
+        },
+        "cumulative_context_chars": 184804
+      },
+      "api_usage": {
+        "requests": 27,
+        "texts": 27,
+        "input_chars": 1230,
+        "reported_tokens": 1052
+      },
+      "report_sha256": "fd30d23c5419e3e2cf1f1d4f41e23d05433609cf7fb49a5b9f31be12056418ab",
+      "rows_sha256": "b044869cc600c3856de1e47fadb77b96f8fcddee18f20360a07a664af7860006",
+      "dataset_sha256": "9cceb7e001985c7b4a8d150a687ebda8f1b4c35c746c5db63be9f731a42f9043",
+      "config_revision": "dd30a55745d1400db881b085b8712ac2d3832d91cf1656a7716b4bdcb51af399"
+    },
+    {
+      "scope": "paired-development",
+      "chunker": "heading-1000",
+      "variant": "tune-rrf-10",
+      "changes": {
+        "rrf_k": 10
+      },
+      "summary": {
+        "queries": 20,
+        "answerable": 20,
+        "fact_coverage": {
+          "covered": 37,
+          "expected": 39
+        },
+        "complete_evidence": {
+          "covered": 18,
+          "expected": 20
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.875,
+        "latency_ms": {
+          "p50": 340.3705000000191,
+          "p95": 488.67129999998724
+        },
+        "cumulative_context_chars": 188103
+      },
+      "api_usage": {
+        "requests": 27,
+        "texts": 27,
+        "input_chars": 1230,
+        "reported_tokens": 1052
+      },
+      "report_sha256": "4d10384d6e5ee488db91c3c94a4666afa8779f0fdac48f2bc0de4ab283115c26",
+      "rows_sha256": "e7ab9ff822bdf76229cb6c82259012bb4ef5e2385df0247757986db8fb41dbfd",
+      "dataset_sha256": "9cceb7e001985c7b4a8d150a687ebda8f1b4c35c746c5db63be9f731a42f9043",
+      "config_revision": "e0023005adb77d6ef237a286c72a2887e0879f0767d3543c173aa60baf4ddbab"
+    },
+    {
+      "scope": "paired-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-wgt-05",
+      "changes": {
+        "bm25_weight": 0.5
+      },
+      "summary": {
+        "queries": 20,
+        "answerable": 20,
+        "fact_coverage": {
+          "covered": 38,
+          "expected": 39
+        },
+        "complete_evidence": {
+          "covered": 19,
+          "expected": 20
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.85,
+        "latency_ms": {
+          "p50": 185.99340000000666,
+          "p95": 609.0442000000039
+        },
+        "cumulative_context_chars": 190793
+      },
+      "api_usage": {
+        "requests": 27,
+        "texts": 27,
+        "input_chars": 1230,
+        "reported_tokens": 1052
+      },
+      "report_sha256": "f502042a73f83c873451eb6d1892307f20147a6b4dc34669079cfb901b30c770",
+      "rows_sha256": "d1cad77e2fb85b517dfec860d68a6bf74e6b7c7bd6016dd9bc2dbeffd51c641b",
+      "dataset_sha256": "9cceb7e001985c7b4a8d150a687ebda8f1b4c35c746c5db63be9f731a42f9043",
+      "config_revision": "9a79d4137b1e435e8f7fd3d1e4c2e5ab69f818d27254d3bbba7a391537d19234"
+    },
+    {
+      "scope": "paired-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-src-03",
+      "changes": {
+        "max_chunks_per_source": 3
+      },
+      "summary": {
+        "queries": 20,
+        "answerable": 20,
+        "fact_coverage": {
+          "covered": 37,
+          "expected": 39
+        },
+        "complete_evidence": {
+          "covered": 18,
+          "expected": 20
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.85,
+        "latency_ms": {
+          "p50": 311.24280000000726,
+          "p95": 606.7511999999988
+        },
+        "cumulative_context_chars": 182479
+      },
+      "api_usage": {
+        "requests": 27,
+        "texts": 27,
+        "input_chars": 1230,
+        "reported_tokens": 1052
+      },
+      "report_sha256": "8b351d806ff871fb56ebe35eb453d607ff0c18ba4ba74328a3fe0eba491b9160",
+      "rows_sha256": "46b4ed2aed21a2df416cbba24c5aaa614352783442e485f77328c64d7f27430c",
+      "dataset_sha256": "9cceb7e001985c7b4a8d150a687ebda8f1b4c35c746c5db63be9f731a42f9043",
+      "config_revision": "437dfc07c3804f7ad1f9c31a4a08431fd4445073ded63f7e60640b24cdf7be01"
+    },
+    {
+      "scope": "paired-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-rrf-10",
+      "changes": {
+        "rrf_k": 10
+      },
+      "summary": {
+        "queries": 20,
+        "answerable": 20,
+        "fact_coverage": {
+          "covered": 38,
+          "expected": 39
+        },
+        "complete_evidence": {
+          "covered": 19,
+          "expected": 20
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8666666666666668,
+        "latency_ms": {
+          "p50": 243.90989999999874,
+          "p95": 455.54159999999683
+        },
+        "cumulative_context_chars": 190146
+      },
+      "api_usage": {
+        "requests": 27,
+        "texts": 27,
+        "input_chars": 1230,
+        "reported_tokens": 1052
+      },
+      "report_sha256": "a544a9294cf5267f07ec0464b87f3432883db61777a0aae6080242db41f61bf6",
+      "rows_sha256": "7eea3bc592604d1c7df73bdb92e30f810e842a05421321aca5319b4f2df89c8f",
+      "dataset_sha256": "9cceb7e001985c7b4a8d150a687ebda8f1b4c35c746c5db63be9f731a42f9043",
+      "config_revision": "66a12f8acecee36022d48566798f0bfbec949531086462f610ae314c59fa4430"
+    }
+  ],
+  "comparisons": [
+    {
+      "scope": "A-development",
+      "chunker": "heading-1000",
+      "variant": "tune-wgt-05",
+      "file": "A-development-0-tune-wgt-05.json",
+      "sha256": "08b0c1baf639f9bdde99f57f736b20973411dcdeb6f64a92cf96a21f3d7016c3",
+      "paired": {
+        "questions": 30,
+        "answerable": 28,
+        "independent_groups": 30,
+        "answerable_independent_groups": 28,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9552238805970149,
+          "candidate": 0.9552238805970149,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8928571428571429,
+          "candidate": 0.8928571428571429,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 21,
+        "answerable": 21,
+        "independent_groups": 10,
+        "answerable_independent_groups": 10,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.96875,
+          "candidate": 0.96875,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9523809523809523,
+          "candidate": 0.9523809523809523,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "A-development",
+      "chunker": "heading-1000",
+      "variant": "tune-src-03",
+      "file": "A-development-0-tune-src-03.json",
+      "sha256": "1b080cb14d2ff6b6f81ae11345c9624953af5548261942dbc5d48210cfcdefdd",
+      "paired": {
+        "questions": 30,
+        "answerable": 28,
+        "independent_groups": 30,
+        "answerable_independent_groups": 28,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9552238805970149,
+          "candidate": 0.9850746268656716,
+          "delta": 0.02985074626865669,
+          "ci95": [0, 0.07462686567164178],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8928571428571429,
+          "candidate": 0.9642857142857143,
+          "delta": 0.0714285714285714,
+          "ci95": [0, 0.1785714285714286],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 21,
+        "answerable": 21,
+        "independent_groups": 10,
+        "answerable_independent_groups": 10,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.96875,
+          "candidate": 1,
+          "delta": 0.03125,
+          "ci95": [0, 0.10344827586206895],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9523809523809523,
+          "candidate": 1,
+          "delta": 0.04761904761904767,
+          "ci95": [0, 0.13043478260869568],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "A-development",
+      "chunker": "heading-1000",
+      "variant": "tune-rrf-10",
+      "file": "A-development-0-tune-rrf-10.json",
+      "sha256": "25389e381e1597412a42ca230765dcafd0f7bde7f7429b568c189e69037d1994",
+      "paired": {
+        "questions": 30,
+        "answerable": 28,
+        "independent_groups": 30,
+        "answerable_independent_groups": 28,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9552238805970149,
+          "candidate": 0.9552238805970149,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8928571428571429,
+          "candidate": 0.8928571428571429,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 21,
+        "answerable": 21,
+        "independent_groups": 10,
+        "answerable_independent_groups": 10,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.96875,
+          "candidate": 0.96875,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9523809523809523,
+          "candidate": 0.9523809523809523,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "A-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-wgt-05",
+      "file": "A-development-1-tune-wgt-05.json",
+      "sha256": "62c6a855688940df79c6c6026c08317a21584c302c5fdd512c625dcc5512633e",
+      "paired": {
+        "questions": 30,
+        "answerable": 28,
+        "independent_groups": 30,
+        "answerable_independent_groups": 28,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8656716417910447,
+          "candidate": 0.8805970149253731,
+          "delta": 0.014925373134328401,
+          "ci95": [0, 0.048387096774193616],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.75,
+          "candidate": 0.7857142857142857,
+          "delta": 0.0357142857142857,
+          "ci95": [0, 0.1071428571428572],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 21,
+        "answerable": 21,
+        "independent_groups": 10,
+        "answerable_independent_groups": 10,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.90625,
+          "candidate": 0.90625,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8571428571428571,
+          "candidate": 0.8571428571428571,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "A-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-src-03",
+      "file": "A-development-1-tune-src-03.json",
+      "sha256": "e5418fa9f9124884d96278e9a0abe7ba2d8282da445f934736b305e4879ab04c",
+      "paired": {
+        "questions": 30,
+        "answerable": 28,
+        "independent_groups": 30,
+        "answerable_independent_groups": 28,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8656716417910447,
+          "candidate": 0.9104477611940298,
+          "delta": 0.04477611940298509,
+          "ci95": [0, 0.09836065573770492],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.75,
+          "candidate": 0.8214285714285714,
+          "delta": 0.0714285714285714,
+          "ci95": [0, 0.1785714285714286],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 21,
+        "answerable": 21,
+        "independent_groups": 10,
+        "answerable_independent_groups": 10,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.90625,
+          "candidate": 0.9375,
+          "delta": 0.03125,
+          "ci95": [0, 0.10344827586206895],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8571428571428571,
+          "candidate": 0.9047619047619048,
+          "delta": 0.04761904761904767,
+          "ci95": [0, 0.13043478260869557],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "A-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-rrf-10",
+      "file": "A-development-1-tune-rrf-10.json",
+      "sha256": "672657cea54bdc7d777b0a8f7384b1d30fc7f238271fb5a5fec4521767d40e77",
+      "paired": {
+        "questions": 30,
+        "answerable": 28,
+        "independent_groups": 30,
+        "answerable_independent_groups": 28,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8656716417910447,
+          "candidate": 0.8656716417910447,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.75,
+          "candidate": 0.75,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 21,
+        "answerable": 21,
+        "independent_groups": 10,
+        "answerable_independent_groups": 10,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.90625,
+          "candidate": 0.90625,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8571428571428571,
+          "candidate": 0.8571428571428571,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "B-development",
+      "chunker": "heading-1000",
+      "variant": "tune-wgt-05",
+      "file": "B-development-0-tune-wgt-05.json",
+      "sha256": "d0dcb752e62a82172c9bc893b19554f7a57388b33f8e5d073929557169440fe0",
+      "paired": {
+        "questions": 25,
+        "answerable": 25,
+        "independent_groups": 25,
+        "answerable_independent_groups": 25,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.88,
+          "candidate": 0.88,
+          "delta": 0,
+          "ci95": [-0.05555555555555558, 0.05882352941176461],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8,
+          "candidate": 0.8,
+          "delta": 0,
+          "ci95": [-0.12, 0.12],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8636363636363636,
+          "candidate": 0.8636363636363636,
+          "delta": 0,
+          "ci95": [-0.13043478260869568, 0.15000000000000002],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8,
+          "candidate": 0.8,
+          "delta": 0,
+          "ci95": [-0.20000000000000007, 0.20000000000000007],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "B-development",
+      "chunker": "heading-1000",
+      "variant": "tune-src-03",
+      "file": "B-development-0-tune-src-03.json",
+      "sha256": "c486263e5b4ebba2a445fd5d6fbc2c2c68ab5a2ffe787c2ff6aba90ca29fa46e",
+      "paired": {
+        "questions": 25,
+        "answerable": 25,
+        "independent_groups": 25,
+        "answerable_independent_groups": 25,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.88,
+          "candidate": 0.94,
+          "delta": 0.05999999999999994,
+          "ci95": [0, 0.1428571428571429],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8,
+          "candidate": 0.92,
+          "delta": 0.12,
+          "ci95": [0, 0.2799999999999999],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8636363636363636,
+          "candidate": 0.8636363636363636,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8,
+          "candidate": 0.8,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "B-development",
+      "chunker": "heading-1000",
+      "variant": "tune-rrf-10",
+      "file": "B-development-0-tune-rrf-10.json",
+      "sha256": "76844a61c2e6f05dc92a2c4790d7f1b7a5911f3b0fd920ee3064c78447587ef3",
+      "paired": {
+        "questions": 25,
+        "answerable": 25,
+        "independent_groups": 25,
+        "answerable_independent_groups": 25,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.88,
+          "candidate": 0.88,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8,
+          "candidate": 0.8,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8636363636363636,
+          "candidate": 0.8636363636363636,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8,
+          "candidate": 0.8,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "B-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-wgt-05",
+      "file": "B-development-1-tune-wgt-05.json",
+      "sha256": "cf91077a69e9bb3541bfe75110260070c88d597ba119d5028471035edc561e46",
+      "paired": {
+        "questions": 25,
+        "answerable": 25,
+        "independent_groups": 25,
+        "answerable_independent_groups": 25,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.94,
+          "candidate": 0.94,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.88,
+          "candidate": 0.88,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9545454545454546,
+          "candidate": 0.9545454545454546,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9333333333333333,
+          "candidate": 0.9333333333333333,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "B-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-src-03",
+      "file": "B-development-1-tune-src-03.json",
+      "sha256": "67a5ff990d8451c53219fbc64e13d4bd08081b0ca85a19212ef11e77ad52fdbe",
+      "paired": {
+        "questions": 25,
+        "answerable": 25,
+        "independent_groups": 25,
+        "answerable_independent_groups": 25,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.94,
+          "candidate": 0.96,
+          "delta": 0.020000000000000018,
+          "ci95": [0, 0.06818181818181823],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.88,
+          "candidate": 0.92,
+          "delta": 0.040000000000000036,
+          "ci95": [0, 0.12],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9545454545454546,
+          "candidate": 0.9545454545454546,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9333333333333333,
+          "candidate": 0.9333333333333333,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "B-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-rrf-10",
+      "file": "B-development-1-tune-rrf-10.json",
+      "sha256": "e2dfa7c327e16c92e19de11b73ae276c09a4198e88484a16da726705337618d7",
+      "paired": {
+        "questions": 25,
+        "answerable": 25,
+        "independent_groups": 25,
+        "answerable_independent_groups": 25,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.94,
+          "candidate": 0.94,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.88,
+          "candidate": 0.88,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9545454545454546,
+          "candidate": 0.9545454545454546,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9333333333333333,
+          "candidate": 0.9333333333333333,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "C-development",
+      "chunker": "heading-1000",
+      "variant": "tune-wgt-05",
+      "file": "C-development-0-tune-wgt-05.json",
+      "sha256": "7c87ee23cd7e402c8e949232361fd8502a60dd142d919164a5845b2c955ad472",
+      "paired": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 15,
+        "answerable_independent_groups": 15,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.88,
+          "candidate": 0.92,
+          "delta": 0.040000000000000036,
+          "ci95": [0, 0.13043478260869557],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8666666666666667,
+          "candidate": 0.9333333333333333,
+          "delta": 0.06666666666666665,
+          "ci95": [0, 0.20000000000000007],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 4,
+        "answerable": 4,
+        "independent_groups": 2,
+        "answerable_independent_groups": 2,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "C-development",
+      "chunker": "heading-1000",
+      "variant": "tune-src-03",
+      "file": "C-development-0-tune-src-03.json",
+      "sha256": "d97e75755a78e3db2e7819592b3260b5434c7cf08242655ac79eb1b38c596039",
+      "paired": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 15,
+        "answerable_independent_groups": 15,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.88,
+          "candidate": 0.96,
+          "delta": 0.07999999999999996,
+          "ci95": [0, 0.26086956521739124],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8666666666666667,
+          "candidate": 0.9333333333333333,
+          "delta": 0.06666666666666665,
+          "ci95": [0, 0.20000000000000007],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 4,
+        "answerable": 4,
+        "independent_groups": 2,
+        "answerable_independent_groups": 2,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "C-development",
+      "chunker": "heading-1000",
+      "variant": "tune-rrf-10",
+      "file": "C-development-0-tune-rrf-10.json",
+      "sha256": "f5b4b9353a14bab0372ca41a094197260651bde9c57ecd533e7a5e55667cd5d4",
+      "paired": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 15,
+        "answerable_independent_groups": 15,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.88,
+          "candidate": 0.92,
+          "delta": 0.040000000000000036,
+          "ci95": [0, 0.13043478260869557],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8666666666666667,
+          "candidate": 0.9333333333333333,
+          "delta": 0.06666666666666665,
+          "ci95": [0, 0.20000000000000007],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 4,
+        "answerable": 4,
+        "independent_groups": 2,
+        "answerable_independent_groups": 2,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "C-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-wgt-05",
+      "file": "C-development-1-tune-wgt-05.json",
+      "sha256": "fd564b5bd3c37984b0b500023a0a6fd3fe01e5a3bde5035f07036be757ca1d80",
+      "paired": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 15,
+        "answerable_independent_groups": 15,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 4,
+        "answerable": 4,
+        "independent_groups": 2,
+        "answerable_independent_groups": 2,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "C-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-src-03",
+      "file": "C-development-1-tune-src-03.json",
+      "sha256": "46723f46f90035901b5fc2759730d98d173dfce1cbbf867534a630297ec553bf",
+      "paired": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 15,
+        "answerable_independent_groups": 15,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 4,
+        "answerable": 4,
+        "independent_groups": 2,
+        "answerable_independent_groups": 2,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "C-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-rrf-10",
+      "file": "C-development-1-tune-rrf-10.json",
+      "sha256": "8ae66ffc5f6451f0d5d4e17894962573ff54e963e50ebe7c64c9adeaa29110a3",
+      "paired": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 15,
+        "answerable_independent_groups": 15,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 4,
+        "answerable": 4,
+        "independent_groups": 2,
+        "answerable_independent_groups": 2,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "mixed-development",
+      "chunker": "heading-1000",
+      "variant": "tune-wgt-05",
+      "file": "mixed-development-0-tune-wgt-05.json",
+      "sha256": "cc42a95d1f15a0a81ffb60c1d97966a63a4b7708022920436ed03d8c27a96f6c",
+      "paired": {
+        "questions": 30,
+        "answerable": 27,
+        "independent_groups": 30,
+        "answerable_independent_groups": 27,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8214285714285714,
+          "candidate": 0.8690476190476191,
+          "delta": 0.04761904761904767,
+          "ci95": [0, 0.1298733766233766],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.6666666666666666,
+          "candidate": 0.7037037037037037,
+          "delta": 0.03703703703703709,
+          "ci95": [0, 0.11111111111111116],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 28,
+        "answerable": 28,
+        "independent_groups": 14,
+        "answerable_independent_groups": 14,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.7407407407407407,
+          "candidate": 0.7962962962962963,
+          "delta": 0.05555555555555558,
+          "ci95": [0, 0.16666666666666674],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.6428571428571429,
+          "candidate": 0.6785714285714286,
+          "delta": 0.0357142857142857,
+          "ci95": [0, 0.1071428571428572],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "mixed-development",
+      "chunker": "heading-1000",
+      "variant": "tune-src-03",
+      "file": "mixed-development-0-tune-src-03.json",
+      "sha256": "f7fd0e7d1fa4e70340a2010bea7016785b207087c37d4b599632b13c98e296a9",
+      "paired": {
+        "questions": 30,
+        "answerable": 27,
+        "independent_groups": 30,
+        "answerable_independent_groups": 27,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8214285714285714,
+          "candidate": 0.8571428571428571,
+          "delta": 0.0357142857142857,
+          "ci95": [-0.012048192771084376, 0.0888888888888889],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.6666666666666666,
+          "candidate": 0.7407407407407407,
+          "delta": 0.07407407407407407,
+          "ci95": [-0.07407407407407407, 0.2222222222222222],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 28,
+        "answerable": 28,
+        "independent_groups": 14,
+        "answerable_independent_groups": 14,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.7407407407407407,
+          "candidate": 0.7962962962962963,
+          "delta": 0.05555555555555558,
+          "ci95": [-0.018181818181818188, 0.14],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.6428571428571429,
+          "candidate": 0.75,
+          "delta": 0.1071428571428571,
+          "ci95": [-0.0357142857142857, 0.25],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "mixed-development",
+      "chunker": "heading-1000",
+      "variant": "tune-rrf-10",
+      "file": "mixed-development-0-tune-rrf-10.json",
+      "sha256": "3a76b4a98dc4b9c8c2ce174979a5b75c1fa0cb344342a896efe82f540d9dad48",
+      "paired": {
+        "questions": 30,
+        "answerable": 27,
+        "independent_groups": 30,
+        "answerable_independent_groups": 27,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8214285714285714,
+          "candidate": 0.8809523809523809,
+          "delta": 0.059523809523809534,
+          "ci95": [-0.011904761904761862, 0.14669318181818147],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.6666666666666666,
+          "candidate": 0.7037037037037037,
+          "delta": 0.03703703703703709,
+          "ci95": [-0.07407407407407407, 0.1481481481481482],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 28,
+        "answerable": 28,
+        "independent_groups": 14,
+        "answerable_independent_groups": 14,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.7407407407407407,
+          "candidate": 0.8148148148148148,
+          "delta": 0.07407407407407407,
+          "ci95": [-0.020408163265306145, 0.2033898305084746],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.6428571428571429,
+          "candidate": 0.7142857142857143,
+          "delta": 0.0714285714285714,
+          "ci95": [-0.0714285714285714, 0.2142857142857143],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "mixed-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-wgt-05",
+      "file": "mixed-development-1-tune-wgt-05.json",
+      "sha256": "7728eb70f095a58efd7d3c06dcf8943b3f1a1b832f9e40804d17680cba7b713f",
+      "paired": {
+        "questions": 30,
+        "answerable": 27,
+        "independent_groups": 30,
+        "answerable_independent_groups": 27,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8452380952380952,
+          "candidate": 0.8928571428571429,
+          "delta": 0.04761904761904767,
+          "ci95": [-0.024390243902439046, 0.1428571428571428],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.7407407407407407,
+          "candidate": 0.7037037037037037,
+          "delta": -0.03703703703703698,
+          "ci95": [-0.11111111111111116, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 28,
+        "answerable": 28,
+        "independent_groups": 14,
+        "answerable_independent_groups": 14,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.7777777777777778,
+          "candidate": 0.8518518518518519,
+          "delta": 0.07407407407407407,
+          "ci95": [-0.03703703703703709, 0.21739130434782605],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.7142857142857143,
+          "candidate": 0.75,
+          "delta": 0.0357142857142857,
+          "ci95": [-0.07142857142857151, 0.1428571428571429],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "mixed-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-src-03",
+      "file": "mixed-development-1-tune-src-03.json",
+      "sha256": "b47466c62cf84182909ac2171889aeebc12ef9100df676cc242fc63f1188a7d9",
+      "paired": {
+        "questions": 30,
+        "answerable": 27,
+        "independent_groups": 30,
+        "answerable_independent_groups": 27,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8452380952380952,
+          "candidate": 0.8571428571428571,
+          "delta": 0.011904761904761862,
+          "ci95": [-0.025000000000000022, 0.05405405405405406],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.7407407407407407,
+          "candidate": 0.7407407407407407,
+          "delta": 0,
+          "ci95": [-0.11111111111111105, 0.11111111111111116],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 28,
+        "answerable": 28,
+        "independent_groups": 14,
+        "answerable_independent_groups": 14,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.7777777777777778,
+          "candidate": 0.7962962962962963,
+          "delta": 0.01851851851851849,
+          "ci95": [-0.037735849056603876, 0.08333333333333337],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.7142857142857143,
+          "candidate": 0.75,
+          "delta": 0.0357142857142857,
+          "ci95": [-0.07142857142857151, 0.1428571428571429],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "mixed-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-rrf-10",
+      "file": "mixed-development-1-tune-rrf-10.json",
+      "sha256": "9800229f911ddf5486415b101e1cd9b0b98ba3660be451d04a4a680ae2a9c57e",
+      "paired": {
+        "questions": 30,
+        "answerable": 27,
+        "independent_groups": 30,
+        "answerable_independent_groups": 27,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8452380952380952,
+          "candidate": 0.9166666666666666,
+          "delta": 0.0714285714285714,
+          "ci95": [0, 0.17647058823529416],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.7407407407407407,
+          "candidate": 0.7777777777777778,
+          "delta": 0.03703703703703709,
+          "ci95": [0, 0.11111111111111116],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 28,
+        "answerable": 28,
+        "independent_groups": 14,
+        "answerable_independent_groups": 14,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.7777777777777778,
+          "candidate": 0.8888888888888888,
+          "delta": 0.11111111111111105,
+          "ci95": [0, 0.2777777777777777],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.7142857142857143,
+          "candidate": 0.8214285714285714,
+          "delta": 0.1071428571428571,
+          "ci95": [0, 0.2857142857142857],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "paired-development",
+      "chunker": "heading-1000",
+      "variant": "tune-wgt-05",
+      "file": "paired-development-0-tune-wgt-05.json",
+      "sha256": "07c53136b2e8efdba62abfa392151dbccb77d1719b26ecc716eb02d98bc3d594",
+      "paired": {
+        "questions": 20,
+        "answerable": 20,
+        "independent_groups": 20,
+        "answerable_independent_groups": 20,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9487179487179487,
+          "candidate": 0.9487179487179487,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9,
+          "candidate": 0.9,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 14,
+        "answerable": 14,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9523809523809523,
+          "candidate": 0.9523809523809523,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9285714285714286,
+          "candidate": 0.9285714285714286,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "paired-development",
+      "chunker": "heading-1000",
+      "variant": "tune-src-03",
+      "file": "paired-development-0-tune-src-03.json",
+      "sha256": "2e6d7b4fc7c19abe3c1e4e69566945bccb9c4951e4a702a8c86d73a20770109f",
+      "paired": {
+        "questions": 20,
+        "answerable": 20,
+        "independent_groups": 20,
+        "answerable_independent_groups": 20,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9487179487179487,
+          "candidate": 0.9743589743589743,
+          "delta": 0.02564102564102566,
+          "ci95": [-0.05405405405405406, 0.11764705882352944],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9,
+          "candidate": 0.95,
+          "delta": 0.04999999999999993,
+          "ci95": [-0.09999999999999998, 0.19999999999999996],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 14,
+        "answerable": 14,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9523809523809523,
+          "candidate": 0.9523809523809523,
+          "delta": 0,
+          "ci95": [-0.1428571428571429, 0.1428571428571428],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9285714285714286,
+          "candidate": 0.9285714285714286,
+          "delta": 0,
+          "ci95": [-0.2142857142857143, 0.2142857142857143],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "paired-development",
+      "chunker": "heading-1000",
+      "variant": "tune-rrf-10",
+      "file": "paired-development-0-tune-rrf-10.json",
+      "sha256": "3ecd182dd92dfc49bbb1bcbb9d600aadfedeebe4972bb8e05d0a24f6c71e9f76",
+      "paired": {
+        "questions": 20,
+        "answerable": 20,
+        "independent_groups": 20,
+        "answerable_independent_groups": 20,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9487179487179487,
+          "candidate": 0.9487179487179487,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9,
+          "candidate": 0.9,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 14,
+        "answerable": 14,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9523809523809523,
+          "candidate": 0.9523809523809523,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9285714285714286,
+          "candidate": 0.9285714285714286,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "paired-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-wgt-05",
+      "file": "paired-development-1-tune-wgt-05.json",
+      "sha256": "2fd414b6dfbe3eea29e0de4496ba8da400b847a90d8ffaeb96250fc6f3c3b632",
+      "paired": {
+        "questions": 20,
+        "answerable": 20,
+        "independent_groups": 20,
+        "answerable_independent_groups": 20,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9487179487179487,
+          "candidate": 0.9743589743589743,
+          "delta": 0.02564102564102566,
+          "ci95": [0, 0.09090909090909094],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9,
+          "candidate": 0.95,
+          "delta": 0.04999999999999993,
+          "ci95": [0, 0.15000000000000002],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 14,
+        "answerable": 14,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "paired-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-src-03",
+      "file": "paired-development-1-tune-src-03.json",
+      "sha256": "df4aad0e620336b2f070a018c87b77c41b07a065e0c99951428fe783920ddbb9",
+      "paired": {
+        "questions": 20,
+        "answerable": 20,
+        "independent_groups": 20,
+        "answerable_independent_groups": 20,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9487179487179487,
+          "candidate": 0.9487179487179487,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9,
+          "candidate": 0.9,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 14,
+        "answerable": 14,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "paired-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "variant": "tune-rrf-10",
+      "file": "paired-development-1-tune-rrf-10.json",
+      "sha256": "ff33e158e5c20318ac0312dba9b8e201b57360691bc6ea973ad1d734a370432c",
+      "paired": {
+        "questions": 20,
+        "answerable": 20,
+        "independent_groups": 20,
+        "answerable_independent_groups": 20,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9487179487179487,
+          "candidate": 0.9743589743589743,
+          "delta": 0.02564102564102566,
+          "ci95": [0, 0.09090909090909094],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9,
+          "candidate": 0.95,
+          "delta": 0.04999999999999993,
+          "ci95": [0, 0.15000000000000002],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 14,
+        "answerable": 14,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    }
+  ],
+  "limits": "Three predeclared one-numeric-parameter variants; equal-length retrieval IDs; fixed frozen development datasets and real model. No final/test results or source edits. Per-scope paired CI only."
+}
