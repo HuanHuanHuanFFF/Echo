@@ -1,6 +1,6 @@
 # Echo 文档入口
 
-更新日期：2026-09-16。
+更新日期：2026-09-17。
 
 Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前四阶段已合并并通过双平台 CI；第五阶段工具与本地样本评测已具备，独立安装及真实API短文本探针已通过；正式跨库默认方案效果仍待验收。安装使用从[README](../README.md)开始，当前配置以[v2 配置契约](design/configuration-profiles.md)为准。
 
@@ -71,3 +71,5 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 - [语料v2与题库准备快照](evals/2026-09-16-corpus-v2-and-annotation-status.md)：364篇范围、真实新增来源与冻结前复核问题。
 - [标签冻结与首轮开发集BM25对照](evals/2026-09-16-frozen-labels-and-development-bm25.md)：100/200标签冻结、两切块开发结果与同题干扰；[公开统计指纹](evals/2026-09-16-development-bm25.manifest.json)。真实语义与最终评测仍待完成。
+
+- [真实向量准备与开发集语义对照](evals/2026-09-17-real-model-development.md)：真实索引与首轮开发语义对照已完成，结果复核及默认方案选择仍在进行；[用量与指纹](evals/2026-09-17-real-vector-preparation.manifest.json)。
