@@ -37,3 +37,4 @@ Echo 是面向个人 Markdown 知识库的轻量检索 MCP。**项目名 echo、
 - [阶段 2 导入与同步](development/phase-02-import-sync.md)
 - [阶段 3 混合检索与参数](development/phase-03-hybrid-retrieval.md)
 - [阶段 4 Agent MCP 完整流程](development/phase-04-agent-mcp.md)
+- [PR #3 / #4 的 P2 修复与升级说明](development/2026-09-16-pr-review-fixes.md)
