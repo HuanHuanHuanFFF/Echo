@@ -6,7 +6,10 @@ import { initializeWorkspace, useProfiles } from '../src/profile-manager.js';
 import { loadConfig } from '../src/config.js';
 import { syncIndex } from '../src/sync.js';
 import { hash } from '../src/identity.js';
-import { runRetrievalEvaluation } from '../src/retrieval-evaluation.js';
+import {
+  runRetrievalEvaluation,
+  snapshotRetrievalCorpus,
+} from '../src/retrieval-evaluation.js';
 
 async function fixture() {
   const root = await mkdtemp(join(tmpdir(), 'echo-recall-'));
@@ -488,6 +491,109 @@ it('uses the same normalized subquestion identities as Echo when scoring child c
         covered_facts: ['rollback'],
       },
     ]);
+  } finally {
+    await rm(f.root, { recursive: true, force: true });
+  }
+});
+
+it('writes a portable corpus snapshot only outside the notes and never overwrites it', async () => {
+  const f = await fixture();
+  try {
+    const file = join(f.root, 'snapshot.json');
+    const corpus = await snapshotRetrievalCorpus(f.configPath, file);
+    expect(corpus).toEqual(f.dataset.corpus);
+    await expect(snapshotRetrievalCorpus(f.configPath, file)).rejects.toThrow();
+    await expect(
+      snapshotRetrievalCorpus(f.configPath, join(f.notes, 'new.md')),
+    ).rejects.toThrow('outside source collections');
+    await expect(readFile(join(f.notes, 'new.md'))).rejects.toThrow();
+    expect(await readFile(join(f.notes, 'transaction.md'), 'utf8')).toBe(f.raw);
+  } finally {
+    await rm(f.root, { recursive: true, force: true });
+  }
+});
+
+it('rejects changed invalid UTF-8 bytes even when replacement decoding would preserve the same text', async () => {
+  const f = await fixture();
+  try {
+    const raw = f.raw.replace(
+      '失败时回滚未提交的修改。',
+      '失败时回滚未提交的修改。�',
+    );
+    await writeFile(join(f.notes, 'transaction.md'), raw);
+    await syncIndex(await loadConfig(f.configPath));
+    const dataset = {
+      ...f.dataset,
+      corpus: [{ ...f.dataset.corpus[0]!, sha256: hash(raw) }],
+      facts: [
+        {
+          id: 'rollback',
+          evidence: [
+            {
+              ...f.dataset.facts[0]!.evidence[0]!,
+              quote: '失败时回滚未提交的修改。�',
+            },
+          ],
+        },
+      ],
+    };
+    await writeFile(f.datasetPath, JSON.stringify(dataset));
+    const bytes = Buffer.from(raw),
+      at = bytes.indexOf(Buffer.from('�'));
+    const invalid = Buffer.concat([
+      bytes.subarray(0, at),
+      Buffer.from([0xff]),
+      bytes.subarray(at + 3),
+    ]);
+    expect(invalid.equals(bytes)).toBe(false);
+    await writeFile(join(f.notes, 'transaction.md'), invalid);
+    await expect(runRetrievalEvaluation(f)).rejects.toThrow(/UTF-8|utf-8/);
+    await expect(snapshotRetrievalCorpus(f.configPath)).rejects.toThrow(
+      /UTF-8|utf-8/,
+    );
+    await expect(readFile(join(f.outputDir, 'report.json'))).rejects.toThrow();
+  } finally {
+    await rm(f.root, { recursive: true, force: true });
+  }
+});
+it('preserves a valid UTF-8 BOM in the frozen source version and original line locations', async () => {
+  const f = await fixture();
+  try {
+    const raw = '\uFEFF' + f.raw;
+    await writeFile(join(f.notes, 'transaction.md'), raw);
+    await syncIndex(await loadConfig(f.configPath));
+    await writeFile(
+      f.datasetPath,
+      JSON.stringify({
+        ...f.dataset,
+        corpus: [{ ...f.dataset.corpus[0]!, sha256: hash(raw) }],
+      }),
+    );
+    const { report } = await runRetrievalEvaluation(f);
+    expect(report.rows[0]!.covered_facts).toEqual(['rollback']);
+    expect(await readFile(join(f.notes, 'transaction.md'), 'utf8')).toBe(raw);
+  } finally {
+    await rm(f.root, { recursive: true, force: true });
+  }
+});
+
+it('rejects invalid UTF-8 in the frozen question file before evaluating any row', async () => {
+  const f = await fixture();
+  try {
+    const bytes = Buffer.from(
+        JSON.stringify({ ...f.dataset, name: 'dataset-�' }),
+      ),
+      at = bytes.indexOf(Buffer.from('�'));
+    await writeFile(
+      f.datasetPath,
+      Buffer.concat([
+        bytes.subarray(0, at),
+        Buffer.from([0xff]),
+        bytes.subarray(at + 3),
+      ]),
+    );
+    await expect(runRetrievalEvaluation(f)).rejects.toThrow(/invalid UTF-8/);
+    await expect(readFile(join(f.outputDir, 'report.json'))).rejects.toThrow();
   } finally {
     await rm(f.root, { recursive: true, force: true });
   }

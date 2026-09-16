@@ -9,6 +9,7 @@ import {
 } from 'node:fs/promises';
 import { dirname, resolve, relative, isAbsolute, sep, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
 import { z } from 'zod';
 import { loadConfig, type EchoConfig } from './config.js';
 import { listMarkdown } from './sync.js';
@@ -112,6 +113,17 @@ const manifestOf = (sources: Source[]) =>
     sha256,
   }));
 const json = (value: unknown) => JSON.stringify(value, null, 2) + '\n';
+const byteHash = (bytes: Uint8Array) =>
+  createHash('sha256').update(bytes).digest('hex');
+function strictText(bytes: Uint8Array, label: string) {
+  try {
+    return new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(
+      bytes,
+    );
+  } catch {
+    throw new Error(label + ' contains invalid UTF-8');
+  }
+}
 
 async function scan(config: EchoConfig): Promise<Source[]> {
   const found: Source[] = [];
@@ -119,8 +131,9 @@ async function scan(config: EchoConfig): Promise<Source[]> {
   for (const collection of config.collections) {
     const root = await realpath(collection.root);
     for (const file of await listMarkdown(root, collection)) {
-      const raw = await readFile(file, 'utf8'),
-        parsed = parseSource(raw);
+      const bytes = await readFile(file);
+      const raw = strictText(bytes, 'Corpus');
+      const parsed = parseSource(raw);
       if (!parsed.sourceId)
         throw new Error(
           'Evaluation requires pre-existing UUID v4 identities; prepare a test copy first',
@@ -131,7 +144,7 @@ async function scan(config: EchoConfig): Promise<Source[]> {
       found.push({
         collection_id: collection.id,
         path: relative(root, file).split(sep).join('/'),
-        sha256: hash(raw),
+        sha256: byteHash(bytes),
         absolute: file,
         sourceId: parsed.sourceId,
         lines: parsed.lines,
@@ -141,8 +154,16 @@ async function scan(config: EchoConfig): Promise<Source[]> {
   }
   return sorted(found);
 }
-export async function snapshotRetrievalCorpus(configPath: string) {
-  return manifestOf(await scan(await loadConfig(configPath)));
+export async function snapshotRetrievalCorpus(
+  configPath: string,
+  outputPath?: string,
+) {
+  const config = await loadConfig(configPath);
+  if (outputPath) await outsideCorpus(resolve(outputPath), config);
+  const corpus = manifestOf(await scan(config));
+  if (outputPath)
+    await writeFile(resolve(outputPath), json(corpus), { flag: 'wx' });
+  return corpus;
 }
 function unique(values: string[], label: string) {
   if (new Set(values).size !== values.length)
@@ -331,7 +352,7 @@ async function runtimeSnapshot() {
     .sort();
   const files: Record<string, string> = {};
   for (const name of names)
-    files[name] = hash(await readFile(join(root, name), 'utf8'));
+    files[name] = byteHash(await readFile(join(root, name)));
   return {
     node: process.version,
     icu: process.versions.icu,
@@ -460,8 +481,9 @@ export async function runRetrievalEvaluation(
     cacheHits = 0;
   const usage = () => base?.usage?.() ?? null;
   try {
-    const raw = await readFile(options.datasetPath, 'utf8'),
-      dataset = datasetSchema.parse(JSON.parse(raw));
+    const datasetBytes = await readFile(options.datasetPath);
+    const raw = strictText(datasetBytes, 'Dataset');
+    const dataset = datasetSchema.parse(JSON.parse(raw.replace(/^\uFEFF/, '')));
     const sources = await scan(config),
       byPath = validateLabels(dataset, sources);
     const requests = dataset.questions.map((q) =>
@@ -469,7 +491,7 @@ export async function runRetrievalEvaluation(
     );
     const index = verifyIndex(config, sources),
       runtime = await runtimeSnapshot();
-    await writeFile(join(output, 'dataset.json'), raw, { flag: 'wx' });
+    await writeFile(join(output, 'dataset.json'), datasetBytes, { flag: 'wx' });
     await writeFile(
       join(output, 'manifest.json'),
       json({
@@ -477,7 +499,7 @@ export async function runRetrievalEvaluation(
           name: dataset.name,
           split: dataset.split,
           scenario: dataset.scenario,
-          sha256: hash(raw),
+          sha256: byteHash(datasetBytes),
         },
         corpus: manifestOf(sources),
         runtime,
@@ -607,6 +629,13 @@ export async function runRetrievalEvaluation(
       retrieval_only: true,
       api_usage: usage(),
       query_cache_hits: cacheHits,
+      independent_intent_groups: new Set(rows.map((r) => r.intent_group)).size,
+      by_type: Object.fromEntries(
+        [...new Set(rows.map((r) => r.type))].map((type) => [
+          type,
+          summary(rows.filter((r) => r.type === type)),
+        ]),
+      ),
       summary: summary(rows),
       rows,
     };

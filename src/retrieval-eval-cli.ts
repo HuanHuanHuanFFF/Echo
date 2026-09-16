@@ -1,6 +1,5 @@
 import { parseArgs } from 'node:util';
 import { resolve } from 'node:path';
-import { writeFile } from 'node:fs/promises';
 import {
   runRetrievalEvaluation,
   snapshotRetrievalCorpus,
@@ -28,11 +27,9 @@ try {
     if (command === 'snapshot') {
       if (values.dataset || values.budget || values['max-api-calls'])
         throw new Error('snapshot accepts only --config and --output');
-      const corpus = await snapshotRetrievalCorpus(resolve(values.config));
-      await writeFile(
+      const corpus = await snapshotRetrievalCorpus(
+        resolve(values.config),
         resolve(values.output),
-        JSON.stringify(corpus, null, 2) + '\n',
-        { flag: 'wx' },
       );
       console.log(
         JSON.stringify({
