@@ -4,6 +4,8 @@
 本文落实[执行决定](../project/2026-09-16-evaluation-revision.md)，
 不把计划或本地冒烟结果记为真实检索效果。具体配额以[JSON](2026-09-16-question-allocation.json)为准。
 
+2026-09-16 单轮范围更新：本轮直接用[评测脚本](../design/retrieval-evaluation.md)运行独立问题及固定子问题；不逐题运行Agent，不做历史对话、动态改写、答案生成或宿主补读。下文涉及Agent/补读的安排移至后续阶段，当前累计预算只计实际请求和完整响应。题量与混合比例不变，题型细分参考[benchmark方法](../research/2026-09-16-single-turn-benchmark-methods.md)在原文标注后冻结。
+
 ## 语料与抽样
 
 选择3–4份独立真实笔记来源，目标约500–800篇Markdown。中文及中英混写优先，纯英文结果单列。
