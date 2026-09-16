@@ -17,7 +17,7 @@
 | 最终混合 | A+B+C+D                               |  364 | D不参与开发调参                                      |
 
 D的两份固定仓库快照为[simonw/til](https://github.com/simonw/til/tree/908013b1abaa4f6c0a7d439086cfbfb57d990bf8)与[simonw/research](https://github.com/simonw/research/tree/a87ef97f61aaf3a10d39d842902067aeec82992c)。
-原文216274字节，新增日期为2026-01-05至2026-09-05；固定blob SHA-1、SHA-256、UTF-8均核验。
+原文216274字节，新增日期按来源提交的UTC时间为2026-01-06至2026-09-05；固定blob SHA-1、SHA-256、UTF-8均核验。
 前者为个人TIL（含部分AI协助/输出记录），后者根说明明确全文和代码由LLM撰写；不得统称人工笔记。
 11篇TIL沿用Apache-2.0；研究1篇正文声明MIT，其余15篇未声明许可。这里只记录现状，原文和长摘录不推公共仓库。
 
