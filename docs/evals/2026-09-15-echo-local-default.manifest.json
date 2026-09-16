@@ -1,0 +1,137 @@
+{
+  "status": "lexical_only",
+  "created_at": "2026-09-15T11:22:50.438Z",
+  "dataset": "echo-synthetic-zh-v1",
+  "scope": "Agent 自编隔离样本；事实片段匹配用于证据覆盖诊断，不代表个人全库或生成答案质量。",
+  "corpus_sha256": "4216be4a84b01cb40249bf4a686a2dfb804a48ce3831ed9315b244b35c13f4f7",
+  "file_hashes": {
+    "approval.md": "23bfb863ec32bb925649e8fcaded52df5298d6529bb93c8339710e092ee0c4ea",
+    "backup.md": "7ad4017eb9afdf092fe90ff1fa2cd40a9c3d9c0b81c7d4716d812aaa79008c29",
+    "chunking.md": "7c71e58f3871e759e826df3fea0fc576ba0f17a3723a35c4bd1570ffb2ac8fa7",
+    "identity.md": "95eddf5055d1c197bc32728f2122fd2b6f4233d994104892f6d3068a1894ef5a",
+    "retrieval.md": "d1a9deb21500c5fd07bd1581be39b51e6e1d0888b283b076b494d720cc417019",
+    "router.md": "6b73c59015e286dd520600993056aeb62f940565bcd2525d5cf36a248dee9610",
+    "state.md": "5be0a483344354262722fe944d3eb6724594cdc158a938b2e045fba0ef946cdb",
+    "tea.md": "d282f31274cb535bd917fafaac36bba2458c7ada2ae458e02db7a6ee0868f41c",
+    "trace.md": "ff276cd9d8d2cdcfb6a57a81f75f4378491a362cefdc244b2535a7c2b121b085",
+    "transactions.md": "0cd0e43fe88baa4c380628464691749807a696cd0a702b92842f79c24f48a03f"
+  },
+  "labels_sha256": "75bb0d3585a4c472a6838d46e3b26b70bafef37ea5d66a3112d40b9725f4b4e3",
+  "git_commit": "8a59a2f0803383d1492bc5fe29133647f757b22f",
+  "git_dirty": true,
+  "code_sha256": {
+    "chunker.ts": "95a5a97b2df17ad326fa416ad753dc002cbe0a9b08dbc8c1aa037478317c9ca8",
+    "retrieval.ts": "1927f52ab6b2b6769836895ebee4be98cf717036328fcccbf1416f9aeb774835",
+    "lexical.ts": "6b48198b3bce018d6e923fd82319a478e83b2e6494ef688aa4242aa4d7e885df",
+    "embedding.ts": "77d5259a40413a95dc54675e367a415927c56775591fe5095ff5b1894b7072f5",
+    "evaluation.ts": "b6cbf2622a40846e7e1e1eb1207f6f91da92eb5dbaa20e5dd411051906f1bb65"
+  },
+  "environment": {
+    "node": "v24.15.0",
+    "icu": "78.2",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  "profile": {
+    "chunker": {
+      "version": "1",
+      "options": {
+        "max_chars": 1000
+      }
+    },
+    "chunker_implementation": {
+      "id": "echo-heading-lines",
+      "version": "1",
+      "fingerprint": "143c0bade40282d79b9ca37ba74b7fbe999c9af264dacfd4861bb44e305848ff"
+    },
+    "lexical": {
+      "locale": "zh-CN",
+      "dictionary": []
+    },
+    "retrieval": {
+      "mode": "bm25",
+      "topk": 8,
+      "max_chunks_per_source": 2,
+      "bm25_candidates": 60,
+      "dense_candidates": 60,
+      "rrf_k": 60,
+      "title_weight": 2,
+      "bm25_weight": 1,
+      "dense_weight": 1,
+      "max_context_chars": 12000,
+      "min_dense_similarity": 0.3
+    },
+    "embedding": null
+  },
+  "budget_chars_per_query": 8000,
+  "preparation_ms": 49.50729999999999,
+  "latency_scope": "Warm in-process searchIndex; excludes MCP startup/stdio and API preparation",
+  "api_usage": null,
+  "cache_misses": 0,
+  "sync": {
+    "status": "ok",
+    "added": 10,
+    "updated": 0,
+    "removed": 0,
+    "unchanged": 0,
+    "wrote_ids": 0,
+    "chunks": 32
+  },
+  "index": {
+    "sources": 10,
+    "chunks": 32,
+    "embeddings": 0,
+    "metadata": {
+      "last_sync": "2026-09-15T11:22:50.145Z",
+      "chunker_fingerprint": "143c0bade40282d79b9ca37ba74b7fbe999c9af264dacfd4861bb44e305848ff",
+      "lexical_fingerprint": "5131897be3a8ce7d3e806b2f83b3f43b05e76b2837baa4626bdc0739e2f3ef58",
+      "embedding_fingerprint": ""
+    }
+  },
+  "strategies": {
+    "bm25_default": {
+      "queries": 14,
+      "errors": 0,
+      "any_fact_hit": "13/13",
+      "complete_coverage": "12/13",
+      "fact_coverage": "23/24",
+      "no_answer_nonempty": 1,
+      "mean_distinct_sources": 4.357142857142857,
+      "mean_max_source_occupancy": 0.3979591836734694,
+      "median_latency_ms": 3.2164000000000215,
+      "cumulative_context_chars": 57519
+    },
+    "bm25_unrestricted": {
+      "queries": 14,
+      "errors": 0,
+      "any_fact_hit": "13/13",
+      "complete_coverage": "13/13",
+      "fact_coverage": "24/24",
+      "no_answer_nonempty": 1,
+      "mean_distinct_sources": 4,
+      "mean_max_source_occupancy": 0.4600340136054421,
+      "median_latency_ms": 3.029200000000003,
+      "cumulative_context_chars": 59812
+    },
+    "bm25_with_host_read": {
+      "queries": 14,
+      "errors": 0,
+      "any_fact_hit": "13/13",
+      "complete_coverage": "12/13",
+      "fact_coverage": "23/24",
+      "no_answer_nonempty": 1,
+      "mean_distinct_sources": 4,
+      "mean_max_source_occupancy": 0.41071428571428564,
+      "median_latency_ms": 3.222699999999975,
+      "cumulative_context_chars": 67257
+    }
+  },
+  "limitations": [
+    "固定自编小样本，无盲测或全库代表性。",
+    "按原文事实片段匹配评估证据覆盖，不评估生成答案。",
+    "API 模式预热同一批 query embedding；延迟只计进程内检索，API 准备与 MCP 启动/传输另计。本地模式没有 embedding。",
+    "累计预算包含规范请求/响应及补读请求/响应的 UTF-16 长度，不是 tokenizer token。",
+    "未使用真实 embedding，不能确认默认 hybrid 的语义效果或相对收益。"
+  ],
+  "rows_file": "2026-09-15-echo-local-default.rows.jsonl"
+}

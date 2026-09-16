@@ -1,0 +1,129 @@
+{
+  "status": "lexical_only",
+  "created_at": "2026-09-15T11:46:13.224Z",
+  "dataset": "echo-long-context-v1",
+  "scope": "单独的跨块补读场景；不并入14题默认组合质量统计。",
+  "corpus_sha256": "1c521ed1e614a48b6adabae702bc76f6fe7b342e6d515bd2f9c23c933ddeb7a7",
+  "file_hashes": {
+    "long-section.md": "051e287af2cbd9b763bfef68da851a6e8994f1d19b1f57de7b135f81a78319d9"
+  },
+  "labels_sha256": "44c4b4ac0c102c0044ab13968e35fc047a4e20406844f5b40867f5b611cab6fb",
+  "git_commit": "343785eaba6a0d76aa9136b24bd400827ecea53a",
+  "git_dirty": false,
+  "code_sha256": {
+    "chunker.ts": "95a5a97b2df17ad326fa416ad753dc002cbe0a9b08dbc8c1aa037478317c9ca8",
+    "retrieval.ts": "1927f52ab6b2b6769836895ebee4be98cf717036328fcccbf1416f9aeb774835",
+    "lexical.ts": "6b48198b3bce018d6e923fd82319a478e83b2e6494ef688aa4242aa4d7e885df",
+    "embedding.ts": "315e400315bf227871cf11197a31d85848c4cde64ffbd6d22e8c39d947d88eef",
+    "evaluation.ts": "9406badd0f79dadc215ee452a1fa9a249bee28a2f1a8fdd6a8d89261bed125c5"
+  },
+  "environment": {
+    "node": "v24.15.0",
+    "icu": "78.2",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  "profile": {
+    "chunker": {
+      "version": "1",
+      "options": {
+        "max_chars": 1000
+      }
+    },
+    "chunker_implementation": {
+      "id": "echo-heading-lines",
+      "version": "1",
+      "fingerprint": "143c0bade40282d79b9ca37ba74b7fbe999c9af264dacfd4861bb44e305848ff"
+    },
+    "lexical": {
+      "locale": "zh-CN",
+      "dictionary": []
+    },
+    "retrieval": {
+      "mode": "bm25",
+      "topk": 8,
+      "max_chunks_per_source": 2,
+      "bm25_candidates": 60,
+      "dense_candidates": 60,
+      "rrf_k": 60,
+      "title_weight": 2,
+      "bm25_weight": 1,
+      "dense_weight": 1,
+      "max_context_chars": 12000,
+      "min_dense_similarity": 0.3
+    },
+    "embedding": null
+  },
+  "budget_chars_per_query": 8000,
+  "preparation_ms": 33.656800000000004,
+  "latency_scope": "Warm in-process searchIndex; excludes MCP startup/stdio and API preparation",
+  "api_request_limit": null,
+  "api_usage": null,
+  "cache_misses": 0,
+  "sync": {
+    "status": "ok",
+    "added": 1,
+    "updated": 0,
+    "removed": 0,
+    "unchanged": 0,
+    "wrote_ids": 0,
+    "chunks": 3
+  },
+  "index": {
+    "sources": 1,
+    "chunks": 3,
+    "embeddings": 0,
+    "metadata": {
+      "last_sync": "2026-09-15T11:46:13.099Z",
+      "chunker_fingerprint": "143c0bade40282d79b9ca37ba74b7fbe999c9af264dacfd4861bb44e305848ff",
+      "lexical_fingerprint": "5131897be3a8ce7d3e806b2f83b3f43b05e76b2837baa4626bdc0739e2f3ef58",
+      "embedding_fingerprint": ""
+    }
+  },
+  "strategies": {
+    "bm25_default": {
+      "queries": 1,
+      "errors": 0,
+      "any_fact_hit": "1/1",
+      "complete_coverage": "0/1",
+      "fact_coverage": "1/2",
+      "no_answer_nonempty": 0,
+      "mean_distinct_sources": 1,
+      "mean_max_source_occupancy": 1,
+      "median_latency_ms": 4.254400000000004,
+      "cumulative_context_chars": 2014
+    },
+    "bm25_unrestricted": {
+      "queries": 1,
+      "errors": 0,
+      "any_fact_hit": "1/1",
+      "complete_coverage": "0/1",
+      "fact_coverage": "1/2",
+      "no_answer_nonempty": 0,
+      "mean_distinct_sources": 1,
+      "mean_max_source_occupancy": 1,
+      "median_latency_ms": 2.3827,
+      "cumulative_context_chars": 2018
+    },
+    "bm25_with_host_read": {
+      "queries": 1,
+      "errors": 0,
+      "any_fact_hit": "1/1",
+      "complete_coverage": "1/1",
+      "fact_coverage": "2/2",
+      "no_answer_nonempty": 0,
+      "mean_distinct_sources": 1,
+      "mean_max_source_occupancy": 1,
+      "median_latency_ms": 2.5305999999999926,
+      "cumulative_context_chars": 4351
+    }
+  },
+  "limitations": [
+    "固定自编小样本，无盲测或全库代表性。",
+    "按原文事实片段匹配评估证据覆盖，不评估生成答案。",
+    "API 模式预热同一批 query embedding；延迟只计进程内检索，API 准备与 MCP 启动/传输另计。本地模式没有 embedding。",
+    "累计预算包含规范请求/响应及补读请求/响应的 UTF-16 长度，不是 tokenizer token。",
+    "未使用真实 embedding，不能确认默认 hybrid 的语义效果或相对收益。"
+  ],
+  "rows_file": "2026-09-15-echo-local-r2-context.rows.jsonl"
+}

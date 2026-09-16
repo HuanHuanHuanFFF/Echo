@@ -1,6 +1,6 @@
 # PR #3 / #4 的 P2 修复
 
-日期：2026-09-16。状态：代码与回归已实施，最终验收以本修复 PR 当前提交的 Windows/Linux CI 为准。
+日期：2026-09-16。状态：三项修复已通过双平台 CI 并合入 main。[PR #7](https://github.com/HuanHuanHuanFFF/Echo/pull/7) 验收头 c23da11，合并提交 0ba8120。
 
 本次只修复已确认的三条审查问题，不实施待集中调整的配置/策略分离，也不改变第五阶段真实模型验收缺口。基线为已合入阶段 4 的 main（ae4f7cc）。
 
@@ -24,10 +24,10 @@ Linux 新建文件的 mode 会受 umask 影响，不能仅依靠 writeFile 的 m
 
 ## 验证
 
-示例隔离、缩写召回和旧索引识别三条新增回归均在修复前实际失败、修复后通过。权限专项需在 Linux 执行，Windows 的通过结果不代替该证据。
+示例隔离、缩写召回和旧索引识别三条新增回归均在修复前实际失败、修复后通过。权限专项已在 Linux CI 实际通过，Windows 的通过结果不代替该证据。
 
-本地 Windows 的 npm run check 通过：格式、类型、52 项测试通过、1 项 POSIX 专项跳过、构建通过；本次 3 份文档的 33 个本地引用及 git diff --check 通过。Linux 专项尚待远程 CI。
+本地 Windows 的 npm run check 通过：格式、类型、52 项测试通过、1 项 POSIX 专项跳过、构建通过；本次 3 份文档的 33 个本地引用及 git diff --check 通过。Linux CI 53 项全部通过，日志明确包含 restrictive umask 权限专项；对应 [PR CI](https://github.com/HuanHuanHuanFFF/Echo/actions/runs/35050655481) 与 [push CI](https://github.com/HuanHuanHuanFFF/Echo/actions/runs/35050615247) 的 Windows/Linux 检查均通过。
 
 首次完整检查曾在未修改的 MCP HTTP 回归出现 fetch bad port，随后定向复跑及完整检查通过。只读核查本机动态端口范围为 1024–15000，包含 fetch 禁用端口，固定端口 6000 可复现相同错误；原失败未记录具体端口，故仅将随机分配撞上禁用端口列为可能原因。本次没有修改或跳过该测试。
 
-两位独立只读审查者复核代码 d102e7b 及本次文档，均未发现三项范围内阻断缺陷；各自复跑相关测试为 43 通过、1 项 Windows 跳过。一位另用隔离样本验证 hybrid 升级中 embedding 失败保留原索引/元数据/原文，重试同步成功。两者均将 Linux 权限实测列为最终 CI 门槛。远程 CI 以修复 PR 的当前提交为准。历史阶段验收与评测快照保持原日期和原提交，不重写为本次结果。
+两位独立只读审查者复核代码 d102e7b 及本次文档，均未发现三项范围内阻断缺陷；各自复跑相关测试为 43 通过、1 项 Windows 跳过。一位另用隔离样本验证 hybrid 升级中 embedding 失败保留原索引/元数据/原文，重试同步成功。两者提出的 Linux 权限实测门槛已由上述 c23da11 CI 满足。历史阶段验收与评测快照保持原日期和原提交，不重写为本次结果。

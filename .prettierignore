@@ -13,3 +13,4 @@ docs/design/retrieval.md
 docs/design/agent-interface.md
 docs/research/
 docs/evals/2026-09-05-chroma-baseline.md
+docs/evals/*.jsonl

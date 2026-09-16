@@ -1,0 +1,20 @@
+{
+  "database": "../.echo/structural-sample.sqlite",
+  "collections": [
+    {
+      "id": "sample",
+      "root": "./notes"
+    }
+  ],
+  "chunker": {
+    "module": "./structural-heading-chunker.mjs",
+    "options": {
+      "max_chars": 1000
+    }
+  },
+  "retrieval": {
+    "mode": "bm25",
+    "topk": 8,
+    "max_chunks_per_source": 2
+  }
+}

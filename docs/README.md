@@ -1,8 +1,8 @@
 # Echo 文档入口
 
-更新日期：2026-09-15。
+更新日期：2026-09-16。
 
-Echo 是面向个人 Markdown 知识库的轻量检索 MCP。**项目名 echo、TypeScript＋SQLite 已确认；代码尚未在本会话初始化，具体依赖、接口细节和参数默认值仍待设计与验证。**
+Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前四阶段已合并并通过双平台 CI；第五阶段工具和本地样本评测已具备，真实 API 默认方案验收仍待配置与额度。安装使用从[README](../README.md)开始，当前配置以[配置契约](design/configuration.md)为准。
 
 ## 从这里继续
 
@@ -29,6 +29,11 @@ Echo 是面向个人 Markdown 知识库的轻量检索 MCP。**项目名 echo、
 
 当前正式讨论基线已从 NoteRAG 迁入这里。旧文档只保留迁移指引，避免双份维护。文档链接按当前 Windows 工作区绝对路径记录，变更根目录时需一并更新。外部知识库修改与索引重建以任务授权为准；阶段提交、推送和文档要求遵循 [AGENTS.md](../AGENTS.md)。
 
+## 待集中调整
+
+- [当前配置组织决定（2026-09-16）](project/2026-09-16-configuration-decisions.md)：固定切块策略、多模型/多召回配置、按 ID 选择；先记录，待用户汇总后实施。
+- [前版调整草案（2026-09-15）](project/2026-09-15-pending-adjustments.md)：保留被修订范围和其他索引隔离背景。
+
 ## 开发与当前契约
 
 - [阶段 1 工程基础验收](development/phase-01-foundation.md)
@@ -37,4 +42,6 @@ Echo 是面向个人 Markdown 知识库的轻量检索 MCP。**项目名 echo、
 - [阶段 2 导入与同步](development/phase-02-import-sync.md)
 - [阶段 3 混合检索与参数](development/phase-03-hybrid-retrieval.md)
 - [阶段 4 Agent MCP 完整流程](development/phase-04-agent-mcp.md)
+- [阶段 5 评测与交付状态](development/phase-05-evaluation-delivery.md)
+- [Echo 本地评测快照](evals/2026-09-15-echo-local-evaluation-r2.md)
 - [PR #3 / #4 的 P2 修复与升级说明](development/2026-09-16-pr-review-fixes.md)

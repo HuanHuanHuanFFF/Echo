@@ -1,0 +1,195 @@
+{
+  "name": "echo-synthetic-zh-v1",
+  "description": "Agent 自编隔离样本；事实片段匹配用于证据覆盖诊断，不代表个人全库或生成答案质量。",
+  "facts": [
+    {
+      "id": "dispatch",
+      "source": "router.md",
+      "text": "先查询 Registry，再把调用交给对应 Handler"
+    },
+    {
+      "id": "pause",
+      "source": "approval.md",
+      "text": "把工具参数和暂停位置持久化"
+    },
+    {
+      "id": "resume",
+      "source": "approval.md",
+      "text": "批准后从保存的暂停位置继续"
+    },
+    {
+      "id": "guard",
+      "source": "state.md",
+      "text": "只有 Guard 允许的状态迁移才能执行"
+    },
+    {
+      "id": "terminal",
+      "source": "state.md",
+      "text": "不能偷偷复活已经结束的调用"
+    },
+    {
+      "id": "state",
+      "source": "trace.md",
+      "text": "State 是当前状态快照"
+    },
+    {
+      "id": "event",
+      "source": "trace.md",
+      "text": "Event Log 按顺序保存已经发生的事件"
+    },
+    {
+      "id": "trace",
+      "source": "trace.md",
+      "text": "Trace 记录耗时和调用链"
+    },
+    {
+      "id": "atomic",
+      "source": "transactions.md",
+      "text": "整批索引更新在同一事务提交"
+    },
+    {
+      "id": "rollback",
+      "source": "transactions.md",
+      "text": "保留之前已经提交的检索数据"
+    },
+    {
+      "id": "wal",
+      "source": "transactions.md",
+      "text": "WAL 读者读取旧提交"
+    },
+    {
+      "id": "uuid",
+      "source": "identity.md",
+      "text": "缺少 echo_id 时先写回 UUID v4"
+    },
+    {
+      "id": "stable",
+      "source": "identity.md",
+      "text": "改名和正文修改不会重新生成已有身份"
+    },
+    {
+      "id": "position",
+      "source": "identity.md",
+      "text": "行号以写回身份后的完整文件为准"
+    },
+    {
+      "id": "custom",
+      "source": "chunking.md",
+      "text": "默认导出 id、version 和 chunk"
+    },
+    {
+      "id": "bm25",
+      "source": "retrieval.md",
+      "text": "BM25 偏向精确词项匹配"
+    },
+    {
+      "id": "dense",
+      "source": "retrieval.md",
+      "text": "语义向量允许用不同说法寻找相关内容"
+    },
+    {
+      "id": "rrf",
+      "source": "retrieval.md",
+      "text": "RRF 融合名次而不是直接相加原始分数"
+    },
+    {
+      "id": "limits",
+      "source": "retrieval.md",
+      "text": "topk 和每篇上限同时生效"
+    },
+    {
+      "id": "short",
+      "source": "retrieval.md",
+      "text": "候选不足时返回实际数量，不放宽每篇限制"
+    },
+    {
+      "id": "read",
+      "source": "retrieval.md",
+      "text": "宿主文件工具根据路径和行范围补读"
+    },
+    {
+      "id": "source",
+      "source": "backup.md",
+      "text": "删除数据库不会删除原始 Markdown"
+    }
+  ],
+  "queries": [
+    {
+      "id": "Q01",
+      "query": "RouterRegistryHandler 怎么分发调用？",
+      "facts": ["dispatch"]
+    },
+    {
+      "id": "Q02",
+      "query": "等我批准时程序退出了，之后怎么继续而不丢进度？",
+      "facts": ["pause", "resume"]
+    },
+    {
+      "id": "Q03",
+      "query": "Guard 为什么不让已经结束的请求重新执行？",
+      "facts": ["guard", "terminal"]
+    },
+    {
+      "id": "Q04",
+      "query": "排查调用慢应该看 Trace 还是 State？",
+      "facts": ["trace", "state"]
+    },
+    {
+      "id": "Q05",
+      "query": "索引更新到一半失败，旧结果还能查到吗？",
+      "facts": ["atomic", "rollback"]
+    },
+    {
+      "id": "Q06",
+      "query": "笔记改名后如何维持身份并正确引用行号？",
+      "facts": ["stable", "position"]
+    },
+    {
+      "id": "Q07",
+      "query": "BM25、语义向量和 RRF 各负责什么？",
+      "facts": ["bm25", "dense", "rrf"]
+    },
+    {
+      "id": "Q08",
+      "query": "搜索给的片段不够，Agent 下一步怎样补上下文？",
+      "facts": ["read"]
+    },
+    {
+      "id": "Q09",
+      "query": "topk 设置成 10 为什么只收到很少片段？",
+      "facts": ["limits", "short"]
+    },
+    {
+      "id": "Q10",
+      "query": "工具分发、审批恢复、状态 Guard 和事件审计怎样配合？",
+      "facts": ["dispatch", "resume", "guard", "event"],
+      "subquestions": [
+        "工具调用如何分发到处理器",
+        "审批后如何继续执行",
+        "Guard 如何控制状态迁移",
+        "Event Log 怎样用于审计"
+      ]
+    },
+    {
+      "id": "Q11",
+      "query": "Markdown 自定义切块模块需要返回什么？",
+      "facts": ["custom"]
+    },
+    {
+      "id": "Q12",
+      "query": "删除索引数据库会丢失我的笔记吗？",
+      "facts": ["source"]
+    },
+    {
+      "id": "Q13",
+      "query": "读者和写者同时访问索引时能看到哪一版数据？",
+      "facts": ["wal"]
+    },
+    {
+      "id": "Q14",
+      "query": "这个系统真实生产环境的 P99 延迟是多少毫秒？",
+      "facts": [],
+      "no_answer": true
+    }
+  ]
+}

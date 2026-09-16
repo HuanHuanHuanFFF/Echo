@@ -1,0 +1,23 @@
+{
+  "name": "echo-long-context-v1",
+  "description": "单独的跨块补读场景；不并入14题默认组合质量统计。",
+  "facts": [
+    {
+      "id": "start",
+      "source": "long-section.md",
+      "text": "ALPHA 表示开始准备资料"
+    },
+    {
+      "id": "finish",
+      "source": "long-section.md",
+      "text": "OMEGA 是流程完成后必须写入的确认标记"
+    }
+  ],
+  "queries": [
+    {
+      "id": "CTX01",
+      "query": "ALPHA",
+      "facts": ["start", "finish"]
+    }
+  ]
+}

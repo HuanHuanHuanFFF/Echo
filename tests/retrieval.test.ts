@@ -294,6 +294,7 @@ it('calls a real local HTTP server with the configured key, handles ordering, an
       res.setHeader('content-type', 'application/json');
       res.end(
         JSON.stringify({
+          usage: { total_tokens: 7 },
           data: requestBody.input
             .map((_, index) => ({
               index,
@@ -327,6 +328,12 @@ it('calls a real local HTTP server with the configured key, handles ordering, an
     ]);
     expect(authorization).toBe('Bearer isolated-test-key');
     expect(requestBody?.model).toBe('test');
+    expect(provider.usage?.()).toMatchObject({
+      requests: 1,
+      texts: 2,
+      input_chars: 2,
+      reported_tokens: 7,
+    });
     cfg.embedding.base_url = 'http://127.0.0.1:' + address.port + '/stall';
     cfg.embedding.timeout_ms = 20;
     await expect(
