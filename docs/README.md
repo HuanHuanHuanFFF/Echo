@@ -6,6 +6,8 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 当前下一步
 
+- [三策略Hit、Recall与MRR](evals/2026-09-17-chunk-ranking-metrics.md)：同一100题离线重算，分库列出K=1/3/5/10；区分单块命中、跨块事实覆盖及已标注来源指标。
+
 - [三策略100题同参数结果](evals/2026-09-17-structure-chunker-comparison.md)：heading90/95、原八股83/95、新综合89/95；完整参数、分库事实、上下文及得失均保留，双人结果复核通过；本轮未替换默认。
 
 - [综合切块实施与100题同参数对照](development/2026-09-17-structure-chunker-comparison.md)：三策略hybrid100题对照与复核已完成；固定0.5/1权重、topk10、每篇3；实现与结果已push，本轮未新建PR或合并。
