@@ -74,7 +74,7 @@ describe('foundation', () => {
       retrieval: { topk: 3 },
       chunker: { options: { custom: true } },
     });
-    expect(cfg.retrieval.max_chunks_per_source).toBe(2);
+    expect(cfg.retrieval.max_chunks_per_source).toBe(3);
     expect(cfg.chunker.options).toEqual({ custom: true });
     expect(retrievalOptions(cfg.retrieval, { dense_candidates: 90 }).topk).toBe(
       3,

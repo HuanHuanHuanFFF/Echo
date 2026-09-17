@@ -79,12 +79,15 @@ node /absolute/path/to/echo/dist/cli.js serve --config /absolute/path/to/echo/ec
 
 ## 默认与自定义方案
 
-默认：标题感知 max_chars=1000，hybrid，每路候选 60，RRF k=60、权重 1/1，
-topk=8、每篇最多 2、最低余弦相似度 0.3、完整结果 JSON 预算 12000 字符。
-这些 hybrid 数值仍是待真实模型评测的起点。
+默认：标题感知 max_chars=1000，hybrid，每路候选 60，RRF k=60、BM25/向量权重 0.5/1，
+topk=10、每篇最多 3、最低余弦相似度 0.3、完整结果 JSON 预算 12000 字符。
+2026-09-17 按用户决定调整三个默认值；该组合尚未完成真实模型效果评测，历史成绩仍对应各自记录的参数。
 
 召回配置支持部分覆盖；单次搜索可传 overrides 和 filters。切块策略的规则固定，改变数字应另建策略 ID。
 topk 与每篇上限同时生效，数量不足时不放宽约束填满。
+
+例如一次 echo_search 可传 `{"query":"事务失败怎样恢复","overrides":{"topk":6,"max_chunks_per_source":2,"bm25_weight":1}}`。
+覆盖只作用于本次调用；已有配置显式填写的数值仍优先于内置默认，升级不会重写配置文件。
 
 完整自定义切块通过 chunkers/ 下的同名 ID 模块加载；tokenizers/ 同样可提供完整分词实现。来源、chunk、FTS 与不同模型向量按依赖隔离；更换分词不会重切或重新 embedding，已存在且有效的组合直接复用。
 

@@ -105,7 +105,11 @@ export default {
 
 不自动重试计费请求。API key、超时和 batch_size 不影响向量身份；服务端点、模型、维度、前缀、维度字段和向量变换规则影响身份。空模板可以保存，实际 dense/hybrid 同步必须配置模型；已有向量完整时，同步不因 key 缺失而重新请求模型。
 
-召回 JSON 也包含 id，支持多套配置。字段/范围沿用 [retrievalSchema](../../src/config.ts)：mode、topk、max_chunks_per_source、两路 candidates、rrf_k、title_weight、两路 weight、min_dense_similarity、max_context_chars。优先级：内置默认 → 选中的召回配置 → 单次 overrides。默认 hybrid、topk=8、每篇上限=2、候选=60/60、RRF k=60、权重=1/1、标题权重=2、最低余弦=0.3、完整 JSON 预算=12000 字符。topk 和单篇上限同时约束，不凑满数量。召回配置不参与表身份。
+召回 JSON 也包含 id，支持多套配置。字段/范围沿用 [retrievalSchema](../../src/config.ts)：mode、topk、max_chunks_per_source、两路 candidates、rrf_k、title_weight、两路 weight、min_dense_similarity、max_context_chars。优先级：内置默认 → 选中的召回配置 → 单次 overrides。默认 hybrid、topk=10、每篇上限=3、候选=60/60、RRF k=60、BM25/向量权重=0.5/1、标题权重=2、最低余弦=0.3、完整 JSON 预算=12000 字符。topk 和单篇上限同时约束，不凑满数量。召回配置不参与表身份。
+
+2026-09-17 用户确认：topk 8→10、每篇上限 2→3、BM25 权重 1→0.5，替代本节与旧格式契约中的这三项默认值。实现归属 [retrievalSchema](../../src/config.ts)；初始化未指定字段时继承它，样例配置同步更新，单次 overrides 继续优先。已有显式配置、E盘冻结评测安装与历史报告不自动修改。这是默认行为调整，该组合的真实效果尚未验收。
+
+验证（2026-09-17）：npm run check 通过格式、类型、110项隔离测试（1项原有跳过）和构建；既有 [配置覆盖测试](../../tests/foundation.test.ts)、[MCP运行测试](../../tests/profile-runtime.test.ts)通过。直接检查构建产物确认10/3/0.5默认值、单次覆盖、已有显式配置优先级及三份使用样例。未运行真实模型评测。
 
 ## 扫描、运行与日志
 

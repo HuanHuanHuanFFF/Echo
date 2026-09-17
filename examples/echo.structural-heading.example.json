@@ -14,7 +14,7 @@
   },
   "retrieval": {
     "mode": "bm25",
-    "topk": 8,
-    "max_chunks_per_source": 2
+    "topk": 10,
+    "max_chunks_per_source": 3
   }
 }
