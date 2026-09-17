@@ -214,3 +214,32 @@ it('loads as a v2 strategy, indexes locally and returns exact source evidence', 
   );
   expect(await readFile(note, 'utf8')).toBe(raw);
 });
+
+it('retains a long heading in original evidence while bounding its display metadata safely', async () => {
+  const title = '😀'.repeat(1100);
+  const chunks = await split('# ' + title + '\nbody');
+  expect(chunks.some((c) => c.text === '# ' + title)).toBe(true);
+  for (const c of chunks)
+    for (const heading of c.headingPath) {
+      expect(heading.length).toBeLessThanOrEqual(2000);
+      expect(heading.endsWith('…')).toBe(true);
+      expect(heading).not.toMatch(/[\ud800-\udbff]…$/);
+    }
+});
+
+it('recognizes indented pipe text as code before testing table syntax', async () => {
+  const code = [
+    '    a | b ' + 'x'.repeat(390),
+    '    --- | ---',
+    '    c | d ' + 'y'.repeat(390),
+    '    tail ' + 'z'.repeat(390),
+  ].join('\n');
+  const chunks = await split('# R\n' + 'p'.repeat(600) + '\n\n' + code);
+  expect(chunks.some((c) => c.text === code)).toBe(true);
+  const oversized = await split(
+    '# R\n' + code + '\n    more ' + 'q'.repeat(390),
+  );
+  expect(
+    oversized.some((c, i) => i > 0 && c.startLine <= oversized[i - 1]!.endLine),
+  ).toBe(true);
+});

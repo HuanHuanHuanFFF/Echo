@@ -256,6 +256,7 @@ if (values.phase === 'prepare') {
     assert.equal(d.data.questions.length, scope.count);
     const texts = queryTexts(d.data);
     texts.forEach((t) => querySet.add(t));
+    let commonConfiguration;
     for (let i = 0; i < strategies.length; i++) {
       const originalPath = path.join(lab, scope.files[i === 1 ? 1 : 0]);
       const original = await get(originalPath),
@@ -302,6 +303,22 @@ if (values.phase === 'prepare') {
       const config = await loadConfig(configPath);
       config.__path = configPath;
       checkConfig(config);
+      const nonChunk = {
+        embedding: config.embedding,
+        tokenizer_id: config.profile.active.tokenizer,
+        tokenizer_fingerprint: config.profile.tokenizer.fingerprint,
+        embedding_id: config.profile.active.embedding,
+        collections: config.collections,
+        runtime: config.runtime,
+        retrieval: config.retrieval,
+      };
+      if (i === 0) commonConfiguration = nonChunk;
+      else
+        assert.deepEqual(
+          nonChunk,
+          commonConfiguration,
+          'Only the chunk strategy may differ within a scope',
+        );
       corpusEqual(await snapshotRetrievalCorpus(configPath), d.data.corpus);
       const item = {
         scope: scope.id,

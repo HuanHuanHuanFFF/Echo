@@ -31,6 +31,13 @@ function tableDelimiter(text) {
     cells.length > 0 && cells.every((cell) => /^\s*:?-{3,}:?\s*$/.test(cell))
   );
 }
+function boundedTitle(title) {
+  if (title.length <= 2000) return title;
+  let prefix = title.slice(0, 1999);
+  const last = prefix.charCodeAt(prefix.length - 1);
+  if (last >= 0xd800 && last <= 0xdbff) prefix = prefix.slice(0, -1);
+  return prefix + '…';
+}
 export default {
   id: 'markdown-structure-v1',
   version: '1',
@@ -87,7 +94,7 @@ export default {
         level,
         start: i,
         end: lines.length - 1,
-        path: [...parent.path, title].filter(Boolean),
+        path: [...parent.path, boundedTitle(title)].filter(Boolean),
         parent,
         children: [],
       };
@@ -173,6 +180,10 @@ export default {
       };
       const isTable = (i) =>
         i < group.end &&
+        !indented.test(lines[i].text) &&
+        !indented.test(lines[i + 1].text) &&
+        !list.test(lines[i].text) &&
+        !quote.test(lines[i].text) &&
         lines[i].text.includes('|') &&
         tableDelimiter(lines[i + 1].text);
       const special = (i) =>
