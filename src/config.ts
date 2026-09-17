@@ -7,13 +7,13 @@ const positive = (max: number) => z.number().int().min(1).max(max);
 export const retrievalSchema = z
   .object({
     mode: z.enum(['hybrid', 'bm25', 'dense']).default('hybrid'),
-    topk: positive(100).default(8),
-    max_chunks_per_source: positive(100).default(2),
+    topk: positive(100).default(10),
+    max_chunks_per_source: positive(100).default(3),
     bm25_candidates: positive(1000).default(60),
     dense_candidates: positive(1000).default(60),
     rrf_k: positive(1000).default(60),
     title_weight: z.number().min(0).max(20).default(2),
-    bm25_weight: z.number().min(0).max(10).default(1),
+    bm25_weight: z.number().min(0).max(10).default(0.5),
     dense_weight: z.number().min(0).max(10).default(1),
     max_context_chars: positive(100000).min(256).default(12000),
     min_dense_similarity: z.number().min(-1).max(1).default(0.3),

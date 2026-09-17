@@ -1,13 +1,13 @@
 {
   "id": "balanced",
   "mode": "hybrid",
-  "topk": 8,
-  "max_chunks_per_source": 2,
+  "topk": 10,
+  "max_chunks_per_source": 3,
   "bm25_candidates": 60,
   "dense_candidates": 60,
   "rrf_k": 60,
   "title_weight": 2,
-  "bm25_weight": 1,
+  "bm25_weight": 0.5,
   "dense_weight": 1,
   "min_dense_similarity": 0.3,
   "max_context_chars": 12000

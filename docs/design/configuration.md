@@ -6,6 +6,8 @@
 本文落定[基线](../project/baseline.md)中的配置、切块和模块候选；旧日期设计保留为历史。
 最新用户决定：embedding 默认由用户配置 API/key；BM25 使用本地算法。
 
+2026-09-17：下表的 topk、每篇上限和 BM25 权重按用户决定更新为 10、3、0.5；替代范围与兼容行为见 [v2 召回契约](configuration-profiles.md)。历史评测参数保持原记录。
+
 ## 配置与覆盖
 
 [config.ts](../../src/config.ts)是可执行字段校验依据。JSON 包含 database、collections、chunker、
@@ -16,11 +18,11 @@ lexical、embedding、retrieval、runtime。相对路径以配置文件目录解
 | retrieval 字段                     | 默认    | 合法范围                                     |
 | ---------------------------------- | ------- | -------------------------------------------- |
 | mode                               | hybrid  | bm25 / dense / hybrid                        |
-| topk / max_chunks_per_source       | 8 / 2   | 1–100，两个硬上限                            |
+| topk / max_chunks_per_source       | 10 / 3  | 1–100，两个硬上限                            |
 | bm25_candidates / dense_candidates | 60 / 60 | 1–1000                                       |
 | rrf_k                              | 60      | 1–1000                                       |
 | title_weight                       | 2       | 0–20，正文权重为 1                           |
-| bm25_weight / dense_weight         | 1 / 1   | 0–10，不同时为 0                             |
+| bm25_weight / dense_weight         | 0.5 / 1 | 0–10，不同时为 0                             |
 | min_dense_similarity               | 0.3     | -1–1                                         |
 | max_context_chars                  | 12000   | 256–100000，实际紧凑结果 JSON 的 UTF-16 长度 |
 
