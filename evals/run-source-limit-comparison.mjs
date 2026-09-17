@@ -1,3 +1,4 @@
+import { jointReferences, compareJoint } from './lib/joint-comparison.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -33,6 +34,11 @@ const experiments = {
     values: [12000, 16000],
     baseline: 12000,
   },
+  'rrf-budget-combined': {
+    key: 'rrf_k+max_context_chars',
+    values: ['joint'],
+    patch: { rrf_k: 30, max_context_chars: 16000 },
+  },
 };
 export function experimentMetadata(experimentName) {
   const experiment = experiments[experimentName];
@@ -42,8 +48,9 @@ export function experimentMetadata(experimentName) {
     ...(experimentName === 'source-limit'
       ? { limits: [...experiment.values] }
       : {}),
-    authorization:
-      experimentName === 'source-limit'
+    authorization: experiment.patch
+      ? 'User explicitly adopts RRF30 and budget16000, requests only this joint100 run compared with existing results. Keep source limit3 and fixed decomposition; no fresh baseline, API, index rebuild or final data.'
+      : experimentName === 'source-limit'
         ? 'User requested only source limit 3 versus 4 with fixed decomposition. No default change, index rebuild or final data.'
         : 'User requested ' +
           experiment.key +
@@ -55,8 +62,13 @@ export function experimentMetadata(experimentName) {
 export function experimentRetrieval(original, experimentName, value) {
   const experiment = experiments[experimentName];
   assert.ok(experiment && experiment.values.includes(value));
-  assert.equal(original[experiment.key], experiment.baseline);
   assert.equal(original.max_chunks_per_source, 3);
+  if (experiment.patch) {
+    assert.equal(original.rrf_k, 60);
+    assert.equal(original.max_context_chars, 12000);
+    return { ...original, ...experiment.patch };
+  }
+  assert.equal(original[experiment.key], experiment.baseline);
   return { ...original, [experiment.key]: value };
 }
 export function experimentBudget(original, experimentName, value) {
@@ -123,7 +135,7 @@ async function main() {
   const limits = experiment.values;
   const offline = experimentName !== 'source-limit';
   assert.ok(values.lab && /^[a-z0-9-]+$/.test(values['run-id'] ?? ''));
-  assert.ok(['prepare', 'run', 'summarize'].includes(values.phase));
+  assert.ok(['prepare', 'run', 'summarize', 'compare'].includes(values.phase));
   const lab = path.resolve(values.lab),
     root = path.join(lab, 'evidence', values['run-id']);
   const baseline = path.join(lab, 'evidence/structure-ab-2026-09-17-v3');
@@ -147,6 +159,13 @@ async function main() {
       new URL('./lib/frozen-query-fetch.mjs', import.meta.url),
     ),
     guard: await digest(guardPath),
+    ...(experiment.patch
+      ? {
+          comparison: await digest(
+            new URL('./lib/joint-comparison.mjs', import.meta.url),
+          ),
+        }
+      : {}),
   };
   const deliveryPath = path.join(
     baseline,
@@ -320,7 +339,7 @@ async function main() {
     assert.equal(childQueries, 68);
     assert.equal(
       runs.reduce((n, r) => n + r.parents, 0),
-      200,
+      100 * limits.length,
     );
     const plan = {
       status: 'prepared',
@@ -337,7 +356,7 @@ async function main() {
       dimensions: old.dimensions,
       endpoint,
       independent_questions: 100,
-      parent_executions: 200,
+      parent_executions: 100 * limits.length,
       split_parents: 33,
       fixed_subquestions: 68,
       final_queries: 0,
@@ -353,6 +372,9 @@ async function main() {
         ? 'Reuse SHA-bound real responses from the preceding source-limit experiment; network disabled.'
         : 'First successful real response for each exact query request is frozen and replayed. Same vectors in both arms; never synthetic vectors.',
       authorization: experimentMetadata(experimentName).authorization,
+      ...(experiment.patch
+        ? { comparison_references: await jointReferences(lab) }
+        : {}),
     };
     await fs.writeFile(path.join(root, 'plan.json'), json(plan), {
       flag: 'wx',
@@ -543,6 +565,22 @@ async function main() {
     }
     return;
   }
+  if (values.phase === 'compare') {
+    assert.ok(experiment.patch, 'compare is only for the requested joint run');
+    const result = await compareJoint(lab, root, plan);
+    console.log(
+      json({
+        conditions: result.conditions.map((c) => ({
+          id: c.id,
+          complete: c.all.k[10].completeEvidence,
+          facts: c.all.k[10].factCovered,
+          context: c.context_chars,
+        })),
+        changes: result.changes,
+      }),
+    );
+    return;
+  }
   const report = await get(path.join(root, 'queries/report.json'));
   assert.equal(report.status, 'complete');
   assert.equal(report.plan_sha256, await digest(path.join(root, 'plan.json')));
@@ -691,31 +729,36 @@ async function main() {
         all.push({ scope, limit, id: row.query_id, metrics, row });
       });
     }
-    armRows[limits[0]].forEach((a, i) => {
-      const b = armRows[limits[1]][i];
-      const gained = b.covered_facts.filter(
-        (f) => !a.covered_facts.includes(f),
-      );
-      const lost = a.covered_facts.filter((f) => !b.covered_facts.includes(f));
-      if (gained.length || lost.length)
-        changes.push({
-          scope,
-          id: a.query_id,
-          expected: a.expected_facts.length,
-          baseline_facts: a.covered_facts.length,
-          candidate_facts: b.covered_facts.length,
-          gained,
-          lost,
-          baseline_complete:
-            !a.no_answer && a.covered_facts.length === a.expected_facts.length,
-          candidate_complete:
-            !b.no_answer && b.covered_facts.length === b.expected_facts.length,
-          baseline_context: a.context_chars,
-          candidate_context: b.context_chars,
-          baseline_count: a.result.results.length,
-          candidate_count: b.result.results.length,
-        });
-    });
+    if (limits.length === 2)
+      armRows[limits[0]].forEach((a, i) => {
+        const b = armRows[limits[1]][i];
+        const gained = b.covered_facts.filter(
+          (f) => !a.covered_facts.includes(f),
+        );
+        const lost = a.covered_facts.filter(
+          (f) => !b.covered_facts.includes(f),
+        );
+        if (gained.length || lost.length)
+          changes.push({
+            scope,
+            id: a.query_id,
+            expected: a.expected_facts.length,
+            baseline_facts: a.covered_facts.length,
+            candidate_facts: b.covered_facts.length,
+            gained,
+            lost,
+            baseline_complete:
+              !a.no_answer &&
+              a.covered_facts.length === a.expected_facts.length,
+            candidate_complete:
+              !b.no_answer &&
+              b.covered_facts.length === b.expected_facts.length,
+            baseline_context: a.context_chars,
+            candidate_context: b.context_chars,
+            baseline_count: a.result.results.length,
+            candidate_count: b.result.results.length,
+          });
+      });
   }
   const aggregate = (predicate) =>
     Object.fromEntries(
@@ -757,7 +800,7 @@ async function main() {
     model: plan.model,
     dimensions: plan.dimensions,
     independent_questions: 100,
-    parent_executions: 200,
+    parent_executions: 100 * limits.length,
     final_queries: 0,
     all: aggregate(() => true),
     byScope: Object.fromEntries(

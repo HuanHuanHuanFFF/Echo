@@ -79,8 +79,8 @@ node /absolute/path/to/echo/dist/cli.js serve --config /absolute/path/to/echo/ec
 
 ## 默认与自定义方案
 
-默认：标题感知 max_chars=1000，hybrid，每路候选 60，RRF k=60、BM25/向量权重 0.5/1，
-topk=10、每篇最多 3、最低余弦相似度 0.3、完整结果 JSON 预算 12000 字符。
+默认：标题感知 max_chars=1000，hybrid，每路候选 60，RRF k=30、BM25/向量权重 0.5/1，
+topk=10、每篇最多 3、最低余弦相似度 0.3、完整结果 JSON 预算 16000 字符。
 2026-09-17 按用户决定调整三个默认值；该组合尚未完成真实模型效果评测，历史成绩仍对应各自记录的参数。
 
 召回配置支持部分覆盖；单次搜索可传 overrides 和 filters。切块策略的规则固定，改变数字应另建策略 ID。

@@ -8,6 +8,8 @@
 
 2026-09-17：下表的 topk、每篇上限和 BM25 权重按用户决定更新为 10、3、0.5；替代范围与兼容行为见 [v2 召回契约](configuration-profiles.md)。历史评测参数保持原记录。
 
+2026-09-18：RRF与返回JSON预算默认值按用户新决定改为30、16000，旧格式同样按字段继承；已有显式配置与历史评测不改写。见[v2当前契约](configuration-profiles.md)。
+
 ## 配置与覆盖
 
 [config.ts](../../src/config.ts)是可执行字段校验依据。JSON 包含 database、collections、chunker、
@@ -20,11 +22,11 @@ lexical、embedding、retrieval、runtime。相对路径以配置文件目录解
 | mode                               | hybrid  | bm25 / dense / hybrid                        |
 | topk / max_chunks_per_source       | 10 / 3  | 1–100，两个硬上限                            |
 | bm25_candidates / dense_candidates | 60 / 60 | 1–1000                                       |
-| rrf_k                              | 60      | 1–1000                                       |
+| rrf_k                              | 30      | 1–1000                                       |
 | title_weight                       | 2       | 0–20，正文权重为 1                           |
 | bm25_weight / dense_weight         | 0.5 / 1 | 0–10，不同时为 0                             |
 | min_dense_similarity               | 0.3     | -1–1                                         |
-| max_context_chars                  | 12000   | 256–100000，实际紧凑结果 JSON 的 UTF-16 长度 |
+| max_context_chars                  | 16000   | 256–100000，实际紧凑结果 JSON 的 UTF-16 长度 |
 
 单次 filters 支持 collections、source_ids、path_prefix；空 ID 数组表示空范围。
 UUID 规范成小写；两路在范围内取候选。当前不开放任意召回算法插件或重排器。

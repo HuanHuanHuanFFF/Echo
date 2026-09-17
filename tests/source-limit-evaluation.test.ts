@@ -42,13 +42,22 @@ const setup = (fetchFn: () => Promise<Response>) =>
       expect(body.data[0]?.embedding).toHaveLength(2),
   });
 describe('single source-limit experiment', () => {
+  it('runs only the explicitly requested joint condition without changing other values', () => {
+    const base = retrievalSchema.parse({ rrf_k: 60, max_context_chars: 12000 });
+    const joint = experimentRetrieval(base, 'rrf-budget-combined', 'joint');
+    expect(joint).toEqual({ ...base, rrf_k: 30, max_context_chars: 16000 });
+    expect(experimentMetadata('rrf-budget-combined').values).toEqual(['joint']);
+    expect(experimentBudget(base, 'rrf-budget-combined', 'joint')).toBe(16000);
+    expect(base.rrf_k).toBe(60);
+    expect(base.max_context_chars).toBe(12000);
+  });
   it.each([
     ['rrf-k', 'rrf_k', 30],
     ['title-weight', 'title_weight', 1],
     ['dense-threshold', 'min_dense_similarity', 0.25],
     ['context-budget', 'max_context_chars', 16000],
   ] as const)('isolates %s from the same baseline', (name, field, value) => {
-    const base = retrievalSchema.parse({}),
+    const base = retrievalSchema.parse({ rrf_k: 60, max_context_chars: 12000 }),
       before = structuredClone(base);
     const candidate = experimentRetrieval(base, name, value);
     expect(candidate).toEqual({ ...base, [field]: value });
@@ -62,9 +71,9 @@ describe('single source-limit experiment', () => {
   });
   it('permits per-request response-budget overrides without mutating defaults', () => {
     const base = retrievalSchema.parse({});
-    const result = retrievalOptions(base, { max_context_chars: 16000 });
-    expect(result.max_context_chars).toBe(16000);
-    expect(base.max_context_chars).toBe(12000);
+    const result = retrievalOptions(base, { max_context_chars: 20000 });
+    expect(result.max_context_chars).toBe(20000);
+    expect(base.max_context_chars).toBe(16000);
     expect(result.topk).toBe(10);
     expect(result.max_chunks_per_source).toBe(3);
   });

@@ -452,7 +452,7 @@ export async function runRetrievalEvaluation(
   options: RetrievalEvaluationOptions,
 ) {
   const config = await loadConfig(options.configPath);
-  const budget = options.budgetChars ?? 12000;
+  const budget = options.budgetChars ?? 16000;
   if (!Number.isInteger(budget) || budget < 512 || budget > 100000)
     throw new Error('Budget must be 512-100000 characters');
   if (
