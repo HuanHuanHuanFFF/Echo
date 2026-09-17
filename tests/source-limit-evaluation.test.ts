@@ -1,3 +1,4 @@
+import { retrievalSchema, retrievalOptions } from '../src/config.js';
 import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 import { resolve } from 'node:path';
@@ -10,6 +11,8 @@ const {
   checkedIndexState,
   experimentRetrieval,
   experimentMetadata,
+  experimentBudget,
+  budgetRequestPayload,
 } = await import(
   pathToFileURL(resolve('evals/run-source-limit-comparison.mjs')).href
 );
@@ -39,6 +42,49 @@ const setup = (fetchFn: () => Promise<Response>) =>
       expect(body.data[0]?.embedding).toHaveLength(2),
   });
 describe('single source-limit experiment', () => {
+  it.each([
+    ['rrf-k', 'rrf_k', 30],
+    ['title-weight', 'title_weight', 1],
+    ['dense-threshold', 'min_dense_similarity', 0.25],
+    ['context-budget', 'max_context_chars', 16000],
+  ] as const)('isolates %s from the same baseline', (name, field, value) => {
+    const base = retrievalSchema.parse({}),
+      before = structuredClone(base);
+    const candidate = experimentRetrieval(base, name, value);
+    expect(candidate).toEqual({ ...base, [field]: value });
+    expect(base).toEqual(before);
+    expect(candidate.max_chunks_per_source).toBe(3);
+    expect(candidate.bm25_weight).toBe(0.5);
+    expect(experimentBudget(base, name, value)).toBe(
+      name === 'context-budget' ? 16000 : 12000,
+    );
+    expect(experimentMetadata(name).authorization).toContain(field);
+  });
+  it('permits per-request response-budget overrides without mutating defaults', () => {
+    const base = retrievalSchema.parse({});
+    const result = retrievalOptions(base, { max_context_chars: 16000 });
+    expect(result.max_context_chars).toBe(16000);
+    expect(base.max_context_chars).toBe(12000);
+    expect(result.topk).toBe(10);
+    expect(result.max_chunks_per_source).toBe(3);
+  });
+  it('checks the total request plus response budget and permits only its derived override', () => {
+    const payload = {
+      queries: [{ query_id: 'a', text: 'same frozen subquestion' }],
+    };
+    const a = { ...payload, overrides: { max_context_chars: 11800 } },
+      b = { ...payload, overrides: { max_context_chars: 15800 } };
+    expect(budgetRequestPayload(a, 12000)).toEqual(
+      budgetRequestPayload(b, 16000),
+    );
+    expect(() => budgetRequestPayload(b, 12000)).toThrow();
+    expect(() =>
+      budgetRequestPayload(
+        { ...a, overrides: { max_context_chars: 11800, topk: 20 } },
+        12000,
+      ),
+    ).toThrow();
+  });
   it('preserves source-limit output fields and labels each experiment accurately', () => {
     const source = experimentMetadata('source-limit'),
       weight = experimentMetadata('bm25-weight');

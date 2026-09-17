@@ -6,6 +6,8 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 当前下一步
 
+- [四项独立单参数对照](evals/2026-09-17-four-parameter-comparisons.md)：按用户要求依次测试RRF、标题权重、向量阈值和上下文预算；共同基线固定，准备中。
+
 - [新综合＋拆分＋每篇3：BM25权重0.5/0.25](evals/2026-09-17-bm25-weight-comparison.md)：权重降低后完整89/95→87/95，事实总数相同但分库得失不同；零新增API，两位独立复核通过，继续保留0.5。
 
 - [新综合＋固定拆分：每篇3/4对照](evals/2026-09-17-source-limit-comparison.md)：单篇上限3→4只补回B-D17，完整89/95→90/95；同真实向量，两位独立复核通过，默认仍3。

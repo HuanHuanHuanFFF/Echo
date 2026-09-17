@@ -21,6 +21,18 @@ const limits = [3, 4];
 const experiments = {
   'source-limit': { key: 'max_chunks_per_source', values: [3, 4], baseline: 3 },
   'bm25-weight': { key: 'bm25_weight', values: [0.5, 0.25], baseline: 0.5 },
+  'rrf-k': { key: 'rrf_k', values: [60, 30], baseline: 60 },
+  'title-weight': { key: 'title_weight', values: [2, 1], baseline: 2 },
+  'dense-threshold': {
+    key: 'min_dense_similarity',
+    values: [0.3, 0.25],
+    baseline: 0.3,
+  },
+  'context-budget': {
+    key: 'max_context_chars',
+    values: [12000, 16000],
+    baseline: 12000,
+  },
 };
 export function experimentMetadata(experimentName) {
   const experiment = experiments[experimentName];
@@ -33,7 +45,11 @@ export function experimentMetadata(experimentName) {
     authorization:
       experimentName === 'source-limit'
         ? 'User requested only source limit 3 versus 4 with fixed decomposition. No default change, index rebuild or final data.'
-        : 'User requested BM25 weight 0.5 versus 0.25 while retaining source limit 3 and fixed decomposition. Use only verified frozen real responses; no new API, default change, index rebuild or final data.',
+        : 'User requested ' +
+          experiment.key +
+          ' ' +
+          experiment.values.join(' versus ') +
+          ' while retaining source limit 3 and fixed decomposition. Each experiment starts from the same baseline. Use only verified frozen real responses; no new API, default change, index rebuild or final data.',
   };
 }
 export function experimentRetrieval(original, experimentName, value) {
@@ -42,6 +58,20 @@ export function experimentRetrieval(original, experimentName, value) {
   assert.equal(original[experiment.key], experiment.baseline);
   assert.equal(original.max_chunks_per_source, 3);
   return { ...original, [experiment.key]: value };
+}
+export function experimentBudget(original, experimentName, value) {
+  return experimentRetrieval(original, experimentName, value).max_context_chars;
+}
+export function budgetRequestPayload(request, budget) {
+  assert.deepEqual(Object.keys(request.overrides ?? {}), ['max_context_chars']);
+  const allowance = request.overrides.max_context_chars;
+  assert.ok(Number.isInteger(allowance) && allowance >= 256);
+  assert.ok(
+    JSON.stringify(request).length + allowance <= budget,
+    'Request plus response allowance exceeds total budget',
+  );
+  const { overrides, ...payload } = request;
+  return payload;
 }
 const endpoint = 'https://dashscope.aliyuncs.com/compatible-mode/v1/embeddings';
 const fingerprint =
@@ -91,7 +121,7 @@ async function main() {
   const experiment = experiments[experimentName];
   assert.ok(experiment, 'Unknown experiment');
   const limits = experiment.values;
-  const offline = experimentName === 'bm25-weight';
+  const offline = experimentName !== 'source-limit';
   assert.ok(values.lab && /^[a-z0-9-]+$/.test(values['run-id'] ?? ''));
   assert.ok(['prepare', 'run', 'summarize'].includes(values.phase));
   const lab = path.resolve(values.lab),
@@ -166,7 +196,16 @@ async function main() {
     assert.equal(await digest(item.configPath), item.config_sha256);
     const original = await loadConfig(ref.configPath),
       current = await loadConfig(item.configPath);
+    assert.equal(
+      original.profile.revision,
+      ref.config_revision,
+      'Reference configuration drifted',
+    );
     assert.equal(current.profile.active.chunker, 'markdown-structure-v1');
+    assert.equal(
+      item.budget_chars ?? 12000,
+      experimentBudget(original.retrieval, experimentName, item.limit),
+    );
     assert.equal(current.profile.revision, item.config_revision);
     assert.deepEqual(current.profile.active, original.profile.active);
     for (const key of ['database', 'collections', 'embedding', 'runtime'])
@@ -269,6 +308,7 @@ async function main() {
           datasetPath,
           dataset_sha256: ref.dataset_sha256,
           parents: data.questions.length,
+          budget_chars: experimentBudget(old.retrieval, experimentName, limit),
           logical_requests: texts(data).length,
           outputName: scope + '-' + limit,
         };
@@ -426,14 +466,15 @@ async function main() {
           configPath: item.configPath,
           datasetPath: item.datasetPath,
           outputDir: path.join(dir, item.outputName),
-          budgetChars: 12000,
+          budgetChars: item.budget_chars ?? 12000,
           maxApiCalls: item.logical_requests,
         });
         assert.equal(run.report.status, 'complete');
         assert.equal(run.report.rows.length, item.parents);
         for (const row of run.report.rows) {
           assert.equal(row.status, 'ok');
-          assert.ok(row.context_chars <= 12000);
+          assert.ok(row.context_chars <= (item.budget_chars ?? 12000));
+          budgetRequestPayload(row.request, item.budget_chars ?? 12000);
           assert.ok(row.result.results.length <= 10);
           const counts = new Map();
           for (const p of row.result.results)
@@ -558,19 +599,18 @@ async function main() {
       );
       const manifest = await get(path.join(dir, 'manifest.json'));
       assert.equal(manifest.revision, item.config_revision);
+      assert.equal(manifest.budget_chars, item.budget_chars ?? 12000);
+      assert.equal(
+        manifest.retrieval.max_context_chars,
+        item.budget_chars ?? 12000,
+      );
       const indexState = checkedIndexState(manifest.index, manifest.revision);
       if (prior) {
         assert.deepEqual(
           indexState,
           checkedIndexState(priorManifest.index, priorManifest.revision),
         );
-        for (const field of [
-          'corpus',
-          'runtime',
-          'selection',
-          'embedding',
-          'budget_chars',
-        ])
+        for (const field of ['corpus', 'runtime', 'selection', 'embedding'])
           assert.deepEqual(manifest[field], priorManifest[field]);
         assert.deepEqual(
           manifest.retrieval,
@@ -580,10 +620,20 @@ async function main() {
             limits[1],
           ),
         );
-        assert.deepEqual(
-          raw.map((r) => r.request),
-          prior.map((r) => r.request),
-        );
+        if (experiment.key === 'max_context_chars') {
+          assert.deepEqual(
+            raw.map((r) =>
+              budgetRequestPayload(r.request, manifest.budget_chars),
+            ),
+            prior.map((r) =>
+              budgetRequestPayload(r.request, priorManifest.budget_chars),
+            ),
+          );
+        } else
+          assert.deepEqual(
+            raw.map((r) => r.request),
+            prior.map((r) => r.request),
+          );
         const keys = (arm) =>
           uses
             .filter((u) => u.run === scope + '-' + arm)
@@ -610,6 +660,22 @@ async function main() {
         });
       raw.forEach((row, i) => {
         assert.equal(row.status, 'ok');
+        const payload = budgetRequestPayload(
+          row.request,
+          manifest.budget_chars,
+        );
+        const q = data.questions[i];
+        assert.deepEqual(
+          payload,
+          q.subquestions
+            ? {
+                queries: q.subquestions.map((s) => ({
+                  query_id: s.id,
+                  text: s.text,
+                })),
+              }
+            : { query: q.query },
+        );
         const metrics = score(
           data.questions[i],
           data.facts,
