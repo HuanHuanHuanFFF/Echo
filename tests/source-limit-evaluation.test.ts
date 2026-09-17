@@ -5,10 +5,14 @@ import { pathToFileURL } from 'node:url';
 const { frozenQueryFetch } = await import(
   pathToFileURL(resolve('evals/lib/frozen-query-fetch.mjs')).href
 );
-const { sourceLimitRetrieval, checkedIndexState, experimentRetrieval } =
-  await import(
-    pathToFileURL(resolve('evals/run-source-limit-comparison.mjs')).href
-  );
+const {
+  sourceLimitRetrieval,
+  checkedIndexState,
+  experimentRetrieval,
+  experimentMetadata,
+} = await import(
+  pathToFileURL(resolve('evals/run-source-limit-comparison.mjs')).href
+);
 const endpoint = 'https://example.invalid/embeddings';
 const options = (text = 'fixed', signal?: AbortSignal) => ({
   method: 'POST',
@@ -35,6 +39,17 @@ const setup = (fetchFn: () => Promise<Response>) =>
       expect(body.data[0]?.embedding).toHaveLength(2),
   });
 describe('single source-limit experiment', () => {
+  it('preserves source-limit output fields and labels each experiment accurately', () => {
+    const source = experimentMetadata('source-limit'),
+      weight = experimentMetadata('bm25-weight');
+    expect(source.limits).toEqual([3, 4]);
+    expect(source.values).toEqual([3, 4]);
+    expect(source.authorization).toContain('source limit 3 versus 4');
+    expect(source.authorization).not.toContain('BM25');
+    expect(weight.values).toEqual([0.5, 0.25]);
+    expect(weight.limits).toBeUndefined();
+    expect(weight.authorization).toContain('retaining source limit 3');
+  });
   it('changes only BM25 weight while retaining source limit three and dense weight one', () => {
     const base = {
       max_chunks_per_source: 3,

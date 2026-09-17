@@ -22,6 +22,20 @@ const experiments = {
   'source-limit': { key: 'max_chunks_per_source', values: [3, 4], baseline: 3 },
   'bm25-weight': { key: 'bm25_weight', values: [0.5, 0.25], baseline: 0.5 },
 };
+export function experimentMetadata(experimentName) {
+  const experiment = experiments[experimentName];
+  assert.ok(experiment, 'Unknown experiment');
+  return {
+    values: [...experiment.values],
+    ...(experimentName === 'source-limit'
+      ? { limits: [...experiment.values] }
+      : {}),
+    authorization:
+      experimentName === 'source-limit'
+        ? 'User requested only source limit 3 versus 4 with fixed decomposition. No default change, index rebuild or final data.'
+        : 'User requested BM25 weight 0.5 versus 0.25 while retaining source limit 3 and fixed decomposition. Use only verified frozen real responses; no new API, default change, index rebuild or final data.',
+  };
+}
 export function experimentRetrieval(original, experimentName, value) {
   const experiment = experiments[experimentName];
   assert.ok(experiment && experiment.values.includes(value));
@@ -298,8 +312,7 @@ async function main() {
       vector_control: offline
         ? 'Reuse SHA-bound real responses from the preceding source-limit experiment; network disabled.'
         : 'First successful real response for each exact query request is frozen and replayed. Same vectors in both arms; never synthetic vectors.',
-      authorization:
-        'User requested one further parameter experiment with fixed decomposition and source limit 3 retained for BM25 weight testing. No product default change, index rebuild or final data.',
+      authorization: experimentMetadata(experimentName).authorization,
     };
     await fs.writeFile(path.join(root, 'plan.json'), json(plan), {
       flag: 'wx',
@@ -665,7 +678,7 @@ async function main() {
   const result = {
     status: 'complete',
     variable: plan.variable,
-    values: limits,
+    ...experimentMetadata(experimentName),
     response_origin: responseOrigin,
     plan_sha256: report.plan_sha256,
     code: plan.code,
