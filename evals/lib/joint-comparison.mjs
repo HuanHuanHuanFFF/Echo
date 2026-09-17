@@ -14,7 +14,46 @@ const scopes = [
 ];
 const expectedDelivery =
   'de55af401f736ac892677ad2e75b4b7800521e08286a66cdebe950b307ab5558';
-export async function jointReferences(lab) {
+export async function jointReferences(lab, experiment = 'rrf-budget-combined') {
+  if (experiment === 'rrf40-budget16000') {
+    const file = path.join(
+      lab,
+      'evidence/structure-rrf-budget-combined-2026-09-18-v1/delivery.public.json',
+    );
+    const expected =
+      'cf0c15f439e2341dd962c2d4a51afa8e0db6ade6a781b591ba30e33d0f6380ce';
+    assert.equal(await digest(file), expected);
+    const study = await get(file);
+    const budget = study.references.find((c) => c.id === 'budget_only');
+    assert.ok(budget);
+    const conditions = [
+      {
+        id: 'rrf30',
+        run: study.run,
+        value: 'joint',
+        rrf_k: 30,
+        budget: 16000,
+        files: [
+          ...study.query_artifact_hashes,
+          ...study.artifact_hashes.filter(
+            (f) => f.file === 'queries/vector-uses.jsonl',
+          ),
+        ],
+      },
+      { ...budget, id: 'rrf60' },
+    ];
+    for (const c of conditions) {
+      assert.equal(c.files.length, 17);
+      assert.equal(c.budget, 16000);
+      for (const f of c.files)
+        assert.equal(
+          await digest(path.join(lab, 'evidence', c.run, f.file)),
+          f.sha256,
+        );
+    }
+    return { delivery_sha256: expected, conditions };
+  }
+  assert.equal(experiment, 'rrf-budget-combined');
   const file = path.join(
     lab,
     'evidence/four-parameter-comparisons-2026-09-17-v1/delivery.public.json',
@@ -86,7 +125,15 @@ const indexPart = (m) => {
   return rest;
 };
 export async function compareJoint(lab, root, plan) {
-  const refs = await jointReferences(lab);
+  const refs = await jointReferences(lab, plan.experiment);
+  const testing40 = plan.experiment === 'rrf40-budget16000';
+  const candidate = {
+    id: testing40 ? 'rrf40' : 'joint',
+    run: path.basename(root),
+    value: testing40 ? 40 : 'joint',
+    rrf_k: testing40 ? 40 : 30,
+    budget: 16000,
+  };
   assert.deepEqual(refs, plan.comparison_references);
   const newSummary = await get(path.join(root, 'summary.public.json'));
   assert.equal(newSummary.parent_executions, 100);
@@ -96,16 +143,7 @@ export async function compareJoint(lab, root, plan) {
       .split(/\r?\n/)
       .map(JSON.parse);
   const currentUses = await uses(root);
-  const conditions = [
-    ...refs.conditions,
-    {
-      id: 'joint',
-      run: path.basename(root),
-      value: 'joint',
-      rrf_k: 30,
-      budget: 16000,
-    },
-  ];
+  const conditions = [...refs.conditions, candidate];
   const collected = new Map(),
     comparison = [];
   for (const c of conditions) {
@@ -113,14 +151,19 @@ export async function compareJoint(lab, root, plan) {
       all = [],
       byScope = {},
       costs = [];
-    const log = c.id === 'joint' ? currentUses : await uses(folder);
+    const log = c.id === candidate.id ? currentUses : await uses(folder);
     for (const scope of scopes) {
       const name = scope + '-' + c.value,
         dir = path.join(folder, 'queries', name);
       const data = await get(path.join(dir, 'dataset.json')),
         manifest = await get(path.join(dir, 'manifest.json'));
       const current = await get(
-        path.join(root, 'queries', scope + '-joint', 'manifest.json'),
+        path.join(
+          root,
+          'queries',
+          scope + '-' + candidate.value,
+          'manifest.json',
+        ),
       );
       assert.equal(
         await digest(path.join(dir, 'dataset.json')),
@@ -133,7 +176,11 @@ export async function compareJoint(lab, root, plan) {
       assert.equal(manifest.retrieval.max_context_chars, c.budget);
       assert.equal(manifest.budget_chars, c.budget);
       assert.deepEqual(
-        { ...manifest.retrieval, rrf_k: 30, max_context_chars: 16000 },
+        {
+          ...manifest.retrieval,
+          rrf_k: candidate.rrf_k,
+          max_context_chars: candidate.budget,
+        },
         current.retrieval,
       );
       const keyset = (entries, id) =>
@@ -143,15 +190,20 @@ export async function compareJoint(lab, root, plan) {
           .sort();
       assert.deepEqual(
         keyset(log, name),
-        keyset(currentUses, scope + '-joint'),
+        keyset(currentUses, scope + '-' + candidate.value),
       );
       const rs = await rows(folder, name),
-        newRows = await rows(root, scope + '-joint');
+        newRows = await rows(root, scope + '-' + candidate.value);
       assert.deepEqual(
         rs.map((r) => r.query_id),
         newRows.map((r) => r.query_id),
       );
       assert.deepEqual(rs.map(queryPart), newRows.map(queryPart));
+      if (testing40)
+        assert.deepEqual(
+          rs.map((r) => r.request),
+          newRows.map((r) => r.request),
+        );
       assert.deepEqual(rs, (await get(path.join(dir, 'report.json'))).rows);
       const metrics = rs.map((r, i) => {
         assert.equal(r.status, 'ok');
@@ -185,7 +237,7 @@ export async function compareJoint(lab, root, plan) {
       run: c.run,
       rrf_k: c.rrf_k,
       budget: c.budget,
-      execution: c.id === 'joint' ? 'new' : 'reused',
+      execution: c.id === candidate.id ? 'new' : 'reused',
       all: summarize(all),
       byScope,
       context_chars: costs.reduce((n, r) => n + r.context_chars, 0),
@@ -202,7 +254,7 @@ export async function compareJoint(lab, root, plan) {
     changes[c.id] = [];
     for (const scope of scopes) {
       const old = collected.get(c.id + ':' + scope),
-        joint = collected.get('joint:' + scope);
+        joint = collected.get(candidate.id + ':' + scope);
       old.forEach((a, i) => {
         const b = joint[i],
           gained = b.covered_facts.filter((f) => !a.covered_facts.includes(f)),
@@ -213,13 +265,14 @@ export async function compareJoint(lab, root, plan) {
             id: a.query_id,
             expected: a.expected_facts.length,
             reference_facts: a.covered_facts.length,
-            joint_facts: b.covered_facts.length,
+            [testing40 ? 'candidate_facts' : 'joint_facts']:
+              b.covered_facts.length,
             gained,
             lost,
             reference_complete:
               !a.no_answer &&
               a.covered_facts.length === a.expected_facts.length,
-            joint_complete:
+            [testing40 ? 'candidate_complete' : 'joint_complete']:
               !b.no_answer &&
               b.covered_facts.length === b.expected_facts.length,
           });
@@ -227,13 +280,13 @@ export async function compareJoint(lab, root, plan) {
     }
   }
   assert.deepEqual(
-    comparison.find((c) => c.id === 'joint').all,
-    newSummary.all.joint,
+    comparison.find((c) => c.id === candidate.id).all,
+    newSummary.all[candidate.value],
   );
   const output = {
     status: 'complete',
     new_parent_executions: 100,
-    reused_parent_rows: 300,
+    reused_parent_rows: 100 * refs.conditions.length,
     independent_questions: 100,
     reference_manifest_sha256: refs.delivery_sha256,
     conditions: comparison,

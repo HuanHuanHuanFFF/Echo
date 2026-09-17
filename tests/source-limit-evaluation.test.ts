@@ -42,6 +42,27 @@ const setup = (fetchFn: () => Promise<Response>) =>
       expect(body.data[0]?.embedding).toHaveLength(2),
   });
 describe('single source-limit experiment', () => {
+  it('runs only RRF40 at the adopted16000 budget and leaves product defaults unchanged', () => {
+    const frozenBase = retrievalSchema.parse({
+      rrf_k: 60,
+      max_context_chars: 12000,
+    });
+    const current = retrievalSchema.parse({});
+    expect(experimentRetrieval(frozenBase, 'rrf40-budget16000', 40)).toEqual({
+      ...current,
+      rrf_k: 40,
+    });
+    expect(experimentMetadata('rrf40-budget16000').values).toEqual([40]);
+    expect(experimentMetadata('rrf40-budget16000').authorization).toContain(
+      'No default change',
+    );
+    expect(experimentBudget(frozenBase, 'rrf40-budget16000', 40)).toBe(16000);
+    expect(current.rrf_k).toBe(30);
+    expect(frozenBase.rrf_k).toBe(60);
+    expect(() =>
+      experimentRetrieval(frozenBase, 'rrf40-budget16000', 30),
+    ).toThrow();
+  });
   it('runs only the explicitly requested joint condition without changing other values', () => {
     const base = retrievalSchema.parse({ rrf_k: 60, max_context_chars: 12000 });
     const joint = experimentRetrieval(base, 'rrf-budget-combined', 'joint');

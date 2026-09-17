@@ -34,6 +34,11 @@ const experiments = {
     values: [12000, 16000],
     baseline: 12000,
   },
+  'rrf40-budget16000': {
+    key: 'rrf_k',
+    values: [40],
+    patch: { rrf_k: 40, max_context_chars: 16000 },
+  },
   'rrf-budget-combined': {
     key: 'rrf_k+max_context_chars',
     values: ['joint'],
@@ -48,15 +53,18 @@ export function experimentMetadata(experimentName) {
     ...(experimentName === 'source-limit'
       ? { limits: [...experiment.values] }
       : {}),
-    authorization: experiment.patch
-      ? 'User explicitly adopts RRF30 and budget16000, requests only this joint100 run compared with existing results. Keep source limit3 and fixed decomposition; no fresh baseline, API, index rebuild or final data.'
-      : experimentName === 'source-limit'
-        ? 'User requested only source limit 3 versus 4 with fixed decomposition. No default change, index rebuild or final data.'
-        : 'User requested ' +
-          experiment.key +
-          ' ' +
-          experiment.values.join(' versus ') +
-          ' while retaining source limit 3 and fixed decomposition. Each experiment starts from the same baseline. Use only verified frozen real responses; no new API, default change, index rebuild or final data.',
+    authorization:
+      experimentName === 'rrf40-budget16000'
+        ? 'User requested RRF40 after adopting RRF30/budget16000. Run only40/16000, compare with existing30/16000 and60/16000. Keep all other parameters and fixed decomposition. No default change, new API, index rebuild or final data.'
+        : experiment.patch
+          ? 'User explicitly adopts RRF30 and budget16000, requests only this joint100 run compared with existing results. Keep source limit3 and fixed decomposition; no fresh baseline, API, index rebuild or final data.'
+          : experimentName === 'source-limit'
+            ? 'User requested only source limit 3 versus 4 with fixed decomposition. No default change, index rebuild or final data.'
+            : 'User requested ' +
+              experiment.key +
+              ' ' +
+              experiment.values.join(' versus ') +
+              ' while retaining source limit 3 and fixed decomposition. Each experiment starts from the same baseline. Use only verified frozen real responses; no new API, default change, index rebuild or final data.',
   };
 }
 export function experimentRetrieval(original, experimentName, value) {
@@ -373,7 +381,7 @@ async function main() {
         : 'First successful real response for each exact query request is frozen and replayed. Same vectors in both arms; never synthetic vectors.',
       authorization: experimentMetadata(experimentName).authorization,
       ...(experiment.patch
-        ? { comparison_references: await jointReferences(lab) }
+        ? { comparison_references: await jointReferences(lab, experimentName) }
         : {}),
     };
     await fs.writeFile(path.join(root, 'plan.json'), json(plan), {
