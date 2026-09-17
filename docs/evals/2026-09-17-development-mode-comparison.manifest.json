@@ -1,0 +1,3546 @@
+{
+  "status": "complete",
+  "comparison_runtime": "e3c996f7498bc3cbd64cec47d3405d9b7ad89773",
+  "matrix": [
+    {
+      "scope": "A-development",
+      "chunker": "heading-1000",
+      "mode": "bm25",
+      "summary": {
+        "queries": 30,
+        "answerable": 28,
+        "fact_coverage": {
+          "covered": 60,
+          "expected": 67
+        },
+        "complete_evidence": {
+          "covered": 22,
+          "expected": 28
+        },
+        "no_answer": {
+          "queries": 2,
+          "nonempty": 2
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.7946428571428571,
+        "latency_ms": {
+          "p50": 13.827599999999961,
+          "p95": 18.92439999999999
+        },
+        "cumulative_context_chars": 232236
+      },
+      "api_usage": null,
+      "source_rows_sha256": "82334fc2948bcb909f56cf32cd2b562f5d48901c6c167e0a2fe6f4c2faf99a68",
+      "source_report_sha256": "e5c2660ae2c6287d69fbded2db97a698957911ddb1d2209b03dde3ce742bc3e2",
+      "dataset_sha256": "0ab3c960526eca7f958588d8219433ebdf8e804a8cc73a93863a598e0c7d0d70"
+    },
+    {
+      "scope": "A-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "mode": "bm25",
+      "summary": {
+        "queries": 30,
+        "answerable": 28,
+        "fact_coverage": {
+          "covered": 57,
+          "expected": 67
+        },
+        "complete_evidence": {
+          "covered": 20,
+          "expected": 28
+        },
+        "no_answer": {
+          "queries": 2,
+          "nonempty": 2
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.7202380952380952,
+        "latency_ms": {
+          "p50": 11.982299999999896,
+          "p95": 18.234199999999873
+        },
+        "cumulative_context_chars": 230430
+      },
+      "api_usage": null,
+      "source_rows_sha256": "ad0458ed593a6dee46c35e68a7e6cc390e4dca73a5e1a380ad3aa76e1656c3d0",
+      "source_report_sha256": "9b812658b7904aab08f601ce373f485a5494cb19197b594efb639dc96c91ac2c",
+      "dataset_sha256": "0ab3c960526eca7f958588d8219433ebdf8e804a8cc73a93863a598e0c7d0d70"
+    },
+    {
+      "scope": "A-development",
+      "chunker": "heading-1000",
+      "mode": "dense",
+      "summary": {
+        "queries": 30,
+        "answerable": 28,
+        "fact_coverage": {
+          "covered": 62,
+          "expected": 67
+        },
+        "complete_evidence": {
+          "covered": 24,
+          "expected": 28
+        },
+        "no_answer": {
+          "queries": 2,
+          "nonempty": 2
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.738095238095238,
+        "latency_ms": {
+          "p50": 299.6077,
+          "p95": 616.0275000000001
+        },
+        "cumulative_context_chars": 234800
+      },
+      "api_usage": {
+        "requests": 41,
+        "texts": 41,
+        "input_chars": 1847,
+        "reported_tokens": 1570
+      },
+      "source_rows_sha256": "20c51ef4ea24cf5e17294c95165d817035e8edca2b5a08152007816d1e5858a7",
+      "source_report_sha256": "53a78cf2d8245324d48149f9d34219403423a8d2a9a19c234e7655e1da079d7c",
+      "dataset_sha256": "0ab3c960526eca7f958588d8219433ebdf8e804a8cc73a93863a598e0c7d0d70"
+    },
+    {
+      "scope": "A-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "mode": "dense",
+      "summary": {
+        "queries": 30,
+        "answerable": 28,
+        "fact_coverage": {
+          "covered": 55,
+          "expected": 67
+        },
+        "complete_evidence": {
+          "covered": 19,
+          "expected": 28
+        },
+        "no_answer": {
+          "queries": 2,
+          "nonempty": 2
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.655952380952381,
+        "latency_ms": {
+          "p50": 274.85199999999895,
+          "p95": 749.6696999999986
+        },
+        "cumulative_context_chars": 231055
+      },
+      "api_usage": {
+        "requests": 41,
+        "texts": 41,
+        "input_chars": 1847,
+        "reported_tokens": 1570
+      },
+      "source_rows_sha256": "d6a1d56c7e3b11468587f70e48a7b56c69eeb68839cb3b34e123f2e7b73dafc8",
+      "source_report_sha256": "6985efeeeb3af49ccec3272906fe1872762a6d2b1f42eaf2c48d8be996a90aad",
+      "dataset_sha256": "0ab3c960526eca7f958588d8219433ebdf8e804a8cc73a93863a598e0c7d0d70"
+    },
+    {
+      "scope": "A-development",
+      "chunker": "heading-1000",
+      "mode": "hybrid",
+      "summary": {
+        "queries": 30,
+        "answerable": 28,
+        "fact_coverage": {
+          "covered": 64,
+          "expected": 67
+        },
+        "complete_evidence": {
+          "covered": 25,
+          "expected": 28
+        },
+        "no_answer": {
+          "queries": 2,
+          "nonempty": 2
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8392857142857143,
+        "latency_ms": {
+          "p50": 302.3098999999984,
+          "p95": 681.2250000000004
+        },
+        "cumulative_context_chars": 248500
+      },
+      "api_usage": {
+        "requests": 41,
+        "texts": 41,
+        "input_chars": 1847,
+        "reported_tokens": 1570
+      },
+      "source_rows_sha256": "c9760d8bc5938229739bed5845ff22a2d91e787f27f6a8fe2a7903e85d695976",
+      "source_report_sha256": "586b35a61d5689ec683b4c3ee8d09c15539c3f42557199460062d4746741785d",
+      "dataset_sha256": "0ab3c960526eca7f958588d8219433ebdf8e804a8cc73a93863a598e0c7d0d70"
+    },
+    {
+      "scope": "A-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "mode": "hybrid",
+      "summary": {
+        "queries": 30,
+        "answerable": 28,
+        "fact_coverage": {
+          "covered": 58,
+          "expected": 67
+        },
+        "complete_evidence": {
+          "covered": 21,
+          "expected": 28
+        },
+        "no_answer": {
+          "queries": 2,
+          "nonempty": 2
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.699404761904762,
+        "latency_ms": {
+          "p50": 308.60169999999925,
+          "p95": 689.0144
+        },
+        "cumulative_context_chars": 243050
+      },
+      "api_usage": {
+        "requests": 41,
+        "texts": 41,
+        "input_chars": 1847,
+        "reported_tokens": 1570
+      },
+      "source_rows_sha256": "a14436122682ecfda31f617d212a51a6848bffa017e9b7d264c9f9131ff739c0",
+      "source_report_sha256": "8eb5d8050039b64312ef48bcb895c4b4253397b95b3f384254cb8e18fcd7357b",
+      "dataset_sha256": "0ab3c960526eca7f958588d8219433ebdf8e804a8cc73a93863a598e0c7d0d70"
+    },
+    {
+      "scope": "B-development",
+      "chunker": "heading-1000",
+      "mode": "bm25",
+      "summary": {
+        "queries": 25,
+        "answerable": 25,
+        "fact_coverage": {
+          "covered": 43,
+          "expected": 50
+        },
+        "complete_evidence": {
+          "covered": 19,
+          "expected": 25
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8133333333333332,
+        "latency_ms": {
+          "p50": 10.051899999999932,
+          "p95": 17.22460000000001
+        },
+        "cumulative_context_chars": 275414
+      },
+      "api_usage": null,
+      "source_rows_sha256": "06afe8d7a4780cd61b769048588ea9557d4e9268ba063317e5fe3591b6bcae0e",
+      "source_report_sha256": "f0dca52e1044a2de7e1c6ca3f4d0949b7661bd879931e17188565413aa83ec18",
+      "dataset_sha256": "8a0a85ff1016242a5094aceea4437691396957b402dbc97ea81dbaea22642925"
+    },
+    {
+      "scope": "B-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "mode": "bm25",
+      "summary": {
+        "queries": 25,
+        "answerable": 25,
+        "fact_coverage": {
+          "covered": 46,
+          "expected": 50
+        },
+        "complete_evidence": {
+          "covered": 21,
+          "expected": 25
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.88,
+        "latency_ms": {
+          "p50": 9.872299999999996,
+          "p95": 16.472000000000207
+        },
+        "cumulative_context_chars": 282164
+      },
+      "api_usage": null,
+      "source_rows_sha256": "5ea11eb04baf612835f5c841e6652a1dac73368e21b9aa560deb005617884634",
+      "source_report_sha256": "bb73f2b17c642d6419e32f647b4339a0a880d47ab607faa6922c1080af5a6309",
+      "dataset_sha256": "8a0a85ff1016242a5094aceea4437691396957b402dbc97ea81dbaea22642925"
+    },
+    {
+      "scope": "B-development",
+      "chunker": "heading-1000",
+      "mode": "dense",
+      "summary": {
+        "queries": 25,
+        "answerable": 25,
+        "fact_coverage": {
+          "covered": 43,
+          "expected": 50
+        },
+        "complete_evidence": {
+          "covered": 19,
+          "expected": 25
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8533333333333333,
+        "latency_ms": {
+          "p50": 212.2716999999975,
+          "p95": 583.5169000000024
+        },
+        "cumulative_context_chars": 256530
+      },
+      "api_usage": {
+        "requests": 33,
+        "texts": 33,
+        "input_chars": 1488,
+        "reported_tokens": 1291
+      },
+      "source_rows_sha256": "ef4b99ef7a3b5288c8e73059449062bdf3101ac338153298292fc590879319e4",
+      "source_report_sha256": "599d57ae6a755cb10a4841a289536562678b55d25a3a18ef7931691588061f24",
+      "dataset_sha256": "8a0a85ff1016242a5094aceea4437691396957b402dbc97ea81dbaea22642925"
+    },
+    {
+      "scope": "B-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "mode": "dense",
+      "summary": {
+        "queries": 25,
+        "answerable": 25,
+        "fact_coverage": {
+          "covered": 45,
+          "expected": 50
+        },
+        "complete_evidence": {
+          "covered": 21,
+          "expected": 25
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.9,
+        "latency_ms": {
+          "p50": 197.5135999999984,
+          "p95": 657.1684999999998
+        },
+        "cumulative_context_chars": 264243
+      },
+      "api_usage": {
+        "requests": 33,
+        "texts": 33,
+        "input_chars": 1488,
+        "reported_tokens": 1291
+      },
+      "source_rows_sha256": "1c507bccd1e8f84fcef46b02af901f7b46cd34063828626b945491c72accf5e5",
+      "source_report_sha256": "1413a086fb72247f90c8146f68e7d74f58853a5c009b2e737cab96c698826c7a",
+      "dataset_sha256": "8a0a85ff1016242a5094aceea4437691396957b402dbc97ea81dbaea22642925"
+    },
+    {
+      "scope": "B-development",
+      "chunker": "heading-1000",
+      "mode": "hybrid",
+      "summary": {
+        "queries": 25,
+        "answerable": 25,
+        "fact_coverage": {
+          "covered": 44,
+          "expected": 50
+        },
+        "complete_evidence": {
+          "covered": 20,
+          "expected": 25
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.9,
+        "latency_ms": {
+          "p50": 200.65299999999843,
+          "p95": 600.3079999999973
+        },
+        "cumulative_context_chars": 276575
+      },
+      "api_usage": {
+        "requests": 33,
+        "texts": 33,
+        "input_chars": 1488,
+        "reported_tokens": 1291
+      },
+      "source_rows_sha256": "b6652f4e50401b4c18160f512cd5c29edb52381e8fd6d1bfa2822187c9883b04",
+      "source_report_sha256": "164283257f2ef73332cd8ea2ee86b717ce8060ee9fc95d4a46dd750bc0777fd8",
+      "dataset_sha256": "8a0a85ff1016242a5094aceea4437691396957b402dbc97ea81dbaea22642925"
+    },
+    {
+      "scope": "B-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "mode": "hybrid",
+      "summary": {
+        "queries": 25,
+        "answerable": 25,
+        "fact_coverage": {
+          "covered": 47,
+          "expected": 50
+        },
+        "complete_evidence": {
+          "covered": 22,
+          "expected": 25
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.94,
+        "latency_ms": {
+          "p50": 241.2042999999976,
+          "p95": 648.6667000000016
+        },
+        "cumulative_context_chars": 284393
+      },
+      "api_usage": {
+        "requests": 33,
+        "texts": 33,
+        "input_chars": 1488,
+        "reported_tokens": 1291
+      },
+      "source_rows_sha256": "3552e3e27a8b23ea5007807bf482c04c8e11eae62aa84bf999059349ed480475",
+      "source_report_sha256": "97080fa329cfd30aa04fb899afec99ccb7d1069c7d802f9d2423db9c1d3319d1",
+      "dataset_sha256": "8a0a85ff1016242a5094aceea4437691396957b402dbc97ea81dbaea22642925"
+    },
+    {
+      "scope": "C-development",
+      "chunker": "heading-1000",
+      "mode": "bm25",
+      "summary": {
+        "queries": 15,
+        "answerable": 15,
+        "fact_coverage": {
+          "covered": 22,
+          "expected": 25
+        },
+        "complete_evidence": {
+          "covered": 13,
+          "expected": 15
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.6833333333333333,
+        "latency_ms": {
+          "p50": 8.802700000000186,
+          "p95": 14.643199999999979
+        },
+        "cumulative_context_chars": 162483
+      },
+      "api_usage": null,
+      "source_rows_sha256": "81df6eb31629c91f986093cc8f8035cc1f9268eebdab578191ddf2c88b115175",
+      "source_report_sha256": "0a5b73ed0c252f623c23e608fbb1f3b3fc0d587ef05c447620b878c79bc0a8af",
+      "dataset_sha256": "833b32f4d42fd15dd7ebb1aef875040901338f120a92ed731fdd3d53dca75391"
+    },
+    {
+      "scope": "C-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "mode": "bm25",
+      "summary": {
+        "queries": 15,
+        "answerable": 15,
+        "fact_coverage": {
+          "covered": 25,
+          "expected": 25
+        },
+        "complete_evidence": {
+          "covered": 15,
+          "expected": 15
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.9166666666666666,
+        "latency_ms": {
+          "p50": 7.660699999999906,
+          "p95": 11.691699999999855
+        },
+        "cumulative_context_chars": 159487
+      },
+      "api_usage": null,
+      "source_rows_sha256": "1c9c415656c6fa17731c269a765219e21ae7be21fd9b0a9a89e6f65d5e89127c",
+      "source_report_sha256": "555211b25471ed58d6c3015d9f9b4ac9d28c677a64e3befd58485ba336511fa1",
+      "dataset_sha256": "833b32f4d42fd15dd7ebb1aef875040901338f120a92ed731fdd3d53dca75391"
+    },
+    {
+      "scope": "C-development",
+      "chunker": "heading-1000",
+      "mode": "dense",
+      "summary": {
+        "queries": 15,
+        "answerable": 15,
+        "fact_coverage": {
+          "covered": 24,
+          "expected": 25
+        },
+        "complete_evidence": {
+          "covered": 14,
+          "expected": 15
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8666666666666667,
+        "latency_ms": {
+          "p50": 173.6603000000032,
+          "p95": 590.2812000000122
+        },
+        "cumulative_context_chars": 174973
+      },
+      "api_usage": {
+        "requests": 17,
+        "texts": 17,
+        "input_chars": 1017,
+        "reported_tokens": 784
+      },
+      "source_rows_sha256": "fb15b5aadb4dad8541151c182e56f2f3bc1ccefe37417c52b52d25a2192bf079",
+      "source_report_sha256": "e9b9d40603fc5a5efd459d87af645a91fde7acd3379f66cc2d908920b9549781",
+      "dataset_sha256": "833b32f4d42fd15dd7ebb1aef875040901338f120a92ed731fdd3d53dca75391"
+    },
+    {
+      "scope": "C-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "mode": "dense",
+      "summary": {
+        "queries": 15,
+        "answerable": 15,
+        "fact_coverage": {
+          "covered": 25,
+          "expected": 25
+        },
+        "complete_evidence": {
+          "covered": 15,
+          "expected": 15
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 1,
+        "latency_ms": {
+          "p50": 169.7679999999964,
+          "p95": 579.5033000000112
+        },
+        "cumulative_context_chars": 171894
+      },
+      "api_usage": {
+        "requests": 17,
+        "texts": 17,
+        "input_chars": 1017,
+        "reported_tokens": 784
+      },
+      "source_rows_sha256": "6c063a11e2a0f31998242ebf87e3a35f6cfdeee53aa6914cc106e196d1c53786",
+      "source_report_sha256": "80771a4b453c70f41a128e0a6dff2a9ade1605f205b54b57574efb3876d2ebfa",
+      "dataset_sha256": "833b32f4d42fd15dd7ebb1aef875040901338f120a92ed731fdd3d53dca75391"
+    },
+    {
+      "scope": "C-development",
+      "chunker": "heading-1000",
+      "mode": "hybrid",
+      "summary": {
+        "queries": 15,
+        "answerable": 15,
+        "fact_coverage": {
+          "covered": 22,
+          "expected": 25
+        },
+        "complete_evidence": {
+          "covered": 13,
+          "expected": 15
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8,
+        "latency_ms": {
+          "p50": 240.45650000000023,
+          "p95": 658.4075000000012
+        },
+        "cumulative_context_chars": 175743
+      },
+      "api_usage": {
+        "requests": 17,
+        "texts": 17,
+        "input_chars": 1017,
+        "reported_tokens": 784
+      },
+      "source_rows_sha256": "795b1ef5308ec971590ce6e97d04d2c7287047acf0edfa8143a94a6a9178b6b7",
+      "source_report_sha256": "f5eb9a67d699f890664651d55a7ece5e16fd0b487f699c6ec0a90057f5b9ab28",
+      "dataset_sha256": "833b32f4d42fd15dd7ebb1aef875040901338f120a92ed731fdd3d53dca75391"
+    },
+    {
+      "scope": "C-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "mode": "hybrid",
+      "summary": {
+        "queries": 15,
+        "answerable": 15,
+        "fact_coverage": {
+          "covered": 25,
+          "expected": 25
+        },
+        "complete_evidence": {
+          "covered": 15,
+          "expected": 15
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 1,
+        "latency_ms": {
+          "p50": 168.00290000000678,
+          "p95": 557.2630000000063
+        },
+        "cumulative_context_chars": 173506
+      },
+      "api_usage": {
+        "requests": 17,
+        "texts": 17,
+        "input_chars": 1017,
+        "reported_tokens": 784
+      },
+      "source_rows_sha256": "c43082a3411a12c8f69979ab1dc598e529a7ed924884f63c518fe20ed2f88570",
+      "source_report_sha256": "9cd613ddbf88ac62ed5c2d1c39aeb1a20dcec29e09fc1e61e8245f3a14d40d27",
+      "dataset_sha256": "833b32f4d42fd15dd7ebb1aef875040901338f120a92ed731fdd3d53dca75391"
+    },
+    {
+      "scope": "mixed-development",
+      "chunker": "heading-1000",
+      "mode": "bm25",
+      "summary": {
+        "queries": 30,
+        "answerable": 27,
+        "fact_coverage": {
+          "covered": 53,
+          "expected": 84
+        },
+        "complete_evidence": {
+          "covered": 12,
+          "expected": 27
+        },
+        "no_answer": {
+          "queries": 3,
+          "nonempty": 3
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.6913580246913581,
+        "latency_ms": {
+          "p50": 17.148299999999836,
+          "p95": 24.011599999999817
+        },
+        "cumulative_context_chars": 269569
+      },
+      "api_usage": null,
+      "source_rows_sha256": "a64e2770b2035423c4f04ff1d1a9492d153d0d2c6150d5130b6b1e8767c8cbc2",
+      "source_report_sha256": "22a407f681b0dc6930cc7a2db3768d2ae4415c258fe62c6281400cf7126818fc",
+      "dataset_sha256": "2501fbe85e44b8bfc905f42e4790ec71754e0cb6c05d9963a1641a949c135a76"
+    },
+    {
+      "scope": "mixed-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "mode": "bm25",
+      "summary": {
+        "queries": 30,
+        "answerable": 27,
+        "fact_coverage": {
+          "covered": 60,
+          "expected": 84
+        },
+        "complete_evidence": {
+          "covered": 16,
+          "expected": 27
+        },
+        "no_answer": {
+          "queries": 3,
+          "nonempty": 3
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.717283950617284,
+        "latency_ms": {
+          "p50": 16.087999999999738,
+          "p95": 27.042500000000473
+        },
+        "cumulative_context_chars": 284230
+      },
+      "api_usage": null,
+      "source_rows_sha256": "7fff829d0bf1e22a3905a7a3de3496be3fd3340b874c354bce3156782c23a0e7",
+      "source_report_sha256": "c4bf6ddb8b6b5e883287730bebb23d01f5dde86df6de3291d5f03ed04797d234",
+      "dataset_sha256": "2501fbe85e44b8bfc905f42e4790ec71754e0cb6c05d9963a1641a949c135a76"
+    },
+    {
+      "scope": "mixed-development",
+      "chunker": "heading-1000",
+      "mode": "dense",
+      "summary": {
+        "queries": 30,
+        "answerable": 27,
+        "fact_coverage": {
+          "covered": 71,
+          "expected": 84
+        },
+        "complete_evidence": {
+          "covered": 19,
+          "expected": 27
+        },
+        "no_answer": {
+          "queries": 3,
+          "nonempty": 3
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.882716049382716,
+        "latency_ms": {
+          "p50": 366.2207999999955,
+          "p95": 790.6784999999945
+        },
+        "cumulative_context_chars": 298564
+      },
+      "api_usage": {
+        "requests": 44,
+        "texts": 44,
+        "input_chars": 2236,
+        "reported_tokens": 1788
+      },
+      "source_rows_sha256": "9cd610ff2707aafd542d101fad28b7c9e45601ad8270104ff32d9ae6e87c0bbe",
+      "source_report_sha256": "4ed67505c58758185743a43c04bb63af4c31c575aa927d1ebc824926d8737b64",
+      "dataset_sha256": "2501fbe85e44b8bfc905f42e4790ec71754e0cb6c05d9963a1641a949c135a76"
+    },
+    {
+      "scope": "mixed-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "mode": "dense",
+      "summary": {
+        "queries": 30,
+        "answerable": 27,
+        "fact_coverage": {
+          "covered": 77,
+          "expected": 84
+        },
+        "complete_evidence": {
+          "covered": 22,
+          "expected": 27
+        },
+        "no_answer": {
+          "queries": 3,
+          "nonempty": 3
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8888888888888888,
+        "latency_ms": {
+          "p50": 333.1255999999994,
+          "p95": 755.5290999999997
+        },
+        "cumulative_context_chars": 303965
+      },
+      "api_usage": {
+        "requests": 44,
+        "texts": 44,
+        "input_chars": 2236,
+        "reported_tokens": 1788
+      },
+      "source_rows_sha256": "05f7e249345fd1b5a8e7dd2a10e8d979e6ea592a8541939262932035753c1739",
+      "source_report_sha256": "e078b7e80445494f8a22c6efa0d8ed7455733739760bf381e9aebfb6ad455287",
+      "dataset_sha256": "2501fbe85e44b8bfc905f42e4790ec71754e0cb6c05d9963a1641a949c135a76"
+    },
+    {
+      "scope": "mixed-development",
+      "chunker": "heading-1000",
+      "mode": "hybrid",
+      "summary": {
+        "queries": 30,
+        "answerable": 27,
+        "fact_coverage": {
+          "covered": 69,
+          "expected": 84
+        },
+        "complete_evidence": {
+          "covered": 18,
+          "expected": 27
+        },
+        "no_answer": {
+          "queries": 3,
+          "nonempty": 3
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8611111111111112,
+        "latency_ms": {
+          "p50": 338.49549999999,
+          "p95": 635.7090999999928
+        },
+        "cumulative_context_chars": 295258
+      },
+      "api_usage": {
+        "requests": 44,
+        "texts": 44,
+        "input_chars": 2236,
+        "reported_tokens": 1788
+      },
+      "source_rows_sha256": "f2df6a028c2453d95f1bcd28b454dd2b0d7689235c32f56adae6cd259d517bed",
+      "source_report_sha256": "520ea23cece141c970f91983c73c801aae401b79111c19196bcb916a23d45a43",
+      "dataset_sha256": "2501fbe85e44b8bfc905f42e4790ec71754e0cb6c05d9963a1641a949c135a76"
+    },
+    {
+      "scope": "mixed-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "mode": "hybrid",
+      "summary": {
+        "queries": 30,
+        "answerable": 27,
+        "fact_coverage": {
+          "covered": 71,
+          "expected": 84
+        },
+        "complete_evidence": {
+          "covered": 20,
+          "expected": 27
+        },
+        "no_answer": {
+          "queries": 3,
+          "nonempty": 3
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8395061728395062,
+        "latency_ms": {
+          "p50": 342.58179999999993,
+          "p95": 638.7244999999966
+        },
+        "cumulative_context_chars": 306910
+      },
+      "api_usage": {
+        "requests": 44,
+        "texts": 44,
+        "input_chars": 2236,
+        "reported_tokens": 1788
+      },
+      "source_rows_sha256": "e86d754ed1b17b8a5d13c4cca5cf68d6c53c3e535bc331cf1eccf6a181e1b826",
+      "source_report_sha256": "e212012be9425bdaa34b8f2b2b10b27f36c0a170638f4a8801451b4fcfaf609d",
+      "dataset_sha256": "2501fbe85e44b8bfc905f42e4790ec71754e0cb6c05d9963a1641a949c135a76"
+    },
+    {
+      "scope": "paired-development",
+      "chunker": "heading-1000",
+      "mode": "bm25",
+      "summary": {
+        "queries": 20,
+        "answerable": 20,
+        "fact_coverage": {
+          "covered": 35,
+          "expected": 39
+        },
+        "complete_evidence": {
+          "covered": 18,
+          "expected": 20
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.7916666666666667,
+        "latency_ms": {
+          "p50": 15.399699999999939,
+          "p95": 21.215900000000033
+        },
+        "cumulative_context_chars": 174535
+      },
+      "api_usage": null,
+      "source_rows_sha256": "8ab0bcb6e9db295c7a2a05c01332aff7294166a7f4bb751f07b38d85478b5691",
+      "source_report_sha256": "01167a77f90e1aac7074ca80734018b57b7f35a98e63d8a365415413c6b4807a",
+      "dataset_sha256": "9cceb7e001985c7b4a8d150a687ebda8f1b4c35c746c5db63be9f731a42f9043"
+    },
+    {
+      "scope": "paired-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "mode": "bm25",
+      "summary": {
+        "queries": 20,
+        "answerable": 20,
+        "fact_coverage": {
+          "covered": 33,
+          "expected": 39
+        },
+        "complete_evidence": {
+          "covered": 16,
+          "expected": 20
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.825,
+        "latency_ms": {
+          "p50": 13.323899999999867,
+          "p95": 14.560699999999997
+        },
+        "cumulative_context_chars": 177495
+      },
+      "api_usage": null,
+      "source_rows_sha256": "1abf39ae91b3f97d5aeebc409be4521881677cc19ab86c312dc951f7589889a4",
+      "source_report_sha256": "d5f34124f6c676f989c00020301b5c2ab201bd09299b9089d6cf1ecbbee590a4",
+      "dataset_sha256": "9cceb7e001985c7b4a8d150a687ebda8f1b4c35c746c5db63be9f731a42f9043"
+    },
+    {
+      "scope": "paired-development",
+      "chunker": "heading-1000",
+      "mode": "dense",
+      "summary": {
+        "queries": 20,
+        "answerable": 20,
+        "fact_coverage": {
+          "covered": 37,
+          "expected": 39
+        },
+        "complete_evidence": {
+          "covered": 18,
+          "expected": 20
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8916666666666666,
+        "latency_ms": {
+          "p50": 234.15970000001835,
+          "p95": 638.1062000000093
+        },
+        "cumulative_context_chars": 185283
+      },
+      "api_usage": {
+        "requests": 27,
+        "texts": 27,
+        "input_chars": 1230,
+        "reported_tokens": 1052
+      },
+      "source_rows_sha256": "fc3465a1be2493250d1aa6a2f6c91b9c6223e5f46a234c95624c7ab0aca2518f",
+      "source_report_sha256": "2cf3a70c78ee4bda6251af556e29014a517e2707beb6a946e2fd071234a5ee57",
+      "dataset_sha256": "9cceb7e001985c7b4a8d150a687ebda8f1b4c35c746c5db63be9f731a42f9043"
+    },
+    {
+      "scope": "paired-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "mode": "dense",
+      "summary": {
+        "queries": 20,
+        "answerable": 20,
+        "fact_coverage": {
+          "covered": 38,
+          "expected": 39
+        },
+        "complete_evidence": {
+          "covered": 19,
+          "expected": 20
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.9016666666666666,
+        "latency_ms": {
+          "p50": 209.00450000001,
+          "p95": 590.7049000000115
+        },
+        "cumulative_context_chars": 184024
+      },
+      "api_usage": {
+        "requests": 27,
+        "texts": 27,
+        "input_chars": 1230,
+        "reported_tokens": 1052
+      },
+      "source_rows_sha256": "676cc1eb04c3a897a296d9355b7eb77275b74d9a28593327f8627a6415d7cab8",
+      "source_report_sha256": "9014830d673c0147dd59475c9a75b64c2919472df953ccabfe8b277c92794fcb",
+      "dataset_sha256": "9cceb7e001985c7b4a8d150a687ebda8f1b4c35c746c5db63be9f731a42f9043"
+    },
+    {
+      "scope": "paired-development",
+      "chunker": "heading-1000",
+      "mode": "hybrid",
+      "summary": {
+        "queries": 20,
+        "answerable": 20,
+        "fact_coverage": {
+          "covered": 37,
+          "expected": 39
+        },
+        "complete_evidence": {
+          "covered": 18,
+          "expected": 20
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8196428571428571,
+        "latency_ms": {
+          "p50": 329.4265000000014,
+          "p95": 1092.2049999999872
+        },
+        "cumulative_context_chars": 185862
+      },
+      "api_usage": {
+        "requests": 27,
+        "texts": 27,
+        "input_chars": 1230,
+        "reported_tokens": 1052
+      },
+      "source_rows_sha256": "074e310bc2bfb567768793f3243671ef878285e8b9eeded68cc8ca6070616999",
+      "source_report_sha256": "e460b45216969d5932ba1d7f0b35245b9596384d946e7f5650e7a5a8f6815a59",
+      "dataset_sha256": "9cceb7e001985c7b4a8d150a687ebda8f1b4c35c746c5db63be9f731a42f9043"
+    },
+    {
+      "scope": "paired-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "mode": "hybrid",
+      "summary": {
+        "queries": 20,
+        "answerable": 20,
+        "fact_coverage": {
+          "covered": 37,
+          "expected": 39
+        },
+        "complete_evidence": {
+          "covered": 18,
+          "expected": 20
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.85,
+        "latency_ms": {
+          "p50": 243.57790000000386,
+          "p95": 841.8803999999946
+        },
+        "cumulative_context_chars": 185675
+      },
+      "api_usage": {
+        "requests": 27,
+        "texts": 27,
+        "input_chars": 1230,
+        "reported_tokens": 1052
+      },
+      "source_rows_sha256": "2c1f9a2af39170f1b70e079d0b4ff419e14c40e2825461bfd12e64baffcc05e5",
+      "source_report_sha256": "5d78131bb3ca7270350e450ca722ab891d48cbd2eacd3a6d2719cf65ef2bcafb",
+      "dataset_sha256": "9cceb7e001985c7b4a8d150a687ebda8f1b4c35c746c5db63be9f731a42f9043"
+    }
+  ],
+  "comparisons": [
+    {
+      "scope": "A-development",
+      "kind": "chunk",
+      "mode": "bm25",
+      "file": "A-development-chunks-bm25.json",
+      "sha256": "a45c433c0e04e5749ce3f08d5f4cdc4980bd253c00087cda5f0e21695028f95c",
+      "paired": {
+        "questions": 30,
+        "answerable": 28,
+        "independent_groups": 30,
+        "answerable_independent_groups": 28,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8955223880597015,
+          "candidate": 0.8507462686567164,
+          "delta": -0.04477611940298509,
+          "ci95": [-0.09836065573770492, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.7857142857142857,
+          "candidate": 0.7142857142857143,
+          "delta": -0.0714285714285714,
+          "ci95": [-0.1785714285714286, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 21,
+        "answerable": 21,
+        "independent_groups": 10,
+        "answerable_independent_groups": 10,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.90625,
+          "candidate": 0.875,
+          "delta": -0.03125,
+          "ci95": [-0.10344827586206895, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8571428571428571,
+          "candidate": 0.8095238095238095,
+          "delta": -0.04761904761904756,
+          "ci95": [-0.13043478260869568, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "A-development",
+      "kind": "chunk",
+      "mode": "dense",
+      "file": "A-development-chunks-dense.json",
+      "sha256": "ac8d5ed598fa05fb4ee99ec76ccb319946270655d4e53a9335290522b20fe239",
+      "paired": {
+        "questions": 30,
+        "answerable": 28,
+        "independent_groups": 30,
+        "answerable_independent_groups": 28,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9253731343283582,
+          "candidate": 0.8208955223880597,
+          "delta": -0.10447761194029848,
+          "ci95": [-0.18181818181818188, -0.04109589041095896],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8571428571428571,
+          "candidate": 0.6785714285714286,
+          "delta": -0.1785714285714285,
+          "ci95": [-0.3214285714285715, -0.03571428571428581],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 21,
+        "answerable": 21,
+        "independent_groups": 10,
+        "answerable_independent_groups": 10,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9375,
+          "candidate": 0.90625,
+          "delta": -0.03125,
+          "ci95": [-0.10344827586206895, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9047619047619048,
+          "candidate": 0.8571428571428571,
+          "delta": -0.04761904761904767,
+          "ci95": [-0.13043478260869568, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "A-development",
+      "kind": "chunk",
+      "mode": "hybrid",
+      "file": "A-development-chunks-hybrid.json",
+      "sha256": "82abd2866299af6680366dd65240188dba840b2208c02fba629ace324f6e586c",
+      "paired": {
+        "questions": 30,
+        "answerable": 28,
+        "independent_groups": 30,
+        "answerable_independent_groups": 28,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9552238805970149,
+          "candidate": 0.8656716417910447,
+          "delta": -0.08955223880597019,
+          "ci95": [-0.17391304347826086, -0.025974025974025983],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8928571428571429,
+          "candidate": 0.75,
+          "delta": -0.1428571428571429,
+          "ci95": [-0.2857142857142857, -0.0357142857142857],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 21,
+        "answerable": 21,
+        "independent_groups": 10,
+        "answerable_independent_groups": 10,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.96875,
+          "candidate": 0.90625,
+          "delta": -0.0625,
+          "ci95": [-0.2068965517241379, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9523809523809523,
+          "candidate": 0.8571428571428571,
+          "delta": -0.09523809523809523,
+          "ci95": [-0.26086956521739124, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "A-development",
+      "kind": "mode",
+      "chunker": "heading-1000",
+      "from": "bm25",
+      "to": "dense",
+      "file": "A-development-0-bm25-to-dense.json",
+      "sha256": "cfab01879435d323ef152b30e93e4af815add342f5265ced6c054d385004b5f9",
+      "paired": {
+        "questions": 30,
+        "answerable": 28,
+        "independent_groups": 30,
+        "answerable_independent_groups": 28,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8955223880597015,
+          "candidate": 0.9253731343283582,
+          "delta": 0.02985074626865669,
+          "ci95": [-0.044117647058823595, 0.09859154929577463],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.7857142857142857,
+          "candidate": 0.8571428571428571,
+          "delta": 0.0714285714285714,
+          "ci95": [-0.0714285714285714, 0.2142857142857143],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 21,
+        "answerable": 21,
+        "independent_groups": 10,
+        "answerable_independent_groups": 10,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.90625,
+          "candidate": 0.9375,
+          "delta": 0.03125,
+          "ci95": [-0.07692307692307698, 0.125],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8571428571428571,
+          "candidate": 0.9047619047619048,
+          "delta": 0.04761904761904767,
+          "ci95": [-0.09999999999999998, 0.19047619047619047],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "A-development",
+      "kind": "mode",
+      "chunker": "heading-1000",
+      "from": "bm25",
+      "to": "hybrid",
+      "file": "A-development-0-bm25-to-hybrid.json",
+      "sha256": "ec5d2dc5f38486a735c14dbc55e2897846056089a12ab2e923616fc67449a53f",
+      "paired": {
+        "questions": 30,
+        "answerable": 28,
+        "independent_groups": 30,
+        "answerable_independent_groups": 28,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8955223880597015,
+          "candidate": 0.9552238805970149,
+          "delta": 0.05970149253731338,
+          "ci95": [0.01449275362318836, 0.11428571428571432],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.7857142857142857,
+          "candidate": 0.8928571428571429,
+          "delta": 0.1071428571428572,
+          "ci95": [0, 0.2142857142857143],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 21,
+        "answerable": 21,
+        "independent_groups": 10,
+        "answerable_independent_groups": 10,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.90625,
+          "candidate": 0.96875,
+          "delta": 0.0625,
+          "ci95": [0, 0.13953488372093015],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8571428571428571,
+          "candidate": 0.9523809523809523,
+          "delta": 0.09523809523809523,
+          "ci95": [0, 0.21739130434782605],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "A-development",
+      "kind": "mode",
+      "chunker": "heading-1000",
+      "from": "dense",
+      "to": "hybrid",
+      "file": "A-development-0-dense-to-hybrid.json",
+      "sha256": "d4b92a42ed566dca5bc6611974da0aabf664b65862116adf2cbe378ef7ded198",
+      "paired": {
+        "questions": 30,
+        "answerable": 28,
+        "independent_groups": 30,
+        "answerable_independent_groups": 28,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9253731343283582,
+          "candidate": 0.9552238805970149,
+          "delta": 0.02985074626865669,
+          "ci95": [-0.0273972602739726, 0.09090909090909094],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8571428571428571,
+          "candidate": 0.8928571428571429,
+          "delta": 0.03571428571428581,
+          "ci95": [-0.07142857142857151, 0.1428571428571429],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 21,
+        "answerable": 21,
+        "independent_groups": 10,
+        "answerable_independent_groups": 10,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9375,
+          "candidate": 0.96875,
+          "delta": 0.03125,
+          "ci95": [0, 0.11111111111111116],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9047619047619048,
+          "candidate": 0.9523809523809523,
+          "delta": 0.04761904761904756,
+          "ci95": [0, 0.15000000000000002],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "A-development",
+      "kind": "mode",
+      "chunker": "bagu-paragraph-800-lines",
+      "from": "bm25",
+      "to": "dense",
+      "file": "A-development-1-bm25-to-dense.json",
+      "sha256": "a9998503cbe9a34950ab44768c1f44bcf274f804f85adee1706f69c7feaafacd",
+      "paired": {
+        "questions": 30,
+        "answerable": 28,
+        "independent_groups": 30,
+        "answerable_independent_groups": 28,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8507462686567164,
+          "candidate": 0.8208955223880597,
+          "delta": -0.02985074626865669,
+          "ci95": [-0.13333333333333341, 0.05555555555555558],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.7142857142857143,
+          "candidate": 0.6785714285714286,
+          "delta": -0.0357142857142857,
+          "ci95": [-0.1785714285714286, 0.1071428571428572],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 21,
+        "answerable": 21,
+        "independent_groups": 10,
+        "answerable_independent_groups": 10,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.875,
+          "candidate": 0.90625,
+          "delta": 0.03125,
+          "ci95": [-0.07692307692307687, 0.125],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8095238095238095,
+          "candidate": 0.8571428571428571,
+          "delta": 0.04761904761904756,
+          "ci95": [-0.09999999999999998, 0.19047619047619047],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "A-development",
+      "kind": "mode",
+      "chunker": "bagu-paragraph-800-lines",
+      "from": "bm25",
+      "to": "hybrid",
+      "file": "A-development-1-bm25-to-hybrid.json",
+      "sha256": "9a466c362272c014d03e02506b60b25399414a19b0d84c6f25605e6a8f25bbf3",
+      "paired": {
+        "questions": 30,
+        "answerable": 28,
+        "independent_groups": 30,
+        "answerable_independent_groups": 28,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8507462686567164,
+          "candidate": 0.8656716417910447,
+          "delta": 0.01492537313432829,
+          "ci95": [-0.032786885245901676, 0.06493506493506485],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.7142857142857143,
+          "candidate": 0.75,
+          "delta": 0.0357142857142857,
+          "ci95": [-0.07142857142857151, 0.1428571428571429],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 21,
+        "answerable": 21,
+        "independent_groups": 10,
+        "answerable_independent_groups": 10,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.875,
+          "candidate": 0.90625,
+          "delta": 0.03125,
+          "ci95": [0, 0.08823529411764708],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8095238095238095,
+          "candidate": 0.8571428571428571,
+          "delta": 0.04761904761904756,
+          "ci95": [0, 0.15000000000000002],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "A-development",
+      "kind": "mode",
+      "chunker": "bagu-paragraph-800-lines",
+      "from": "dense",
+      "to": "hybrid",
+      "file": "A-development-1-dense-to-hybrid.json",
+      "sha256": "bfa42320a7b2c2805649cb7e5f880c4695ce1deb5e596fa72bfc2ff6002d4198",
+      "paired": {
+        "questions": 30,
+        "answerable": 28,
+        "independent_groups": 30,
+        "answerable_independent_groups": 28,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8208955223880597,
+          "candidate": 0.8656716417910447,
+          "delta": 0.04477611940298498,
+          "ci95": [-0.032258064516129004, 0.140625],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.6785714285714286,
+          "candidate": 0.75,
+          "delta": 0.0714285714285714,
+          "ci95": [-0.0714285714285714, 0.2142857142857143],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 21,
+        "answerable": 21,
+        "independent_groups": 10,
+        "answerable_independent_groups": 10,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.90625,
+          "candidate": 0.90625,
+          "delta": 0,
+          "ci95": [-0.09090909090909094, 0.09999999999999998],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8571428571428571,
+          "candidate": 0.8571428571428571,
+          "delta": 0,
+          "ci95": [-0.13043478260869557, 0.15000000000000002],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "B-development",
+      "kind": "chunk",
+      "mode": "bm25",
+      "file": "B-development-chunks-bm25.json",
+      "sha256": "fe6a84fb318c137b8d8225ec235ec64864cf93d11e8e27b508068fac3ff9ce29",
+      "paired": {
+        "questions": 25,
+        "answerable": 25,
+        "independent_groups": 25,
+        "answerable_independent_groups": 25,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.86,
+          "candidate": 0.92,
+          "delta": 0.06000000000000005,
+          "ci95": [0, 0.13207547169811318],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.76,
+          "candidate": 0.84,
+          "delta": 0.07999999999999996,
+          "ci95": [0, 0.20000000000000007],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8181818181818182,
+          "candidate": 0.9090909090909091,
+          "delta": 0.09090909090909083,
+          "ci95": [0, 0.21069794050343],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.7333333333333333,
+          "candidate": 0.8666666666666667,
+          "delta": 0.13333333333333341,
+          "ci95": [0, 0.28571428571428575],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "B-development",
+      "kind": "chunk",
+      "mode": "dense",
+      "file": "B-development-chunks-dense.json",
+      "sha256": "c76d0a048a2d729030684c756ab90b4a20e0290f9b3763cf017e7f3ab6d4bfc5",
+      "paired": {
+        "questions": 25,
+        "answerable": 25,
+        "independent_groups": 25,
+        "answerable_independent_groups": 25,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.86,
+          "candidate": 0.9,
+          "delta": 0.040000000000000036,
+          "ci95": [0, 0.10526315789473684],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.76,
+          "candidate": 0.84,
+          "delta": 0.07999999999999996,
+          "ci95": [0, 0.19999999999999996],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8636363636363636,
+          "candidate": 0.9090909090909091,
+          "delta": 0.045454545454545414,
+          "ci95": [0, 0.1428571428571429],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8,
+          "candidate": 0.8666666666666667,
+          "delta": 0.06666666666666665,
+          "ci95": [0, 0.2142857142857143],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "B-development",
+      "kind": "chunk",
+      "mode": "hybrid",
+      "file": "B-development-chunks-hybrid.json",
+      "sha256": "b35e24713d5cabf8060ae73b8bc4c35cd3e0aa60f0345f0dc2a6a4a84e44e17f",
+      "paired": {
+        "questions": 25,
+        "answerable": 25,
+        "independent_groups": 25,
+        "answerable_independent_groups": 25,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.88,
+          "candidate": 0.94,
+          "delta": 0.05999999999999994,
+          "ci95": [0, 0.13636363636363635],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8,
+          "candidate": 0.88,
+          "delta": 0.07999999999999996,
+          "ci95": [0, 0.19999999999999996],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8636363636363636,
+          "candidate": 0.9545454545454546,
+          "delta": 0.09090909090909094,
+          "ci95": [0, 0.23529411764705888],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8,
+          "candidate": 0.9333333333333333,
+          "delta": 0.1333333333333333,
+          "ci95": [0, 0.3125],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "B-development",
+      "kind": "mode",
+      "chunker": "heading-1000",
+      "from": "bm25",
+      "to": "dense",
+      "file": "B-development-0-bm25-to-dense.json",
+      "sha256": "9880b2455df7deff60c8f6198f279b619b542a95f282358fd08460978c3034e2",
+      "paired": {
+        "questions": 25,
+        "answerable": 25,
+        "independent_groups": 25,
+        "answerable_independent_groups": 25,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.86,
+          "candidate": 0.86,
+          "delta": 0,
+          "ci95": [-0.11764705882352944, 0.11363636363636354],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.76,
+          "candidate": 0.76,
+          "delta": 0,
+          "ci95": [-0.24, 0.24],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8181818181818182,
+          "candidate": 0.8636363636363636,
+          "delta": 0.045454545454545414,
+          "ci95": [-0.09523809523809523, 0.21052631578947367],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.7333333333333333,
+          "candidate": 0.8,
+          "delta": 0.06666666666666676,
+          "ci95": [-0.1428571428571429, 0.2857142857142857],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "B-development",
+      "kind": "mode",
+      "chunker": "heading-1000",
+      "from": "bm25",
+      "to": "hybrid",
+      "file": "B-development-0-bm25-to-hybrid.json",
+      "sha256": "19adbdf3c26c2e97014821f94e39a9bcc6f54fa252d4a4159cc4547bfc17297d",
+      "paired": {
+        "questions": 25,
+        "answerable": 25,
+        "independent_groups": 25,
+        "answerable_independent_groups": 25,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.86,
+          "candidate": 0.88,
+          "delta": 0.020000000000000018,
+          "ci95": [-0.07273835920177385, 0.11111111111111116],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.76,
+          "candidate": 0.8,
+          "delta": 0.040000000000000036,
+          "ci95": [-0.12, 0.20000000000000007],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8181818181818182,
+          "candidate": 0.8636363636363636,
+          "delta": 0.045454545454545414,
+          "ci95": [0, 0.1428571428571428],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.7333333333333333,
+          "candidate": 0.8,
+          "delta": 0.06666666666666676,
+          "ci95": [0, 0.2142857142857143],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "B-development",
+      "kind": "mode",
+      "chunker": "heading-1000",
+      "from": "dense",
+      "to": "hybrid",
+      "file": "B-development-0-dense-to-hybrid.json",
+      "sha256": "318bc3c586d078d51477fe4749d8c2dfccb19251763e311313fd828186c8f1b5",
+      "paired": {
+        "questions": 25,
+        "answerable": 25,
+        "independent_groups": 25,
+        "answerable_independent_groups": 25,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.86,
+          "candidate": 0.88,
+          "delta": 0.020000000000000018,
+          "ci95": [-0.045454545454545414, 0.09090909090909094],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.76,
+          "candidate": 0.8,
+          "delta": 0.040000000000000036,
+          "ci95": [-0.08000000000000007, 0.16000000000000003],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8636363636363636,
+          "candidate": 0.8636363636363636,
+          "delta": 0,
+          "ci95": [-0.15000000000000002, 0.13043478260869568],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8,
+          "candidate": 0.8,
+          "delta": 0,
+          "ci95": [-0.20000000000000007, 0.20000000000000007],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "B-development",
+      "kind": "mode",
+      "chunker": "bagu-paragraph-800-lines",
+      "from": "bm25",
+      "to": "dense",
+      "file": "B-development-1-bm25-to-dense.json",
+      "sha256": "ce9048d1d588ed78d5342040a356b891eec77d4d70434e47ee5e1491f828096c",
+      "paired": {
+        "questions": 25,
+        "answerable": 25,
+        "independent_groups": 25,
+        "answerable_independent_groups": 25,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.92,
+          "candidate": 0.9,
+          "delta": -0.020000000000000018,
+          "ci95": [-0.12765957446808518, 0.08510638297872342],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.84,
+          "candidate": 0.84,
+          "delta": 0,
+          "ci95": [-0.19999999999999996, 0.19999999999999996],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9090909090909091,
+          "candidate": 0.9090909090909091,
+          "delta": 0,
+          "ci95": [-0.13043478260869568, 0.15000000000000002],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8666666666666667,
+          "candidate": 0.8666666666666667,
+          "delta": 0,
+          "ci95": [-0.20000000000000007, 0.19999999999999996],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "B-development",
+      "kind": "mode",
+      "chunker": "bagu-paragraph-800-lines",
+      "from": "bm25",
+      "to": "hybrid",
+      "file": "B-development-1-bm25-to-hybrid.json",
+      "sha256": "97ab3726e423720f7c397aad3cc9a3af43f196f695a87a63d0ea9691a042fde6",
+      "paired": {
+        "questions": 25,
+        "answerable": 25,
+        "independent_groups": 25,
+        "answerable_independent_groups": 25,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.92,
+          "candidate": 0.94,
+          "delta": 0.019999999999999907,
+          "ci95": [-0.06976744186046502, 0.11111111111111116],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.84,
+          "candidate": 0.88,
+          "delta": 0.040000000000000036,
+          "ci95": [-0.12, 0.20000000000000007],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9090909090909091,
+          "candidate": 0.9545454545454546,
+          "delta": 0.045454545454545525,
+          "ci95": [0, 0.1578947368421053],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8666666666666667,
+          "candidate": 0.9333333333333333,
+          "delta": 0.06666666666666665,
+          "ci95": [0, 0.2142857142857143],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "B-development",
+      "kind": "mode",
+      "chunker": "bagu-paragraph-800-lines",
+      "from": "dense",
+      "to": "hybrid",
+      "file": "B-development-1-dense-to-hybrid.json",
+      "sha256": "e77ac78387c6695d529e0f7cc8608b47059b9916e5b5e5c55c62e4d956a931e2",
+      "paired": {
+        "questions": 25,
+        "answerable": 25,
+        "independent_groups": 25,
+        "answerable_independent_groups": 25,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9,
+          "candidate": 0.94,
+          "delta": 0.039999999999999925,
+          "ci95": [0, 0.10256410256410253],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.84,
+          "candidate": 0.88,
+          "delta": 0.040000000000000036,
+          "ci95": [0, 0.12],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9090909090909091,
+          "candidate": 0.9545454545454546,
+          "delta": 0.045454545454545525,
+          "ci95": [0, 0.1428571428571428],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8666666666666667,
+          "candidate": 0.9333333333333333,
+          "delta": 0.06666666666666665,
+          "ci95": [0, 0.2142857142857143],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "C-development",
+      "kind": "chunk",
+      "mode": "bm25",
+      "file": "C-development-chunks-bm25.json",
+      "sha256": "e944f24a40e5056b355a6cd391775c5bf11c8056aa33137372795a153cf60b31",
+      "paired": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 15,
+        "answerable_independent_groups": 15,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.88,
+          "candidate": 1,
+          "delta": 0.12,
+          "ci95": [0, 0.3076923076923077],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8666666666666667,
+          "candidate": 1,
+          "delta": 0.1333333333333333,
+          "ci95": [0, 0.33333333333333337],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 4,
+        "answerable": 4,
+        "independent_groups": 2,
+        "answerable_independent_groups": 2,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "C-development",
+      "kind": "chunk",
+      "mode": "dense",
+      "file": "C-development-chunks-dense.json",
+      "sha256": "d6a31b16ec6cba2a6071aada99f6c497dcfa010985a8fd189b765d3d51e820f8",
+      "paired": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 15,
+        "answerable_independent_groups": 15,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.96,
+          "candidate": 1,
+          "delta": 0.040000000000000036,
+          "ci95": [0, 0.12],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9333333333333333,
+          "candidate": 1,
+          "delta": 0.06666666666666665,
+          "ci95": [0, 0.19999999999999996],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 4,
+        "answerable": 4,
+        "independent_groups": 2,
+        "answerable_independent_groups": 2,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "C-development",
+      "kind": "chunk",
+      "mode": "hybrid",
+      "file": "C-development-chunks-hybrid.json",
+      "sha256": "e5186b6ed3a72e809102e05342c5ac07f8e6901f0416af8be285dfbb1989dcbc",
+      "paired": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 15,
+        "answerable_independent_groups": 15,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.88,
+          "candidate": 1,
+          "delta": 0.12,
+          "ci95": [0, 0.3076923076923077],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8666666666666667,
+          "candidate": 1,
+          "delta": 0.1333333333333333,
+          "ci95": [0, 0.33333333333333337],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 4,
+        "answerable": 4,
+        "independent_groups": 2,
+        "answerable_independent_groups": 2,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "C-development",
+      "kind": "mode",
+      "chunker": "heading-1000",
+      "from": "bm25",
+      "to": "dense",
+      "file": "C-development-0-bm25-to-dense.json",
+      "sha256": "d3b2aec176dbfb1537b5826f3865fa0102056e628f06beee4f2f19949f6ab881",
+      "paired": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 15,
+        "answerable_independent_groups": 15,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.88,
+          "candidate": 0.96,
+          "delta": 0.07999999999999996,
+          "ci95": [-0.08333333333333337, 0.29166666666666663],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8666666666666667,
+          "candidate": 0.9333333333333333,
+          "delta": 0.06666666666666665,
+          "ci95": [-0.1333333333333333, 0.2666666666666667],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 4,
+        "answerable": 4,
+        "independent_groups": 2,
+        "answerable_independent_groups": 2,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "C-development",
+      "kind": "mode",
+      "chunker": "heading-1000",
+      "from": "bm25",
+      "to": "hybrid",
+      "file": "C-development-0-bm25-to-hybrid.json",
+      "sha256": "cf8db0fc92c10eeaea126b31715ade8a3c4f91eaeb3a54ef8012b83ee3539a7d",
+      "paired": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 15,
+        "answerable_independent_groups": 15,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.88,
+          "candidate": 0.88,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8666666666666667,
+          "candidate": 0.8666666666666667,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 4,
+        "answerable": 4,
+        "independent_groups": 2,
+        "answerable_independent_groups": 2,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "C-development",
+      "kind": "mode",
+      "chunker": "heading-1000",
+      "from": "dense",
+      "to": "hybrid",
+      "file": "C-development-0-dense-to-hybrid.json",
+      "sha256": "7d7bcbd4c49d71ac67b8b1823c6ebb53a3de86f07e09a526650083a7b8c25627",
+      "paired": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 15,
+        "answerable_independent_groups": 15,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.96,
+          "candidate": 0.88,
+          "delta": -0.07999999999999996,
+          "ci95": [-0.29166666666666663, 0.08333333333333337],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9333333333333333,
+          "candidate": 0.8666666666666667,
+          "delta": -0.06666666666666665,
+          "ci95": [-0.2666666666666667, 0.1333333333333333],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 4,
+        "answerable": 4,
+        "independent_groups": 2,
+        "answerable_independent_groups": 2,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "C-development",
+      "kind": "mode",
+      "chunker": "bagu-paragraph-800-lines",
+      "from": "bm25",
+      "to": "dense",
+      "file": "C-development-1-bm25-to-dense.json",
+      "sha256": "1cfeb474b5f27e43bd78acbb9fb3d57547c161ff0eb66f0720d3584c220fb80e",
+      "paired": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 15,
+        "answerable_independent_groups": 15,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 4,
+        "answerable": 4,
+        "independent_groups": 2,
+        "answerable_independent_groups": 2,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "C-development",
+      "kind": "mode",
+      "chunker": "bagu-paragraph-800-lines",
+      "from": "bm25",
+      "to": "hybrid",
+      "file": "C-development-1-bm25-to-hybrid.json",
+      "sha256": "5754f39535d6b24b271f3ecc23615a7bb3ec40c235d00b5fb9315f8258661481",
+      "paired": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 15,
+        "answerable_independent_groups": 15,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 4,
+        "answerable": 4,
+        "independent_groups": 2,
+        "answerable_independent_groups": 2,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "C-development",
+      "kind": "mode",
+      "chunker": "bagu-paragraph-800-lines",
+      "from": "dense",
+      "to": "hybrid",
+      "file": "C-development-1-dense-to-hybrid.json",
+      "sha256": "cc35a98dbc091c6da63d29ed5375ffd626a1faae8c5cee2387bfb2f26f8396a2",
+      "paired": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 15,
+        "answerable_independent_groups": 15,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 4,
+        "answerable": 4,
+        "independent_groups": 2,
+        "answerable_independent_groups": 2,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "mixed-development",
+      "kind": "chunk",
+      "mode": "bm25",
+      "file": "mixed-development-chunks-bm25.json",
+      "sha256": "d44d9051525edc4803acc20504935171ce02a4acc9653138d962dadf636b6156",
+      "paired": {
+        "questions": 30,
+        "answerable": 27,
+        "independent_groups": 30,
+        "answerable_independent_groups": 27,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.6309523809523809,
+          "candidate": 0.7142857142857143,
+          "delta": 0.08333333333333337,
+          "ci95": [0.02127659574468088, 0.17441860465116277],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.4444444444444444,
+          "candidate": 0.5925925925925926,
+          "delta": 0.14814814814814814,
+          "ci95": [0.03703703703703698, 0.2962962962962963],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 28,
+        "answerable": 28,
+        "independent_groups": 14,
+        "answerable_independent_groups": 14,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.5370370370370371,
+          "candidate": 0.6111111111111112,
+          "delta": 0.07407407407407407,
+          "ci95": [0, 0.1764705882352941],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.4642857142857143,
+          "candidate": 0.5714285714285714,
+          "delta": 0.1071428571428571,
+          "ci95": [0, 0.21428571428571436],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "mixed-development",
+      "kind": "chunk",
+      "mode": "dense",
+      "file": "mixed-development-chunks-dense.json",
+      "sha256": "fed83d319bb46b0393959d6069b2e7d46f9f260aeb28899239cfdbdcefc381f6",
+      "paired": {
+        "questions": 30,
+        "answerable": 27,
+        "independent_groups": 30,
+        "answerable_independent_groups": 27,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8452380952380952,
+          "candidate": 0.9166666666666666,
+          "delta": 0.0714285714285714,
+          "ci95": [-0.010992063492063558, 0.15958510638297863],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.7037037037037037,
+          "candidate": 0.8148148148148148,
+          "delta": 0.11111111111111105,
+          "ci95": [-0.03703703703703709, 0.2592592592592593],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 28,
+        "answerable": 28,
+        "independent_groups": 14,
+        "answerable_independent_groups": 14,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.7592592592592593,
+          "candidate": 0.8888888888888888,
+          "delta": 0.12962962962962954,
+          "ci95": [0.019230769230769273, 0.2549019607843137],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.7142857142857143,
+          "candidate": 0.8571428571428571,
+          "delta": 0.1428571428571428,
+          "ci95": [0.0357142857142857, 0.25],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "mixed-development",
+      "kind": "chunk",
+      "mode": "hybrid",
+      "file": "mixed-development-chunks-hybrid.json",
+      "sha256": "e19dc6762acfd2947bcf2f9733585887bfc228beba3a4f1f3a29e830d0acc8f7",
+      "paired": {
+        "questions": 30,
+        "answerable": 27,
+        "independent_groups": 30,
+        "answerable_independent_groups": 27,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8214285714285714,
+          "candidate": 0.8452380952380952,
+          "delta": 0.023809523809523836,
+          "ci95": [-0.05633802816901401, 0.10227272727272729],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.6666666666666666,
+          "candidate": 0.7407407407407407,
+          "delta": 0.07407407407407407,
+          "ci95": [-0.07407407407407407, 0.2222222222222222],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 28,
+        "answerable": 28,
+        "independent_groups": 14,
+        "answerable_independent_groups": 14,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.7407407407407407,
+          "candidate": 0.7777777777777778,
+          "delta": 0.03703703703703709,
+          "ci95": [-0.08000000000000007, 0.14893617021276595],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.6428571428571429,
+          "candidate": 0.7142857142857143,
+          "delta": 0.0714285714285714,
+          "ci95": [-0.0714285714285714, 0.2142857142857143],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "mixed-development",
+      "kind": "mode",
+      "chunker": "heading-1000",
+      "from": "bm25",
+      "to": "dense",
+      "file": "mixed-development-0-bm25-to-dense.json",
+      "sha256": "0228bcda367a0fb9f5477d67c65c6e2c5f0a3c49e3c4f8b08903e8d52342e320",
+      "paired": {
+        "questions": 30,
+        "answerable": 27,
+        "independent_groups": 30,
+        "answerable_independent_groups": 27,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.6309523809523809,
+          "candidate": 0.8452380952380952,
+          "delta": 0.2142857142857143,
+          "ci95": [0.06666666666666665, 0.35802929795467103],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.4444444444444444,
+          "candidate": 0.7037037037037037,
+          "delta": 0.2592592592592593,
+          "ci95": [0.07407407407407407, 0.4444444444444445],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 28,
+        "answerable": 28,
+        "independent_groups": 14,
+        "answerable_independent_groups": 14,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.5370370370370371,
+          "candidate": 0.7592592592592593,
+          "delta": 0.2222222222222222,
+          "ci95": [0.01753629764065331, 0.41179667519181545],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.4642857142857143,
+          "candidate": 0.7142857142857143,
+          "delta": 0.25,
+          "ci95": [0.0714285714285714, 0.4285714285714286],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "mixed-development",
+      "kind": "mode",
+      "chunker": "heading-1000",
+      "from": "bm25",
+      "to": "hybrid",
+      "file": "mixed-development-0-bm25-to-hybrid.json",
+      "sha256": "1bad35c33221501b9db07332acf4ed5f9660df7400d2b50a8bb107005fa1c619",
+      "paired": {
+        "questions": 30,
+        "answerable": 27,
+        "independent_groups": 30,
+        "answerable_independent_groups": 27,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.6309523809523809,
+          "candidate": 0.8214285714285714,
+          "delta": 0.19047619047619047,
+          "ci95": [0.07777777777777772, 0.3246753246753247],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.4444444444444444,
+          "candidate": 0.6666666666666666,
+          "delta": 0.2222222222222222,
+          "ci95": [0.07407407407407407, 0.3703703703703704],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 28,
+        "answerable": 28,
+        "independent_groups": 14,
+        "answerable_independent_groups": 14,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.5370370370370371,
+          "candidate": 0.7407407407407407,
+          "delta": 0.2037037037037036,
+          "ci95": [0.07142857142857145, 0.3773584905660377],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.4642857142857143,
+          "candidate": 0.6428571428571429,
+          "delta": 0.1785714285714286,
+          "ci95": [0.0357142857142857, 0.35714285714285715],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "mixed-development",
+      "kind": "mode",
+      "chunker": "heading-1000",
+      "from": "dense",
+      "to": "hybrid",
+      "file": "mixed-development-0-dense-to-hybrid.json",
+      "sha256": "ba66f7f8f21f69b901444c2ced6c927cf03caa3bec12db6f5fdcc1980762a05d",
+      "paired": {
+        "questions": 30,
+        "answerable": 27,
+        "independent_groups": 30,
+        "answerable_independent_groups": 27,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8452380952380952,
+          "candidate": 0.8214285714285714,
+          "delta": -0.023809523809523836,
+          "ci95": [-0.13580246913580252, 0.0898876404494382],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.7037037037037037,
+          "candidate": 0.6666666666666666,
+          "delta": -0.03703703703703709,
+          "ci95": [-0.18518518518518523, 0.11111111111111116],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 28,
+        "answerable": 28,
+        "independent_groups": 14,
+        "answerable_independent_groups": 14,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.7592592592592593,
+          "candidate": 0.7407407407407407,
+          "delta": -0.0185185185185186,
+          "ci95": [-0.18965517241379304, 0.1578947368421052],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.7142857142857143,
+          "candidate": 0.6428571428571429,
+          "delta": -0.0714285714285714,
+          "ci95": [-0.2857142857142857, 0.1071428571428571],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "mixed-development",
+      "kind": "mode",
+      "chunker": "bagu-paragraph-800-lines",
+      "from": "bm25",
+      "to": "dense",
+      "file": "mixed-development-1-bm25-to-dense.json",
+      "sha256": "55afdb49bf03db61b99543d1c68ad880e3b7241eecd23afe9b00cfb929dcc9a0",
+      "paired": {
+        "questions": 30,
+        "answerable": 27,
+        "independent_groups": 30,
+        "answerable_independent_groups": 27,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.7142857142857143,
+          "candidate": 0.9166666666666666,
+          "delta": 0.20238095238095233,
+          "ci95": [0.0843373493975903, 0.3411764705882353],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.5925925925925926,
+          "candidate": 0.8148148148148148,
+          "delta": 0.2222222222222222,
+          "ci95": [0.07407407407407407, 0.3703703703703704],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 28,
+        "answerable": 28,
+        "independent_groups": 14,
+        "answerable_independent_groups": 14,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.6111111111111112,
+          "candidate": 0.8888888888888888,
+          "delta": 0.2777777777777777,
+          "ci95": [0.10169491525423724, 0.4807692307692308],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.5714285714285714,
+          "candidate": 0.8571428571428571,
+          "delta": 0.2857142857142857,
+          "ci95": [0.1071428571428571, 0.49999999999999994],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "mixed-development",
+      "kind": "mode",
+      "chunker": "bagu-paragraph-800-lines",
+      "from": "bm25",
+      "to": "hybrid",
+      "file": "mixed-development-1-bm25-to-hybrid.json",
+      "sha256": "3eb4495b22fe5cd7ea01d0daa11c49955ee8d0c37b578ab9b0bed1bc4d73cb3a",
+      "paired": {
+        "questions": 30,
+        "answerable": 27,
+        "independent_groups": 30,
+        "answerable_independent_groups": 27,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.7142857142857143,
+          "candidate": 0.8452380952380952,
+          "delta": 0.13095238095238093,
+          "ci95": [0.012500000000000067, 0.27399141953936446],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.5925925925925926,
+          "candidate": 0.7407407407407407,
+          "delta": 0.14814814814814814,
+          "ci95": [0.03703703703703698, 0.2962962962962963],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 28,
+        "answerable": 28,
+        "independent_groups": 14,
+        "answerable_independent_groups": 14,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.6111111111111112,
+          "candidate": 0.7777777777777778,
+          "delta": 0.16666666666666663,
+          "ci95": [0, 0.37735849056603776],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.5714285714285714,
+          "candidate": 0.7142857142857143,
+          "delta": 0.1428571428571429,
+          "ci95": [-0.03571428571428581, 0.35714285714285715],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "mixed-development",
+      "kind": "mode",
+      "chunker": "bagu-paragraph-800-lines",
+      "from": "dense",
+      "to": "hybrid",
+      "file": "mixed-development-1-dense-to-hybrid.json",
+      "sha256": "870bacfad18213e6446092ac7e57ac36dd06992445cf8ca04baaf358a4023176",
+      "paired": {
+        "questions": 30,
+        "answerable": 27,
+        "independent_groups": 30,
+        "answerable_independent_groups": 27,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9166666666666666,
+          "candidate": 0.8452380952380952,
+          "delta": -0.0714285714285714,
+          "ci95": [-0.15853658536585358, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8148148148148148,
+          "candidate": 0.7407407407407407,
+          "delta": -0.07407407407407407,
+          "ci95": [-0.18518518518518523, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 28,
+        "answerable": 28,
+        "independent_groups": 14,
+        "answerable_independent_groups": 14,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8888888888888888,
+          "candidate": 0.7777777777777778,
+          "delta": -0.11111111111111105,
+          "ci95": [-0.2413793103448275, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8571428571428571,
+          "candidate": 0.7142857142857143,
+          "delta": -0.1428571428571428,
+          "ci95": [-0.25000000000000006, -0.0357142857142857],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "paired-development",
+      "kind": "chunk",
+      "mode": "bm25",
+      "file": "paired-development-chunks-bm25.json",
+      "sha256": "b463153bc023ad7335b091cf65225dc72c1b7beed3b3f30a692006e1ce061d5b",
+      "paired": {
+        "questions": 20,
+        "answerable": 20,
+        "independent_groups": 20,
+        "answerable_independent_groups": 20,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8974358974358975,
+          "candidate": 0.8461538461538461,
+          "delta": -0.05128205128205132,
+          "ci95": [-0.1316228070175439, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9,
+          "candidate": 0.8,
+          "delta": -0.09999999999999998,
+          "ci95": [-0.25, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 14,
+        "answerable": 14,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8571428571428571,
+          "candidate": 0.8571428571428571,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8571428571428571,
+          "candidate": 0.8571428571428571,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "paired-development",
+      "kind": "chunk",
+      "mode": "dense",
+      "file": "paired-development-chunks-dense.json",
+      "sha256": "60dd39b06269d93a89a17d126090452767ffdc629a468d9c407d80ac17895b84",
+      "paired": {
+        "questions": 20,
+        "answerable": 20,
+        "independent_groups": 20,
+        "answerable_independent_groups": 20,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9487179487179487,
+          "candidate": 0.9743589743589743,
+          "delta": 0.02564102564102566,
+          "ci95": [-0.05882352941176472, 0.11627906976744184],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9,
+          "candidate": 0.95,
+          "delta": 0.04999999999999993,
+          "ci95": [-0.09999999999999998, 0.19999999999999996],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 14,
+        "answerable": 14,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9523809523809523,
+          "candidate": 1,
+          "delta": 0.04761904761904767,
+          "ci95": [0, 0.15000000000000002],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9285714285714286,
+          "candidate": 1,
+          "delta": 0.0714285714285714,
+          "ci95": [0, 0.2142857142857143],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "paired-development",
+      "kind": "chunk",
+      "mode": "hybrid",
+      "file": "paired-development-chunks-hybrid.json",
+      "sha256": "b9b3eacbb345bc03f8d9703a32c4a7dbbc6e8369b74302b06dd6c4a0189b9158",
+      "paired": {
+        "questions": 20,
+        "answerable": 20,
+        "independent_groups": 20,
+        "answerable_independent_groups": 20,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9487179487179487,
+          "candidate": 0.9487179487179487,
+          "delta": 0,
+          "ci95": [-0.10810810810810811, 0.09999999999999998],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9,
+          "candidate": 0.9,
+          "delta": 0,
+          "ci95": [-0.19999999999999996, 0.19999999999999996],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 14,
+        "answerable": 14,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9523809523809523,
+          "candidate": 1,
+          "delta": 0.04761904761904767,
+          "ci95": [0, 0.15000000000000002],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9285714285714286,
+          "candidate": 1,
+          "delta": 0.0714285714285714,
+          "ci95": [0, 0.2142857142857143],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "paired-development",
+      "kind": "mode",
+      "chunker": "heading-1000",
+      "from": "bm25",
+      "to": "dense",
+      "file": "paired-development-0-bm25-to-dense.json",
+      "sha256": "ab2d72a7cc9457c713ed6f82e12b0d3203ea8d3f52b7a889c2eb46efa12e6820",
+      "paired": {
+        "questions": 20,
+        "answerable": 20,
+        "independent_groups": 20,
+        "answerable_independent_groups": 20,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8974358974358975,
+          "candidate": 0.9487179487179487,
+          "delta": 0.05128205128205121,
+          "ci95": [-0.09999999999999998, 0.23684210526315796],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9,
+          "candidate": 0.9,
+          "delta": 0,
+          "ci95": [-0.19999999999999996, 0.19999999999999996],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 14,
+        "answerable": 14,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8571428571428571,
+          "candidate": 0.9523809523809523,
+          "delta": 0.09523809523809523,
+          "ci95": [-0.13636363636363635, 0.4285714285714286],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8571428571428571,
+          "candidate": 0.9285714285714286,
+          "delta": 0.07142857142857151,
+          "ci95": [-0.2142857142857143, 0.4285714285714286],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "paired-development",
+      "kind": "mode",
+      "chunker": "heading-1000",
+      "from": "bm25",
+      "to": "hybrid",
+      "file": "paired-development-0-bm25-to-hybrid.json",
+      "sha256": "b7192f7e18f26f3ae497c9de74493e60ec8456be99e56cea30c2da9cdb0a6b44",
+      "paired": {
+        "questions": 20,
+        "answerable": 20,
+        "independent_groups": 20,
+        "answerable_independent_groups": 20,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8974358974358975,
+          "candidate": 0.9487179487179487,
+          "delta": 0.05128205128205121,
+          "ci95": [-0.09999999999999998, 0.23684210526315796],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9,
+          "candidate": 0.9,
+          "delta": 0,
+          "ci95": [-0.19999999999999996, 0.19999999999999996],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 14,
+        "answerable": 14,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8571428571428571,
+          "candidate": 0.9523809523809523,
+          "delta": 0.09523809523809523,
+          "ci95": [-0.13636363636363635, 0.4285714285714286],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8571428571428571,
+          "candidate": 0.9285714285714286,
+          "delta": 0.07142857142857151,
+          "ci95": [-0.2142857142857143, 0.4285714285714286],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "paired-development",
+      "kind": "mode",
+      "chunker": "heading-1000",
+      "from": "dense",
+      "to": "hybrid",
+      "file": "paired-development-0-dense-to-hybrid.json",
+      "sha256": "027ec0547f164d3cccb63aac107d8a7f9da5dfdf010b1189bca74def8aaff837",
+      "paired": {
+        "questions": 20,
+        "answerable": 20,
+        "independent_groups": 20,
+        "answerable_independent_groups": 20,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9487179487179487,
+          "candidate": 0.9487179487179487,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9,
+          "candidate": 0.9,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 14,
+        "answerable": 14,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9523809523809523,
+          "candidate": 0.9523809523809523,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9285714285714286,
+          "candidate": 0.9285714285714286,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "paired-development",
+      "kind": "mode",
+      "chunker": "bagu-paragraph-800-lines",
+      "from": "bm25",
+      "to": "dense",
+      "file": "paired-development-1-bm25-to-dense.json",
+      "sha256": "4cc30170f12eb1550c8dff01db32774191f44190cf5cb4123fe04756cde984b8",
+      "paired": {
+        "questions": 20,
+        "answerable": 20,
+        "independent_groups": 20,
+        "answerable_independent_groups": 20,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8461538461538461,
+          "candidate": 0.9743589743589743,
+          "delta": 0.1282051282051282,
+          "ci95": [0, 0.3023255813953488],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8,
+          "candidate": 0.95,
+          "delta": 0.1499999999999999,
+          "ci95": [0, 0.30000000000000004],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 14,
+        "answerable": 14,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8571428571428571,
+          "candidate": 1,
+          "delta": 0.1428571428571429,
+          "ci95": [0, 0.44999999999999996],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8571428571428571,
+          "candidate": 1,
+          "delta": 0.1428571428571429,
+          "ci95": [0, 0.4285714285714286],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "paired-development",
+      "kind": "mode",
+      "chunker": "bagu-paragraph-800-lines",
+      "from": "bm25",
+      "to": "hybrid",
+      "file": "paired-development-1-bm25-to-hybrid.json",
+      "sha256": "0f9a65e3c3d59e873ca561b6382a1baad8417af92e4c534723dac60a27df72a7",
+      "paired": {
+        "questions": 20,
+        "answerable": 20,
+        "independent_groups": 20,
+        "answerable_independent_groups": 20,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8461538461538461,
+          "candidate": 0.9487179487179487,
+          "delta": 0.10256410256410253,
+          "ci95": [0, 0.2702702702702703],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8,
+          "candidate": 0.9,
+          "delta": 0.09999999999999998,
+          "ci95": [0, 0.25],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 14,
+        "answerable": 14,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.8571428571428571,
+          "candidate": 1,
+          "delta": 0.1428571428571429,
+          "ci95": [0, 0.44999999999999996],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8571428571428571,
+          "candidate": 1,
+          "delta": 0.1428571428571429,
+          "ci95": [0, 0.4285714285714286],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "paired-development",
+      "kind": "mode",
+      "chunker": "bagu-paragraph-800-lines",
+      "from": "dense",
+      "to": "hybrid",
+      "file": "paired-development-1-dense-to-hybrid.json",
+      "sha256": "7687f7162d5b1e4f941cb62f8adbef1e4d3a2e6a1a688eef18d9e8c49e90347d",
+      "paired": {
+        "questions": 20,
+        "answerable": 20,
+        "independent_groups": 20,
+        "answerable_independent_groups": 20,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9743589743589743,
+          "candidate": 0.9487179487179487,
+          "delta": -0.02564102564102566,
+          "ci95": [-0.09090909090909094, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.95,
+          "candidate": 0.9,
+          "delta": -0.04999999999999993,
+          "ci95": [-0.15000000000000002, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 14,
+        "answerable": 14,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    }
+  ],
+  "api_usage": {
+    "requests": 648,
+    "texts": 648,
+    "input_chars": 31272,
+    "reported_tokens": 25940
+  },
+  "limits": "Per-scope paired comparisons. No pooled interval, no new labels, no final/test query. paired-development is same-dataset strategy comparison, not a separate-versus-mixed interval.",
+  "api_run": {
+    "script_sha256": "240c9ac411db4f5f7aadb826443b5550344137b58d79417e1f0037ce3be72225",
+    "guard_sha256": "07e4131d35882db3ab3bdace67ef692ff9b5d523d6443f21304d2a40d98448e6",
+    "plan_sha256": "a1731441c16ba378dce77f129dfe1829548f5b4004d94e20347eaf30be4c7e29",
+    "report_sha256": "ed753bc7f1e13cb79fd39051069621797c684dbe8c2bc3b1532d7092ed65fd90",
+    "events_sha256": "7e03b1b5a69a22ef42de884af1d21568378fab7eaea01c6580c975c7d16acd53",
+    "parent_executions": 480,
+    "final_queries": 0,
+    "caps": {
+      "requests": 700,
+      "input_chars": 40000
+    },
+    "checks": "20 manifests match frozen dataset and config revision; all480 rows status ok, cumulative JSON<=12000, results<=8, per source<=2;648network reservations and31272chars match provider usage."
+  },
+  "preparation_reviews": [
+    {
+      "reviewer": "luna-a",
+      "sha256": "bdc8dd520a960db1dfa49bfa50b62fc5d713e6947c6606d11007343940d928a7",
+      "scope": "Preparation and guards only; not a result acceptance."
+    },
+    {
+      "reviewer": "luna-b",
+      "sha256": "5a24b7c672313dead9c8b90b6884d281698c64a7f5233e2aff13c1064fbb1afe",
+      "scope": "Preparation and guards only; not a result acceptance."
+    }
+  ]
+}

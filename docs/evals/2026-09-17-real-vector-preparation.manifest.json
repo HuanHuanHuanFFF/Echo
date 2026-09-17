@@ -1,0 +1,148 @@
+{
+  "version": 1,
+  "date": "2026-09-17",
+  "status": "real_document_vectors_ready_no_semantic_score",
+  "runtime": "b454686c0a03d842c75a8306df9251348ef1f69b",
+  "model": "qwen3.7-text-embedding",
+  "dimensions": 1024,
+  "endpoint": "https://dashscope.aliyuncs.com/compatible-mode/v1/embeddings",
+  "embedding_fingerprint": "2e6e9f07b732465d9a61d6336eb9901ccb3f525d8c626e294c8554ccc00c36c0",
+  "document_prefix": "",
+  "query_prefix": "",
+  "batch_size": 8,
+  "send_dimensions": true,
+  "started": "2026-09-16T15:59:15.841Z",
+  "finished": "2026-09-16T16:03:54.858Z",
+  "budget": {
+    "requests": 1000,
+    "chars": 3100000
+  },
+  "api_usage": {
+    "requests": 646,
+    "texts": 5138,
+    "input_chars": 2017886,
+    "reported_tokens": 808124
+  },
+  "cache_hits": 9684,
+  "ready_scopes": [
+    {
+      "scope": "A",
+      "chunker": "heading-1000",
+      "chunks": 1674,
+      "ready": true,
+      "wrote_ids": 0,
+      "corpus_sha256": "e4805ae78525565ae24380efcb74679e17279cc4de8611dc411c0e5c33effc98"
+    },
+    {
+      "scope": "A",
+      "chunker": "bagu-paragraph-800-lines",
+      "chunks": 1492,
+      "ready": true,
+      "wrote_ids": 0,
+      "corpus_sha256": "e4805ae78525565ae24380efcb74679e17279cc4de8611dc411c0e5c33effc98"
+    },
+    {
+      "scope": "B",
+      "chunker": "heading-1000",
+      "chunks": 459,
+      "ready": true,
+      "wrote_ids": 0,
+      "corpus_sha256": "77138679d46c2901022127c7161875f1b3bbeb500a7bf6597f7bceab892b208e"
+    },
+    {
+      "scope": "B",
+      "chunker": "bagu-paragraph-800-lines",
+      "chunks": 383,
+      "ready": true,
+      "wrote_ids": 0,
+      "corpus_sha256": "77138679d46c2901022127c7161875f1b3bbeb500a7bf6597f7bceab892b208e"
+    },
+    {
+      "scope": "C",
+      "chunker": "heading-1000",
+      "chunks": 352,
+      "ready": true,
+      "wrote_ids": 0,
+      "corpus_sha256": "03582da3eb6b34d330f155b2c6890be6e1a33aef1a5123437c14a7240b584921"
+    },
+    {
+      "scope": "C",
+      "chunker": "bagu-paragraph-800-lines",
+      "chunks": 168,
+      "ready": true,
+      "wrote_ids": 0,
+      "corpus_sha256": "03582da3eb6b34d330f155b2c6890be6e1a33aef1a5123437c14a7240b584921"
+    },
+    {
+      "scope": "D",
+      "chunker": "heading-1000",
+      "chunks": 372,
+      "ready": true,
+      "wrote_ids": 0,
+      "corpus_sha256": "839e2b0847d64b34a6432e736f1e7b88d135a9cbd2fcbc90398cb16b82510ed5"
+    },
+    {
+      "scope": "D",
+      "chunker": "bagu-paragraph-800-lines",
+      "chunks": 247,
+      "ready": true,
+      "wrote_ids": 0,
+      "corpus_sha256": "839e2b0847d64b34a6432e736f1e7b88d135a9cbd2fcbc90398cb16b82510ed5"
+    },
+    {
+      "scope": "mixed-development",
+      "chunker": "heading-1000",
+      "chunks": 2485,
+      "ready": true,
+      "wrote_ids": 0,
+      "corpus_sha256": "6d153e8a8a73a3b837df005f390f16a60b9ab838f41e80b9d738b47e299c587b"
+    },
+    {
+      "scope": "mixed-development",
+      "chunker": "bagu-paragraph-800-lines",
+      "chunks": 2043,
+      "ready": true,
+      "wrote_ids": 0,
+      "corpus_sha256": "6d153e8a8a73a3b837df005f390f16a60b9ab838f41e80b9d738b47e299c587b"
+    },
+    {
+      "scope": "mixed-test",
+      "chunker": "heading-1000",
+      "chunks": 2857,
+      "ready": true,
+      "wrote_ids": 0,
+      "corpus_sha256": "cd94151fa4e95240393d5085addac8c12ed143b225546698f3ecba803bdafc9c"
+    },
+    {
+      "scope": "mixed-test",
+      "chunker": "bagu-paragraph-800-lines",
+      "chunks": 2290,
+      "ready": true,
+      "wrote_ids": 0,
+      "corpus_sha256": "cd94151fa4e95240393d5085addac8c12ed143b225546698f3ecba803bdafc9c"
+    }
+  ],
+  "formal_query_calls": 0,
+  "price_reference": {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-text-embedding",
+    "checked_date": "2026-09-17",
+    "region": "Beijing",
+    "cny_per_million_input_tokens": 0.5,
+    "estimated_list_price_cny": 0.404062,
+    "actual_account_charge": null,
+    "meaning": "List-price estimate from provider-reported tokens; account discount/free quota not inspected."
+  },
+  "artifact_sha256": {
+    "report": "32eb44b22d0eff9c63dc07f243582091c9f85c54ed16bbbfef99588458e2a94e",
+    "plan": "11b55fb4d49abb1f79594f3977a656df8a9f6b7950cd7c7c6a9384df58d89a4c",
+    "rows": "fc7591247e44477ebd9ff4b516f88577c8bc69a182ffa5f03001f91fb45ce0d7",
+    "preparation_script": "d29014629a39ffb940080edf917e9c9fdf68171c47e8bea310afc7658c27f5ca",
+    "preflight": "56eee11c68619e2d3ab522bd898057f7be74ef1ba107a45b95b2a4c2f5c7cafc"
+  },
+  "limits": [
+    "Document indexing success is not retrieval quality.",
+    "No final/test queries were executed in this batch.",
+    "No source ID changes; original vault and legacy Chroma untouched.",
+    "Real vectors/body/cache/index stay in E and are not published."
+  ]
+}
