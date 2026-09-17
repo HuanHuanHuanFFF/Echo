@@ -1,12 +1,12 @@
 # Echo 文档入口
 
-更新日期：2026-09-17。
+更新日期：2026-09-18。
 
 Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前四阶段已合并并通过双平台 CI；第五阶段已完成独立安装、真实文档向量及100题开发对照；默认组合选择与最终评测仍待验收。安装使用从[README](../README.md)开始，当前配置以[v2 配置契约](design/configuration-profiles.md)为准。
 
 ## 当前下一步
 
-- [四项独立单参数对照](evals/2026-09-17-four-parameter-comparisons.md)：按用户要求依次测试RRF、标题权重、向量阈值和上下文预算；共同基线固定，准备中。
+- [四项独立单参数对照](evals/2026-09-17-four-parameter-comparisons.md)：四组800次检索与双人复核完成：RRF30小幅获益，标题1退化，阈值/更大预算无标注覆盖收益；默认未改。
 
 - [新综合＋拆分＋每篇3：BM25权重0.5/0.25](evals/2026-09-17-bm25-weight-comparison.md)：权重降低后完整89/95→87/95，事实总数相同但分库得失不同；零新增API，两位独立复核通过，继续保留0.5。
 
@@ -24,7 +24,7 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 - [开发语料段落与chunk尺寸分布](evals/2026-09-17-corpus-shape.md)：337篇只读结构统计，作为本轮综合策略设计依据；原始分布与判断边界保留。
 
-- [小范围排查与问题清单](project/2026-09-17-small-scope-retrieval-investigation.md)：保留子问题拆分等待办；后续执行按用户新指示安排，不自动追加实验。
+- [小范围排查与问题清单](project/2026-09-17-small-scope-retrieval-investigation.md)：保留早期诊断假设与历史安排；已执行项见上方对照，后续按用户指示逐项推进。
 
 ## 从这里继续
 
