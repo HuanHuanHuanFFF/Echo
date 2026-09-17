@@ -6,13 +6,15 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 当前下一步
 
-- [综合切块实施与100题同参数对照](development/2026-09-17-structure-chunker-comparison.md)：用户已授权执行三策略hybrid对照；固定0.5/1权重、topk10、每篇3；按最新规则持续push，阶段末才发PR，合并由用户批准。
+- [三策略100题同参数结果](evals/2026-09-17-structure-chunker-comparison.md)：heading90/95、原八股83/95、新综合89/95；完整参数、分库事实、上下文及得失均保留，双人结果复核通过；本轮未替换默认。
 
-- [开源与商业Markdown切块调查](research/2026-09-17-markdown-chunking-solutions.md)：Luna/max调查7个方案，另核对QMD固定参考；比较结构保护、超长回退、尺寸/overlap口径与Echo采用边界。建议未实施。
+- [综合切块实施与100题同参数对照](development/2026-09-17-structure-chunker-comparison.md)：三策略hybrid100题对照与复核已完成；固定0.5/1权重、topk10、每篇3；实现与结果已push，本轮未新建PR或合并。
 
-- [开发语料段落与chunk尺寸分布](evals/2026-09-17-corpus-shape.md)：337篇只读结构统计；不支持统一缩小，heading可考虑适度放大／保护切点，八股段落暂保留。尚未实施或运行新检索对照。
+- [开源与商业Markdown切块调查](research/2026-09-17-markdown-chunking-solutions.md)：Luna/max调查7个方案，另核对QMD固定参考；比较结构保护、超长回退、尺寸/overlap口径与Echo采用边界；后续实施见上方综合策略记录。
 
-- [小范围排查与问题清单](project/2026-09-17-small-scope-retrieval-investigation.md)：按用户最新要求，先记录疑点；下一次优先用6道开发题比较完整问句与固定子题，暂缓最终评测及默认冻结。
+- [开发语料段落与chunk尺寸分布](evals/2026-09-17-corpus-shape.md)：337篇只读结构统计，作为本轮综合策略设计依据；原始分布与判断边界保留。
+
+- [小范围排查与问题清单](project/2026-09-17-small-scope-retrieval-investigation.md)：保留子问题拆分等待办；后续执行按用户新指示安排，不自动追加实验。
 
 ## 从这里继续
 

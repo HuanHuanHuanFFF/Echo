@@ -1,0 +1,1422 @@
+{
+  "status": "complete",
+  "plan_sha256": "dce43a8c75dc8533233362e443cbedcd71b0198972fde3426f8e4b76b06ba441",
+  "script_sha256": "4ecfcb28ea6d2a904a75d248bd5ba50572fd7d0ad4cbec615a59cdaa1cdfc2ba",
+  "retrieval": {
+    "id": "chunk-fixed",
+    "mode": "hybrid",
+    "topk": 10,
+    "max_chunks_per_source": 3,
+    "bm25_candidates": 60,
+    "dense_candidates": 60,
+    "rrf_k": 60,
+    "title_weight": 2,
+    "bm25_weight": 0.5,
+    "dense_weight": 1,
+    "min_dense_similarity": 0.3,
+    "max_context_chars": 12000
+  },
+  "corpus_scope": "frozen A/B/C/mixed development100",
+  "strategies": [
+    "heading-1000",
+    "bagu-paragraph-800-lines",
+    "markdown-structure-v1"
+  ],
+  "parent_executions": 300,
+  "final_queries": 0,
+  "documents": {
+    "requests": 177,
+    "texts": 834,
+    "input_chars": 522248,
+    "reported_tokens": 200118
+  },
+  "queries": {
+    "requests": 405,
+    "input_chars": 19764,
+    "reported_tokens": 16299
+  },
+  "matrix": [
+    {
+      "scope": "A-development",
+      "strategy": "heading-1000",
+      "outputName": "A-development-0",
+      "api_usage": {
+        "requests": 41,
+        "texts": 41,
+        "input_chars": 1847,
+        "reported_tokens": 1570
+      },
+      "summary": {
+        "queries": 30,
+        "answerable": 28,
+        "fact_coverage": {
+          "covered": 66,
+          "expected": 67
+        },
+        "complete_evidence": {
+          "covered": 27,
+          "expected": 28
+        },
+        "no_answer": {
+          "queries": 2,
+          "nonempty": 2
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.7708333333333333,
+        "latency_ms": {
+          "p50": 241.21669999999904,
+          "p95": 668.6170000000002
+        },
+        "cumulative_context_chars": 301156
+      }
+    },
+    {
+      "scope": "A-development",
+      "strategy": "bagu-paragraph-800-lines",
+      "outputName": "A-development-1",
+      "api_usage": {
+        "requests": 41,
+        "texts": 41,
+        "input_chars": 1847,
+        "reported_tokens": 1570
+      },
+      "summary": {
+        "queries": 30,
+        "answerable": 28,
+        "fact_coverage": {
+          "covered": 61,
+          "expected": 67
+        },
+        "complete_evidence": {
+          "covered": 23,
+          "expected": 28
+        },
+        "no_answer": {
+          "queries": 2,
+          "nonempty": 2
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.718452380952381,
+        "latency_ms": {
+          "p50": 223.91580000000067,
+          "p95": 691.8287999999975
+        },
+        "cumulative_context_chars": 296541
+      }
+    },
+    {
+      "scope": "A-development",
+      "strategy": "markdown-structure-v1",
+      "outputName": "A-development-2",
+      "api_usage": {
+        "requests": 41,
+        "texts": 41,
+        "input_chars": 1847,
+        "reported_tokens": 1570
+      },
+      "summary": {
+        "queries": 30,
+        "answerable": 28,
+        "fact_coverage": {
+          "covered": 67,
+          "expected": 67
+        },
+        "complete_evidence": {
+          "covered": 28,
+          "expected": 28
+        },
+        "no_answer": {
+          "queries": 2,
+          "nonempty": 2
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.7976190476190477,
+        "latency_ms": {
+          "p50": 193.50429999999687,
+          "p95": 551.4802000000018
+        },
+        "cumulative_context_chars": 345215
+      }
+    },
+    {
+      "scope": "B-development",
+      "strategy": "heading-1000",
+      "outputName": "B-development-0",
+      "api_usage": {
+        "requests": 33,
+        "texts": 33,
+        "input_chars": 1488,
+        "reported_tokens": 1291
+      },
+      "summary": {
+        "queries": 25,
+        "answerable": 25,
+        "fact_coverage": {
+          "covered": 49,
+          "expected": 50
+        },
+        "complete_evidence": {
+          "covered": 24,
+          "expected": 25
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.9213333333333332,
+        "latency_ms": {
+          "p50": 307.32620000000315,
+          "p95": 644.0492000000013
+        },
+        "cumulative_context_chars": 291233
+      }
+    },
+    {
+      "scope": "B-development",
+      "strategy": "bagu-paragraph-800-lines",
+      "outputName": "B-development-1",
+      "api_usage": {
+        "requests": 33,
+        "texts": 33,
+        "input_chars": 1488,
+        "reported_tokens": 1291
+      },
+      "summary": {
+        "queries": 25,
+        "answerable": 25,
+        "fact_coverage": {
+          "covered": 47,
+          "expected": 50
+        },
+        "complete_evidence": {
+          "covered": 22,
+          "expected": 25
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.94,
+        "latency_ms": {
+          "p50": 272.44140000000334,
+          "p95": 485.3744999999981
+        },
+        "cumulative_context_chars": 292431
+      }
+    },
+    {
+      "scope": "B-development",
+      "strategy": "markdown-structure-v1",
+      "outputName": "B-development-2",
+      "api_usage": {
+        "requests": 33,
+        "texts": 33,
+        "input_chars": 1488,
+        "reported_tokens": 1291
+      },
+      "summary": {
+        "queries": 25,
+        "answerable": 25,
+        "fact_coverage": {
+          "covered": 48,
+          "expected": 50
+        },
+        "complete_evidence": {
+          "covered": 23,
+          "expected": 25
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.9533333333333335,
+        "latency_ms": {
+          "p50": 228.7138999999952,
+          "p95": 771.8957000000009
+        },
+        "cumulative_context_chars": 291988
+      }
+    },
+    {
+      "scope": "C-development",
+      "strategy": "heading-1000",
+      "outputName": "C-development-0",
+      "api_usage": {
+        "requests": 17,
+        "texts": 17,
+        "input_chars": 1017,
+        "reported_tokens": 784
+      },
+      "summary": {
+        "queries": 15,
+        "answerable": 15,
+        "fact_coverage": {
+          "covered": 25,
+          "expected": 25
+        },
+        "complete_evidence": {
+          "covered": 15,
+          "expected": 15
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.85,
+        "latency_ms": {
+          "p50": 182.82360000000335,
+          "p95": 611.4375
+        },
+        "cumulative_context_chars": 175600
+      }
+    },
+    {
+      "scope": "C-development",
+      "strategy": "bagu-paragraph-800-lines",
+      "outputName": "C-development-1",
+      "api_usage": {
+        "requests": 17,
+        "texts": 17,
+        "input_chars": 1017,
+        "reported_tokens": 784
+      },
+      "summary": {
+        "queries": 15,
+        "answerable": 15,
+        "fact_coverage": {
+          "covered": 25,
+          "expected": 25
+        },
+        "complete_evidence": {
+          "covered": 15,
+          "expected": 15
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 1,
+        "latency_ms": {
+          "p50": 172.57160000000295,
+          "p95": 1233.9533999999985
+        },
+        "cumulative_context_chars": 173540
+      }
+    },
+    {
+      "scope": "C-development",
+      "strategy": "markdown-structure-v1",
+      "outputName": "C-development-2",
+      "api_usage": {
+        "requests": 17,
+        "texts": 17,
+        "input_chars": 1017,
+        "reported_tokens": 784
+      },
+      "summary": {
+        "queries": 15,
+        "answerable": 15,
+        "fact_coverage": {
+          "covered": 25,
+          "expected": 25
+        },
+        "complete_evidence": {
+          "covered": 15,
+          "expected": 15
+        },
+        "no_answer": {
+          "queries": 0,
+          "nonempty": 0
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.9222222222222223,
+        "latency_ms": {
+          "p50": 301.4605000000083,
+          "p95": 449.4533999999985
+        },
+        "cumulative_context_chars": 175149
+      }
+    },
+    {
+      "scope": "mixed-development",
+      "strategy": "heading-1000",
+      "outputName": "mixed-development-0",
+      "api_usage": {
+        "requests": 44,
+        "texts": 44,
+        "input_chars": 2236,
+        "reported_tokens": 1788
+      },
+      "summary": {
+        "queries": 30,
+        "answerable": 27,
+        "fact_coverage": {
+          "covered": 80,
+          "expected": 84
+        },
+        "complete_evidence": {
+          "covered": 24,
+          "expected": 27
+        },
+        "no_answer": {
+          "queries": 3,
+          "nonempty": 3
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8703703703703703,
+        "latency_ms": {
+          "p50": 359.7743000000046,
+          "p95": 1201.139599999995
+        },
+        "cumulative_context_chars": 338082
+      }
+    },
+    {
+      "scope": "mixed-development",
+      "strategy": "bagu-paragraph-800-lines",
+      "outputName": "mixed-development-1",
+      "api_usage": {
+        "requests": 44,
+        "texts": 44,
+        "input_chars": 2236,
+        "reported_tokens": 1788
+      },
+      "summary": {
+        "queries": 30,
+        "answerable": 27,
+        "fact_coverage": {
+          "covered": 79,
+          "expected": 84
+        },
+        "complete_evidence": {
+          "covered": 23,
+          "expected": 27
+        },
+        "no_answer": {
+          "queries": 3,
+          "nonempty": 3
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.8611111111111112,
+        "latency_ms": {
+          "p50": 370.0780999999988,
+          "p95": 732.0217000000121
+        },
+        "cumulative_context_chars": 341771
+      }
+    },
+    {
+      "scope": "mixed-development",
+      "strategy": "markdown-structure-v1",
+      "outputName": "mixed-development-2",
+      "api_usage": {
+        "requests": 44,
+        "texts": 44,
+        "input_chars": 2236,
+        "reported_tokens": 1788
+      },
+      "summary": {
+        "queries": 30,
+        "answerable": 27,
+        "fact_coverage": {
+          "covered": 77,
+          "expected": 84
+        },
+        "complete_evidence": {
+          "covered": 23,
+          "expected": 27
+        },
+        "no_answer": {
+          "queries": 3,
+          "nonempty": 3
+        },
+        "failures": 0,
+        "mean_first_fact_reciprocal_rank": 0.9197530864197531,
+        "latency_ms": {
+          "p50": 246.00019999999495,
+          "p95": 559.8138000000035
+        },
+        "cumulative_context_chars": 350385
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "scope": "A-development",
+      "baseline": "heading-1000",
+      "candidate": "bagu-paragraph-800-lines",
+      "paired": {
+        "questions": 30,
+        "answerable": 28,
+        "independent_groups": 30,
+        "answerable_independent_groups": 28,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9850746268656716,
+          "candidate": 0.9104477611940298,
+          "delta": -0.07462686567164178,
+          "ci95": [-0.15384615384615385, -0.014285714285714235],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9642857142857143,
+          "candidate": 0.8214285714285714,
+          "delta": -0.1428571428571429,
+          "ci95": [-0.2857142857142857, -0.0357142857142857],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 21,
+        "answerable": 21,
+        "independent_groups": 10,
+        "answerable_independent_groups": 10,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 0.9375,
+          "delta": -0.0625,
+          "ci95": [-0.2068965517241379, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 0.9047619047619048,
+          "delta": -0.09523809523809523,
+          "ci95": [-0.26086956521739135, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "A-development",
+      "baseline": "heading-1000",
+      "candidate": "markdown-structure-v1",
+      "paired": {
+        "questions": 30,
+        "answerable": 28,
+        "independent_groups": 30,
+        "answerable_independent_groups": 28,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9850746268656716,
+          "candidate": 1,
+          "delta": 0.014925373134328401,
+          "ci95": [0, 0.048387096774193505],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9642857142857143,
+          "candidate": 1,
+          "delta": 0.0357142857142857,
+          "ci95": [0, 0.1071428571428571],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 21,
+        "answerable": 21,
+        "independent_groups": 10,
+        "answerable_independent_groups": 10,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "A-development",
+      "baseline": "bagu-paragraph-800-lines",
+      "candidate": "markdown-structure-v1",
+      "paired": {
+        "questions": 30,
+        "answerable": 28,
+        "independent_groups": 30,
+        "answerable_independent_groups": 28,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9104477611940298,
+          "candidate": 1,
+          "delta": 0.08955223880597019,
+          "ci95": [0.025974025974025983, 0.171875],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8214285714285714,
+          "candidate": 1,
+          "delta": 0.1785714285714286,
+          "ci95": [0.0357142857142857, 0.3214285714285714],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 21,
+        "answerable": 21,
+        "independent_groups": 10,
+        "answerable_independent_groups": 10,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9375,
+          "candidate": 1,
+          "delta": 0.0625,
+          "ci95": [0, 0.2068965517241379],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9047619047619048,
+          "candidate": 1,
+          "delta": 0.09523809523809523,
+          "ci95": [0, 0.26086956521739135],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "B-development",
+      "baseline": "heading-1000",
+      "candidate": "bagu-paragraph-800-lines",
+      "paired": {
+        "questions": 25,
+        "answerable": 25,
+        "independent_groups": 25,
+        "answerable_independent_groups": 25,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.98,
+          "candidate": 0.94,
+          "delta": -0.040000000000000036,
+          "ci95": [-0.10869565217391308, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.96,
+          "candidate": 0.88,
+          "delta": -0.07999999999999996,
+          "ci95": [-0.19999999999999996, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9545454545454546,
+          "candidate": 0.9545454545454546,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9333333333333333,
+          "candidate": 0.9333333333333333,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "B-development",
+      "baseline": "heading-1000",
+      "candidate": "markdown-structure-v1",
+      "paired": {
+        "questions": 25,
+        "answerable": 25,
+        "independent_groups": 25,
+        "answerable_independent_groups": 25,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.98,
+          "candidate": 0.96,
+          "delta": -0.020000000000000018,
+          "ci95": [-0.061224489795918324, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.96,
+          "candidate": 0.92,
+          "delta": -0.039999999999999925,
+          "ci95": [-0.12, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9545454545454546,
+          "candidate": 0.9090909090909091,
+          "delta": -0.045454545454545525,
+          "ci95": [-0.13043478260869568, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9333333333333333,
+          "candidate": 0.8666666666666667,
+          "delta": -0.06666666666666665,
+          "ci95": [-0.2142857142857143, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "B-development",
+      "baseline": "bagu-paragraph-800-lines",
+      "candidate": "markdown-structure-v1",
+      "paired": {
+        "questions": 25,
+        "answerable": 25,
+        "independent_groups": 25,
+        "answerable_independent_groups": 25,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.94,
+          "candidate": 0.96,
+          "delta": 0.020000000000000018,
+          "ci95": [-0.04166666666666663, 0.0980392156862745],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.88,
+          "candidate": 0.92,
+          "delta": 0.040000000000000036,
+          "ci95": [-0.08000000000000007, 0.16000000000000003],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 7,
+        "answerable_independent_groups": 7,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9545454545454546,
+          "candidate": 0.9090909090909091,
+          "delta": -0.045454545454545525,
+          "ci95": [-0.13043478260869568, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.9333333333333333,
+          "candidate": 0.8666666666666667,
+          "delta": -0.06666666666666665,
+          "ci95": [-0.2142857142857143, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "C-development",
+      "baseline": "heading-1000",
+      "candidate": "bagu-paragraph-800-lines",
+      "paired": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 15,
+        "answerable_independent_groups": 15,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 4,
+        "answerable": 4,
+        "independent_groups": 2,
+        "answerable_independent_groups": 2,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "C-development",
+      "baseline": "heading-1000",
+      "candidate": "markdown-structure-v1",
+      "paired": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 15,
+        "answerable_independent_groups": 15,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 4,
+        "answerable": 4,
+        "independent_groups": 2,
+        "answerable_independent_groups": 2,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "C-development",
+      "baseline": "bagu-paragraph-800-lines",
+      "candidate": "markdown-structure-v1",
+      "paired": {
+        "questions": 15,
+        "answerable": 15,
+        "independent_groups": 15,
+        "answerable_independent_groups": 15,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 4,
+        "answerable": 4,
+        "independent_groups": 2,
+        "answerable_independent_groups": 2,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "ci95": [0, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "mixed-development",
+      "baseline": "heading-1000",
+      "candidate": "bagu-paragraph-800-lines",
+      "paired": {
+        "questions": 30,
+        "answerable": 27,
+        "independent_groups": 30,
+        "answerable_independent_groups": 27,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9523809523809523,
+          "candidate": 0.9404761904761905,
+          "delta": -0.011904761904761862,
+          "ci95": [-0.05405405405405406, 0.024691358024691357],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8888888888888888,
+          "candidate": 0.8518518518518519,
+          "delta": -0.03703703703703698,
+          "ci95": [-0.14814814814814814, 0.07407407407407407],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 28,
+        "answerable": 28,
+        "independent_groups": 14,
+        "answerable_independent_groups": 14,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9259259259259259,
+          "candidate": 0.9259259259259259,
+          "delta": 0,
+          "ci95": [-0.05555555555555547, 0.05263157894736836],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8928571428571429,
+          "candidate": 0.8928571428571429,
+          "delta": 0,
+          "ci95": [-0.1071428571428572, 0.1071428571428572],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "mixed-development",
+      "baseline": "heading-1000",
+      "candidate": "markdown-structure-v1",
+      "paired": {
+        "questions": 30,
+        "answerable": 27,
+        "independent_groups": 30,
+        "answerable_independent_groups": 27,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9523809523809523,
+          "candidate": 0.9166666666666666,
+          "delta": -0.0357142857142857,
+          "ci95": [-0.09090909090909083, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8888888888888888,
+          "candidate": 0.8518518518518519,
+          "delta": -0.03703703703703698,
+          "ci95": [-0.11111111111111116, 0],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 28,
+        "answerable": 28,
+        "independent_groups": 14,
+        "answerable_independent_groups": 14,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9259259259259259,
+          "candidate": 0.8703703703703703,
+          "delta": -0.05555555555555558,
+          "ci95": [-0.1428571428571428, 0],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8928571428571429,
+          "candidate": 0.8214285714285714,
+          "delta": -0.07142857142857151,
+          "ci95": [-0.1785714285714286, 0],
+          "valid_resamples": 10000
+        }
+      }
+    },
+    {
+      "scope": "mixed-development",
+      "baseline": "bagu-paragraph-800-lines",
+      "candidate": "markdown-structure-v1",
+      "paired": {
+        "questions": 30,
+        "answerable": 27,
+        "independent_groups": 30,
+        "answerable_independent_groups": 27,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9404761904761905,
+          "candidate": 0.9166666666666666,
+          "delta": -0.023809523809523836,
+          "ci95": [-0.08889438943894391, 0.038461538461538436],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8518518518518519,
+          "candidate": 0.8518518518518519,
+          "delta": 0,
+          "ci95": [-0.14814814814814814, 0.14814814814814814],
+          "valid_resamples": 10000
+        }
+      },
+      "subquestions": {
+        "questions": 28,
+        "answerable": 28,
+        "independent_groups": 14,
+        "answerable_independent_groups": 14,
+        "iterations": 10000,
+        "seed": 20260916,
+        "method": "paired percentile cluster bootstrap by intent_group; linear quantiles",
+        "fact_coverage": {
+          "baseline": 0.9259259259259259,
+          "candidate": 0.8703703703703703,
+          "delta": -0.05555555555555558,
+          "ci95": [-0.15094339622641506, 0.03510338345864639],
+          "valid_resamples": 10000
+        },
+        "complete_evidence": {
+          "baseline": 0.8928571428571429,
+          "candidate": 0.8214285714285714,
+          "delta": -0.07142857142857151,
+          "ci95": [-0.2142857142857143, 0.0714285714285714],
+          "valid_resamples": 10000
+        }
+      }
+    }
+  ],
+  "limits": "Whole-strategy comparison at fixed retrieval settings. No final questions, no parameter sweep, no attribution to one internal chunking rule.",
+  "artifact_hashes": [
+    {
+      "file": "plan.json",
+      "sha256": "dce43a8c75dc8533233362e443cbedcd71b0198972fde3426f8e4b76b06ba441"
+    },
+    {
+      "file": "index/report.json",
+      "sha256": "abe519cd413c9b7e68d174f9cb9e137694c976bcdd5fc96d8e868e8ace15f04f"
+    },
+    {
+      "file": "index/network-attempts.jsonl",
+      "sha256": "b210484c55845b702f04fb994bc0e290f5abae84f2cd9970fee5708d82f7f16d"
+    },
+    {
+      "file": "queries/report.json",
+      "sha256": "4e8b78d4bd53e8fb1cb25c1cc3fe4dee1f703d1665e0d5763139c01132c6c13b"
+    },
+    {
+      "file": "queries/network-attempts.jsonl",
+      "sha256": "a5a6493a6ffd4b25a9c6cb9076829d2bc8ce273e51678b0764cb153a60fa7b39"
+    },
+    {
+      "file": "comparisons/summary.public.json",
+      "sha256": "ff19994e1f37464f7d411fb607dafb0bf0848331e6099492ecc1b5b9f9a1a281"
+    },
+    {
+      "file": "chunkers/markdown-structure-v1.mjs",
+      "sha256": "ca650c530d82457c16323feefe3d781afaeb12df425970b8485ebffaaea93422"
+    },
+    {
+      "file": "queries/A-development-0/report.json",
+      "sha256": "4f222722e44b66db341ec6e4aa4baf4bbe134bc54ad04f61b76693681dda35ef"
+    },
+    {
+      "file": "queries/A-development-0/manifest.json",
+      "sha256": "af1c4a5430ce76176dca5c68bbde7cb6c638462593506d7ea0b24640db3557af"
+    },
+    {
+      "file": "queries/A-development-0/rows.jsonl",
+      "sha256": "ed2b7e9a46667f192bf9bae073c97c6614a0943bf094fd4274c4028d0ba711cd"
+    },
+    {
+      "file": "queries/A-development-1/report.json",
+      "sha256": "1c0a395169d3aa2eb9159a2892bd34f71be87f8e3543015ce123b739dd30a18f"
+    },
+    {
+      "file": "queries/A-development-1/manifest.json",
+      "sha256": "2022e257f37421b17023b566b34d03620c7930971811ad5becc07998724a0587"
+    },
+    {
+      "file": "queries/A-development-1/rows.jsonl",
+      "sha256": "5bae6659935c4292717938934583decbd860a9d1b56f5ac5a3c460bc051ff6d4"
+    },
+    {
+      "file": "queries/A-development-2/report.json",
+      "sha256": "547a19dc29035f3645eccfb50a884638dc9c0256f277dc21ea1f9a36d7ab1e3d"
+    },
+    {
+      "file": "queries/A-development-2/manifest.json",
+      "sha256": "c90abe2ea134efefd4241abd6f890ee2f2b375c2f220e1778dde53e1042815a5"
+    },
+    {
+      "file": "queries/A-development-2/rows.jsonl",
+      "sha256": "7a0ca0ee75d5e94ac309878ab0a14ee1f2b87fb890efc71683173659f7e1d257"
+    },
+    {
+      "file": "queries/B-development-0/report.json",
+      "sha256": "4fb9d4fe089bfd7743020d85160a279a89da5c6ba54d0514dca859f77eb12405"
+    },
+    {
+      "file": "queries/B-development-0/manifest.json",
+      "sha256": "ee81df605e0ff569984ad824415f4bd11cb154c44e6bf1774b4d0bb3ae9f235c"
+    },
+    {
+      "file": "queries/B-development-0/rows.jsonl",
+      "sha256": "e6e651bf57fc3849947d2a90ecb28e2849390ac9b3644ea2bac39a63ec2e95ce"
+    },
+    {
+      "file": "queries/B-development-1/report.json",
+      "sha256": "739e4a23c4e43d9c6cf71af67087c829dd9f0c4a48934f6b48c3626819b79634"
+    },
+    {
+      "file": "queries/B-development-1/manifest.json",
+      "sha256": "f74b478fbfc358c53d00808079b605ccfea7d498d6df652dc73efac7064063a9"
+    },
+    {
+      "file": "queries/B-development-1/rows.jsonl",
+      "sha256": "c7e137026b4bc9c5a576b96ef3cbafd018fc5ec69b75c1dd7affff5380b42e61"
+    },
+    {
+      "file": "queries/B-development-2/report.json",
+      "sha256": "0fea787a66f93874bcdd816c0a40f77fe4d68c03539f8a05ea7441e907138959"
+    },
+    {
+      "file": "queries/B-development-2/manifest.json",
+      "sha256": "b9f33cb6ee2cf3229a092ed3f8aca1dabf8b62583441ef89af7c579a18f5ca94"
+    },
+    {
+      "file": "queries/B-development-2/rows.jsonl",
+      "sha256": "cd6cbd4b4d1e59cf6f55fe5132f13d206ab085825e426cf6982b4e7f1590dd94"
+    },
+    {
+      "file": "queries/C-development-0/report.json",
+      "sha256": "708a6c91f98e2337eaadc9fc3a2d19470871bf4dab6c7cec404f2d6421f8446b"
+    },
+    {
+      "file": "queries/C-development-0/manifest.json",
+      "sha256": "db865fbd644bb50cb065869d559354eaaa74b789d0145dac2e0919ac383101b2"
+    },
+    {
+      "file": "queries/C-development-0/rows.jsonl",
+      "sha256": "00bf5e1f7a9c2998fbf8ee2f43b12aec6eb36262708a7c0af0d6e01feed4bb48"
+    },
+    {
+      "file": "queries/C-development-1/report.json",
+      "sha256": "58a6045559e8bb9553614d19c149afc8d28388aed0901c32bd3ce7c188a3982c"
+    },
+    {
+      "file": "queries/C-development-1/manifest.json",
+      "sha256": "941f2da637ec7e54e8edec7af40b6ee8e487ed11c0aec297d4529ba0b1abfea3"
+    },
+    {
+      "file": "queries/C-development-1/rows.jsonl",
+      "sha256": "298fb1501371144434e98f494df85f4b028e54a81c6c9e66fa1f303b40befd5a"
+    },
+    {
+      "file": "queries/C-development-2/report.json",
+      "sha256": "b9ca7b94e3f733b74b345f9d90f97edc994f57454779dde20e26029103818a9b"
+    },
+    {
+      "file": "queries/C-development-2/manifest.json",
+      "sha256": "14616a57beee142e7529f6663ea1a0fe7979fe586d3115b30ae1a184b0a3d53c"
+    },
+    {
+      "file": "queries/C-development-2/rows.jsonl",
+      "sha256": "5476175d8b3a579fc5d1d62cdf0187e424e2ec790d91cc374a1224913e203e8e"
+    },
+    {
+      "file": "queries/mixed-development-0/report.json",
+      "sha256": "92ed2d3b27428ffedea79ccab62f9868ccae93470eaeafa3e61c041673918798"
+    },
+    {
+      "file": "queries/mixed-development-0/manifest.json",
+      "sha256": "ddceb3aea9471f6f1e53209707461e0165a69b2bc8fde4ef83f4950845dbd7ad"
+    },
+    {
+      "file": "queries/mixed-development-0/rows.jsonl",
+      "sha256": "3504f3a4f10806db34be38ef20143fc8df94c6d5bd7acc75a2270aa63ae292d9"
+    },
+    {
+      "file": "queries/mixed-development-1/report.json",
+      "sha256": "122c40924656449453ac190c9f45b78cc0ab6b460ffdd9a77a7d7ce51d3363d6"
+    },
+    {
+      "file": "queries/mixed-development-1/manifest.json",
+      "sha256": "785744cc249b289041eb6f082c3ad05d85348b052701eee93be7a09f21880c75"
+    },
+    {
+      "file": "queries/mixed-development-1/rows.jsonl",
+      "sha256": "db667adf28fed517740ab35affbab96cdadf71fdeea12f80fccc356c189a0410"
+    },
+    {
+      "file": "queries/mixed-development-2/report.json",
+      "sha256": "052c533a131967b96238f3d8c97105f8d639a25ef0098654e91ef6679106b3d3"
+    },
+    {
+      "file": "queries/mixed-development-2/manifest.json",
+      "sha256": "52da392c054c993ebda99d6326aa0c0fdfaa93684f211306e9e64653c168bb56"
+    },
+    {
+      "file": "queries/mixed-development-2/rows.jsonl",
+      "sha256": "8c53864256b93fa973f8d66b903bddd24afea34a364d50ab51c38c597ad7b9db"
+    },
+    {
+      "file": "comparisons/A-development-0-1.json",
+      "sha256": "a401883cc6400c899772754892ad46bab993c2f4e31a7772ad61f45259c3c972"
+    },
+    {
+      "file": "comparisons/A-development-0-2.json",
+      "sha256": "cead5aa433efcdced601679eaa1a2381ea0e71fa92fc878de985b3770bdf2b46"
+    },
+    {
+      "file": "comparisons/A-development-1-2.json",
+      "sha256": "d1c3916752b89838c2d75f816402b21cd8734492dd6f8689c281a46f9e4975bc"
+    },
+    {
+      "file": "comparisons/B-development-0-1.json",
+      "sha256": "c97c1bf92e17efcb1c4286f86149634484be1030c26eb0c1de21fda771e52f4a"
+    },
+    {
+      "file": "comparisons/B-development-0-2.json",
+      "sha256": "b2eb246d32778c37c1f12b5415c279cbaca5b0826eb7b2ae954d66250db5bdd7"
+    },
+    {
+      "file": "comparisons/B-development-1-2.json",
+      "sha256": "d2bac433709e75f29b765b611d652ca91f94bc673f2745fb32d9d0785c560272"
+    },
+    {
+      "file": "comparisons/C-development-0-1.json",
+      "sha256": "ed6b73cb26bb7ef9b696bc0e37c7e23df55c09a131a465a181a40f5bbc5af737"
+    },
+    {
+      "file": "comparisons/C-development-0-2.json",
+      "sha256": "b38d56aaa2abcc23643371406d28ecc96db87918bba9018db307cd73904ca046"
+    },
+    {
+      "file": "comparisons/C-development-1-2.json",
+      "sha256": "257f6262bf031cdb1319ff75c75463280500710166039fe0f2a521f719ebccba"
+    },
+    {
+      "file": "comparisons/mixed-development-0-1.json",
+      "sha256": "7f67aabecdc9824c1beec69f5383e96fb3a82f6a94dcf6c4c7cd0d6647a216a6"
+    },
+    {
+      "file": "comparisons/mixed-development-0-2.json",
+      "sha256": "03b154a78a329292ac7e728730cd94b64510f6804ebec551ad2bc4efd1f35fb2"
+    },
+    {
+      "file": "comparisons/mixed-development-1-2.json",
+      "sha256": "f51e26e2d5e9c8be4339e8d296eb002aad3fee485e13666f05816e4b7bbc46fe"
+    },
+    {
+      "file": "comparisons/delivery-manifest.public.json",
+      "sha256": "51cdeccd026f31f190007f72b3e5b72811052c80addebf2709eebb3dd0360d3c"
+    }
+  ],
+  "chunker_fingerprints": [
+    {
+      "scope": "A-development",
+      "strategy": "heading-1000",
+      "fingerprint": "9f215b358eea2c1ebb1153d97c0559e72bc1878bf25664a509204dbdb1f2d8f8",
+      "config_revision": "ce44b870ec89c4bd430866b122f57ebe64e5f1bb064d3e39b7fea414f4e6552d",
+      "dataset_sha256": "0ab3c960526eca7f958588d8219433ebdf8e804a8cc73a93863a598e0c7d0d70"
+    },
+    {
+      "scope": "A-development",
+      "strategy": "bagu-paragraph-800-lines",
+      "fingerprint": "cd2ba09eaff5393137ce169e9ef10e435ede4f688902788d5ca0c495b6befb3d",
+      "config_revision": "f8fb798d0451204e9a1544f9367a6e7140b8d23db300ab691297b7d4a22da2c4",
+      "dataset_sha256": "0ab3c960526eca7f958588d8219433ebdf8e804a8cc73a93863a598e0c7d0d70"
+    },
+    {
+      "scope": "A-development",
+      "strategy": "markdown-structure-v1",
+      "fingerprint": "028a68c5d24428c81c814f31cda791657d3ca01e5a5b8798562f6ca027f53f62",
+      "config_revision": "0c280a2c498a4a42771d4c584adcbbfa86a508dc16a500dbec7f40046d06dd66",
+      "dataset_sha256": "0ab3c960526eca7f958588d8219433ebdf8e804a8cc73a93863a598e0c7d0d70"
+    },
+    {
+      "scope": "B-development",
+      "strategy": "heading-1000",
+      "fingerprint": "9f215b358eea2c1ebb1153d97c0559e72bc1878bf25664a509204dbdb1f2d8f8",
+      "config_revision": "3d5f5226e8d5ff436515739f0675682b3fff252f3460e73b5350ed90935dfb2e",
+      "dataset_sha256": "8a0a85ff1016242a5094aceea4437691396957b402dbc97ea81dbaea22642925"
+    },
+    {
+      "scope": "B-development",
+      "strategy": "bagu-paragraph-800-lines",
+      "fingerprint": "cd2ba09eaff5393137ce169e9ef10e435ede4f688902788d5ca0c495b6befb3d",
+      "config_revision": "72bb777fdb15086ea237dfcfd1623eebba5888b3487ecd6b4b5b703f612fedc9",
+      "dataset_sha256": "8a0a85ff1016242a5094aceea4437691396957b402dbc97ea81dbaea22642925"
+    },
+    {
+      "scope": "B-development",
+      "strategy": "markdown-structure-v1",
+      "fingerprint": "028a68c5d24428c81c814f31cda791657d3ca01e5a5b8798562f6ca027f53f62",
+      "config_revision": "de3e91a7ed7735e0fd108f1ecda8d498f6888c4c8225946b393299107ee9e3ff",
+      "dataset_sha256": "8a0a85ff1016242a5094aceea4437691396957b402dbc97ea81dbaea22642925"
+    },
+    {
+      "scope": "C-development",
+      "strategy": "heading-1000",
+      "fingerprint": "9f215b358eea2c1ebb1153d97c0559e72bc1878bf25664a509204dbdb1f2d8f8",
+      "config_revision": "26dc57ee7f65eacabf4afc063b8877ffcc006b64ee758b53a43d1cc5def620df",
+      "dataset_sha256": "833b32f4d42fd15dd7ebb1aef875040901338f120a92ed731fdd3d53dca75391"
+    },
+    {
+      "scope": "C-development",
+      "strategy": "bagu-paragraph-800-lines",
+      "fingerprint": "cd2ba09eaff5393137ce169e9ef10e435ede4f688902788d5ca0c495b6befb3d",
+      "config_revision": "4a2b436bf0b33ac463c80fe1bffd747004059903db3bf28cf4749080398d820a",
+      "dataset_sha256": "833b32f4d42fd15dd7ebb1aef875040901338f120a92ed731fdd3d53dca75391"
+    },
+    {
+      "scope": "C-development",
+      "strategy": "markdown-structure-v1",
+      "fingerprint": "028a68c5d24428c81c814f31cda791657d3ca01e5a5b8798562f6ca027f53f62",
+      "config_revision": "f3a5f3a6b54bd01742b64f601ece8564154ca2938692933d37e63cddb97dd74c",
+      "dataset_sha256": "833b32f4d42fd15dd7ebb1aef875040901338f120a92ed731fdd3d53dca75391"
+    },
+    {
+      "scope": "mixed-development",
+      "strategy": "heading-1000",
+      "fingerprint": "9f215b358eea2c1ebb1153d97c0559e72bc1878bf25664a509204dbdb1f2d8f8",
+      "config_revision": "fbd4a17353f47661e6d71531823df8512b29ee0b7c86a57bd965e31e6da27d86",
+      "dataset_sha256": "2501fbe85e44b8bfc905f42e4790ec71754e0cb6c05d9963a1641a949c135a76"
+    },
+    {
+      "scope": "mixed-development",
+      "strategy": "bagu-paragraph-800-lines",
+      "fingerprint": "cd2ba09eaff5393137ce169e9ef10e435ede4f688902788d5ca0c495b6befb3d",
+      "config_revision": "20e5cd0d34ee2b21b3ab2f6bb7b29d5837b7f1d0e8a9b83ca96135fcbcef9f7b",
+      "dataset_sha256": "2501fbe85e44b8bfc905f42e4790ec71754e0cb6c05d9963a1641a949c135a76"
+    },
+    {
+      "scope": "mixed-development",
+      "strategy": "markdown-structure-v1",
+      "fingerprint": "028a68c5d24428c81c814f31cda791657d3ca01e5a5b8798562f6ca027f53f62",
+      "config_revision": "f52e21c7ba8cbfd4b7415acbe09353c636562ef3c4cb005c7f29c97fbd30a3c0",
+      "dataset_sha256": "2501fbe85e44b8bfc905f42e4790ec71754e0cb6c05d9963a1641a949c135a76"
+    }
+  ],
+  "candidate_vs_heading_fact_set_changes": [
+    {
+      "scope": "A-development",
+      "query_id": "a-dev-027",
+      "lost_facts": 0,
+      "gained_facts": 1,
+      "baseline_covered": 2,
+      "candidate_covered": 3,
+      "expected": 3
+    },
+    {
+      "scope": "B-development",
+      "query_id": "B-D17",
+      "lost_facts": 1,
+      "gained_facts": 0,
+      "baseline_covered": 4,
+      "candidate_covered": 3,
+      "expected": 4
+    },
+    {
+      "scope": "mixed-development",
+      "query_id": "mix-dev-013",
+      "lost_facts": 2,
+      "gained_facts": 0,
+      "baseline_covered": 4,
+      "candidate_covered": 2,
+      "expected": 4
+    },
+    {
+      "scope": "mixed-development",
+      "query_id": "mix-dev-014",
+      "lost_facts": 1,
+      "gained_facts": 1,
+      "baseline_covered": 4,
+      "candidate_covered": 4,
+      "expected": 5
+    },
+    {
+      "scope": "mixed-development",
+      "query_id": "mix-dev-019",
+      "lost_facts": 1,
+      "gained_facts": 0,
+      "baseline_covered": 4,
+      "candidate_covered": 3,
+      "expected": 5
+    }
+  ]
+}
