@@ -320,7 +320,7 @@ it('keeps an in-flight MCP query on its original snapshot while later calls use 
     release = undefined;
     const old = decode(await waiting);
     expect(old.selection.retrieval).toBe('balanced');
-    expect(old.results).toHaveLength(2);
+    expect(old.results).toHaveLength(3);
     expect(old.selection.revision).not.toBe(next.selection.revision);
   } finally {
     release?.();
@@ -432,7 +432,7 @@ it('reports malformed model JSON as a model failure while preserving hybrid evid
       }),
     );
     expect(result.status).toBe('partial_failure');
-    expect(result.results).toHaveLength(2);
+    expect(result.results).toHaveLength(3);
     expect(result.queries[0].code).toBe('MODEL_UNAVAILABLE');
     expect(result.queries[0].next).toMatch(/model|API/);
     expect(result.queries[0].error).not.toContain('<html>');
