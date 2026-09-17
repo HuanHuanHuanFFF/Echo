@@ -44,6 +44,15 @@ export function sourceLimitRetrieval(original, limit) {
   assert.equal(original.max_chunks_per_source, 3);
   return { ...original, max_chunks_per_source: limit };
 }
+export function checkedIndexState(index, revision) {
+  assert.equal(
+    index.revision,
+    revision,
+    'Index snapshot belongs to a different config revision',
+  );
+  const { revision: verifiedRevision, ...state } = index;
+  return state;
+}
 async function main() {
   const { values } = parseArgs({
     options: {
@@ -136,6 +145,11 @@ async function main() {
   }
   if (values.phase === 'prepare') {
     await fs.mkdir(root);
+    await fs.copyFile(
+      fileURLToPath(import.meta.url),
+      path.join(root, 'execution-driver.mjs'),
+      fs.constants.COPYFILE_EXCL,
+    );
     await fs.mkdir(path.join(root, 'configs'));
     await fs.mkdir(path.join(root, 'datasets'));
     for (const limit of limits) {
@@ -249,7 +263,16 @@ async function main() {
     return;
   }
   const plan = await get(path.join(root, 'plan.json'));
-  assert.deepEqual(plan.code, code);
+  if (values.phase === 'summarize') {
+    // Execution is immutable; a separately fingerprinted offline analyzer may be fixed.
+    const { driver: executionDriver, ...executionDependencies } = plan.code;
+    const { driver: analysisDriver, ...analysisDependencies } = code;
+    assert.deepEqual(executionDependencies, analysisDependencies);
+    assert.equal(
+      await digest(path.join(root, 'execution-driver.mjs')),
+      executionDriver,
+    );
+  } else assert.deepEqual(plan.code, code);
   assert.equal(plan.baseline_manifest_sha256, oldDeliveryHash);
   for (const item of plan.runs) await verify(item);
   if (values.phase === 'run') {
@@ -441,13 +464,18 @@ async function main() {
         data.questions.map((q) => q.id),
       );
       const manifest = await get(path.join(dir, 'manifest.json'));
+      assert.equal(manifest.revision, item.config_revision);
+      const indexState = checkedIndexState(manifest.index, manifest.revision);
       if (prior) {
+        assert.deepEqual(
+          indexState,
+          checkedIndexState(priorManifest.index, priorManifest.revision),
+        );
         for (const field of [
           'corpus',
           'runtime',
           'selection',
           'embedding',
-          'index',
           'budget_chars',
         ])
           assert.deepEqual(manifest[field], priorManifest[field]);
@@ -555,7 +583,11 @@ async function main() {
     variable: plan.variable,
     limits,
     plan_sha256: report.plan_sha256,
-    code,
+    code: plan.code,
+    analysis_code: code,
+    execution_driver_sha256: await digest(
+      path.join(root, 'execution-driver.mjs'),
+    ),
     strategy: plan.strategy,
     base_retrieval: plan.base_retrieval,
     model: plan.model,

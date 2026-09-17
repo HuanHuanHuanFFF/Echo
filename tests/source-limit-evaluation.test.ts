@@ -4,7 +4,7 @@ import { pathToFileURL } from 'node:url';
 const { frozenQueryFetch } = await import(
   pathToFileURL(resolve('evals/lib/frozen-query-fetch.mjs')).href
 );
-const { sourceLimitRetrieval } = await import(
+const { sourceLimitRetrieval, checkedIndexState } = await import(
   pathToFileURL(resolve('evals/run-source-limit-comparison.mjs')).href
 );
 const endpoint = 'https://example.invalid/embeddings';
@@ -33,6 +33,17 @@ const setup = (fetchFn: () => Promise<Response>) =>
       expect(body.data[0]?.embedding).toHaveLength(2),
   });
 describe('single source-limit experiment', () => {
+  it('accepts each verified config revision while preserving all actual index fields', () => {
+    const left = { revision: 'config-3', ready: true, sources: 10, chunks: 20 };
+    const right = { ...left, revision: 'config-4' };
+    expect(checkedIndexState(left, 'config-3')).toEqual(
+      checkedIndexState(right, 'config-4'),
+    );
+    expect(() => checkedIndexState(right, 'config-3')).toThrow();
+    expect(checkedIndexState({ ...right, chunks: 21 }, 'config-4')).not.toEqual(
+      checkedIndexState(left, 'config-3'),
+    );
+  });
   it('changes only the source limit and preserves the input config', () => {
     const base = {
       mode: 'hybrid',
