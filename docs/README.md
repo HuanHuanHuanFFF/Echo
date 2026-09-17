@@ -6,6 +6,8 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 当前下一步
 
+- [综合切块实施与100题同参数对照](development/2026-09-17-structure-chunker-comparison.md)：用户已授权执行三策略hybrid对照；固定0.5/1权重、topk10、每篇3；按最新规则持续push，阶段末才发PR，合并由用户批准。
+
 - [开源与商业Markdown切块调查](research/2026-09-17-markdown-chunking-solutions.md)：Luna/max调查7个方案，另核对QMD固定参考；比较结构保护、超长回退、尺寸/overlap口径与Echo采用边界。建议未实施。
 
 - [开发语料段落与chunk尺寸分布](evals/2026-09-17-corpus-shape.md)：337篇只读结构统计；不支持统一缩小，heading可考虑适度放大／保护切点，八股段落暂保留。尚未实施或运行新检索对照。
