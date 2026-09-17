@@ -18,6 +18,17 @@ const scopes = [
   'mixed-development',
 ];
 const limits = [3, 4];
+const experiments = {
+  'source-limit': { key: 'max_chunks_per_source', values: [3, 4], baseline: 3 },
+  'bm25-weight': { key: 'bm25_weight', values: [0.5, 0.25], baseline: 0.5 },
+};
+export function experimentRetrieval(original, experimentName, value) {
+  const experiment = experiments[experimentName];
+  assert.ok(experiment && experiment.values.includes(value));
+  assert.equal(original[experiment.key], experiment.baseline);
+  assert.equal(original.max_chunks_per_source, 3);
+  return { ...original, [experiment.key]: value };
+}
 const endpoint = 'https://dashscope.aliyuncs.com/compatible-mode/v1/embeddings';
 const fingerprint =
   '2e6e9f07b732465d9a61d6336eb9901ccb3f525d8c626e294c8554ccc00c36c0';
@@ -59,8 +70,14 @@ async function main() {
       lab: { type: 'string' },
       'run-id': { type: 'string' },
       phase: { type: 'string' },
+      experiment: { type: 'string' },
     },
   });
+  const experimentName = values.experiment ?? 'source-limit';
+  const experiment = experiments[experimentName];
+  assert.ok(experiment, 'Unknown experiment');
+  const limits = experiment.values;
+  const offline = experimentName === 'bm25-weight';
   assert.ok(values.lab && /^[a-z0-9-]+$/.test(values['run-id'] ?? ''));
   assert.ok(['prepare', 'run', 'summarize'].includes(values.phase));
   const lab = path.resolve(values.lab),
@@ -97,6 +114,36 @@ async function main() {
   const old = await get(path.join(baseline, 'plan.json'));
   const refs = old.runs.filter((r) => r.strategy === 'markdown-structure-v1');
   assert.equal(refs.length, 4);
+  const replayRoot = path.join(
+    lab,
+    'evidence/structure-source-limit-2026-09-17-v1',
+  );
+  const replayManifestSha =
+    '747c30c2dd6b8a6773007427a4222869a7bb3a6423d74ae732615246cbb78910';
+  const seeds = [],
+    seedFiles = [];
+  if (offline) {
+    const file = path.join(replayRoot, 'delivery.public.json');
+    assert.equal(await digest(file), replayManifestSha);
+    const manifest = await get(file);
+    assert.equal(manifest.model, old.model);
+    assert.equal(manifest.dimensions, old.dimensions);
+    for (const item of manifest.real_response_hashes) {
+      assert.match(item.file, /^query-responses\/[a-f0-9]{64}\.json$/);
+      const source = path.join(replayRoot, item.file);
+      assert.equal(await digest(source), item.sha256);
+      seeds.push(await get(source));
+      seedFiles.push(source);
+    }
+    assert.equal(seeds.length, 135);
+  }
+  const responseOrigin = offline
+    ? {
+        run: path.basename(replayRoot),
+        manifest_sha256: replayManifestSha,
+        responses: seeds.length,
+      }
+    : null;
   async function verify(item) {
     const ref = refs.find((r) => r.scope === item.scope);
     assert.ok(ref);
@@ -117,7 +164,7 @@ async function main() {
     );
     assert.deepEqual(
       current.retrieval,
-      sourceLimitRetrieval(original.retrieval, item.limit),
+      experimentRetrieval(original.retrieval, experimentName, item.limit),
     );
     assert.equal(embeddingFingerprint(current.embedding), fingerprint);
     assert.equal(current.embedding.batch_size, 8);
@@ -157,7 +204,7 @@ async function main() {
       await fs.mkdir(dir);
       await fs.writeFile(
         path.join(dir, 'chunk-fixed.json'),
-        json(sourceLimitRetrieval(old.retrieval, limit)),
+        json(experimentRetrieval(old.retrieval, experimentName, limit)),
         { flag: 'wx' },
       );
     }
@@ -226,8 +273,11 @@ async function main() {
       code,
       baseline_manifest_sha256: oldDeliveryHash,
       strategy: 'markdown-structure-v1',
-      variable: 'max_chunks_per_source',
+      experiment: experimentName,
+      variable: experiment.key,
       limits,
+      values: limits,
+      response_origin: responseOrigin,
       base_retrieval: old.retrieval,
       model: old.model,
       dimensions: old.dimensions,
@@ -238,15 +288,18 @@ async function main() {
       fixed_subquestions: 68,
       final_queries: 0,
       caps: {
-        requests: unique.size,
-        input_chars: [...unique].reduce((n, t) => n + t.length, 0),
+        requests: offline ? 0 : unique.size,
+        input_chars: offline
+          ? 0
+          : [...unique].reduce((n, t) => n + t.length, 0),
       },
       logical_requests: runs.reduce((n, r) => n + r.logical_requests, 0),
       runs,
-      vector_control:
-        'First successful real response for each exact query request is frozen and replayed. Same vectors in both arms; never synthetic vectors.',
+      vector_control: offline
+        ? 'Reuse SHA-bound real responses from the preceding source-limit experiment; network disabled.'
+        : 'First successful real response for each exact query request is frozen and replayed. Same vectors in both arms; never synthetic vectors.',
       authorization:
-        'User requested further parameter testing with fixed decomposition; only source limit 3 versus 4. Existing API/cost authorization applies; no index rebuild or final data.',
+        'User requested one further parameter experiment with fixed decomposition and source limit 3 retained for BM25 weight testing. No product default change, index rebuild or final data.',
     };
     await fs.writeFile(path.join(root, 'plan.json'), json(plan), {
       flag: 'wx',
@@ -274,12 +327,23 @@ async function main() {
     );
   } else assert.deepEqual(plan.code, code);
   assert.equal(plan.baseline_manifest_sha256, oldDeliveryHash);
+  assert.equal(plan.experiment ?? 'source-limit', experimentName);
+  assert.deepEqual(plan.response_origin ?? null, responseOrigin);
   for (const item of plan.runs) await verify(item);
   if (values.phase === 'run') {
     const dir = path.join(root, 'queries');
     await fs.mkdir(dir);
     const vectors = path.join(root, 'query-responses');
     await fs.mkdir(vectors);
+    await fs.writeFile(path.join(dir, 'network-attempts.jsonl'), '', {
+      flag: 'wx',
+    });
+    for (const file of seedFiles)
+      await fs.copyFile(
+        file,
+        path.join(vectors, path.basename(file)),
+        fs.constants.COPYFILE_EXCL,
+      );
     const allowed = new Set();
     for (const item of plan.runs)
       texts(await get(item.datasetPath)).forEach((t) => allowed.add(t));
@@ -303,6 +367,8 @@ async function main() {
       endpoint,
       model: plan.model,
       dimensions: plan.dimensions,
+      seeds,
+      offlineOnly: offline,
       validate: (body, count) => {
         assert.ok(Array.isArray(body.data));
         assert.equal(body.data.length, count);
@@ -335,6 +401,13 @@ async function main() {
           item.outputName,
           new Set(texts(await get(item.datasetPath))),
         );
+        if (offline) {
+          // The frozen runtime requires a nonempty key to construct its provider.
+          // All fetches are served from verified responses; cache misses throw.
+          const config = await loadConfig(item.configPath);
+          process.env[config.embedding.api_key_env] ||=
+            'offline-replay-no-network';
+        }
         const before = memo.stats();
         const run = await runRetrievalEvaluation({
           configPath: item.configPath,
@@ -352,7 +425,11 @@ async function main() {
           const counts = new Map();
           for (const p of row.result.results)
             counts.set(p.source_id, (counts.get(p.source_id) ?? 0) + 1);
-          assert.ok([...counts.values()].every((n) => n <= item.limit));
+          const sourceLimit =
+            experiment.key === 'max_chunks_per_source'
+              ? item.limit
+              : plan.base_retrieval.max_chunks_per_source;
+          assert.ok([...counts.values()].every((n) => n <= sourceLimit));
         }
         const after = memo.stats();
         const result = {
@@ -441,7 +518,10 @@ async function main() {
       sha256: await digest(full),
     });
   }
-  assert.equal(captureHashes.length, report.replay.network_requests);
+  assert.equal(
+    captureHashes.length,
+    report.replay.network_requests + (report.replay.seeded_responses ?? 0),
+  );
   const all = [],
     changes = [],
     artifactHashes = [];
@@ -481,7 +561,11 @@ async function main() {
           assert.deepEqual(manifest[field], priorManifest[field]);
         assert.deepEqual(
           manifest.retrieval,
-          sourceLimitRetrieval(priorManifest.retrieval, 4),
+          experimentRetrieval(
+            priorManifest.retrieval,
+            experimentName,
+            limits[1],
+          ),
         );
         assert.deepEqual(
           raw.map((r) => r.request),
@@ -493,8 +577,8 @@ async function main() {
             .map((u) => u.request_sha256 + ':' + u.vector_sha256)
             .sort();
         assert.deepEqual(
-          keys(3),
-          keys(4),
+          keys(limits[0]),
+          keys(limits[1]),
           'The arms used different query vectors',
         );
       }
@@ -528,8 +612,8 @@ async function main() {
         all.push({ scope, limit, id: row.query_id, metrics, row });
       });
     }
-    armRows[3].forEach((a, i) => {
-      const b = armRows[4][i];
+    armRows[limits[0]].forEach((a, i) => {
+      const b = armRows[limits[1]][i];
       const gained = b.covered_facts.filter(
         (f) => !a.covered_facts.includes(f),
       );
@@ -581,7 +665,8 @@ async function main() {
   const result = {
     status: 'complete',
     variable: plan.variable,
-    limits,
+    values: limits,
+    response_origin: responseOrigin,
     plan_sha256: report.plan_sha256,
     code: plan.code,
     analysis_code: code,

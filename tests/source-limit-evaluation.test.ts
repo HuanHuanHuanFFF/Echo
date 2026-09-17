@@ -1,12 +1,14 @@
+import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 const { frozenQueryFetch } = await import(
   pathToFileURL(resolve('evals/lib/frozen-query-fetch.mjs')).href
 );
-const { sourceLimitRetrieval, checkedIndexState } = await import(
-  pathToFileURL(resolve('evals/run-source-limit-comparison.mjs')).href
-);
+const { sourceLimitRetrieval, checkedIndexState, experimentRetrieval } =
+  await import(
+    pathToFileURL(resolve('evals/run-source-limit-comparison.mjs')).href
+  );
 const endpoint = 'https://example.invalid/embeddings';
 const options = (text = 'fixed', signal?: AbortSignal) => ({
   method: 'POST',
@@ -33,6 +35,91 @@ const setup = (fetchFn: () => Promise<Response>) =>
       expect(body.data[0]?.embedding).toHaveLength(2),
   });
 describe('single source-limit experiment', () => {
+  it('changes only BM25 weight while retaining source limit three and dense weight one', () => {
+    const base = {
+      max_chunks_per_source: 3,
+      bm25_weight: 0.5,
+      dense_weight: 1,
+      topk: 10,
+      rrf_k: 60,
+    };
+    expect(experimentRetrieval(base, 'bm25-weight', 0.25)).toEqual({
+      ...base,
+      bm25_weight: 0.25,
+    });
+    expect(experimentRetrieval(base, 'source-limit', 4)).toEqual({
+      ...base,
+      max_chunks_per_source: 4,
+    });
+    expect(() =>
+      experimentRetrieval(
+        { ...base, max_chunks_per_source: 4 },
+        'bm25-weight',
+        0.25,
+      ),
+    ).toThrow();
+    expect(() => experimentRetrieval(base, 'bm25-weight', 0.75)).toThrow();
+  });
+  it('uses verified seeds offline, remains immutable, and rejects missing queries before fetching', async () => {
+    const digest = (s: string) => createHash('sha256').update(s).digest('hex');
+    const request = JSON.parse(options().body);
+    const response = payload();
+    const seed = {
+      key: digest(endpoint + '\n' + JSON.stringify(request)),
+      request,
+      response,
+      vector_sha256: digest(JSON.stringify(response.data)),
+    };
+    let network = 0;
+    const memo = frozenQueryFetch({
+      endpoint,
+      model: 'fixture-model',
+      dimensions: 2,
+      seeds: [seed],
+      offlineOnly: true,
+      fetchFn: async () => {
+        network++;
+        throw Error('Must never fetch');
+      },
+      validate: () => {},
+    });
+    const fetch = memo.forRun('weight-test', new Set(['fixed', 'missing']));
+    response.data[0]!.embedding[0] = 999;
+    const replayed = await (await fetch(endpoint, options())).json();
+    expect(replayed.data[0].embedding[0]).toBe(0.1);
+    expect(replayed.usage.total_tokens).toBe(0);
+    await expect(fetch(endpoint, options('missing'))).rejects.toThrow(
+      'network disabled',
+    );
+    expect(network).toBe(0);
+    expect(memo.stats()).toMatchObject({
+      logical_requests: 1,
+      reused_responses: 1,
+      seeded_responses: 1,
+      network_requests: 0,
+      network_reported_tokens: 0,
+    });
+  });
+  it('rejects a corrupt seed before allowing replay', () => {
+    const request = JSON.parse(options().body);
+    const seed = {
+      key: 'invalid',
+      request,
+      response: payload(),
+      vector_sha256: 'invalid',
+    };
+    expect(() =>
+      frozenQueryFetch({
+        endpoint,
+        model: 'fixture-model',
+        dimensions: 2,
+        seeds: [seed],
+        offlineOnly: true,
+        fetchFn: async () => Response.json(payload()),
+        validate: () => {},
+      }),
+    ).toThrow();
+  });
   it('accepts each verified config revision while preserving all actual index fields', () => {
     const left = { revision: 'config-3', ready: true, sources: 10, chunks: 20 };
     const right = { ...left, revision: 'config-4' };

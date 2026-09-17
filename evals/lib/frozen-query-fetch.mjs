@@ -10,10 +10,38 @@ export function frozenQueryFetch({
   model,
   dimensions,
   validate,
+  seeds = [],
+  offlineOnly = false,
   onCapture = async () => {},
   onUse = async () => {},
 }) {
   const cache = new Map();
+  for (const entry of seeds) {
+    const body = entry.request;
+    assert.equal(body.model, model);
+    assert.equal(body.dimensions, dimensions);
+    assert.equal(body.encoding_format, 'float');
+    assert.ok(
+      Array.isArray(body.input) &&
+        body.input.length === 1 &&
+        typeof body.input[0] === 'string',
+    );
+    assert.equal(entry.key, hash(endpoint + '\n' + JSON.stringify(body)));
+    assert.equal(
+      entry.vector_sha256,
+      hash(JSON.stringify(entry.response.data)),
+    );
+    assert.ok(!cache.has(entry.key), 'Duplicate frozen query');
+    const payload = structuredClone(entry.response);
+    validate(payload, body.input.length);
+    cache.set(
+      entry.key,
+      Promise.resolve({
+        payload,
+        vectorHash: entry.vector_sha256,
+      }),
+    );
+  }
   let logical = 0,
     network = 0,
     reused = 0,
@@ -28,6 +56,7 @@ export function frozenQueryFetch({
       network_input_chars: inputChars,
       network_reported_tokens: known === network ? tokens : null,
       response_keys: cache.size,
+      seeded_responses: seeds.length,
     }),
     forRun(run, allowedTexts) {
       return async (url, options) => {
@@ -46,6 +75,10 @@ export function frozenQueryFetch({
         options.signal?.throwIfAborted();
         const key = hash(endpoint + '\n' + JSON.stringify(body));
         const hit = cache.has(key);
+        assert.ok(
+          hit || !offlineOnly,
+          'Frozen query missing; network disabled',
+        );
         logical++;
         if (hit) reused++;
         else {
