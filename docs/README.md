@@ -6,7 +6,7 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 当前下一步
 
-- [新综合：保留/取消固定子问题对照](evals/2026-09-17-decomposition-comparison.md)：只改变输入形式，冻结100开发题两组执行，主看33道拆分题；准备完成，真实结果待运行。
+- [新综合：保留/取消固定子问题对照](evals/2026-09-17-decomposition-comparison.md)：只用新综合，两组100题真实运行完成；33拆分题完整覆盖27/33对父问句21/33，两位独立复核通过；披露数值波动与唯一完整题反例。
 
 - [三策略Hit、Recall与MRR](evals/2026-09-17-chunk-ranking-metrics.md)：同一100题离线重算，分库列出K=1/3/5/10；区分单块命中、跨块事实覆盖及已标注来源指标。
 
