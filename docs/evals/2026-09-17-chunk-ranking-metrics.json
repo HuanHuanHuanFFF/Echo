@@ -1,0 +1,2225 @@
+{
+  "version": 1,
+  "run": "structure-ab-2026-09-17-v3",
+  "kValues": [1, 3, 5, 10],
+  "definitions": {
+    "order": "First K chunks of the actual delivered list; no reranking or new retrieval. Fixed subquestions share this final order and one parent denominator.",
+    "singleChunk": "Relevant iff one returned chunk alone fully supports at least one required fact via a frozen OR anchor. Hit and MRR use this derived strict binary label, not exhaustive human chunk qrels.",
+    "factRecall": "Nonblank anchor lines must match returned text; chunks may jointly cover an anchor. Micro = all covered fact demands / all required fact demands; macro = mean per-question ratio.",
+    "prefixFirstFactMRR": "Reciprocal rank of first prefix completing any fact; custom metric, may differ from single-chunk MRR.",
+    "source": "Known-source proxy: union of all annotated alternative sources. Deduplicate sources only within first K chunks. Not exhaustive document relevance or proof of evidence coverage.",
+    "noAnswer": "Excluded from answerable metric denominators; counted separately."
+  },
+  "provenance": {
+    "deliveryManifestSha256": "75f477d35cbf6f95453b0e9b1ca49ddf3851c6e84e2352984fb4c69f8fc88744",
+    "scriptSha256": "e2581c4ef2d786263978f44d8c2baafd3fc22baec6d49b7b77b914864ad03182",
+    "planSha256": "dce43a8c75dc8533233362e443cbedcd71b0198972fde3426f8e4b76b06ba441",
+    "verifiedArtifacts": 56,
+    "verifiedDatasetCopies": 12,
+    "verifiedReferenceReports": 12,
+    "verifiedRows": 300,
+    "datasetHashes": {
+      "A-development": "0ab3c960526eca7f958588d8219433ebdf8e804a8cc73a93863a598e0c7d0d70",
+      "B-development": "8a0a85ff1016242a5094aceea4437691396957b402dbc97ea81dbaea22642925",
+      "C-development": "833b32f4d42fd15dd7ebb1aef875040901338f120a92ed731fdd3d53dca75391",
+      "mixed-development": "2501fbe85e44b8bfc905f42e4790ec71754e0cb6c05d9963a1641a949c135a76"
+    },
+    "syntheticChecks": [
+      "multi-chunk-union-and-blank-lines",
+      "or-alternatives-and-source-denominator",
+      "rank-three-and-cutoff",
+      "text-must-match",
+      "short-and-empty-results",
+      "no-answer-excluded",
+      "invalid-empty-anchor"
+    ],
+    "networkCalls": 0
+  },
+  "byStrategy": {
+    "heading-1000": {
+      "questions": 100,
+      "answerable": 95,
+      "noAnswer": {
+        "total": 5,
+        "nonempty": 5
+      },
+      "expectedFacts": 226,
+      "sourceQrels": 150,
+      "answerableResultCounts": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 16,
+        "8": 18,
+        "9": 17,
+        "10": 44
+      },
+      "k": {
+        "1": {
+          "singleChunkHit": {
+            "count": 71,
+            "total": 95,
+            "rate": 0.7473684210526316
+          },
+          "singleChunkMRR": 0.7473684210526316,
+          "anyFactHit": {
+            "count": 71,
+            "total": 95,
+            "rate": 0.7473684210526316
+          },
+          "factCovered": 105,
+          "factRecallMicro": 0.4646017699115044,
+          "factRecallMacro": 0.5340350877192983,
+          "completeEvidence": {
+            "count": 32,
+            "total": 95,
+            "rate": 0.3368421052631579
+          },
+          "prefixFirstFactMRR": 0.7473684210526316,
+          "sourceHit": {
+            "count": 93,
+            "total": 95,
+            "rate": 0.9789473684210527
+          },
+          "sourceRecallMicro": 0.62,
+          "sourceRecallMacro": 0.7482456140350877,
+          "sourceMRR": 0.9789473684210527
+        },
+        "3": {
+          "singleChunkHit": {
+            "count": 90,
+            "total": 95,
+            "rate": 0.9473684210526315
+          },
+          "singleChunkMRR": 0.833333333333333,
+          "anyFactHit": {
+            "count": 92,
+            "total": 95,
+            "rate": 0.968421052631579
+          },
+          "factCovered": 182,
+          "factRecallMicro": 0.8053097345132744,
+          "factRecallMacro": 0.8498245614035086,
+          "completeEvidence": {
+            "count": 70,
+            "total": 95,
+            "rate": 0.7368421052631579
+          },
+          "prefixFirstFactMRR": 0.8438596491228068,
+          "sourceHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "sourceRecallMicro": 0.8,
+          "sourceRecallMacro": 0.8710526315789474,
+          "sourceMRR": 0.987719298245614
+        },
+        "5": {
+          "singleChunkHit": {
+            "count": 92,
+            "total": 95,
+            "rate": 0.968421052631579
+          },
+          "singleChunkMRR": 0.8385964912280699,
+          "anyFactHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "factCovered": 204,
+          "factRecallMicro": 0.9026548672566371,
+          "factRecallMacro": 0.9347368421052631,
+          "completeEvidence": {
+            "count": 81,
+            "total": 95,
+            "rate": 0.8526315789473684
+          },
+          "prefixFirstFactMRR": 0.8512280701754383,
+          "sourceHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "sourceRecallMicro": 0.9,
+          "sourceRecallMacro": 0.9412280701754386,
+          "sourceMRR": 0.987719298245614
+        },
+        "10": {
+          "singleChunkHit": {
+            "count": 92,
+            "total": 95,
+            "rate": 0.968421052631579
+          },
+          "singleChunkMRR": 0.8385964912280699,
+          "anyFactHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "factCovered": 220,
+          "factRecallMicro": 0.9734513274336283,
+          "factRecallMacro": 0.9835087719298246,
+          "completeEvidence": {
+            "count": 90,
+            "total": 95,
+            "rate": 0.9473684210526315
+          },
+          "prefixFirstFactMRR": 0.8512280701754383,
+          "sourceHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "sourceRecallMicro": 0.9866666666666667,
+          "sourceRecallMacro": 0.9929824561403509,
+          "sourceMRR": 0.987719298245614
+        }
+      }
+    },
+    "bagu-paragraph-800-lines": {
+      "questions": 100,
+      "answerable": 95,
+      "noAnswer": {
+        "total": 5,
+        "nonempty": 5
+      },
+      "expectedFacts": 226,
+      "sourceQrels": 150,
+      "answerableResultCounts": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 8,
+        "5": 11,
+        "6": 7,
+        "7": 5,
+        "8": 10,
+        "9": 11,
+        "10": 43
+      },
+      "k": {
+        "1": {
+          "singleChunkHit": {
+            "count": 74,
+            "total": 95,
+            "rate": 0.7789473684210526
+          },
+          "singleChunkMRR": 0.7789473684210526,
+          "anyFactHit": {
+            "count": 74,
+            "total": 95,
+            "rate": 0.7789473684210526
+          },
+          "factCovered": 125,
+          "factRecallMicro": 0.5530973451327433,
+          "factRecallMacro": 0.6350877192982456,
+          "completeEvidence": {
+            "count": 48,
+            "total": 95,
+            "rate": 0.5052631578947369
+          },
+          "prefixFirstFactMRR": 0.7789473684210526,
+          "sourceHit": {
+            "count": 93,
+            "total": 95,
+            "rate": 0.9789473684210527
+          },
+          "sourceRecallMicro": 0.62,
+          "sourceRecallMacro": 0.7482456140350877,
+          "sourceMRR": 0.9789473684210527
+        },
+        "3": {
+          "singleChunkHit": {
+            "count": 91,
+            "total": 95,
+            "rate": 0.9578947368421052
+          },
+          "singleChunkMRR": 0.8543859649122805,
+          "anyFactHit": {
+            "count": 91,
+            "total": 95,
+            "rate": 0.9578947368421052
+          },
+          "factCovered": 186,
+          "factRecallMicro": 0.8230088495575221,
+          "factRecallMacro": 0.8563157894736843,
+          "completeEvidence": {
+            "count": 70,
+            "total": 95,
+            "rate": 0.7368421052631579
+          },
+          "prefixFirstFactMRR": 0.8543859649122805,
+          "sourceHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "sourceRecallMicro": 0.7866666666666666,
+          "sourceRecallMacro": 0.862280701754386,
+          "sourceMRR": 0.987719298245614
+        },
+        "5": {
+          "singleChunkHit": {
+            "count": 94,
+            "total": 95,
+            "rate": 0.9894736842105263
+          },
+          "singleChunkMRR": 0.8617543859649122,
+          "anyFactHit": {
+            "count": 94,
+            "total": 95,
+            "rate": 0.9894736842105263
+          },
+          "factCovered": 197,
+          "factRecallMicro": 0.8716814159292036,
+          "factRecallMacro": 0.8987719298245614,
+          "completeEvidence": {
+            "count": 75,
+            "total": 95,
+            "rate": 0.7894736842105263
+          },
+          "prefixFirstFactMRR": 0.8617543859649122,
+          "sourceHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "sourceRecallMicro": 0.9133333333333333,
+          "sourceRecallMacro": 0.9482456140350878,
+          "sourceMRR": 0.987719298245614
+        },
+        "10": {
+          "singleChunkHit": {
+            "count": 94,
+            "total": 95,
+            "rate": 0.9894736842105263
+          },
+          "singleChunkMRR": 0.8617543859649122,
+          "anyFactHit": {
+            "count": 94,
+            "total": 95,
+            "rate": 0.9894736842105263
+          },
+          "factCovered": 212,
+          "factRecallMicro": 0.9380530973451328,
+          "factRecallMacro": 0.9408771929824561,
+          "completeEvidence": {
+            "count": 83,
+            "total": 95,
+            "rate": 0.8736842105263158
+          },
+          "prefixFirstFactMRR": 0.8617543859649122,
+          "sourceHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "sourceRecallMicro": 0.98,
+          "sourceRecallMacro": 0.9894736842105263,
+          "sourceMRR": 0.987719298245614
+        }
+      }
+    },
+    "markdown-structure-v1": {
+      "questions": 100,
+      "answerable": 95,
+      "noAnswer": {
+        "total": 5,
+        "nonempty": 5
+      },
+      "expectedFacts": 226,
+      "sourceQrels": 150,
+      "answerableResultCounts": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 6,
+        "7": 17,
+        "8": 16,
+        "9": 24,
+        "10": 32
+      },
+      "k": {
+        "1": {
+          "singleChunkHit": {
+            "count": 76,
+            "total": 95,
+            "rate": 0.8
+          },
+          "singleChunkMRR": 0.8,
+          "anyFactHit": {
+            "count": 76,
+            "total": 95,
+            "rate": 0.8
+          },
+          "factCovered": 120,
+          "factRecallMicro": 0.5309734513274337,
+          "factRecallMacro": 0.5971929824561404,
+          "completeEvidence": {
+            "count": 39,
+            "total": 95,
+            "rate": 0.4105263157894737
+          },
+          "prefixFirstFactMRR": 0.8,
+          "sourceHit": {
+            "count": 94,
+            "total": 95,
+            "rate": 0.9894736842105263
+          },
+          "sourceRecallMicro": 0.6266666666666667,
+          "sourceRecallMacro": 0.7535087719298245,
+          "sourceMRR": 0.9894736842105263
+        },
+        "3": {
+          "singleChunkHit": {
+            "count": 94,
+            "total": 95,
+            "rate": 0.9894736842105263
+          },
+          "singleChunkMRR": 0.8894736842105263,
+          "anyFactHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "factCovered": 189,
+          "factRecallMicro": 0.8362831858407079,
+          "factRecallMacro": 0.8896491228070176,
+          "completeEvidence": {
+            "count": 74,
+            "total": 95,
+            "rate": 0.7789473684210526
+          },
+          "prefixFirstFactMRR": 0.8929824561403509,
+          "sourceHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "sourceRecallMicro": 0.7733333333333333,
+          "sourceRecallMacro": 0.8543859649122806,
+          "sourceMRR": 0.9947368421052631
+        },
+        "5": {
+          "singleChunkHit": {
+            "count": 94,
+            "total": 95,
+            "rate": 0.9894736842105263
+          },
+          "singleChunkMRR": 0.8894736842105263,
+          "anyFactHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "factCovered": 206,
+          "factRecallMicro": 0.911504424778761,
+          "factRecallMacro": 0.9405263157894737,
+          "completeEvidence": {
+            "count": 82,
+            "total": 95,
+            "rate": 0.8631578947368421
+          },
+          "prefixFirstFactMRR": 0.8929824561403509,
+          "sourceHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "sourceRecallMicro": 0.9133333333333333,
+          "sourceRecallMacro": 0.9464912280701755,
+          "sourceMRR": 0.9947368421052631
+        },
+        "10": {
+          "singleChunkHit": {
+            "count": 94,
+            "total": 95,
+            "rate": 0.9894736842105263
+          },
+          "singleChunkMRR": 0.8894736842105263,
+          "anyFactHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "factCovered": 217,
+          "factRecallMicro": 0.9601769911504425,
+          "factRecallMacro": 0.9770175438596489,
+          "completeEvidence": {
+            "count": 89,
+            "total": 95,
+            "rate": 0.9368421052631579
+          },
+          "prefixFirstFactMRR": 0.8929824561403509,
+          "sourceHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "sourceRecallMicro": 0.98,
+          "sourceRecallMacro": 0.987719298245614,
+          "sourceMRR": 0.9947368421052631
+        }
+      }
+    }
+  },
+  "byScope": {
+    "A-development": {
+      "heading-1000": {
+        "questions": 30,
+        "answerable": 28,
+        "noAnswer": {
+          "total": 2,
+          "nonempty": 2
+        },
+        "expectedFacts": 67,
+        "sourceQrels": 62,
+        "answerableResultCounts": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0,
+          "6": 0,
+          "7": 0,
+          "8": 0,
+          "9": 0,
+          "10": 28
+        },
+        "k": {
+          "1": {
+            "singleChunkHit": {
+              "count": 17,
+              "total": 28,
+              "rate": 0.6071428571428571
+            },
+            "singleChunkMRR": 0.6071428571428571,
+            "anyFactHit": {
+              "count": 17,
+              "total": 28,
+              "rate": 0.6071428571428571
+            },
+            "factCovered": 22,
+            "factRecallMicro": 0.3283582089552239,
+            "factRecallMacro": 0.4345238095238095,
+            "completeEvidence": {
+              "count": 8,
+              "total": 28,
+              "rate": 0.2857142857142857
+            },
+            "prefixFirstFactMRR": 0.6071428571428571,
+            "sourceHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.45161290322580644,
+            "sourceRecallMacro": 0.5148809523809524,
+            "sourceMRR": 1
+          },
+          "3": {
+            "singleChunkHit": {
+              "count": 27,
+              "total": 28,
+              "rate": 0.9642857142857143
+            },
+            "singleChunkMRR": 0.7619047619047619,
+            "anyFactHit": {
+              "count": 27,
+              "total": 28,
+              "rate": 0.9642857142857143
+            },
+            "factCovered": 54,
+            "factRecallMicro": 0.8059701492537313,
+            "factRecallMacro": 0.8470238095238095,
+            "completeEvidence": {
+              "count": 20,
+              "total": 28,
+              "rate": 0.7142857142857143
+            },
+            "prefixFirstFactMRR": 0.7619047619047619,
+            "sourceHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.6612903225806451,
+            "sourceRecallMacro": 0.693452380952381,
+            "sourceMRR": 1
+          },
+          "5": {
+            "singleChunkHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "singleChunkMRR": 0.7708333333333333,
+            "anyFactHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "factCovered": 63,
+            "factRecallMicro": 0.9402985074626866,
+            "factRecallMacro": 0.9571428571428572,
+            "completeEvidence": {
+              "count": 25,
+              "total": 28,
+              "rate": 0.8928571428571429
+            },
+            "prefixFirstFactMRR": 0.7708333333333333,
+            "sourceHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.8548387096774194,
+            "sourceRecallMacro": 0.8898809523809526,
+            "sourceMRR": 1
+          },
+          "10": {
+            "singleChunkHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "singleChunkMRR": 0.7708333333333333,
+            "anyFactHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "factCovered": 66,
+            "factRecallMicro": 0.9850746268656716,
+            "factRecallMacro": 0.9880952380952381,
+            "completeEvidence": {
+              "count": 27,
+              "total": 28,
+              "rate": 0.9642857142857143
+            },
+            "prefixFirstFactMRR": 0.7708333333333333,
+            "sourceHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "sourceRecallMicro": 1,
+            "sourceRecallMacro": 1,
+            "sourceMRR": 1
+          }
+        }
+      },
+      "bagu-paragraph-800-lines": {
+        "questions": 30,
+        "answerable": 28,
+        "noAnswer": {
+          "total": 2,
+          "nonempty": 2
+        },
+        "expectedFacts": 67,
+        "sourceQrels": 62,
+        "answerableResultCounts": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0,
+          "6": 0,
+          "7": 0,
+          "8": 0,
+          "9": 0,
+          "10": 28
+        },
+        "k": {
+          "1": {
+            "singleChunkHit": {
+              "count": 15,
+              "total": 28,
+              "rate": 0.5357142857142857
+            },
+            "singleChunkMRR": 0.5357142857142857,
+            "anyFactHit": {
+              "count": 15,
+              "total": 28,
+              "rate": 0.5357142857142857
+            },
+            "factCovered": 21,
+            "factRecallMicro": 0.31343283582089554,
+            "factRecallMacro": 0.3726190476190476,
+            "completeEvidence": {
+              "count": 6,
+              "total": 28,
+              "rate": 0.21428571428571427
+            },
+            "prefixFirstFactMRR": 0.5357142857142857,
+            "sourceHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.45161290322580644,
+            "sourceRecallMacro": 0.5148809523809524,
+            "sourceMRR": 1
+          },
+          "3": {
+            "singleChunkHit": {
+              "count": 26,
+              "total": 28,
+              "rate": 0.9285714285714286
+            },
+            "singleChunkMRR": 0.7023809523809523,
+            "anyFactHit": {
+              "count": 26,
+              "total": 28,
+              "rate": 0.9285714285714286
+            },
+            "factCovered": 49,
+            "factRecallMicro": 0.7313432835820896,
+            "factRecallMacro": 0.7517857142857143,
+            "completeEvidence": {
+              "count": 16,
+              "total": 28,
+              "rate": 0.5714285714285714
+            },
+            "prefixFirstFactMRR": 0.7023809523809523,
+            "sourceHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.6451612903225806,
+            "sourceRecallMacro": 0.6815476190476192,
+            "sourceMRR": 1
+          },
+          "5": {
+            "singleChunkHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "singleChunkMRR": 0.718452380952381,
+            "anyFactHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "factCovered": 57,
+            "factRecallMicro": 0.8507462686567164,
+            "factRecallMacro": 0.8678571428571429,
+            "completeEvidence": {
+              "count": 21,
+              "total": 28,
+              "rate": 0.75
+            },
+            "prefixFirstFactMRR": 0.718452380952381,
+            "sourceHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.9032258064516129,
+            "sourceRecallMacro": 0.9315476190476193,
+            "sourceMRR": 1
+          },
+          "10": {
+            "singleChunkHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "singleChunkMRR": 0.718452380952381,
+            "anyFactHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "factCovered": 61,
+            "factRecallMicro": 0.9104477611940298,
+            "factRecallMacro": 0.9107142857142858,
+            "completeEvidence": {
+              "count": 23,
+              "total": 28,
+              "rate": 0.8214285714285714
+            },
+            "prefixFirstFactMRR": 0.718452380952381,
+            "sourceHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.9838709677419355,
+            "sourceRecallMacro": 0.9880952380952381,
+            "sourceMRR": 1
+          }
+        }
+      },
+      "markdown-structure-v1": {
+        "questions": 30,
+        "answerable": 28,
+        "noAnswer": {
+          "total": 2,
+          "nonempty": 2
+        },
+        "expectedFacts": 67,
+        "sourceQrels": 62,
+        "answerableResultCounts": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0,
+          "6": 0,
+          "7": 0,
+          "8": 0,
+          "9": 4,
+          "10": 24
+        },
+        "k": {
+          "1": {
+            "singleChunkHit": {
+              "count": 17,
+              "total": 28,
+              "rate": 0.6071428571428571
+            },
+            "singleChunkMRR": 0.6071428571428571,
+            "anyFactHit": {
+              "count": 17,
+              "total": 28,
+              "rate": 0.6071428571428571
+            },
+            "factCovered": 24,
+            "factRecallMicro": 0.3582089552238806,
+            "factRecallMacro": 0.4017857142857143,
+            "completeEvidence": {
+              "count": 6,
+              "total": 28,
+              "rate": 0.21428571428571427
+            },
+            "prefixFirstFactMRR": 0.6071428571428571,
+            "sourceHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.45161290322580644,
+            "sourceRecallMacro": 0.5148809523809524,
+            "sourceMRR": 1
+          },
+          "3": {
+            "singleChunkHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "singleChunkMRR": 0.7976190476190477,
+            "anyFactHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "factCovered": 60,
+            "factRecallMicro": 0.8955223880597015,
+            "factRecallMacro": 0.9297619047619047,
+            "completeEvidence": {
+              "count": 24,
+              "total": 28,
+              "rate": 0.8571428571428571
+            },
+            "prefixFirstFactMRR": 0.7976190476190477,
+            "sourceHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.6129032258064516,
+            "sourceRecallMacro": 0.6607142857142858,
+            "sourceMRR": 1
+          },
+          "5": {
+            "singleChunkHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "singleChunkMRR": 0.7976190476190477,
+            "anyFactHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "factCovered": 65,
+            "factRecallMicro": 0.9701492537313433,
+            "factRecallMacro": 0.975,
+            "completeEvidence": {
+              "count": 26,
+              "total": 28,
+              "rate": 0.9285714285714286
+            },
+            "prefixFirstFactMRR": 0.7976190476190477,
+            "sourceHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.8870967741935484,
+            "sourceRecallMacro": 0.9077380952380955,
+            "sourceMRR": 1
+          },
+          "10": {
+            "singleChunkHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "singleChunkMRR": 0.7976190476190477,
+            "anyFactHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "factCovered": 67,
+            "factRecallMicro": 1,
+            "factRecallMacro": 1,
+            "completeEvidence": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "prefixFirstFactMRR": 0.7976190476190477,
+            "sourceHit": {
+              "count": 28,
+              "total": 28,
+              "rate": 1
+            },
+            "sourceRecallMicro": 1,
+            "sourceRecallMacro": 1,
+            "sourceMRR": 1
+          }
+        }
+      }
+    },
+    "B-development": {
+      "heading-1000": {
+        "questions": 25,
+        "answerable": 25,
+        "noAnswer": {
+          "total": 0,
+          "nonempty": 0
+        },
+        "expectedFacts": 50,
+        "sourceQrels": 26,
+        "answerableResultCounts": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0,
+          "6": 0,
+          "7": 3,
+          "8": 8,
+          "9": 13,
+          "10": 1
+        },
+        "k": {
+          "1": {
+            "singleChunkHit": {
+              "count": 22,
+              "total": 25,
+              "rate": 0.88
+            },
+            "singleChunkMRR": 0.88,
+            "anyFactHit": {
+              "count": 22,
+              "total": 25,
+              "rate": 0.88
+            },
+            "factCovered": 35,
+            "factRecallMicro": 0.7,
+            "factRecallMacro": 0.6933333333333335,
+            "completeEvidence": {
+              "count": 12,
+              "total": 25,
+              "rate": 0.48
+            },
+            "prefixFirstFactMRR": 0.88,
+            "sourceHit": {
+              "count": 25,
+              "total": 25,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.9615384615384616,
+            "sourceRecallMacro": 0.98,
+            "sourceMRR": 1
+          },
+          "3": {
+            "singleChunkHit": {
+              "count": 24,
+              "total": 25,
+              "rate": 0.96
+            },
+            "singleChunkMRR": 0.9133333333333334,
+            "anyFactHit": {
+              "count": 24,
+              "total": 25,
+              "rate": 0.96
+            },
+            "factCovered": 46,
+            "factRecallMicro": 0.92,
+            "factRecallMacro": 0.9133333333333333,
+            "completeEvidence": {
+              "count": 22,
+              "total": 25,
+              "rate": 0.88
+            },
+            "prefixFirstFactMRR": 0.9133333333333334,
+            "sourceHit": {
+              "count": 25,
+              "total": 25,
+              "rate": 1
+            },
+            "sourceRecallMicro": 1,
+            "sourceRecallMacro": 1,
+            "sourceMRR": 1
+          },
+          "5": {
+            "singleChunkHit": {
+              "count": 24,
+              "total": 25,
+              "rate": 0.96
+            },
+            "singleChunkMRR": 0.9133333333333334,
+            "anyFactHit": {
+              "count": 25,
+              "total": 25,
+              "rate": 1
+            },
+            "factCovered": 48,
+            "factRecallMicro": 0.96,
+            "factRecallMacro": 0.9733333333333334,
+            "completeEvidence": {
+              "count": 24,
+              "total": 25,
+              "rate": 0.96
+            },
+            "prefixFirstFactMRR": 0.9213333333333332,
+            "sourceHit": {
+              "count": 25,
+              "total": 25,
+              "rate": 1
+            },
+            "sourceRecallMicro": 1,
+            "sourceRecallMacro": 1,
+            "sourceMRR": 1
+          },
+          "10": {
+            "singleChunkHit": {
+              "count": 24,
+              "total": 25,
+              "rate": 0.96
+            },
+            "singleChunkMRR": 0.9133333333333334,
+            "anyFactHit": {
+              "count": 25,
+              "total": 25,
+              "rate": 1
+            },
+            "factCovered": 49,
+            "factRecallMicro": 0.98,
+            "factRecallMacro": 0.9866666666666666,
+            "completeEvidence": {
+              "count": 24,
+              "total": 25,
+              "rate": 0.96
+            },
+            "prefixFirstFactMRR": 0.9213333333333332,
+            "sourceHit": {
+              "count": 25,
+              "total": 25,
+              "rate": 1
+            },
+            "sourceRecallMicro": 1,
+            "sourceRecallMacro": 1,
+            "sourceMRR": 1
+          }
+        }
+      },
+      "bagu-paragraph-800-lines": {
+        "questions": 25,
+        "answerable": 25,
+        "noAnswer": {
+          "total": 0,
+          "nonempty": 0
+        },
+        "expectedFacts": 50,
+        "sourceQrels": 26,
+        "answerableResultCounts": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 2,
+          "6": 3,
+          "7": 3,
+          "8": 7,
+          "9": 6,
+          "10": 4
+        },
+        "k": {
+          "1": {
+            "singleChunkHit": {
+              "count": 23,
+              "total": 25,
+              "rate": 0.92
+            },
+            "singleChunkMRR": 0.92,
+            "anyFactHit": {
+              "count": 23,
+              "total": 25,
+              "rate": 0.92
+            },
+            "factCovered": 40,
+            "factRecallMicro": 0.8,
+            "factRecallMacro": 0.7966666666666667,
+            "completeEvidence": {
+              "count": 17,
+              "total": 25,
+              "rate": 0.68
+            },
+            "prefixFirstFactMRR": 0.92,
+            "sourceHit": {
+              "count": 25,
+              "total": 25,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.9615384615384616,
+            "sourceRecallMacro": 0.98,
+            "sourceMRR": 1
+          },
+          "3": {
+            "singleChunkHit": {
+              "count": 24,
+              "total": 25,
+              "rate": 0.96
+            },
+            "singleChunkMRR": 0.94,
+            "anyFactHit": {
+              "count": 24,
+              "total": 25,
+              "rate": 0.96
+            },
+            "factCovered": 47,
+            "factRecallMicro": 0.94,
+            "factRecallMacro": 0.9266666666666665,
+            "completeEvidence": {
+              "count": 22,
+              "total": 25,
+              "rate": 0.88
+            },
+            "prefixFirstFactMRR": 0.94,
+            "sourceHit": {
+              "count": 25,
+              "total": 25,
+              "rate": 1
+            },
+            "sourceRecallMicro": 1,
+            "sourceRecallMacro": 1,
+            "sourceMRR": 1
+          },
+          "5": {
+            "singleChunkHit": {
+              "count": 24,
+              "total": 25,
+              "rate": 0.96
+            },
+            "singleChunkMRR": 0.94,
+            "anyFactHit": {
+              "count": 24,
+              "total": 25,
+              "rate": 0.96
+            },
+            "factCovered": 47,
+            "factRecallMicro": 0.94,
+            "factRecallMacro": 0.9266666666666665,
+            "completeEvidence": {
+              "count": 22,
+              "total": 25,
+              "rate": 0.88
+            },
+            "prefixFirstFactMRR": 0.94,
+            "sourceHit": {
+              "count": 25,
+              "total": 25,
+              "rate": 1
+            },
+            "sourceRecallMicro": 1,
+            "sourceRecallMacro": 1,
+            "sourceMRR": 1
+          },
+          "10": {
+            "singleChunkHit": {
+              "count": 24,
+              "total": 25,
+              "rate": 0.96
+            },
+            "singleChunkMRR": 0.94,
+            "anyFactHit": {
+              "count": 24,
+              "total": 25,
+              "rate": 0.96
+            },
+            "factCovered": 47,
+            "factRecallMicro": 0.94,
+            "factRecallMacro": 0.9266666666666665,
+            "completeEvidence": {
+              "count": 22,
+              "total": 25,
+              "rate": 0.88
+            },
+            "prefixFirstFactMRR": 0.94,
+            "sourceHit": {
+              "count": 25,
+              "total": 25,
+              "rate": 1
+            },
+            "sourceRecallMicro": 1,
+            "sourceRecallMacro": 1,
+            "sourceMRR": 1
+          }
+        }
+      },
+      "markdown-structure-v1": {
+        "questions": 25,
+        "answerable": 25,
+        "noAnswer": {
+          "total": 0,
+          "nonempty": 0
+        },
+        "expectedFacts": 50,
+        "sourceQrels": 26,
+        "answerableResultCounts": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0,
+          "6": 0,
+          "7": 2,
+          "8": 11,
+          "9": 11,
+          "10": 1
+        },
+        "k": {
+          "1": {
+            "singleChunkHit": {
+              "count": 23,
+              "total": 25,
+              "rate": 0.92
+            },
+            "singleChunkMRR": 0.92,
+            "anyFactHit": {
+              "count": 23,
+              "total": 25,
+              "rate": 0.92
+            },
+            "factCovered": 37,
+            "factRecallMicro": 0.74,
+            "factRecallMacro": 0.7533333333333334,
+            "completeEvidence": {
+              "count": 14,
+              "total": 25,
+              "rate": 0.56
+            },
+            "prefixFirstFactMRR": 0.92,
+            "sourceHit": {
+              "count": 25,
+              "total": 25,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.9615384615384616,
+            "sourceRecallMacro": 0.98,
+            "sourceMRR": 1
+          },
+          "3": {
+            "singleChunkHit": {
+              "count": 25,
+              "total": 25,
+              "rate": 1
+            },
+            "singleChunkMRR": 0.9533333333333335,
+            "anyFactHit": {
+              "count": 25,
+              "total": 25,
+              "rate": 1
+            },
+            "factCovered": 46,
+            "factRecallMicro": 0.92,
+            "factRecallMacro": 0.9433333333333335,
+            "completeEvidence": {
+              "count": 22,
+              "total": 25,
+              "rate": 0.88
+            },
+            "prefixFirstFactMRR": 0.9533333333333335,
+            "sourceHit": {
+              "count": 25,
+              "total": 25,
+              "rate": 1
+            },
+            "sourceRecallMicro": 1,
+            "sourceRecallMacro": 1,
+            "sourceMRR": 1
+          },
+          "5": {
+            "singleChunkHit": {
+              "count": 25,
+              "total": 25,
+              "rate": 1
+            },
+            "singleChunkMRR": 0.9533333333333335,
+            "anyFactHit": {
+              "count": 25,
+              "total": 25,
+              "rate": 1
+            },
+            "factCovered": 48,
+            "factRecallMicro": 0.96,
+            "factRecallMacro": 0.9766666666666666,
+            "completeEvidence": {
+              "count": 23,
+              "total": 25,
+              "rate": 0.92
+            },
+            "prefixFirstFactMRR": 0.9533333333333335,
+            "sourceHit": {
+              "count": 25,
+              "total": 25,
+              "rate": 1
+            },
+            "sourceRecallMicro": 1,
+            "sourceRecallMacro": 1,
+            "sourceMRR": 1
+          },
+          "10": {
+            "singleChunkHit": {
+              "count": 25,
+              "total": 25,
+              "rate": 1
+            },
+            "singleChunkMRR": 0.9533333333333335,
+            "anyFactHit": {
+              "count": 25,
+              "total": 25,
+              "rate": 1
+            },
+            "factCovered": 48,
+            "factRecallMicro": 0.96,
+            "factRecallMacro": 0.9766666666666666,
+            "completeEvidence": {
+              "count": 23,
+              "total": 25,
+              "rate": 0.92
+            },
+            "prefixFirstFactMRR": 0.9533333333333335,
+            "sourceHit": {
+              "count": 25,
+              "total": 25,
+              "rate": 1
+            },
+            "sourceRecallMicro": 1,
+            "sourceRecallMacro": 1,
+            "sourceMRR": 1
+          }
+        }
+      }
+    },
+    "C-development": {
+      "heading-1000": {
+        "questions": 15,
+        "answerable": 15,
+        "noAnswer": {
+          "total": 0,
+          "nonempty": 0
+        },
+        "expectedFacts": 25,
+        "sourceQrels": 16,
+        "answerableResultCounts": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0,
+          "6": 0,
+          "7": 9,
+          "8": 6,
+          "9": 0,
+          "10": 0
+        },
+        "k": {
+          "1": {
+            "singleChunkHit": {
+              "count": 11,
+              "total": 15,
+              "rate": 0.7333333333333333
+            },
+            "singleChunkMRR": 0.7333333333333333,
+            "anyFactHit": {
+              "count": 11,
+              "total": 15,
+              "rate": 0.7333333333333333
+            },
+            "factCovered": 14,
+            "factRecallMicro": 0.56,
+            "factRecallMacro": 0.5777777777777777,
+            "completeEvidence": {
+              "count": 6,
+              "total": 15,
+              "rate": 0.4
+            },
+            "prefixFirstFactMRR": 0.7333333333333333,
+            "sourceHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.9375,
+            "sourceRecallMacro": 0.9666666666666667,
+            "sourceMRR": 1
+          },
+          "3": {
+            "singleChunkHit": {
+              "count": 12,
+              "total": 15,
+              "rate": 0.8
+            },
+            "singleChunkMRR": 0.7666666666666667,
+            "anyFactHit": {
+              "count": 14,
+              "total": 15,
+              "rate": 0.9333333333333333
+            },
+            "factCovered": 22,
+            "factRecallMicro": 0.88,
+            "factRecallMacro": 0.9,
+            "completeEvidence": {
+              "count": 13,
+              "total": 15,
+              "rate": 0.8666666666666667
+            },
+            "prefixFirstFactMRR": 0.8333333333333334,
+            "sourceHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "sourceRecallMicro": 1,
+            "sourceRecallMacro": 1,
+            "sourceMRR": 1
+          },
+          "5": {
+            "singleChunkHit": {
+              "count": 13,
+              "total": 15,
+              "rate": 0.8666666666666667
+            },
+            "singleChunkMRR": 0.7833333333333333,
+            "anyFactHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "factCovered": 24,
+            "factRecallMicro": 0.96,
+            "factRecallMacro": 0.9666666666666667,
+            "completeEvidence": {
+              "count": 14,
+              "total": 15,
+              "rate": 0.9333333333333333
+            },
+            "prefixFirstFactMRR": 0.85,
+            "sourceHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "sourceRecallMicro": 1,
+            "sourceRecallMacro": 1,
+            "sourceMRR": 1
+          },
+          "10": {
+            "singleChunkHit": {
+              "count": 13,
+              "total": 15,
+              "rate": 0.8666666666666667
+            },
+            "singleChunkMRR": 0.7833333333333333,
+            "anyFactHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "factCovered": 25,
+            "factRecallMicro": 1,
+            "factRecallMacro": 1,
+            "completeEvidence": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "prefixFirstFactMRR": 0.85,
+            "sourceHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "sourceRecallMicro": 1,
+            "sourceRecallMacro": 1,
+            "sourceMRR": 1
+          }
+        }
+      },
+      "bagu-paragraph-800-lines": {
+        "questions": 15,
+        "answerable": 15,
+        "noAnswer": {
+          "total": 0,
+          "nonempty": 0
+        },
+        "expectedFacts": 25,
+        "sourceQrels": 16,
+        "answerableResultCounts": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 6,
+          "5": 7,
+          "6": 2,
+          "7": 0,
+          "8": 0,
+          "9": 0,
+          "10": 0
+        },
+        "k": {
+          "1": {
+            "singleChunkHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "singleChunkMRR": 1,
+            "anyFactHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "factCovered": 24,
+            "factRecallMicro": 0.96,
+            "factRecallMacro": 0.9777777777777777,
+            "completeEvidence": {
+              "count": 14,
+              "total": 15,
+              "rate": 0.9333333333333333
+            },
+            "prefixFirstFactMRR": 1,
+            "sourceHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.9375,
+            "sourceRecallMacro": 0.9666666666666667,
+            "sourceMRR": 1
+          },
+          "3": {
+            "singleChunkHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "singleChunkMRR": 1,
+            "anyFactHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "factCovered": 25,
+            "factRecallMicro": 1,
+            "factRecallMacro": 1,
+            "completeEvidence": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "prefixFirstFactMRR": 1,
+            "sourceHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "sourceRecallMicro": 1,
+            "sourceRecallMacro": 1,
+            "sourceMRR": 1
+          },
+          "5": {
+            "singleChunkHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "singleChunkMRR": 1,
+            "anyFactHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "factCovered": 25,
+            "factRecallMicro": 1,
+            "factRecallMacro": 1,
+            "completeEvidence": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "prefixFirstFactMRR": 1,
+            "sourceHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "sourceRecallMicro": 1,
+            "sourceRecallMacro": 1,
+            "sourceMRR": 1
+          },
+          "10": {
+            "singleChunkHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "singleChunkMRR": 1,
+            "anyFactHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "factCovered": 25,
+            "factRecallMicro": 1,
+            "factRecallMacro": 1,
+            "completeEvidence": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "prefixFirstFactMRR": 1,
+            "sourceHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "sourceRecallMicro": 1,
+            "sourceRecallMacro": 1,
+            "sourceMRR": 1
+          }
+        }
+      },
+      "markdown-structure-v1": {
+        "questions": 15,
+        "answerable": 15,
+        "noAnswer": {
+          "total": 0,
+          "nonempty": 0
+        },
+        "expectedFacts": 25,
+        "sourceQrels": 16,
+        "answerableResultCounts": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0,
+          "6": 4,
+          "7": 10,
+          "8": 1,
+          "9": 0,
+          "10": 0
+        },
+        "k": {
+          "1": {
+            "singleChunkHit": {
+              "count": 13,
+              "total": 15,
+              "rate": 0.8666666666666667
+            },
+            "singleChunkMRR": 0.8666666666666667,
+            "anyFactHit": {
+              "count": 13,
+              "total": 15,
+              "rate": 0.8666666666666667
+            },
+            "factCovered": 18,
+            "factRecallMicro": 0.72,
+            "factRecallMacro": 0.7666666666666667,
+            "completeEvidence": {
+              "count": 10,
+              "total": 15,
+              "rate": 0.6666666666666666
+            },
+            "prefixFirstFactMRR": 0.8666666666666667,
+            "sourceHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.9375,
+            "sourceRecallMacro": 0.9666666666666667,
+            "sourceMRR": 1
+          },
+          "3": {
+            "singleChunkHit": {
+              "count": 14,
+              "total": 15,
+              "rate": 0.9333333333333333
+            },
+            "singleChunkMRR": 0.9,
+            "anyFactHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "factCovered": 23,
+            "factRecallMicro": 0.92,
+            "factRecallMacro": 0.9444444444444444,
+            "completeEvidence": {
+              "count": 13,
+              "total": 15,
+              "rate": 0.8666666666666667
+            },
+            "prefixFirstFactMRR": 0.9222222222222223,
+            "sourceHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "sourceRecallMicro": 1,
+            "sourceRecallMacro": 1,
+            "sourceMRR": 1
+          },
+          "5": {
+            "singleChunkHit": {
+              "count": 14,
+              "total": 15,
+              "rate": 0.9333333333333333
+            },
+            "singleChunkMRR": 0.9,
+            "anyFactHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "factCovered": 24,
+            "factRecallMicro": 0.96,
+            "factRecallMacro": 0.9666666666666667,
+            "completeEvidence": {
+              "count": 14,
+              "total": 15,
+              "rate": 0.9333333333333333
+            },
+            "prefixFirstFactMRR": 0.9222222222222223,
+            "sourceHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "sourceRecallMicro": 1,
+            "sourceRecallMacro": 1,
+            "sourceMRR": 1
+          },
+          "10": {
+            "singleChunkHit": {
+              "count": 14,
+              "total": 15,
+              "rate": 0.9333333333333333
+            },
+            "singleChunkMRR": 0.9,
+            "anyFactHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "factCovered": 25,
+            "factRecallMicro": 1,
+            "factRecallMacro": 1,
+            "completeEvidence": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "prefixFirstFactMRR": 0.9222222222222223,
+            "sourceHit": {
+              "count": 15,
+              "total": 15,
+              "rate": 1
+            },
+            "sourceRecallMicro": 1,
+            "sourceRecallMacro": 1,
+            "sourceMRR": 1
+          }
+        }
+      }
+    },
+    "mixed-development": {
+      "heading-1000": {
+        "questions": 30,
+        "answerable": 27,
+        "noAnswer": {
+          "total": 3,
+          "nonempty": 3
+        },
+        "expectedFacts": 84,
+        "sourceQrels": 46,
+        "answerableResultCounts": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0,
+          "6": 0,
+          "7": 4,
+          "8": 4,
+          "9": 4,
+          "10": 15
+        },
+        "k": {
+          "1": {
+            "singleChunkHit": {
+              "count": 21,
+              "total": 27,
+              "rate": 0.7777777777777778
+            },
+            "singleChunkMRR": 0.7777777777777778,
+            "anyFactHit": {
+              "count": 21,
+              "total": 27,
+              "rate": 0.7777777777777778
+            },
+            "factCovered": 34,
+            "factRecallMicro": 0.40476190476190477,
+            "factRecallMacro": 0.46543209876543223,
+            "completeEvidence": {
+              "count": 6,
+              "total": 27,
+              "rate": 0.2222222222222222
+            },
+            "prefixFirstFactMRR": 0.7777777777777778,
+            "sourceHit": {
+              "count": 25,
+              "total": 27,
+              "rate": 0.9259259259259259
+            },
+            "sourceRecallMicro": 0.5434782608695652,
+            "sourceRecallMacro": 0.654320987654321,
+            "sourceMRR": 0.9259259259259259
+          },
+          "3": {
+            "singleChunkHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "singleChunkMRR": 0.8703703703703703,
+            "anyFactHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "factCovered": 60,
+            "factRecallMicro": 0.7142857142857143,
+            "factRecallMacro": 0.7660493827160494,
+            "completeEvidence": {
+              "count": 15,
+              "total": 27,
+              "rate": 0.5555555555555556
+            },
+            "prefixFirstFactMRR": 0.8703703703703703,
+            "sourceHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.8043478260869565,
+            "sourceRecallMacro": 0.8641975308641974,
+            "sourceMRR": 0.95679012345679
+          },
+          "5": {
+            "singleChunkHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "singleChunkMRR": 0.8703703703703703,
+            "anyFactHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "factCovered": 69,
+            "factRecallMicro": 0.8214285714285714,
+            "factRecallMacro": 0.8580246913580247,
+            "completeEvidence": {
+              "count": 18,
+              "total": 27,
+              "rate": 0.6666666666666666
+            },
+            "prefixFirstFactMRR": 0.8703703703703703,
+            "sourceHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.8695652173913043,
+            "sourceRecallMacro": 0.9074074074074074,
+            "sourceMRR": 0.95679012345679
+          },
+          "10": {
+            "singleChunkHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "singleChunkMRR": 0.8703703703703703,
+            "anyFactHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "factCovered": 80,
+            "factRecallMicro": 0.9523809523809523,
+            "factRecallMacro": 0.9666666666666667,
+            "completeEvidence": {
+              "count": 24,
+              "total": 27,
+              "rate": 0.8888888888888888
+            },
+            "prefixFirstFactMRR": 0.8703703703703703,
+            "sourceHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.9565217391304348,
+            "sourceRecallMacro": 0.9753086419753086,
+            "sourceMRR": 0.95679012345679
+          }
+        }
+      },
+      "bagu-paragraph-800-lines": {
+        "questions": 30,
+        "answerable": 27,
+        "noAnswer": {
+          "total": 3,
+          "nonempty": 3
+        },
+        "expectedFacts": 84,
+        "sourceQrels": 46,
+        "answerableResultCounts": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 2,
+          "5": 2,
+          "6": 2,
+          "7": 2,
+          "8": 3,
+          "9": 5,
+          "10": 11
+        },
+        "k": {
+          "1": {
+            "singleChunkHit": {
+              "count": 21,
+              "total": 27,
+              "rate": 0.7777777777777778
+            },
+            "singleChunkMRR": 0.7777777777777778,
+            "anyFactHit": {
+              "count": 21,
+              "total": 27,
+              "rate": 0.7777777777777778
+            },
+            "factCovered": 40,
+            "factRecallMicro": 0.47619047619047616,
+            "factRecallMacro": 0.567283950617284,
+            "completeEvidence": {
+              "count": 11,
+              "total": 27,
+              "rate": 0.4074074074074074
+            },
+            "prefixFirstFactMRR": 0.7777777777777778,
+            "sourceHit": {
+              "count": 25,
+              "total": 27,
+              "rate": 0.9259259259259259
+            },
+            "sourceRecallMicro": 0.5434782608695652,
+            "sourceRecallMacro": 0.654320987654321,
+            "sourceMRR": 0.9259259259259259
+          },
+          "3": {
+            "singleChunkHit": {
+              "count": 26,
+              "total": 27,
+              "rate": 0.9629629629629629
+            },
+            "singleChunkMRR": 0.8518518518518519,
+            "anyFactHit": {
+              "count": 26,
+              "total": 27,
+              "rate": 0.9629629629629629
+            },
+            "factCovered": 65,
+            "factRecallMicro": 0.7738095238095238,
+            "factRecallMacro": 0.8197530864197531,
+            "completeEvidence": {
+              "count": 17,
+              "total": 27,
+              "rate": 0.6296296296296297
+            },
+            "prefixFirstFactMRR": 0.8518518518518519,
+            "sourceHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.782608695652174,
+            "sourceRecallMacro": 0.8456790123456789,
+            "sourceMRR": 0.95679012345679
+          },
+          "5": {
+            "singleChunkHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "singleChunkMRR": 0.8611111111111112,
+            "anyFactHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "factCovered": 68,
+            "factRecallMicro": 0.8095238095238095,
+            "factRecallMacro": 0.8487654320987654,
+            "completeEvidence": {
+              "count": 17,
+              "total": 27,
+              "rate": 0.6296296296296297
+            },
+            "prefixFirstFactMRR": 0.8611111111111112,
+            "sourceHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.8478260869565217,
+            "sourceRecallMacro": 0.8888888888888888,
+            "sourceMRR": 0.95679012345679
+          },
+          "10": {
+            "singleChunkHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "singleChunkMRR": 0.8611111111111112,
+            "anyFactHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "factCovered": 79,
+            "factRecallMicro": 0.9404761904761905,
+            "factRecallMacro": 0.9524691358024692,
+            "completeEvidence": {
+              "count": 23,
+              "total": 27,
+              "rate": 0.8518518518518519
+            },
+            "prefixFirstFactMRR": 0.8611111111111112,
+            "sourceHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.9565217391304348,
+            "sourceRecallMacro": 0.9753086419753086,
+            "sourceMRR": 0.95679012345679
+          }
+        }
+      },
+      "markdown-structure-v1": {
+        "questions": 30,
+        "answerable": 27,
+        "noAnswer": {
+          "total": 3,
+          "nonempty": 3
+        },
+        "expectedFacts": 84,
+        "sourceQrels": 46,
+        "answerableResultCounts": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0,
+          "6": 2,
+          "7": 5,
+          "8": 4,
+          "9": 9,
+          "10": 7
+        },
+        "k": {
+          "1": {
+            "singleChunkHit": {
+              "count": 23,
+              "total": 27,
+              "rate": 0.8518518518518519
+            },
+            "singleChunkMRR": 0.8518518518518519,
+            "anyFactHit": {
+              "count": 23,
+              "total": 27,
+              "rate": 0.8518518518518519
+            },
+            "factCovered": 41,
+            "factRecallMicro": 0.4880952380952381,
+            "factRecallMacro": 0.5611111111111111,
+            "completeEvidence": {
+              "count": 9,
+              "total": 27,
+              "rate": 0.3333333333333333
+            },
+            "prefixFirstFactMRR": 0.8518518518518519,
+            "sourceHit": {
+              "count": 26,
+              "total": 27,
+              "rate": 0.9629629629629629
+            },
+            "sourceRecallMicro": 0.5652173913043478,
+            "sourceRecallMacro": 0.6728395061728395,
+            "sourceMRR": 0.9629629629629629
+          },
+          "3": {
+            "singleChunkHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "singleChunkMRR": 0.9197530864197531,
+            "anyFactHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "factCovered": 60,
+            "factRecallMicro": 0.7142857142857143,
+            "factRecallMacro": 0.7679012345679013,
+            "completeEvidence": {
+              "count": 15,
+              "total": 27,
+              "rate": 0.5555555555555556
+            },
+            "prefixFirstFactMRR": 0.9197530864197531,
+            "sourceHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.782608695652174,
+            "sourceRecallMacro": 0.8395061728395061,
+            "sourceMRR": 0.9814814814814815
+          },
+          "5": {
+            "singleChunkHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "singleChunkMRR": 0.9197530864197531,
+            "anyFactHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "factCovered": 69,
+            "factRecallMicro": 0.8214285714285714,
+            "factRecallMacro": 0.8567901234567901,
+            "completeEvidence": {
+              "count": 19,
+              "total": 27,
+              "rate": 0.7037037037037037
+            },
+            "prefixFirstFactMRR": 0.9197530864197531,
+            "sourceHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.8695652173913043,
+            "sourceRecallMacro": 0.9074074074074074,
+            "sourceMRR": 0.9814814814814815
+          },
+          "10": {
+            "singleChunkHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "singleChunkMRR": 0.9197530864197531,
+            "anyFactHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "factCovered": 77,
+            "factRecallMicro": 0.9166666666666666,
+            "factRecallMacro": 0.9407407407407408,
+            "completeEvidence": {
+              "count": 23,
+              "total": 27,
+              "rate": 0.8518518518518519
+            },
+            "prefixFirstFactMRR": 0.9197530864197531,
+            "sourceHit": {
+              "count": 27,
+              "total": 27,
+              "rate": 1
+            },
+            "sourceRecallMicro": 0.9347826086956522,
+            "sourceRecallMacro": 0.95679012345679,
+            "sourceMRR": 0.9814814814814815
+          }
+        }
+      }
+    }
+  }
+}

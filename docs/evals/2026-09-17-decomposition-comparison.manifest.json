@@ -1,0 +1,4730 @@
+{
+  "status": "complete",
+  "strategy": "markdown-structure-v1",
+  "retrieval": {
+    "id": "chunk-fixed",
+    "mode": "hybrid",
+    "topk": 10,
+    "max_chunks_per_source": 3,
+    "bm25_candidates": 60,
+    "dense_candidates": 60,
+    "rrf_k": 60,
+    "title_weight": 2,
+    "bm25_weight": 0.5,
+    "dense_weight": 1,
+    "min_dense_similarity": 0.3,
+    "max_context_chars": 12000
+  },
+  "model": "qwen3.7-text-embedding",
+  "dimensions": 1024,
+  "plan_sha256": "62e95619d01db8c6675484bd4684aa95e26ce1eb3713e0f1a001333261932fe9",
+  "code": {
+    "driver": "7ce3e9b172ef36be1434aba6b8e31e19bba8f0435e00f23db6a54d93f4c9e7b8",
+    "metrics": "79b21de71a7685fc5e66fa670af5ac5bc58a354a9fa51db0f608d28b40c91e9a",
+    "guard": "07e4131d35882db3ab3bdace67ef692ff9b5d523d6443f21304d2a40d98448e6"
+  },
+  "api_usage": {
+    "requests": 235,
+    "input_chars": 13652,
+    "reported_tokens": 10569
+  },
+  "network": {
+    "requests": 235,
+    "input_chars": 13652,
+    "texts": 235
+  },
+  "parent_executions": 200,
+  "independent_questions": 100,
+  "final_queries": 0,
+  "all": {
+    "split": {
+      "questions": 100,
+      "answerable": 95,
+      "noAnswer": {
+        "total": 5,
+        "nonempty": 5
+      },
+      "expectedFacts": 226,
+      "sourceQrels": 150,
+      "answerableResultCounts": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 6,
+        "7": 17,
+        "8": 16,
+        "9": 24,
+        "10": 32
+      },
+      "k": {
+        "1": {
+          "singleChunkHit": {
+            "count": 76,
+            "total": 95,
+            "rate": 0.8
+          },
+          "singleChunkMRR": 0.8,
+          "anyFactHit": {
+            "count": 76,
+            "total": 95,
+            "rate": 0.8
+          },
+          "factCovered": 120,
+          "factRecallMicro": 0.5309734513274337,
+          "factRecallMacro": 0.5971929824561404,
+          "completeEvidence": {
+            "count": 39,
+            "total": 95,
+            "rate": 0.4105263157894737
+          },
+          "prefixFirstFactMRR": 0.8,
+          "sourceHit": {
+            "count": 94,
+            "total": 95,
+            "rate": 0.9894736842105263
+          },
+          "sourceRecallMicro": 0.6266666666666667,
+          "sourceRecallMacro": 0.7535087719298245,
+          "sourceMRR": 0.9894736842105263
+        },
+        "3": {
+          "singleChunkHit": {
+            "count": 94,
+            "total": 95,
+            "rate": 0.9894736842105263
+          },
+          "singleChunkMRR": 0.8894736842105263,
+          "anyFactHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "factCovered": 189,
+          "factRecallMicro": 0.8362831858407079,
+          "factRecallMacro": 0.8896491228070176,
+          "completeEvidence": {
+            "count": 74,
+            "total": 95,
+            "rate": 0.7789473684210526
+          },
+          "prefixFirstFactMRR": 0.8929824561403509,
+          "sourceHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "sourceRecallMicro": 0.7733333333333333,
+          "sourceRecallMacro": 0.8543859649122806,
+          "sourceMRR": 0.9947368421052631
+        },
+        "5": {
+          "singleChunkHit": {
+            "count": 94,
+            "total": 95,
+            "rate": 0.9894736842105263
+          },
+          "singleChunkMRR": 0.8894736842105263,
+          "anyFactHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "factCovered": 206,
+          "factRecallMicro": 0.911504424778761,
+          "factRecallMacro": 0.9405263157894737,
+          "completeEvidence": {
+            "count": 82,
+            "total": 95,
+            "rate": 0.8631578947368421
+          },
+          "prefixFirstFactMRR": 0.8929824561403509,
+          "sourceHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "sourceRecallMicro": 0.9133333333333333,
+          "sourceRecallMacro": 0.9464912280701755,
+          "sourceMRR": 0.9947368421052631
+        },
+        "10": {
+          "singleChunkHit": {
+            "count": 94,
+            "total": 95,
+            "rate": 0.9894736842105263
+          },
+          "singleChunkMRR": 0.8894736842105263,
+          "anyFactHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "factCovered": 217,
+          "factRecallMicro": 0.9601769911504425,
+          "factRecallMacro": 0.9770175438596489,
+          "completeEvidence": {
+            "count": 89,
+            "total": 95,
+            "rate": 0.9368421052631579
+          },
+          "prefixFirstFactMRR": 0.8929824561403509,
+          "sourceHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "sourceRecallMicro": 0.98,
+          "sourceRecallMacro": 0.987719298245614,
+          "sourceMRR": 0.9947368421052631
+        }
+      }
+    },
+    "parent": {
+      "questions": 100,
+      "answerable": 95,
+      "noAnswer": {
+        "total": 5,
+        "nonempty": 5
+      },
+      "expectedFacts": 226,
+      "sourceQrels": 150,
+      "answerableResultCounts": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 6,
+        "7": 11,
+        "8": 18,
+        "9": 22,
+        "10": 38
+      },
+      "k": {
+        "1": {
+          "singleChunkHit": {
+            "count": 77,
+            "total": 95,
+            "rate": 0.8105263157894737
+          },
+          "singleChunkMRR": 0.8105263157894737,
+          "anyFactHit": {
+            "count": 77,
+            "total": 95,
+            "rate": 0.8105263157894737
+          },
+          "factCovered": 121,
+          "factRecallMicro": 0.5353982300884956,
+          "factRecallMacro": 0.5977192982456142,
+          "completeEvidence": {
+            "count": 40,
+            "total": 95,
+            "rate": 0.42105263157894735
+          },
+          "prefixFirstFactMRR": 0.8105263157894737,
+          "sourceHit": {
+            "count": 94,
+            "total": 95,
+            "rate": 0.9894736842105263
+          },
+          "sourceRecallMicro": 0.6266666666666667,
+          "sourceRecallMacro": 0.7517543859649122,
+          "sourceMRR": 0.9894736842105263
+        },
+        "3": {
+          "singleChunkHit": {
+            "count": 92,
+            "total": 95,
+            "rate": 0.968421052631579
+          },
+          "singleChunkMRR": 0.8807017543859648,
+          "anyFactHit": {
+            "count": 93,
+            "total": 95,
+            "rate": 0.9789473684210527
+          },
+          "factCovered": 183,
+          "factRecallMicro": 0.8097345132743363,
+          "factRecallMacro": 0.8654385964912281,
+          "completeEvidence": {
+            "count": 69,
+            "total": 95,
+            "rate": 0.7263157894736842
+          },
+          "prefixFirstFactMRR": 0.8842105263157894,
+          "sourceHit": {
+            "count": 94,
+            "total": 95,
+            "rate": 0.9894736842105263
+          },
+          "sourceRecallMicro": 0.7333333333333333,
+          "sourceRecallMacro": 0.8228070175438597,
+          "sourceMRR": 0.9894736842105263
+        },
+        "5": {
+          "singleChunkHit": {
+            "count": 94,
+            "total": 95,
+            "rate": 0.9894736842105263
+          },
+          "singleChunkMRR": 0.8859649122807016,
+          "anyFactHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "factCovered": 199,
+          "factRecallMicro": 0.8805309734513275,
+          "factRecallMacro": 0.917719298245614,
+          "completeEvidence": {
+            "count": 79,
+            "total": 95,
+            "rate": 0.8315789473684211
+          },
+          "prefixFirstFactMRR": 0.8894736842105263,
+          "sourceHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "sourceRecallMicro": 0.9,
+          "sourceRecallMacro": 0.9359649122807018,
+          "sourceMRR": 0.9921052631578947
+        },
+        "10": {
+          "singleChunkHit": {
+            "count": 94,
+            "total": 95,
+            "rate": 0.9894736842105263
+          },
+          "singleChunkMRR": 0.8859649122807016,
+          "anyFactHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "factCovered": 204,
+          "factRecallMicro": 0.9026548672566371,
+          "factRecallMacro": 0.9370175438596491,
+          "completeEvidence": {
+            "count": 83,
+            "total": 95,
+            "rate": 0.8736842105263158
+          },
+          "prefixFirstFactMRR": 0.8894736842105263,
+          "sourceHit": {
+            "count": 95,
+            "total": 95,
+            "rate": 1
+          },
+          "sourceRecallMicro": 0.9666666666666667,
+          "sourceRecallMacro": 0.9771929824561403,
+          "sourceMRR": 0.9921052631578947
+        }
+      }
+    }
+  },
+  "changed": {
+    "split": {
+      "questions": 33,
+      "answerable": 33,
+      "noAnswer": {
+        "total": 0,
+        "nonempty": 0
+      },
+      "expectedFacts": 113,
+      "sourceQrels": 65,
+      "answerableResultCounts": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 1,
+        "7": 7,
+        "8": 4,
+        "9": 10,
+        "10": 11
+      },
+      "k": {
+        "1": {
+          "singleChunkHit": {
+            "count": 27,
+            "total": 33,
+            "rate": 0.8181818181818182
+          },
+          "singleChunkMRR": 0.8181818181818182,
+          "anyFactHit": {
+            "count": 27,
+            "total": 33,
+            "rate": 0.8181818181818182
+          },
+          "factCovered": 44,
+          "factRecallMicro": 0.3893805309734513,
+          "factRecallMacro": 0.406060606060606,
+          "completeEvidence": {
+            "count": 1,
+            "total": 33,
+            "rate": 0.030303030303030304
+          },
+          "prefixFirstFactMRR": 0.8181818181818182,
+          "sourceHit": {
+            "count": 32,
+            "total": 33,
+            "rate": 0.9696969696969697
+          },
+          "sourceRecallMicro": 0.49230769230769234,
+          "sourceRecallMacro": 0.6085858585858586,
+          "sourceMRR": 0.9696969696969697
+        },
+        "3": {
+          "singleChunkHit": {
+            "count": 33,
+            "total": 33,
+            "rate": 1
+          },
+          "singleChunkMRR": 0.9090909090909091,
+          "anyFactHit": {
+            "count": 33,
+            "total": 33,
+            "rate": 1
+          },
+          "factCovered": 81,
+          "factRecallMicro": 0.7168141592920354,
+          "factRecallMacro": 0.7479797979797979,
+          "completeEvidence": {
+            "count": 16,
+            "total": 33,
+            "rate": 0.48484848484848486
+          },
+          "prefixFirstFactMRR": 0.9090909090909091,
+          "sourceHit": {
+            "count": 33,
+            "total": 33,
+            "rate": 1
+          },
+          "sourceRecallMicro": 0.7076923076923077,
+          "sourceRecallMacro": 0.7828282828282828,
+          "sourceMRR": 0.9848484848484849
+        },
+        "5": {
+          "singleChunkHit": {
+            "count": 33,
+            "total": 33,
+            "rate": 1
+          },
+          "singleChunkMRR": 0.9090909090909091,
+          "anyFactHit": {
+            "count": 33,
+            "total": 33,
+            "rate": 1
+          },
+          "factCovered": 95,
+          "factRecallMicro": 0.8407079646017699,
+          "factRecallMacro": 0.8590909090909091,
+          "completeEvidence": {
+            "count": 22,
+            "total": 33,
+            "rate": 0.6666666666666666
+          },
+          "prefixFirstFactMRR": 0.9090909090909091,
+          "sourceHit": {
+            "count": 33,
+            "total": 33,
+            "rate": 1
+          },
+          "sourceRecallMicro": 0.8461538461538461,
+          "sourceRecallMacro": 0.8863636363636364,
+          "sourceMRR": 0.9848484848484849
+        },
+        "10": {
+          "singleChunkHit": {
+            "count": 33,
+            "total": 33,
+            "rate": 1
+          },
+          "singleChunkMRR": 0.9090909090909091,
+          "anyFactHit": {
+            "count": 33,
+            "total": 33,
+            "rate": 1
+          },
+          "factCovered": 104,
+          "factRecallMicro": 0.9203539823008849,
+          "factRecallMacro": 0.9338383838383838,
+          "completeEvidence": {
+            "count": 27,
+            "total": 33,
+            "rate": 0.8181818181818182
+          },
+          "prefixFirstFactMRR": 0.9090909090909091,
+          "sourceHit": {
+            "count": 33,
+            "total": 33,
+            "rate": 1
+          },
+          "sourceRecallMicro": 0.9538461538461539,
+          "sourceRecallMacro": 0.9646464646464646,
+          "sourceMRR": 0.9848484848484849
+        }
+      }
+    },
+    "parent": {
+      "questions": 33,
+      "answerable": 33,
+      "noAnswer": {
+        "total": 0,
+        "nonempty": 0
+      },
+      "expectedFacts": 113,
+      "sourceQrels": 65,
+      "answerableResultCounts": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 1,
+        "7": 1,
+        "8": 6,
+        "9": 8,
+        "10": 17
+      },
+      "k": {
+        "1": {
+          "singleChunkHit": {
+            "count": 28,
+            "total": 33,
+            "rate": 0.8484848484848485
+          },
+          "singleChunkMRR": 0.8484848484848485,
+          "anyFactHit": {
+            "count": 28,
+            "total": 33,
+            "rate": 0.8484848484848485
+          },
+          "factCovered": 45,
+          "factRecallMicro": 0.39823008849557523,
+          "factRecallMacro": 0.40757575757575754,
+          "completeEvidence": {
+            "count": 2,
+            "total": 33,
+            "rate": 0.06060606060606061
+          },
+          "prefixFirstFactMRR": 0.8484848484848485,
+          "sourceHit": {
+            "count": 32,
+            "total": 33,
+            "rate": 0.9696969696969697
+          },
+          "sourceRecallMicro": 0.49230769230769234,
+          "sourceRecallMacro": 0.6035353535353535,
+          "sourceMRR": 0.9696969696969697
+        },
+        "3": {
+          "singleChunkHit": {
+            "count": 31,
+            "total": 33,
+            "rate": 0.9393939393939394
+          },
+          "singleChunkMRR": 0.8838383838383839,
+          "anyFactHit": {
+            "count": 31,
+            "total": 33,
+            "rate": 0.9393939393939394
+          },
+          "factCovered": 75,
+          "factRecallMicro": 0.6637168141592921,
+          "factRecallMacro": 0.6782828282828283,
+          "completeEvidence": {
+            "count": 11,
+            "total": 33,
+            "rate": 0.3333333333333333
+          },
+          "prefixFirstFactMRR": 0.8838383838383839,
+          "sourceHit": {
+            "count": 32,
+            "total": 33,
+            "rate": 0.9696969696969697
+          },
+          "sourceRecallMicro": 0.6153846153846154,
+          "sourceRecallMacro": 0.6919191919191919,
+          "sourceMRR": 0.9696969696969697
+        },
+        "5": {
+          "singleChunkHit": {
+            "count": 33,
+            "total": 33,
+            "rate": 1
+          },
+          "singleChunkMRR": 0.898989898989899,
+          "anyFactHit": {
+            "count": 33,
+            "total": 33,
+            "rate": 1
+          },
+          "factCovered": 88,
+          "factRecallMicro": 0.7787610619469026,
+          "factRecallMacro": 0.7934343434343435,
+          "completeEvidence": {
+            "count": 19,
+            "total": 33,
+            "rate": 0.5757575757575758
+          },
+          "prefixFirstFactMRR": 0.898989898989899,
+          "sourceHit": {
+            "count": 33,
+            "total": 33,
+            "rate": 1
+          },
+          "sourceRecallMicro": 0.8153846153846154,
+          "sourceRecallMacro": 0.8560606060606061,
+          "sourceMRR": 0.9772727272727273
+        },
+        "10": {
+          "singleChunkHit": {
+            "count": 33,
+            "total": 33,
+            "rate": 1
+          },
+          "singleChunkMRR": 0.898989898989899,
+          "anyFactHit": {
+            "count": 33,
+            "total": 33,
+            "rate": 1
+          },
+          "factCovered": 91,
+          "factRecallMicro": 0.8053097345132744,
+          "factRecallMacro": 0.8186868686868687,
+          "completeEvidence": {
+            "count": 21,
+            "total": 33,
+            "rate": 0.6363636363636364
+          },
+          "prefixFirstFactMRR": 0.898989898989899,
+          "sourceHit": {
+            "count": 33,
+            "total": 33,
+            "rate": 1
+          },
+          "sourceRecallMicro": 0.9230769230769231,
+          "sourceRecallMacro": 0.9343434343434343,
+          "sourceMRR": 0.9772727272727273
+        }
+      }
+    }
+  },
+  "byScope": {
+    "A-development": {
+      "all": {
+        "split": {
+          "questions": 30,
+          "answerable": 28,
+          "noAnswer": {
+            "total": 2,
+            "nonempty": 2
+          },
+          "expectedFacts": 67,
+          "sourceQrels": 62,
+          "answerableResultCounts": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 4,
+            "10": 24
+          },
+          "k": {
+            "1": {
+              "singleChunkHit": {
+                "count": 17,
+                "total": 28,
+                "rate": 0.6071428571428571
+              },
+              "singleChunkMRR": 0.6071428571428571,
+              "anyFactHit": {
+                "count": 17,
+                "total": 28,
+                "rate": 0.6071428571428571
+              },
+              "factCovered": 24,
+              "factRecallMicro": 0.3582089552238806,
+              "factRecallMacro": 0.4017857142857143,
+              "completeEvidence": {
+                "count": 6,
+                "total": 28,
+                "rate": 0.21428571428571427
+              },
+              "prefixFirstFactMRR": 0.6071428571428571,
+              "sourceHit": {
+                "count": 28,
+                "total": 28,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.45161290322580644,
+              "sourceRecallMacro": 0.5148809523809524,
+              "sourceMRR": 1
+            },
+            "3": {
+              "singleChunkHit": {
+                "count": 28,
+                "total": 28,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.7976190476190477,
+              "anyFactHit": {
+                "count": 28,
+                "total": 28,
+                "rate": 1
+              },
+              "factCovered": 60,
+              "factRecallMicro": 0.8955223880597015,
+              "factRecallMacro": 0.9297619047619047,
+              "completeEvidence": {
+                "count": 24,
+                "total": 28,
+                "rate": 0.8571428571428571
+              },
+              "prefixFirstFactMRR": 0.7976190476190477,
+              "sourceHit": {
+                "count": 28,
+                "total": 28,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.6129032258064516,
+              "sourceRecallMacro": 0.6607142857142858,
+              "sourceMRR": 1
+            },
+            "5": {
+              "singleChunkHit": {
+                "count": 28,
+                "total": 28,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.7976190476190477,
+              "anyFactHit": {
+                "count": 28,
+                "total": 28,
+                "rate": 1
+              },
+              "factCovered": 65,
+              "factRecallMicro": 0.9701492537313433,
+              "factRecallMacro": 0.975,
+              "completeEvidence": {
+                "count": 26,
+                "total": 28,
+                "rate": 0.9285714285714286
+              },
+              "prefixFirstFactMRR": 0.7976190476190477,
+              "sourceHit": {
+                "count": 28,
+                "total": 28,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.8870967741935484,
+              "sourceRecallMacro": 0.9077380952380955,
+              "sourceMRR": 1
+            },
+            "10": {
+              "singleChunkHit": {
+                "count": 28,
+                "total": 28,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.7976190476190477,
+              "anyFactHit": {
+                "count": 28,
+                "total": 28,
+                "rate": 1
+              },
+              "factCovered": 67,
+              "factRecallMicro": 1,
+              "factRecallMacro": 1,
+              "completeEvidence": {
+                "count": 28,
+                "total": 28,
+                "rate": 1
+              },
+              "prefixFirstFactMRR": 0.7976190476190477,
+              "sourceHit": {
+                "count": 28,
+                "total": 28,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            }
+          }
+        },
+        "parent": {
+          "questions": 30,
+          "answerable": 28,
+          "noAnswer": {
+            "total": 2,
+            "nonempty": 2
+          },
+          "expectedFacts": 67,
+          "sourceQrels": 62,
+          "answerableResultCounts": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 2,
+            "10": 26
+          },
+          "k": {
+            "1": {
+              "singleChunkHit": {
+                "count": 20,
+                "total": 28,
+                "rate": 0.7142857142857143
+              },
+              "singleChunkMRR": 0.7142857142857143,
+              "anyFactHit": {
+                "count": 20,
+                "total": 28,
+                "rate": 0.7142857142857143
+              },
+              "factCovered": 31,
+              "factRecallMicro": 0.4626865671641791,
+              "factRecallMacro": 0.468452380952381,
+              "completeEvidence": {
+                "count": 7,
+                "total": 28,
+                "rate": 0.25
+              },
+              "prefixFirstFactMRR": 0.7142857142857143,
+              "sourceHit": {
+                "count": 28,
+                "total": 28,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.45161290322580644,
+              "sourceRecallMacro": 0.5148809523809524,
+              "sourceMRR": 1
+            },
+            "3": {
+              "singleChunkHit": {
+                "count": 28,
+                "total": 28,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.8452380952380952,
+              "anyFactHit": {
+                "count": 28,
+                "total": 28,
+                "rate": 1
+              },
+              "factCovered": 59,
+              "factRecallMicro": 0.8805970149253731,
+              "factRecallMacro": 0.8976190476190478,
+              "completeEvidence": {
+                "count": 21,
+                "total": 28,
+                "rate": 0.75
+              },
+              "prefixFirstFactMRR": 0.8452380952380952,
+              "sourceHit": {
+                "count": 28,
+                "total": 28,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.6290322580645161,
+              "sourceRecallMacro": 0.6726190476190477,
+              "sourceMRR": 1
+            },
+            "5": {
+              "singleChunkHit": {
+                "count": 28,
+                "total": 28,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.8452380952380952,
+              "anyFactHit": {
+                "count": 28,
+                "total": 28,
+                "rate": 1
+              },
+              "factCovered": 63,
+              "factRecallMicro": 0.9402985074626866,
+              "factRecallMacro": 0.9511904761904763,
+              "completeEvidence": {
+                "count": 25,
+                "total": 28,
+                "rate": 0.8928571428571429
+              },
+              "prefixFirstFactMRR": 0.8452380952380952,
+              "sourceHit": {
+                "count": 28,
+                "total": 28,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.8870967741935484,
+              "sourceRecallMacro": 0.9077380952380955,
+              "sourceMRR": 1
+            },
+            "10": {
+              "singleChunkHit": {
+                "count": 28,
+                "total": 28,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.8452380952380952,
+              "anyFactHit": {
+                "count": 28,
+                "total": 28,
+                "rate": 1
+              },
+              "factCovered": 63,
+              "factRecallMicro": 0.9402985074626866,
+              "factRecallMacro": 0.9511904761904763,
+              "completeEvidence": {
+                "count": 25,
+                "total": 28,
+                "rate": 0.8928571428571429
+              },
+              "prefixFirstFactMRR": 0.8452380952380952,
+              "sourceHit": {
+                "count": 28,
+                "total": 28,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            }
+          }
+        }
+      },
+      "changed": {
+        "split": {
+          "questions": 10,
+          "answerable": 10,
+          "noAnswer": {
+            "total": 0,
+            "nonempty": 0
+          },
+          "expectedFacts": 31,
+          "sourceQrels": 25,
+          "answerableResultCounts": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 3,
+            "10": 7
+          },
+          "k": {
+            "1": {
+              "singleChunkHit": {
+                "count": 6,
+                "total": 10,
+                "rate": 0.6
+              },
+              "singleChunkMRR": 0.6,
+              "anyFactHit": {
+                "count": 6,
+                "total": 10,
+                "rate": 0.6
+              },
+              "factCovered": 8,
+              "factRecallMicro": 0.25806451612903225,
+              "factRecallMacro": 0.29166666666666663,
+              "completeEvidence": {
+                "count": 0,
+                "total": 10,
+                "rate": 0
+              },
+              "prefixFirstFactMRR": 0.6,
+              "sourceHit": {
+                "count": 10,
+                "total": 10,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.4,
+              "sourceRecallMacro": 0.4916666666666666,
+              "sourceMRR": 1
+            },
+            "3": {
+              "singleChunkHit": {
+                "count": 10,
+                "total": 10,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.8,
+              "anyFactHit": {
+                "count": 10,
+                "total": 10,
+                "rate": 1
+              },
+              "factCovered": 24,
+              "factRecallMicro": 0.7741935483870968,
+              "factRecallMacro": 0.8033333333333333,
+              "completeEvidence": {
+                "count": 6,
+                "total": 10,
+                "rate": 0.6
+              },
+              "prefixFirstFactMRR": 0.8,
+              "sourceHit": {
+                "count": 10,
+                "total": 10,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.56,
+              "sourceRecallMacro": 0.6166666666666667,
+              "sourceMRR": 1
+            },
+            "5": {
+              "singleChunkHit": {
+                "count": 10,
+                "total": 10,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.8,
+              "anyFactHit": {
+                "count": 10,
+                "total": 10,
+                "rate": 1
+              },
+              "factCovered": 29,
+              "factRecallMicro": 0.9354838709677419,
+              "factRecallMacro": 0.93,
+              "completeEvidence": {
+                "count": 8,
+                "total": 10,
+                "rate": 0.8
+              },
+              "prefixFirstFactMRR": 0.8,
+              "sourceHit": {
+                "count": 10,
+                "total": 10,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.84,
+              "sourceRecallMacro": 0.875,
+              "sourceMRR": 1
+            },
+            "10": {
+              "singleChunkHit": {
+                "count": 10,
+                "total": 10,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.8,
+              "anyFactHit": {
+                "count": 10,
+                "total": 10,
+                "rate": 1
+              },
+              "factCovered": 31,
+              "factRecallMicro": 1,
+              "factRecallMacro": 1,
+              "completeEvidence": {
+                "count": 10,
+                "total": 10,
+                "rate": 1
+              },
+              "prefixFirstFactMRR": 0.8,
+              "sourceHit": {
+                "count": 10,
+                "total": 10,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            }
+          }
+        },
+        "parent": {
+          "questions": 10,
+          "answerable": 10,
+          "noAnswer": {
+            "total": 0,
+            "nonempty": 0
+          },
+          "expectedFacts": 31,
+          "sourceQrels": 25,
+          "answerableResultCounts": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 0,
+            "9": 1,
+            "10": 9
+          },
+          "k": {
+            "1": {
+              "singleChunkHit": {
+                "count": 9,
+                "total": 10,
+                "rate": 0.9
+              },
+              "singleChunkMRR": 0.9,
+              "anyFactHit": {
+                "count": 9,
+                "total": 10,
+                "rate": 0.9
+              },
+              "factCovered": 15,
+              "factRecallMicro": 0.4838709677419355,
+              "factRecallMacro": 0.47833333333333333,
+              "completeEvidence": {
+                "count": 1,
+                "total": 10,
+                "rate": 0.1
+              },
+              "prefixFirstFactMRR": 0.9,
+              "sourceHit": {
+                "count": 10,
+                "total": 10,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.4,
+              "sourceRecallMacro": 0.4916666666666666,
+              "sourceMRR": 1
+            },
+            "3": {
+              "singleChunkHit": {
+                "count": 10,
+                "total": 10,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.9333333333333333,
+              "anyFactHit": {
+                "count": 10,
+                "total": 10,
+                "rate": 1
+              },
+              "factCovered": 23,
+              "factRecallMicro": 0.7419354838709677,
+              "factRecallMacro": 0.7133333333333333,
+              "completeEvidence": {
+                "count": 3,
+                "total": 10,
+                "rate": 0.3
+              },
+              "prefixFirstFactMRR": 0.9333333333333333,
+              "sourceHit": {
+                "count": 10,
+                "total": 10,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.6,
+              "sourceRecallMacro": 0.6500000000000001,
+              "sourceMRR": 1
+            },
+            "5": {
+              "singleChunkHit": {
+                "count": 10,
+                "total": 10,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.9333333333333333,
+              "anyFactHit": {
+                "count": 10,
+                "total": 10,
+                "rate": 1
+              },
+              "factCovered": 27,
+              "factRecallMicro": 0.8709677419354839,
+              "factRecallMacro": 0.8633333333333333,
+              "completeEvidence": {
+                "count": 7,
+                "total": 10,
+                "rate": 0.7
+              },
+              "prefixFirstFactMRR": 0.9333333333333333,
+              "sourceHit": {
+                "count": 10,
+                "total": 10,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.84,
+              "sourceRecallMacro": 0.875,
+              "sourceMRR": 1
+            },
+            "10": {
+              "singleChunkHit": {
+                "count": 10,
+                "total": 10,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.9333333333333333,
+              "anyFactHit": {
+                "count": 10,
+                "total": 10,
+                "rate": 1
+              },
+              "factCovered": 27,
+              "factRecallMicro": 0.8709677419354839,
+              "factRecallMacro": 0.8633333333333333,
+              "completeEvidence": {
+                "count": 7,
+                "total": 10,
+                "rate": 0.7
+              },
+              "prefixFirstFactMRR": 0.9333333333333333,
+              "sourceHit": {
+                "count": 10,
+                "total": 10,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            }
+          }
+        }
+      }
+    },
+    "B-development": {
+      "all": {
+        "split": {
+          "questions": 25,
+          "answerable": 25,
+          "noAnswer": {
+            "total": 0,
+            "nonempty": 0
+          },
+          "expectedFacts": 50,
+          "sourceQrels": 26,
+          "answerableResultCounts": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 2,
+            "8": 11,
+            "9": 11,
+            "10": 1
+          },
+          "k": {
+            "1": {
+              "singleChunkHit": {
+                "count": 23,
+                "total": 25,
+                "rate": 0.92
+              },
+              "singleChunkMRR": 0.92,
+              "anyFactHit": {
+                "count": 23,
+                "total": 25,
+                "rate": 0.92
+              },
+              "factCovered": 37,
+              "factRecallMicro": 0.74,
+              "factRecallMacro": 0.7533333333333334,
+              "completeEvidence": {
+                "count": 14,
+                "total": 25,
+                "rate": 0.56
+              },
+              "prefixFirstFactMRR": 0.92,
+              "sourceHit": {
+                "count": 25,
+                "total": 25,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.9615384615384616,
+              "sourceRecallMacro": 0.98,
+              "sourceMRR": 1
+            },
+            "3": {
+              "singleChunkHit": {
+                "count": 25,
+                "total": 25,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.9533333333333335,
+              "anyFactHit": {
+                "count": 25,
+                "total": 25,
+                "rate": 1
+              },
+              "factCovered": 46,
+              "factRecallMicro": 0.92,
+              "factRecallMacro": 0.9433333333333335,
+              "completeEvidence": {
+                "count": 22,
+                "total": 25,
+                "rate": 0.88
+              },
+              "prefixFirstFactMRR": 0.9533333333333335,
+              "sourceHit": {
+                "count": 25,
+                "total": 25,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            },
+            "5": {
+              "singleChunkHit": {
+                "count": 25,
+                "total": 25,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.9533333333333335,
+              "anyFactHit": {
+                "count": 25,
+                "total": 25,
+                "rate": 1
+              },
+              "factCovered": 48,
+              "factRecallMicro": 0.96,
+              "factRecallMacro": 0.9766666666666666,
+              "completeEvidence": {
+                "count": 23,
+                "total": 25,
+                "rate": 0.92
+              },
+              "prefixFirstFactMRR": 0.9533333333333335,
+              "sourceHit": {
+                "count": 25,
+                "total": 25,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            },
+            "10": {
+              "singleChunkHit": {
+                "count": 25,
+                "total": 25,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.9533333333333335,
+              "anyFactHit": {
+                "count": 25,
+                "total": 25,
+                "rate": 1
+              },
+              "factCovered": 48,
+              "factRecallMicro": 0.96,
+              "factRecallMacro": 0.9766666666666666,
+              "completeEvidence": {
+                "count": 23,
+                "total": 25,
+                "rate": 0.92
+              },
+              "prefixFirstFactMRR": 0.9533333333333335,
+              "sourceHit": {
+                "count": 25,
+                "total": 25,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            }
+          }
+        },
+        "parent": {
+          "questions": 25,
+          "answerable": 25,
+          "noAnswer": {
+            "total": 0,
+            "nonempty": 0
+          },
+          "expectedFacts": 50,
+          "sourceQrels": 26,
+          "answerableResultCounts": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 10,
+            "9": 13,
+            "10": 2
+          },
+          "k": {
+            "1": {
+              "singleChunkHit": {
+                "count": 21,
+                "total": 25,
+                "rate": 0.84
+              },
+              "singleChunkMRR": 0.84,
+              "anyFactHit": {
+                "count": 21,
+                "total": 25,
+                "rate": 0.84
+              },
+              "factCovered": 35,
+              "factRecallMicro": 0.7,
+              "factRecallMacro": 0.72,
+              "completeEvidence": {
+                "count": 14,
+                "total": 25,
+                "rate": 0.56
+              },
+              "prefixFirstFactMRR": 0.84,
+              "sourceHit": {
+                "count": 25,
+                "total": 25,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.9615384615384616,
+              "sourceRecallMacro": 0.98,
+              "sourceMRR": 1
+            },
+            "3": {
+              "singleChunkHit": {
+                "count": 24,
+                "total": 25,
+                "rate": 0.96
+              },
+              "singleChunkMRR": 0.8933333333333334,
+              "anyFactHit": {
+                "count": 24,
+                "total": 25,
+                "rate": 0.96
+              },
+              "factCovered": 45,
+              "factRecallMicro": 0.9,
+              "factRecallMacro": 0.9266666666666665,
+              "completeEvidence": {
+                "count": 22,
+                "total": 25,
+                "rate": 0.88
+              },
+              "prefixFirstFactMRR": 0.8933333333333334,
+              "sourceHit": {
+                "count": 25,
+                "total": 25,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.9615384615384616,
+              "sourceRecallMacro": 0.98,
+              "sourceMRR": 1
+            },
+            "5": {
+              "singleChunkHit": {
+                "count": 25,
+                "total": 25,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.9033333333333334,
+              "anyFactHit": {
+                "count": 25,
+                "total": 25,
+                "rate": 1
+              },
+              "factCovered": 47,
+              "factRecallMicro": 0.94,
+              "factRecallMacro": 0.96,
+              "completeEvidence": {
+                "count": 23,
+                "total": 25,
+                "rate": 0.92
+              },
+              "prefixFirstFactMRR": 0.9033333333333334,
+              "sourceHit": {
+                "count": 25,
+                "total": 25,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            },
+            "10": {
+              "singleChunkHit": {
+                "count": 25,
+                "total": 25,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.9033333333333334,
+              "anyFactHit": {
+                "count": 25,
+                "total": 25,
+                "rate": 1
+              },
+              "factCovered": 47,
+              "factRecallMicro": 0.94,
+              "factRecallMacro": 0.96,
+              "completeEvidence": {
+                "count": 23,
+                "total": 25,
+                "rate": 0.92
+              },
+              "prefixFirstFactMRR": 0.9033333333333334,
+              "sourceHit": {
+                "count": 25,
+                "total": 25,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            }
+          }
+        }
+      },
+      "changed": {
+        "split": {
+          "questions": 7,
+          "answerable": 7,
+          "noAnswer": {
+            "total": 0,
+            "nonempty": 0
+          },
+          "expectedFacts": 22,
+          "sourceQrels": 8,
+          "answerableResultCounts": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 2,
+            "8": 4,
+            "9": 1,
+            "10": 0
+          },
+          "k": {
+            "1": {
+              "singleChunkHit": {
+                "count": 7,
+                "total": 7,
+                "rate": 1
+              },
+              "singleChunkMRR": 1,
+              "anyFactHit": {
+                "count": 7,
+                "total": 7,
+                "rate": 1
+              },
+              "factCovered": 14,
+              "factRecallMicro": 0.6363636363636364,
+              "factRecallMacro": 0.6190476190476192,
+              "completeEvidence": {
+                "count": 1,
+                "total": 7,
+                "rate": 0.14285714285714285
+              },
+              "prefixFirstFactMRR": 1,
+              "sourceHit": {
+                "count": 7,
+                "total": 7,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.875,
+              "sourceRecallMacro": 0.9285714285714286,
+              "sourceMRR": 1
+            },
+            "3": {
+              "singleChunkHit": {
+                "count": 7,
+                "total": 7,
+                "rate": 1
+              },
+              "singleChunkMRR": 1,
+              "anyFactHit": {
+                "count": 7,
+                "total": 7,
+                "rate": 1
+              },
+              "factCovered": 19,
+              "factRecallMicro": 0.8636363636363636,
+              "factRecallMacro": 0.8690476190476192,
+              "completeEvidence": {
+                "count": 5,
+                "total": 7,
+                "rate": 0.7142857142857143
+              },
+              "prefixFirstFactMRR": 1,
+              "sourceHit": {
+                "count": 7,
+                "total": 7,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            },
+            "5": {
+              "singleChunkHit": {
+                "count": 7,
+                "total": 7,
+                "rate": 1
+              },
+              "singleChunkMRR": 1,
+              "anyFactHit": {
+                "count": 7,
+                "total": 7,
+                "rate": 1
+              },
+              "factCovered": 20,
+              "factRecallMicro": 0.9090909090909091,
+              "factRecallMacro": 0.9166666666666666,
+              "completeEvidence": {
+                "count": 5,
+                "total": 7,
+                "rate": 0.7142857142857143
+              },
+              "prefixFirstFactMRR": 1,
+              "sourceHit": {
+                "count": 7,
+                "total": 7,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            },
+            "10": {
+              "singleChunkHit": {
+                "count": 7,
+                "total": 7,
+                "rate": 1
+              },
+              "singleChunkMRR": 1,
+              "anyFactHit": {
+                "count": 7,
+                "total": 7,
+                "rate": 1
+              },
+              "factCovered": 20,
+              "factRecallMicro": 0.9090909090909091,
+              "factRecallMacro": 0.9166666666666666,
+              "completeEvidence": {
+                "count": 5,
+                "total": 7,
+                "rate": 0.7142857142857143
+              },
+              "prefixFirstFactMRR": 1,
+              "sourceHit": {
+                "count": 7,
+                "total": 7,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            }
+          }
+        },
+        "parent": {
+          "questions": 7,
+          "answerable": 7,
+          "noAnswer": {
+            "total": 0,
+            "nonempty": 0
+          },
+          "expectedFacts": 22,
+          "sourceQrels": 8,
+          "answerableResultCounts": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 0,
+            "8": 3,
+            "9": 3,
+            "10": 1
+          },
+          "k": {
+            "1": {
+              "singleChunkHit": {
+                "count": 5,
+                "total": 7,
+                "rate": 0.7142857142857143
+              },
+              "singleChunkMRR": 0.7142857142857143,
+              "anyFactHit": {
+                "count": 5,
+                "total": 7,
+                "rate": 0.7142857142857143
+              },
+              "factCovered": 12,
+              "factRecallMicro": 0.5454545454545454,
+              "factRecallMacro": 0.5,
+              "completeEvidence": {
+                "count": 1,
+                "total": 7,
+                "rate": 0.14285714285714285
+              },
+              "prefixFirstFactMRR": 0.7142857142857143,
+              "sourceHit": {
+                "count": 7,
+                "total": 7,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.875,
+              "sourceRecallMacro": 0.9285714285714286,
+              "sourceMRR": 1
+            },
+            "3": {
+              "singleChunkHit": {
+                "count": 6,
+                "total": 7,
+                "rate": 0.8571428571428571
+              },
+              "singleChunkMRR": 0.7857142857142857,
+              "anyFactHit": {
+                "count": 6,
+                "total": 7,
+                "rate": 0.8571428571428571
+              },
+              "factCovered": 18,
+              "factRecallMicro": 0.8181818181818182,
+              "factRecallMacro": 0.8095238095238094,
+              "completeEvidence": {
+                "count": 5,
+                "total": 7,
+                "rate": 0.7142857142857143
+              },
+              "prefixFirstFactMRR": 0.7857142857142857,
+              "sourceHit": {
+                "count": 7,
+                "total": 7,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.875,
+              "sourceRecallMacro": 0.9285714285714286,
+              "sourceMRR": 1
+            },
+            "5": {
+              "singleChunkHit": {
+                "count": 7,
+                "total": 7,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.8214285714285714,
+              "anyFactHit": {
+                "count": 7,
+                "total": 7,
+                "rate": 1
+              },
+              "factCovered": 19,
+              "factRecallMicro": 0.8636363636363636,
+              "factRecallMacro": 0.8571428571428571,
+              "completeEvidence": {
+                "count": 5,
+                "total": 7,
+                "rate": 0.7142857142857143
+              },
+              "prefixFirstFactMRR": 0.8214285714285714,
+              "sourceHit": {
+                "count": 7,
+                "total": 7,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            },
+            "10": {
+              "singleChunkHit": {
+                "count": 7,
+                "total": 7,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.8214285714285714,
+              "anyFactHit": {
+                "count": 7,
+                "total": 7,
+                "rate": 1
+              },
+              "factCovered": 19,
+              "factRecallMicro": 0.8636363636363636,
+              "factRecallMacro": 0.8571428571428571,
+              "completeEvidence": {
+                "count": 5,
+                "total": 7,
+                "rate": 0.7142857142857143
+              },
+              "prefixFirstFactMRR": 0.8214285714285714,
+              "sourceHit": {
+                "count": 7,
+                "total": 7,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            }
+          }
+        }
+      }
+    },
+    "C-development": {
+      "all": {
+        "split": {
+          "questions": 15,
+          "answerable": 15,
+          "noAnswer": {
+            "total": 0,
+            "nonempty": 0
+          },
+          "expectedFacts": 25,
+          "sourceQrels": 16,
+          "answerableResultCounts": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 4,
+            "7": 10,
+            "8": 1,
+            "9": 0,
+            "10": 0
+          },
+          "k": {
+            "1": {
+              "singleChunkHit": {
+                "count": 13,
+                "total": 15,
+                "rate": 0.8666666666666667
+              },
+              "singleChunkMRR": 0.8666666666666667,
+              "anyFactHit": {
+                "count": 13,
+                "total": 15,
+                "rate": 0.8666666666666667
+              },
+              "factCovered": 18,
+              "factRecallMicro": 0.72,
+              "factRecallMacro": 0.7666666666666667,
+              "completeEvidence": {
+                "count": 10,
+                "total": 15,
+                "rate": 0.6666666666666666
+              },
+              "prefixFirstFactMRR": 0.8666666666666667,
+              "sourceHit": {
+                "count": 15,
+                "total": 15,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.9375,
+              "sourceRecallMacro": 0.9666666666666667,
+              "sourceMRR": 1
+            },
+            "3": {
+              "singleChunkHit": {
+                "count": 14,
+                "total": 15,
+                "rate": 0.9333333333333333
+              },
+              "singleChunkMRR": 0.9,
+              "anyFactHit": {
+                "count": 15,
+                "total": 15,
+                "rate": 1
+              },
+              "factCovered": 23,
+              "factRecallMicro": 0.92,
+              "factRecallMacro": 0.9444444444444444,
+              "completeEvidence": {
+                "count": 13,
+                "total": 15,
+                "rate": 0.8666666666666667
+              },
+              "prefixFirstFactMRR": 0.9222222222222223,
+              "sourceHit": {
+                "count": 15,
+                "total": 15,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            },
+            "5": {
+              "singleChunkHit": {
+                "count": 14,
+                "total": 15,
+                "rate": 0.9333333333333333
+              },
+              "singleChunkMRR": 0.9,
+              "anyFactHit": {
+                "count": 15,
+                "total": 15,
+                "rate": 1
+              },
+              "factCovered": 24,
+              "factRecallMicro": 0.96,
+              "factRecallMacro": 0.9666666666666667,
+              "completeEvidence": {
+                "count": 14,
+                "total": 15,
+                "rate": 0.9333333333333333
+              },
+              "prefixFirstFactMRR": 0.9222222222222223,
+              "sourceHit": {
+                "count": 15,
+                "total": 15,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            },
+            "10": {
+              "singleChunkHit": {
+                "count": 14,
+                "total": 15,
+                "rate": 0.9333333333333333
+              },
+              "singleChunkMRR": 0.9,
+              "anyFactHit": {
+                "count": 15,
+                "total": 15,
+                "rate": 1
+              },
+              "factCovered": 25,
+              "factRecallMicro": 1,
+              "factRecallMacro": 1,
+              "completeEvidence": {
+                "count": 15,
+                "total": 15,
+                "rate": 1
+              },
+              "prefixFirstFactMRR": 0.9222222222222223,
+              "sourceHit": {
+                "count": 15,
+                "total": 15,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            }
+          }
+        },
+        "parent": {
+          "questions": 15,
+          "answerable": 15,
+          "noAnswer": {
+            "total": 0,
+            "nonempty": 0
+          },
+          "expectedFacts": 25,
+          "sourceQrels": 16,
+          "answerableResultCounts": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 5,
+            "7": 8,
+            "8": 2,
+            "9": 0,
+            "10": 0
+          },
+          "k": {
+            "1": {
+              "singleChunkHit": {
+                "count": 13,
+                "total": 15,
+                "rate": 0.8666666666666667
+              },
+              "singleChunkMRR": 0.8666666666666667,
+              "anyFactHit": {
+                "count": 13,
+                "total": 15,
+                "rate": 0.8666666666666667
+              },
+              "factCovered": 18,
+              "factRecallMicro": 0.72,
+              "factRecallMacro": 0.7666666666666667,
+              "completeEvidence": {
+                "count": 10,
+                "total": 15,
+                "rate": 0.6666666666666666
+              },
+              "prefixFirstFactMRR": 0.8666666666666667,
+              "sourceHit": {
+                "count": 15,
+                "total": 15,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.9375,
+              "sourceRecallMacro": 0.9666666666666667,
+              "sourceMRR": 1
+            },
+            "3": {
+              "singleChunkHit": {
+                "count": 14,
+                "total": 15,
+                "rate": 0.9333333333333333
+              },
+              "singleChunkMRR": 0.9,
+              "anyFactHit": {
+                "count": 15,
+                "total": 15,
+                "rate": 1
+              },
+              "factCovered": 23,
+              "factRecallMicro": 0.92,
+              "factRecallMacro": 0.9444444444444444,
+              "completeEvidence": {
+                "count": 13,
+                "total": 15,
+                "rate": 0.8666666666666667
+              },
+              "prefixFirstFactMRR": 0.9222222222222223,
+              "sourceHit": {
+                "count": 15,
+                "total": 15,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            },
+            "5": {
+              "singleChunkHit": {
+                "count": 14,
+                "total": 15,
+                "rate": 0.9333333333333333
+              },
+              "singleChunkMRR": 0.9,
+              "anyFactHit": {
+                "count": 15,
+                "total": 15,
+                "rate": 1
+              },
+              "factCovered": 24,
+              "factRecallMicro": 0.96,
+              "factRecallMacro": 0.9666666666666667,
+              "completeEvidence": {
+                "count": 14,
+                "total": 15,
+                "rate": 0.9333333333333333
+              },
+              "prefixFirstFactMRR": 0.9222222222222223,
+              "sourceHit": {
+                "count": 15,
+                "total": 15,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            },
+            "10": {
+              "singleChunkHit": {
+                "count": 14,
+                "total": 15,
+                "rate": 0.9333333333333333
+              },
+              "singleChunkMRR": 0.9,
+              "anyFactHit": {
+                "count": 15,
+                "total": 15,
+                "rate": 1
+              },
+              "factCovered": 25,
+              "factRecallMicro": 1,
+              "factRecallMacro": 1,
+              "completeEvidence": {
+                "count": 15,
+                "total": 15,
+                "rate": 1
+              },
+              "prefixFirstFactMRR": 0.9222222222222223,
+              "sourceHit": {
+                "count": 15,
+                "total": 15,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            }
+          }
+        }
+      },
+      "changed": {
+        "split": {
+          "questions": 2,
+          "answerable": 2,
+          "noAnswer": {
+            "total": 0,
+            "nonempty": 0
+          },
+          "expectedFacts": 6,
+          "sourceQrels": 3,
+          "answerableResultCounts": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 2,
+            "8": 0,
+            "9": 0,
+            "10": 0
+          },
+          "k": {
+            "1": {
+              "singleChunkHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "singleChunkMRR": 1,
+              "anyFactHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "factCovered": 3,
+              "factRecallMicro": 0.5,
+              "factRecallMacro": 0.5,
+              "completeEvidence": {
+                "count": 0,
+                "total": 2,
+                "rate": 0
+              },
+              "prefixFirstFactMRR": 1,
+              "sourceHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.6666666666666666,
+              "sourceRecallMacro": 0.75,
+              "sourceMRR": 1
+            },
+            "3": {
+              "singleChunkHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "singleChunkMRR": 1,
+              "anyFactHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "factCovered": 5,
+              "factRecallMicro": 0.8333333333333334,
+              "factRecallMacro": 0.8333333333333333,
+              "completeEvidence": {
+                "count": 1,
+                "total": 2,
+                "rate": 0.5
+              },
+              "prefixFirstFactMRR": 1,
+              "sourceHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            },
+            "5": {
+              "singleChunkHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "singleChunkMRR": 1,
+              "anyFactHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "factCovered": 6,
+              "factRecallMicro": 1,
+              "factRecallMacro": 1,
+              "completeEvidence": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "prefixFirstFactMRR": 1,
+              "sourceHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            },
+            "10": {
+              "singleChunkHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "singleChunkMRR": 1,
+              "anyFactHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "factCovered": 6,
+              "factRecallMicro": 1,
+              "factRecallMacro": 1,
+              "completeEvidence": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "prefixFirstFactMRR": 1,
+              "sourceHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            }
+          }
+        },
+        "parent": {
+          "questions": 2,
+          "answerable": 2,
+          "noAnswer": {
+            "total": 0,
+            "nonempty": 0
+          },
+          "expectedFacts": 6,
+          "sourceQrels": 3,
+          "answerableResultCounts": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 1,
+            "7": 0,
+            "8": 1,
+            "9": 0,
+            "10": 0
+          },
+          "k": {
+            "1": {
+              "singleChunkHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "singleChunkMRR": 1,
+              "anyFactHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "factCovered": 3,
+              "factRecallMicro": 0.5,
+              "factRecallMacro": 0.5,
+              "completeEvidence": {
+                "count": 0,
+                "total": 2,
+                "rate": 0
+              },
+              "prefixFirstFactMRR": 1,
+              "sourceHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.6666666666666666,
+              "sourceRecallMacro": 0.75,
+              "sourceMRR": 1
+            },
+            "3": {
+              "singleChunkHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "singleChunkMRR": 1,
+              "anyFactHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "factCovered": 5,
+              "factRecallMicro": 0.8333333333333334,
+              "factRecallMacro": 0.8333333333333333,
+              "completeEvidence": {
+                "count": 1,
+                "total": 2,
+                "rate": 0.5
+              },
+              "prefixFirstFactMRR": 1,
+              "sourceHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            },
+            "5": {
+              "singleChunkHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "singleChunkMRR": 1,
+              "anyFactHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "factCovered": 6,
+              "factRecallMicro": 1,
+              "factRecallMacro": 1,
+              "completeEvidence": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "prefixFirstFactMRR": 1,
+              "sourceHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            },
+            "10": {
+              "singleChunkHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "singleChunkMRR": 1,
+              "anyFactHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "factCovered": 6,
+              "factRecallMicro": 1,
+              "factRecallMacro": 1,
+              "completeEvidence": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "prefixFirstFactMRR": 1,
+              "sourceHit": {
+                "count": 2,
+                "total": 2,
+                "rate": 1
+              },
+              "sourceRecallMicro": 1,
+              "sourceRecallMacro": 1,
+              "sourceMRR": 1
+            }
+          }
+        }
+      }
+    },
+    "mixed-development": {
+      "all": {
+        "split": {
+          "questions": 30,
+          "answerable": 27,
+          "noAnswer": {
+            "total": 3,
+            "nonempty": 3
+          },
+          "expectedFacts": 84,
+          "sourceQrels": 46,
+          "answerableResultCounts": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 2,
+            "7": 5,
+            "8": 4,
+            "9": 9,
+            "10": 7
+          },
+          "k": {
+            "1": {
+              "singleChunkHit": {
+                "count": 23,
+                "total": 27,
+                "rate": 0.8518518518518519
+              },
+              "singleChunkMRR": 0.8518518518518519,
+              "anyFactHit": {
+                "count": 23,
+                "total": 27,
+                "rate": 0.8518518518518519
+              },
+              "factCovered": 41,
+              "factRecallMicro": 0.4880952380952381,
+              "factRecallMacro": 0.5611111111111111,
+              "completeEvidence": {
+                "count": 9,
+                "total": 27,
+                "rate": 0.3333333333333333
+              },
+              "prefixFirstFactMRR": 0.8518518518518519,
+              "sourceHit": {
+                "count": 26,
+                "total": 27,
+                "rate": 0.9629629629629629
+              },
+              "sourceRecallMicro": 0.5652173913043478,
+              "sourceRecallMacro": 0.6728395061728395,
+              "sourceMRR": 0.9629629629629629
+            },
+            "3": {
+              "singleChunkHit": {
+                "count": 27,
+                "total": 27,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.9197530864197531,
+              "anyFactHit": {
+                "count": 27,
+                "total": 27,
+                "rate": 1
+              },
+              "factCovered": 60,
+              "factRecallMicro": 0.7142857142857143,
+              "factRecallMacro": 0.7679012345679013,
+              "completeEvidence": {
+                "count": 15,
+                "total": 27,
+                "rate": 0.5555555555555556
+              },
+              "prefixFirstFactMRR": 0.9197530864197531,
+              "sourceHit": {
+                "count": 27,
+                "total": 27,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.782608695652174,
+              "sourceRecallMacro": 0.8395061728395061,
+              "sourceMRR": 0.9814814814814815
+            },
+            "5": {
+              "singleChunkHit": {
+                "count": 27,
+                "total": 27,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.9197530864197531,
+              "anyFactHit": {
+                "count": 27,
+                "total": 27,
+                "rate": 1
+              },
+              "factCovered": 69,
+              "factRecallMicro": 0.8214285714285714,
+              "factRecallMacro": 0.8567901234567901,
+              "completeEvidence": {
+                "count": 19,
+                "total": 27,
+                "rate": 0.7037037037037037
+              },
+              "prefixFirstFactMRR": 0.9197530864197531,
+              "sourceHit": {
+                "count": 27,
+                "total": 27,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.8695652173913043,
+              "sourceRecallMacro": 0.9074074074074074,
+              "sourceMRR": 0.9814814814814815
+            },
+            "10": {
+              "singleChunkHit": {
+                "count": 27,
+                "total": 27,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.9197530864197531,
+              "anyFactHit": {
+                "count": 27,
+                "total": 27,
+                "rate": 1
+              },
+              "factCovered": 77,
+              "factRecallMicro": 0.9166666666666666,
+              "factRecallMacro": 0.9407407407407408,
+              "completeEvidence": {
+                "count": 23,
+                "total": 27,
+                "rate": 0.8518518518518519
+              },
+              "prefixFirstFactMRR": 0.9197530864197531,
+              "sourceHit": {
+                "count": 27,
+                "total": 27,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.9347826086956522,
+              "sourceRecallMacro": 0.95679012345679,
+              "sourceMRR": 0.9814814814814815
+            }
+          }
+        },
+        "parent": {
+          "questions": 30,
+          "answerable": 27,
+          "noAnswer": {
+            "total": 3,
+            "nonempty": 3
+          },
+          "expectedFacts": 84,
+          "sourceQrels": 46,
+          "answerableResultCounts": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 1,
+            "7": 3,
+            "8": 6,
+            "9": 7,
+            "10": 10
+          },
+          "k": {
+            "1": {
+              "singleChunkHit": {
+                "count": 23,
+                "total": 27,
+                "rate": 0.8518518518518519
+              },
+              "singleChunkMRR": 0.8518518518518519,
+              "anyFactHit": {
+                "count": 23,
+                "total": 27,
+                "rate": 0.8518518518518519
+              },
+              "factCovered": 37,
+              "factRecallMicro": 0.44047619047619047,
+              "factRecallMacro": 0.5246913580246914,
+              "completeEvidence": {
+                "count": 9,
+                "total": 27,
+                "rate": 0.3333333333333333
+              },
+              "prefixFirstFactMRR": 0.8518518518518519,
+              "sourceHit": {
+                "count": 26,
+                "total": 27,
+                "rate": 0.9629629629629629
+              },
+              "sourceRecallMicro": 0.5652173913043478,
+              "sourceRecallMacro": 0.6666666666666666,
+              "sourceMRR": 0.9629629629629629
+            },
+            "3": {
+              "singleChunkHit": {
+                "count": 26,
+                "total": 27,
+                "rate": 0.9629629629629629
+              },
+              "singleChunkMRR": 0.8950617283950618,
+              "anyFactHit": {
+                "count": 26,
+                "total": 27,
+                "rate": 0.9629629629629629
+              },
+              "factCovered": 56,
+              "factRecallMicro": 0.6666666666666666,
+              "factRecallMacro": 0.7314814814814814,
+              "completeEvidence": {
+                "count": 13,
+                "total": 27,
+                "rate": 0.48148148148148145
+              },
+              "prefixFirstFactMRR": 0.8950617283950618,
+              "sourceHit": {
+                "count": 26,
+                "total": 27,
+                "rate": 0.9629629629629629
+              },
+              "sourceRecallMicro": 0.6521739130434783,
+              "sourceRecallMacro": 0.7345679012345678,
+              "sourceMRR": 0.9629629629629629
+            },
+            "5": {
+              "singleChunkHit": {
+                "count": 27,
+                "total": 27,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.904320987654321,
+              "anyFactHit": {
+                "count": 27,
+                "total": 27,
+                "rate": 1
+              },
+              "factCovered": 65,
+              "factRecallMicro": 0.7738095238095238,
+              "factRecallMacro": 0.8166666666666667,
+              "completeEvidence": {
+                "count": 17,
+                "total": 27,
+                "rate": 0.6296296296296297
+              },
+              "prefixFirstFactMRR": 0.904320987654321,
+              "sourceHit": {
+                "count": 27,
+                "total": 27,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.8260869565217391,
+              "sourceRecallMacro": 0.8703703703703703,
+              "sourceMRR": 0.9722222222222222
+            },
+            "10": {
+              "singleChunkHit": {
+                "count": 27,
+                "total": 27,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.904320987654321,
+              "anyFactHit": {
+                "count": 27,
+                "total": 27,
+                "rate": 1
+              },
+              "factCovered": 69,
+              "factRecallMicro": 0.8214285714285714,
+              "factRecallMacro": 0.8660493827160494,
+              "completeEvidence": {
+                "count": 20,
+                "total": 27,
+                "rate": 0.7407407407407407
+              },
+              "prefixFirstFactMRR": 0.904320987654321,
+              "sourceHit": {
+                "count": 27,
+                "total": 27,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.8913043478260869,
+              "sourceRecallMacro": 0.9197530864197531,
+              "sourceMRR": 0.9722222222222222
+            }
+          }
+        }
+      },
+      "changed": {
+        "split": {
+          "questions": 14,
+          "answerable": 14,
+          "noAnswer": {
+            "total": 0,
+            "nonempty": 0
+          },
+          "expectedFacts": 54,
+          "sourceQrels": 29,
+          "answerableResultCounts": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 1,
+            "7": 3,
+            "8": 0,
+            "9": 6,
+            "10": 4
+          },
+          "k": {
+            "1": {
+              "singleChunkHit": {
+                "count": 12,
+                "total": 14,
+                "rate": 0.8571428571428571
+              },
+              "singleChunkMRR": 0.8571428571428571,
+              "anyFactHit": {
+                "count": 12,
+                "total": 14,
+                "rate": 0.8571428571428571
+              },
+              "factCovered": 19,
+              "factRecallMicro": 0.35185185185185186,
+              "factRecallMacro": 0.3678571428571428,
+              "completeEvidence": {
+                "count": 0,
+                "total": 14,
+                "rate": 0
+              },
+              "prefixFirstFactMRR": 0.8571428571428571,
+              "sourceHit": {
+                "count": 13,
+                "total": 14,
+                "rate": 0.9285714285714286
+              },
+              "sourceRecallMicro": 0.4482758620689655,
+              "sourceRecallMacro": 0.511904761904762,
+              "sourceMRR": 0.9285714285714286
+            },
+            "3": {
+              "singleChunkHit": {
+                "count": 14,
+                "total": 14,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.9285714285714286,
+              "anyFactHit": {
+                "count": 14,
+                "total": 14,
+                "rate": 1
+              },
+              "factCovered": 33,
+              "factRecallMicro": 0.6111111111111112,
+              "factRecallMacro": 0.6357142857142858,
+              "completeEvidence": {
+                "count": 4,
+                "total": 14,
+                "rate": 0.2857142857142857
+              },
+              "prefixFirstFactMRR": 0.9285714285714286,
+              "sourceHit": {
+                "count": 14,
+                "total": 14,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.7241379310344828,
+              "sourceRecallMacro": 0.761904761904762,
+              "sourceMRR": 0.9642857142857143
+            },
+            "5": {
+              "singleChunkHit": {
+                "count": 14,
+                "total": 14,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.9285714285714286,
+              "anyFactHit": {
+                "count": 14,
+                "total": 14,
+                "rate": 1
+              },
+              "factCovered": 40,
+              "factRecallMicro": 0.7407407407407407,
+              "factRecallMacro": 0.7595238095238095,
+              "completeEvidence": {
+                "count": 7,
+                "total": 14,
+                "rate": 0.5
+              },
+              "prefixFirstFactMRR": 0.9285714285714286,
+              "sourceHit": {
+                "count": 14,
+                "total": 14,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.7931034482758621,
+              "sourceRecallMacro": 0.8214285714285714,
+              "sourceMRR": 0.9642857142857143
+            },
+            "10": {
+              "singleChunkHit": {
+                "count": 14,
+                "total": 14,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.9285714285714286,
+              "anyFactHit": {
+                "count": 14,
+                "total": 14,
+                "rate": 1
+              },
+              "factCovered": 47,
+              "factRecallMicro": 0.8703703703703703,
+              "factRecallMacro": 0.8857142857142858,
+              "completeEvidence": {
+                "count": 10,
+                "total": 14,
+                "rate": 0.7142857142857143
+              },
+              "prefixFirstFactMRR": 0.9285714285714286,
+              "sourceHit": {
+                "count": 14,
+                "total": 14,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.896551724137931,
+              "sourceRecallMacro": 0.9166666666666667,
+              "sourceMRR": 0.9642857142857143
+            }
+          }
+        },
+        "parent": {
+          "questions": 14,
+          "answerable": 14,
+          "noAnswer": {
+            "total": 0,
+            "nonempty": 0
+          },
+          "expectedFacts": 54,
+          "sourceQrels": 29,
+          "answerableResultCounts": {
+            "0": 0,
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0,
+            "6": 0,
+            "7": 1,
+            "8": 2,
+            "9": 4,
+            "10": 7
+          },
+          "k": {
+            "1": {
+              "singleChunkHit": {
+                "count": 12,
+                "total": 14,
+                "rate": 0.8571428571428571
+              },
+              "singleChunkMRR": 0.8571428571428571,
+              "anyFactHit": {
+                "count": 12,
+                "total": 14,
+                "rate": 0.8571428571428571
+              },
+              "factCovered": 15,
+              "factRecallMicro": 0.2777777777777778,
+              "factRecallMacro": 0.2976190476190476,
+              "completeEvidence": {
+                "count": 0,
+                "total": 14,
+                "rate": 0
+              },
+              "prefixFirstFactMRR": 0.8571428571428571,
+              "sourceHit": {
+                "count": 13,
+                "total": 14,
+                "rate": 0.9285714285714286
+              },
+              "sourceRecallMicro": 0.4482758620689655,
+              "sourceRecallMacro": 0.5,
+              "sourceMRR": 0.9285714285714286
+            },
+            "3": {
+              "singleChunkHit": {
+                "count": 13,
+                "total": 14,
+                "rate": 0.9285714285714286
+              },
+              "singleChunkMRR": 0.8809523809523808,
+              "anyFactHit": {
+                "count": 13,
+                "total": 14,
+                "rate": 0.9285714285714286
+              },
+              "factCovered": 29,
+              "factRecallMicro": 0.5370370370370371,
+              "factRecallMacro": 0.5654761904761905,
+              "completeEvidence": {
+                "count": 2,
+                "total": 14,
+                "rate": 0.14285714285714285
+              },
+              "prefixFirstFactMRR": 0.8809523809523808,
+              "sourceHit": {
+                "count": 13,
+                "total": 14,
+                "rate": 0.9285714285714286
+              },
+              "sourceRecallMicro": 0.5172413793103449,
+              "sourceRecallMacro": 0.5595238095238094,
+              "sourceMRR": 0.9285714285714286
+            },
+            "5": {
+              "singleChunkHit": {
+                "count": 14,
+                "total": 14,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.8988095238095237,
+              "anyFactHit": {
+                "count": 14,
+                "total": 14,
+                "rate": 1
+              },
+              "factCovered": 36,
+              "factRecallMicro": 0.6666666666666666,
+              "factRecallMacro": 0.6821428571428572,
+              "completeEvidence": {
+                "count": 5,
+                "total": 14,
+                "rate": 0.35714285714285715
+              },
+              "prefixFirstFactMRR": 0.8988095238095237,
+              "sourceHit": {
+                "count": 14,
+                "total": 14,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.7241379310344828,
+              "sourceRecallMacro": 0.75,
+              "sourceMRR": 0.9464285714285714
+            },
+            "10": {
+              "singleChunkHit": {
+                "count": 14,
+                "total": 14,
+                "rate": 1
+              },
+              "singleChunkMRR": 0.8988095238095237,
+              "anyFactHit": {
+                "count": 14,
+                "total": 14,
+                "rate": 1
+              },
+              "factCovered": 39,
+              "factRecallMicro": 0.7222222222222222,
+              "factRecallMacro": 0.7416666666666666,
+              "completeEvidence": {
+                "count": 7,
+                "total": 14,
+                "rate": 0.5
+              },
+              "prefixFirstFactMRR": 0.8988095238095237,
+              "sourceHit": {
+                "count": 14,
+                "total": 14,
+                "rate": 1
+              },
+              "sourceRecallMicro": 0.8275862068965517,
+              "sourceRecallMacro": 0.8452380952380952,
+              "sourceMRR": 0.9464285714285714
+            }
+          }
+        }
+      }
+    }
+  },
+  "unchanged": {
+    "parents": 67,
+    "identical": 21,
+    "differences": [
+      {
+        "scope": "A-development",
+        "id": "a-dev-002"
+      },
+      {
+        "scope": "A-development",
+        "id": "a-dev-003"
+      },
+      {
+        "scope": "A-development",
+        "id": "a-dev-004"
+      },
+      {
+        "scope": "A-development",
+        "id": "a-dev-006"
+      },
+      {
+        "scope": "A-development",
+        "id": "a-dev-007"
+      },
+      {
+        "scope": "A-development",
+        "id": "a-dev-008"
+      },
+      {
+        "scope": "A-development",
+        "id": "a-dev-009"
+      },
+      {
+        "scope": "A-development",
+        "id": "a-dev-011"
+      },
+      {
+        "scope": "A-development",
+        "id": "a-dev-016"
+      },
+      {
+        "scope": "A-development",
+        "id": "a-dev-018"
+      },
+      {
+        "scope": "A-development",
+        "id": "a-dev-019"
+      },
+      {
+        "scope": "A-development",
+        "id": "a-dev-020"
+      },
+      {
+        "scope": "A-development",
+        "id": "a-dev-021"
+      },
+      {
+        "scope": "A-development",
+        "id": "a-dev-022"
+      },
+      {
+        "scope": "A-development",
+        "id": "a-dev-027"
+      },
+      {
+        "scope": "A-development",
+        "id": "a-dev-028"
+      },
+      {
+        "scope": "B-development",
+        "id": "B-D01"
+      },
+      {
+        "scope": "B-development",
+        "id": "B-D04"
+      },
+      {
+        "scope": "B-development",
+        "id": "B-D05"
+      },
+      {
+        "scope": "B-development",
+        "id": "B-D06"
+      },
+      {
+        "scope": "B-development",
+        "id": "B-D08"
+      },
+      {
+        "scope": "B-development",
+        "id": "B-D10"
+      },
+      {
+        "scope": "B-development",
+        "id": "B-D15"
+      },
+      {
+        "scope": "B-development",
+        "id": "B-D18"
+      },
+      {
+        "scope": "B-development",
+        "id": "B-D22"
+      },
+      {
+        "scope": "B-development",
+        "id": "B-D23"
+      },
+      {
+        "scope": "B-development",
+        "id": "B-D25"
+      },
+      {
+        "scope": "C-development",
+        "id": "C-D01"
+      },
+      {
+        "scope": "C-development",
+        "id": "C-D02"
+      },
+      {
+        "scope": "C-development",
+        "id": "C-D03"
+      },
+      {
+        "scope": "C-development",
+        "id": "C-D05"
+      },
+      {
+        "scope": "C-development",
+        "id": "C-D06"
+      },
+      {
+        "scope": "C-development",
+        "id": "C-D07"
+      },
+      {
+        "scope": "C-development",
+        "id": "C-D09"
+      },
+      {
+        "scope": "C-development",
+        "id": "C-D12"
+      },
+      {
+        "scope": "C-development",
+        "id": "C-D14"
+      },
+      {
+        "scope": "mixed-development",
+        "id": "mix-dev-002"
+      },
+      {
+        "scope": "mixed-development",
+        "id": "mix-dev-003"
+      },
+      {
+        "scope": "mixed-development",
+        "id": "mix-dev-011"
+      },
+      {
+        "scope": "mixed-development",
+        "id": "mix-dev-020"
+      },
+      {
+        "scope": "mixed-development",
+        "id": "mix-dev-025"
+      },
+      {
+        "scope": "mixed-development",
+        "id": "mix-dev-026"
+      },
+      {
+        "scope": "mixed-development",
+        "id": "mix-dev-027"
+      },
+      {
+        "scope": "mixed-development",
+        "id": "mix-dev-028"
+      },
+      {
+        "scope": "mixed-development",
+        "id": "mix-dev-029"
+      },
+      {
+        "scope": "mixed-development",
+        "id": "mix-dev-030"
+      }
+    ]
+  },
+  "changedQuestions": [
+    {
+      "scope": "A-development",
+      "id": "a-dev-001",
+      "expected": 2,
+      "split_facts": 2,
+      "parent_facts": 2,
+      "gained": [],
+      "lost": [],
+      "split_complete": true,
+      "parent_complete": true,
+      "split_context_chars": 11974,
+      "parent_context_chars": 11497,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 10,
+      "parent_count": 10
+    },
+    {
+      "scope": "A-development",
+      "id": "a-dev-010",
+      "expected": 3,
+      "split_facts": 3,
+      "parent_facts": 3,
+      "gained": [],
+      "lost": [],
+      "split_complete": true,
+      "parent_complete": true,
+      "split_context_chars": 11753,
+      "parent_context_chars": 11245,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 10,
+      "parent_count": 10
+    },
+    {
+      "scope": "A-development",
+      "id": "a-dev-012",
+      "expected": 2,
+      "split_facts": 2,
+      "parent_facts": 1,
+      "gained": [],
+      "lost": ["a-dev-012-f1"],
+      "split_complete": true,
+      "parent_complete": false,
+      "split_context_chars": 11976,
+      "parent_context_chars": 11077,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 10,
+      "parent_count": 10
+    },
+    {
+      "scope": "A-development",
+      "id": "a-dev-014",
+      "expected": 3,
+      "split_facts": 3,
+      "parent_facts": 1,
+      "gained": [],
+      "lost": ["a-dev-014-f1", "a-dev-014-f3"],
+      "split_complete": true,
+      "parent_complete": false,
+      "split_context_chars": 11554,
+      "parent_context_chars": 11026,
+      "split_api_requests": 3,
+      "parent_api_requests": 1,
+      "split_count": 9,
+      "parent_count": 10
+    },
+    {
+      "scope": "A-development",
+      "id": "a-dev-017",
+      "expected": 2,
+      "split_facts": 2,
+      "parent_facts": 2,
+      "gained": [],
+      "lost": [],
+      "split_complete": true,
+      "parent_complete": true,
+      "split_context_chars": 11979,
+      "parent_context_chars": 11925,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 9,
+      "parent_count": 10
+    },
+    {
+      "scope": "A-development",
+      "id": "a-dev-024",
+      "expected": 3,
+      "split_facts": 3,
+      "parent_facts": 3,
+      "gained": [],
+      "lost": [],
+      "split_complete": true,
+      "parent_complete": true,
+      "split_context_chars": 11723,
+      "parent_context_chars": 10935,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 10,
+      "parent_count": 10
+    },
+    {
+      "scope": "A-development",
+      "id": "a-dev-025",
+      "expected": 3,
+      "split_facts": 3,
+      "parent_facts": 3,
+      "gained": [],
+      "lost": [],
+      "split_complete": true,
+      "parent_complete": true,
+      "split_context_chars": 11797,
+      "parent_context_chars": 11551,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 9,
+      "parent_count": 10
+    },
+    {
+      "scope": "A-development",
+      "id": "a-dev-026",
+      "expected": 4,
+      "split_facts": 4,
+      "parent_facts": 4,
+      "gained": [],
+      "lost": [],
+      "split_complete": true,
+      "parent_complete": true,
+      "split_context_chars": 11823,
+      "parent_context_chars": 11466,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 10,
+      "parent_count": 9
+    },
+    {
+      "scope": "A-development",
+      "id": "a-dev-029",
+      "expected": 5,
+      "split_facts": 5,
+      "parent_facts": 4,
+      "gained": [],
+      "lost": ["a-dev-029-f5"],
+      "split_complete": true,
+      "parent_complete": false,
+      "split_context_chars": 11711,
+      "parent_context_chars": 11243,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 10,
+      "parent_count": 10
+    },
+    {
+      "scope": "A-development",
+      "id": "a-dev-030",
+      "expected": 4,
+      "split_facts": 4,
+      "parent_facts": 4,
+      "gained": [],
+      "lost": [],
+      "split_complete": true,
+      "parent_complete": true,
+      "split_context_chars": 11972,
+      "parent_context_chars": 11038,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 10,
+      "parent_count": 10
+    },
+    {
+      "scope": "B-development",
+      "id": "B-D02",
+      "expected": 3,
+      "split_facts": 3,
+      "parent_facts": 3,
+      "gained": [],
+      "lost": [],
+      "split_complete": true,
+      "parent_complete": true,
+      "split_context_chars": 11587,
+      "parent_context_chars": 11357,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 8,
+      "parent_count": 9
+    },
+    {
+      "scope": "B-development",
+      "id": "B-D03",
+      "expected": 3,
+      "split_facts": 3,
+      "parent_facts": 3,
+      "gained": [],
+      "lost": [],
+      "split_complete": true,
+      "parent_complete": true,
+      "split_context_chars": 11923,
+      "parent_context_chars": 11510,
+      "split_api_requests": 3,
+      "parent_api_requests": 1,
+      "split_count": 8,
+      "parent_count": 9
+    },
+    {
+      "scope": "B-development",
+      "id": "B-D09",
+      "expected": 3,
+      "split_facts": 2,
+      "parent_facts": 2,
+      "gained": [],
+      "lost": [],
+      "split_complete": false,
+      "parent_complete": false,
+      "split_context_chars": 11996,
+      "parent_context_chars": 11931,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 8,
+      "parent_count": 8
+    },
+    {
+      "scope": "B-development",
+      "id": "B-D11",
+      "expected": 4,
+      "split_facts": 4,
+      "parent_facts": 4,
+      "gained": [],
+      "lost": [],
+      "split_complete": true,
+      "parent_complete": true,
+      "split_context_chars": 11364,
+      "parent_context_chars": 11966,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 7,
+      "parent_count": 8
+    },
+    {
+      "scope": "B-development",
+      "id": "B-D13",
+      "expected": 3,
+      "split_facts": 3,
+      "parent_facts": 1,
+      "gained": [],
+      "lost": ["B-D13-f2", "B-D13-f3"],
+      "split_complete": true,
+      "parent_complete": false,
+      "split_context_chars": 11409,
+      "parent_context_chars": 11519,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 9,
+      "parent_count": 9
+    },
+    {
+      "scope": "B-development",
+      "id": "B-D17",
+      "expected": 4,
+      "split_facts": 3,
+      "parent_facts": 4,
+      "gained": ["B-D17-f1"],
+      "lost": [],
+      "split_complete": false,
+      "parent_complete": true,
+      "split_context_chars": 11383,
+      "parent_context_chars": 11935,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 7,
+      "parent_count": 8
+    },
+    {
+      "scope": "B-development",
+      "id": "B-D24",
+      "expected": 2,
+      "split_facts": 2,
+      "parent_facts": 2,
+      "gained": [],
+      "lost": [],
+      "split_complete": true,
+      "parent_complete": true,
+      "split_context_chars": 11339,
+      "parent_context_chars": 11870,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 8,
+      "parent_count": 10
+    },
+    {
+      "scope": "C-development",
+      "id": "C-D10",
+      "expected": 3,
+      "split_facts": 3,
+      "parent_facts": 3,
+      "gained": [],
+      "lost": [],
+      "split_complete": true,
+      "parent_complete": true,
+      "split_context_chars": 11653,
+      "parent_context_chars": 11632,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 7,
+      "parent_count": 6
+    },
+    {
+      "scope": "C-development",
+      "id": "C-D15",
+      "expected": 3,
+      "split_facts": 3,
+      "parent_facts": 3,
+      "gained": [],
+      "lost": [],
+      "split_complete": true,
+      "parent_complete": true,
+      "split_context_chars": 11738,
+      "parent_context_chars": 11901,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 7,
+      "parent_count": 8
+    },
+    {
+      "scope": "mixed-development",
+      "id": "mix-dev-005",
+      "expected": 2,
+      "split_facts": 2,
+      "parent_facts": 2,
+      "gained": [],
+      "lost": [],
+      "split_complete": true,
+      "parent_complete": true,
+      "split_context_chars": 11529,
+      "parent_context_chars": 11403,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 6,
+      "parent_count": 8
+    },
+    {
+      "scope": "mixed-development",
+      "id": "mix-dev-007",
+      "expected": 3,
+      "split_facts": 3,
+      "parent_facts": 3,
+      "gained": [],
+      "lost": [],
+      "split_complete": true,
+      "parent_complete": true,
+      "split_context_chars": 11950,
+      "parent_context_chars": 11930,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 7,
+      "parent_count": 9
+    },
+    {
+      "scope": "mixed-development",
+      "id": "mix-dev-010",
+      "expected": 3,
+      "split_facts": 3,
+      "parent_facts": 3,
+      "gained": [],
+      "lost": [],
+      "split_complete": true,
+      "parent_complete": true,
+      "split_context_chars": 11945,
+      "parent_context_chars": 11744,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 10,
+      "parent_count": 10
+    },
+    {
+      "scope": "mixed-development",
+      "id": "mix-dev-012",
+      "expected": 3,
+      "split_facts": 3,
+      "parent_facts": 1,
+      "gained": [],
+      "lost": ["mix-dev-012-f2", "mix-dev-012-f3"],
+      "split_complete": true,
+      "parent_complete": false,
+      "split_context_chars": 11371,
+      "parent_context_chars": 11870,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 7,
+      "parent_count": 10
+    },
+    {
+      "scope": "mixed-development",
+      "id": "mix-dev-013",
+      "expected": 4,
+      "split_facts": 2,
+      "parent_facts": 2,
+      "gained": [],
+      "lost": [],
+      "split_complete": false,
+      "parent_complete": false,
+      "split_context_chars": 11839,
+      "parent_context_chars": 11055,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 10,
+      "parent_count": 10
+    },
+    {
+      "scope": "mixed-development",
+      "id": "mix-dev-014",
+      "expected": 5,
+      "split_facts": 4,
+      "parent_facts": 4,
+      "gained": [],
+      "lost": [],
+      "split_complete": false,
+      "parent_complete": false,
+      "split_context_chars": 11857,
+      "parent_context_chars": 11679,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 9,
+      "parent_count": 9
+    },
+    {
+      "scope": "mixed-development",
+      "id": "mix-dev-015",
+      "expected": 4,
+      "split_facts": 4,
+      "parent_facts": 4,
+      "gained": [],
+      "lost": [],
+      "split_complete": true,
+      "parent_complete": true,
+      "split_context_chars": 11970,
+      "parent_context_chars": 11774,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 9,
+      "parent_count": 10
+    },
+    {
+      "scope": "mixed-development",
+      "id": "mix-dev-016",
+      "expected": 4,
+      "split_facts": 4,
+      "parent_facts": 1,
+      "gained": [],
+      "lost": ["mix-dev-016-f2", "mix-dev-016-f3", "mix-dev-016-f4"],
+      "split_complete": true,
+      "parent_complete": false,
+      "split_context_chars": 11926,
+      "parent_context_chars": 11609,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 9,
+      "parent_count": 9
+    },
+    {
+      "scope": "mixed-development",
+      "id": "mix-dev-017",
+      "expected": 5,
+      "split_facts": 5,
+      "parent_facts": 4,
+      "gained": [],
+      "lost": ["mix-dev-017-f1"],
+      "split_complete": true,
+      "parent_complete": false,
+      "split_context_chars": 11665,
+      "parent_context_chars": 11374,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 9,
+      "parent_count": 10
+    },
+    {
+      "scope": "mixed-development",
+      "id": "mix-dev-018",
+      "expected": 3,
+      "split_facts": 3,
+      "parent_facts": 3,
+      "gained": [],
+      "lost": [],
+      "split_complete": true,
+      "parent_complete": true,
+      "split_context_chars": 11555,
+      "parent_context_chars": 11640,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 9,
+      "parent_count": 9
+    },
+    {
+      "scope": "mixed-development",
+      "id": "mix-dev-019",
+      "expected": 5,
+      "split_facts": 3,
+      "parent_facts": 1,
+      "gained": [],
+      "lost": ["mix-dev-019-f3", "mix-dev-019-f4"],
+      "split_complete": false,
+      "parent_complete": false,
+      "split_context_chars": 11165,
+      "parent_context_chars": 11834,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 10,
+      "parent_count": 8
+    },
+    {
+      "scope": "mixed-development",
+      "id": "mix-dev-021",
+      "expected": 5,
+      "split_facts": 5,
+      "parent_facts": 5,
+      "gained": [],
+      "lost": [],
+      "split_complete": true,
+      "parent_complete": true,
+      "split_context_chars": 11732,
+      "parent_context_chars": 11240,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 9,
+      "parent_count": 10
+    },
+    {
+      "scope": "mixed-development",
+      "id": "mix-dev-022",
+      "expected": 4,
+      "split_facts": 4,
+      "parent_facts": 4,
+      "gained": [],
+      "lost": [],
+      "split_complete": true,
+      "parent_complete": true,
+      "split_context_chars": 11933,
+      "parent_context_chars": 11105,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 10,
+      "parent_count": 10
+    },
+    {
+      "scope": "mixed-development",
+      "id": "mix-dev-024",
+      "expected": 4,
+      "split_facts": 2,
+      "parent_facts": 2,
+      "gained": [],
+      "lost": [],
+      "split_complete": false,
+      "parent_complete": false,
+      "split_context_chars": 11959,
+      "parent_context_chars": 11964,
+      "split_api_requests": 2,
+      "parent_api_requests": 1,
+      "split_count": 7,
+      "parent_count": 7
+    }
+  ],
+  "artifact_hashes": [
+    {
+      "file": "queries/A-development-split/dataset.json",
+      "sha256": "0ab3c960526eca7f958588d8219433ebdf8e804a8cc73a93863a598e0c7d0d70"
+    },
+    {
+      "file": "queries/A-development-split/rows.jsonl",
+      "sha256": "bf6b12f79ce6d071581bf9a40c751d132c97e101860ed7b45f0f56f70f6fe5c6"
+    },
+    {
+      "file": "queries/A-development-split/manifest.json",
+      "sha256": "c90abe2ea134efefd4241abd6f890ee2f2b375c2f220e1778dde53e1042815a5"
+    },
+    {
+      "file": "queries/A-development-split/report.json",
+      "sha256": "f6252c5b2ee44d8011eea049536db0e5d76af97fc888b5da991464d93329adc0"
+    },
+    {
+      "file": "queries/A-development-parent/dataset.json",
+      "sha256": "017c8ab3e68ad5dfef7e7be8d019bc78d6dccdcd301f8e3d44ffd7216eeee7db"
+    },
+    {
+      "file": "queries/A-development-parent/rows.jsonl",
+      "sha256": "52608c27ebc5535442deb3e2fa5d1a55e572e9089177456292b2c19eda343a2d"
+    },
+    {
+      "file": "queries/A-development-parent/manifest.json",
+      "sha256": "63cd5153da15479952b50b29bdf22fbdb81bac645f65c6c6afd8756547ff39cc"
+    },
+    {
+      "file": "queries/A-development-parent/report.json",
+      "sha256": "8d1490c6fb18b808d615cb83058ce31ab52b906983e1611a53562ff25b3fcca4"
+    },
+    {
+      "file": "queries/B-development-split/dataset.json",
+      "sha256": "8a0a85ff1016242a5094aceea4437691396957b402dbc97ea81dbaea22642925"
+    },
+    {
+      "file": "queries/B-development-split/rows.jsonl",
+      "sha256": "cf617d52796edee47cfbecd45403f028bad77848b86550fbfd65812aaecb08a1"
+    },
+    {
+      "file": "queries/B-development-split/manifest.json",
+      "sha256": "b9f33cb6ee2cf3229a092ed3f8aca1dabf8b62583441ef89af7c579a18f5ca94"
+    },
+    {
+      "file": "queries/B-development-split/report.json",
+      "sha256": "ad3d700a9109e1192769100a31bca737b03f8a38a2c227b3d808ee90a3ddc3f8"
+    },
+    {
+      "file": "queries/B-development-parent/dataset.json",
+      "sha256": "8b9462fc62db54c71877440700aadc9021f542be808e89ed4157085d16311300"
+    },
+    {
+      "file": "queries/B-development-parent/rows.jsonl",
+      "sha256": "917e981866737efe0d5717b6f8900bd450b6e4103f38b8a2eda07431b4f11e7e"
+    },
+    {
+      "file": "queries/B-development-parent/manifest.json",
+      "sha256": "8bac254c58adb4437bf4f7e624fbe0c59663413e65d9339d5e41a6bd3c8bcedb"
+    },
+    {
+      "file": "queries/B-development-parent/report.json",
+      "sha256": "c4547e610cd337c9c40fcad1d72bf1cef0e1382d49ce87e51b64f780d992a3af"
+    },
+    {
+      "file": "queries/C-development-split/dataset.json",
+      "sha256": "833b32f4d42fd15dd7ebb1aef875040901338f120a92ed731fdd3d53dca75391"
+    },
+    {
+      "file": "queries/C-development-split/rows.jsonl",
+      "sha256": "bdec6ca76285f146c7fecdfa4252caf1121c742b90274f2572726f796cbfc6ef"
+    },
+    {
+      "file": "queries/C-development-split/manifest.json",
+      "sha256": "14616a57beee142e7529f6663ea1a0fe7979fe586d3115b30ae1a184b0a3d53c"
+    },
+    {
+      "file": "queries/C-development-split/report.json",
+      "sha256": "8a18ed128dcab80ac83824fd49cb743b91b631547e6f9a2b5ea3538d3c2c6d50"
+    },
+    {
+      "file": "queries/C-development-parent/dataset.json",
+      "sha256": "573d580dca697be2fa99535af9c58aa0a0be0787023157a54d5ee1e8030c0207"
+    },
+    {
+      "file": "queries/C-development-parent/rows.jsonl",
+      "sha256": "9b0b47d17a8eb7f0e5b3beee36188640c505230a9b355e0a8d146d7d6cfc9c1e"
+    },
+    {
+      "file": "queries/C-development-parent/manifest.json",
+      "sha256": "009b336680cfbd021d48186446a426a1b3f0a709ea163bf650b7ddd3f744e028"
+    },
+    {
+      "file": "queries/C-development-parent/report.json",
+      "sha256": "81dd8c9da37d6c10d7d2f71622e6af924d5caa7414cfd99dc3b4831aef5cdebb"
+    },
+    {
+      "file": "queries/mixed-development-split/dataset.json",
+      "sha256": "2501fbe85e44b8bfc905f42e4790ec71754e0cb6c05d9963a1641a949c135a76"
+    },
+    {
+      "file": "queries/mixed-development-split/rows.jsonl",
+      "sha256": "9ce22ceda1b17d0afe22aaadab7ff2a9a2b4de53f964572d775f7a71eaff41e5"
+    },
+    {
+      "file": "queries/mixed-development-split/manifest.json",
+      "sha256": "52da392c054c993ebda99d6326aa0c0fdfaa93684f211306e9e64653c168bb56"
+    },
+    {
+      "file": "queries/mixed-development-split/report.json",
+      "sha256": "c9c1a8d141d690dc68e36b18aad874d043179b23046f89c0945893eac2c51be6"
+    },
+    {
+      "file": "queries/mixed-development-parent/dataset.json",
+      "sha256": "0026f1857ca73a0de7b483f8cfb7a0024cc8e34af633d86c0e8b1ee1a88f8797"
+    },
+    {
+      "file": "queries/mixed-development-parent/rows.jsonl",
+      "sha256": "e35564ba99cc9dd4462231f38a277a64ae97b7224e36098aa91228f294e3b4d8"
+    },
+    {
+      "file": "queries/mixed-development-parent/manifest.json",
+      "sha256": "90789a02e481b882856cebd8df2218b4a384b1ddd8df37a4f9c0b0ce472b31e9"
+    },
+    {
+      "file": "queries/mixed-development-parent/report.json",
+      "sha256": "717b5d63727aacab9a2b04581b0606eb6a82daa4956ee63c15481d54099b5084"
+    }
+  ],
+  "cumulative_context_chars": {
+    "split": 1162554,
+    "parent": 1156333
+  },
+  "limits": "Frozen decomposition ablation on development data. Parent query text, labels and all index/retrieval settings fixed. Not a test of arbitrary Agent decomposition or answer generation.",
+  "stability_audit": {
+    "status": "complete",
+    "script_sha256": "1a805d2aa2cfed93b693cfbce15fd099acaf13cc13f80098748a7fd903c9d087",
+    "plan_sha256": "62e95619d01db8c6675484bd4684aa95e26ce1eb3713e0f1a001333261932fe9",
+    "summary_sha256": "66757bd052e22a2888467f58176bf173bec663806763f6fa0bfe13cc80b4b5cb",
+    "source_artifacts_verified": 32,
+    "controls": {
+      "total": 67,
+      "identical_evidence": 67,
+      "identical_fact_sets": 67,
+      "identical_full_results": 21,
+      "identical_context": 37,
+      "changed_numeric_fields": {
+        "result.results.*.rankings.*.similarity": {
+          "count": 406,
+          "types": ["number/number"],
+          "max_absolute_difference": 0.00020891427993774414
+        },
+        "result.queries.*.candidates.fused": {
+          "count": 1,
+          "types": ["number/number"],
+          "max_absolute_difference": 1
+        },
+        "result.excluded.budget": {
+          "count": 1,
+          "types": ["number/number"],
+          "max_absolute_difference": 1
+        },
+        "result.excluded.topk": {
+          "count": 1,
+          "types": ["number/number"],
+          "max_absolute_difference": 2
+        },
+        "result.results.*.rankings.*.rrf_score": {
+          "count": 2,
+          "types": ["number/number"],
+          "max_absolute_difference": 0.00020120724346076382
+        },
+        "result.results.*.rankings.*.dense_rank": {
+          "count": 2,
+          "types": ["number/number"],
+          "max_absolute_difference": 1
+        }
+      },
+      "rows": [
+        {
+          "scope": "A-development",
+          "id": "a-dev-002",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": 1
+        },
+        {
+          "scope": "A-development",
+          "id": "a-dev-003",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": -3
+        },
+        {
+          "scope": "A-development",
+          "id": "a-dev-004",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": -2
+        },
+        {
+          "scope": "A-development",
+          "id": "a-dev-005",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": true,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "A-development",
+          "id": "a-dev-006",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": 2
+        },
+        {
+          "scope": "A-development",
+          "id": "a-dev-007",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": 1
+        },
+        {
+          "scope": "A-development",
+          "id": "a-dev-008",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "A-development",
+          "id": "a-dev-009",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": 3
+        },
+        {
+          "scope": "A-development",
+          "id": "a-dev-011",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "A-development",
+          "id": "a-dev-013",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": true,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "A-development",
+          "id": "a-dev-015",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": true,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "A-development",
+          "id": "a-dev-016",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": 2
+        },
+        {
+          "scope": "A-development",
+          "id": "a-dev-018",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": -1
+        },
+        {
+          "scope": "A-development",
+          "id": "a-dev-019",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": 1
+        },
+        {
+          "scope": "A-development",
+          "id": "a-dev-020",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": 2
+        },
+        {
+          "scope": "A-development",
+          "id": "a-dev-021",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "A-development",
+          "id": "a-dev-022",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": -2
+        },
+        {
+          "scope": "A-development",
+          "id": "a-dev-023",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": true,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "A-development",
+          "id": "a-dev-027",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "A-development",
+          "id": "a-dev-028",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": -1
+        },
+        {
+          "scope": "B-development",
+          "id": "B-D01",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "B-development",
+          "id": "B-D04",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": -1
+        },
+        {
+          "scope": "B-development",
+          "id": "B-D05",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "B-development",
+          "id": "B-D06",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "B-development",
+          "id": "B-D07",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": true,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "B-development",
+          "id": "B-D08",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "B-development",
+          "id": "B-D10",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "B-development",
+          "id": "B-D12",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": true,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "B-development",
+          "id": "B-D14",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": true,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "B-development",
+          "id": "B-D15",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "B-development",
+          "id": "B-D16",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": true,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "B-development",
+          "id": "B-D18",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": -1
+        },
+        {
+          "scope": "B-development",
+          "id": "B-D19",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": true,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "B-development",
+          "id": "B-D20",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": true,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "B-development",
+          "id": "B-D21",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": true,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "B-development",
+          "id": "B-D22",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "B-development",
+          "id": "B-D23",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": -3
+        },
+        {
+          "scope": "B-development",
+          "id": "B-D25",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": 1
+        },
+        {
+          "scope": "C-development",
+          "id": "C-D01",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "C-development",
+          "id": "C-D02",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "C-development",
+          "id": "C-D03",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": 1
+        },
+        {
+          "scope": "C-development",
+          "id": "C-D04",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": true,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "C-development",
+          "id": "C-D05",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": -1
+        },
+        {
+          "scope": "C-development",
+          "id": "C-D06",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": -2
+        },
+        {
+          "scope": "C-development",
+          "id": "C-D07",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": 1
+        },
+        {
+          "scope": "C-development",
+          "id": "C-D08",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": true,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "C-development",
+          "id": "C-D09",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": -2
+        },
+        {
+          "scope": "C-development",
+          "id": "C-D11",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": true,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "C-development",
+          "id": "C-D12",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": -2
+        },
+        {
+          "scope": "C-development",
+          "id": "C-D13",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": true,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "C-development",
+          "id": "C-D14",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "mixed-development",
+          "id": "mix-dev-001",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": true,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "mixed-development",
+          "id": "mix-dev-002",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": 1
+        },
+        {
+          "scope": "mixed-development",
+          "id": "mix-dev-003",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": -1
+        },
+        {
+          "scope": "mixed-development",
+          "id": "mix-dev-004",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": true,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "mixed-development",
+          "id": "mix-dev-006",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": true,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "mixed-development",
+          "id": "mix-dev-008",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": true,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "mixed-development",
+          "id": "mix-dev-009",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": true,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "mixed-development",
+          "id": "mix-dev-011",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": -3
+        },
+        {
+          "scope": "mixed-development",
+          "id": "mix-dev-020",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": 2
+        },
+        {
+          "scope": "mixed-development",
+          "id": "mix-dev-023",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": true,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "mixed-development",
+          "id": "mix-dev-025",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": -2
+        },
+        {
+          "scope": "mixed-development",
+          "id": "mix-dev-026",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": -2
+        },
+        {
+          "scope": "mixed-development",
+          "id": "mix-dev-027",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "mixed-development",
+          "id": "mix-dev-028",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": -1
+        },
+        {
+          "scope": "mixed-development",
+          "id": "mix-dev-029",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": true,
+          "parent_minus_split_context": 0
+        },
+        {
+          "scope": "mixed-development",
+          "id": "mix-dev-030",
+          "evidence_identical": true,
+          "facts_identical": true,
+          "full_result_identical": false,
+          "context_identical": false,
+          "parent_minus_split_context": -4
+        }
+      ]
+    },
+    "split_repeat": {
+      "total": 100,
+      "identical_request": 100,
+      "identical_evidence": 96,
+      "identical_facts": 100,
+      "changed_evidence_ids": [
+        {
+          "scope": "B-development",
+          "id": "B-D18"
+        },
+        {
+          "scope": "C-development",
+          "id": "C-D07"
+        },
+        {
+          "scope": "mixed-development",
+          "id": "mix-dev-004"
+        },
+        {
+          "scope": "mixed-development",
+          "id": "mix-dev-010"
+        }
+      ]
+    },
+    "parent_relative_to_split": {
+      "complete_gains": ["B-D17"],
+      "complete_losses": [
+        "a-dev-012",
+        "a-dev-014",
+        "a-dev-029",
+        "B-D13",
+        "mix-dev-012",
+        "mix-dev-016",
+        "mix-dev-017"
+      ],
+      "fact_set_gains": ["B-D17"],
+      "fact_set_losses": [
+        "a-dev-012",
+        "a-dev-014",
+        "a-dev-029",
+        "B-D13",
+        "mix-dev-012",
+        "mix-dev-016",
+        "mix-dev-017",
+        "mix-dev-019"
+      ],
+      "facts_gained": 1,
+      "facts_lost": 14
+    },
+    "costs": {
+      "split": {
+        "A-development": {
+          "api_usage": {
+            "requests": 41,
+            "texts": 41,
+            "input_chars": 1847,
+            "reported_tokens": 1570
+          },
+          "all_context_chars": 345213,
+          "changed_context_chars": 118262,
+          "unchanged_context_chars": 226951,
+          "changed_requests": 21,
+          "unchanged_requests": 20,
+          "no_answer_nonempty": 2
+        },
+        "B-development": {
+          "api_usage": {
+            "requests": 33,
+            "texts": 33,
+            "input_chars": 1488,
+            "reported_tokens": 1291
+          },
+          "all_context_chars": 291985,
+          "changed_context_chars": 81001,
+          "unchanged_context_chars": 210984,
+          "changed_requests": 15,
+          "unchanged_requests": 18,
+          "no_answer_nonempty": 0
+        },
+        "C-development": {
+          "api_usage": {
+            "requests": 17,
+            "texts": 17,
+            "input_chars": 1017,
+            "reported_tokens": 784
+          },
+          "all_context_chars": 174985,
+          "changed_context_chars": 23391,
+          "unchanged_context_chars": 151594,
+          "changed_requests": 4,
+          "unchanged_requests": 13,
+          "no_answer_nonempty": 0
+        },
+        "mixed-development": {
+          "api_usage": {
+            "requests": 44,
+            "texts": 44,
+            "input_chars": 2236,
+            "reported_tokens": 1788
+          },
+          "all_context_chars": 350371,
+          "changed_context_chars": 164396,
+          "unchanged_context_chars": 185975,
+          "changed_requests": 28,
+          "unchanged_requests": 16,
+          "no_answer_nonempty": 3
+        }
+      },
+      "parent": {
+        "A-development": {
+          "api_usage": {
+            "requests": 30,
+            "texts": 30,
+            "input_chars": 2039,
+            "reported_tokens": 1490
+          },
+          "all_context_chars": 339957,
+          "changed_context_chars": 113003,
+          "unchanged_context_chars": 226954,
+          "changed_requests": 10,
+          "unchanged_requests": 20,
+          "no_answer_nonempty": 2
+        },
+        "B-development": {
+          "api_usage": {
+            "requests": 25,
+            "texts": 25,
+            "input_chars": 1554,
+            "reported_tokens": 1210
+          },
+          "all_context_chars": 293068,
+          "changed_context_chars": 82088,
+          "unchanged_context_chars": 210980,
+          "changed_requests": 7,
+          "unchanged_requests": 18,
+          "no_answer_nonempty": 0
+        },
+        "C-development": {
+          "api_usage": {
+            "requests": 15,
+            "texts": 15,
+            "input_chars": 1043,
+            "reported_tokens": 764
+          },
+          "all_context_chars": 175122,
+          "changed_context_chars": 23533,
+          "unchanged_context_chars": 151589,
+          "changed_requests": 2,
+          "unchanged_requests": 13,
+          "no_answer_nonempty": 0
+        },
+        "mixed-development": {
+          "api_usage": {
+            "requests": 30,
+            "texts": 30,
+            "input_chars": 2428,
+            "reported_tokens": 1672
+          },
+          "all_context_chars": 348186,
+          "changed_context_chars": 162221,
+          "unchanged_context_chars": 185965,
+          "changed_requests": 14,
+          "unchanged_requests": 16,
+          "no_answer_nonempty": 3
+        }
+      }
+    },
+    "interpretation": "Ordered delivered evidence excludes only rankings; full JSON differences remain recorded. Stable controls constrain observed outcome drift, not a guarantee that remote embeddings are bit-identical."
+  },
+  "additional_artifact_hashes": [
+    {
+      "file": "plan.json",
+      "sha256": "62e95619d01db8c6675484bd4684aa95e26ce1eb3713e0f1a001333261932fe9"
+    },
+    {
+      "file": "queries/report.json",
+      "sha256": "e3f8cd6a4a06670acaf4907285222b56099b7b6711a991c9ba2eca9e0c75dfca"
+    },
+    {
+      "file": "queries/network-attempts.jsonl",
+      "sha256": "c6d77bbe7e811d6ec2f39eed4c06a5e54343631d6961877c3c8b41c188da6b6c"
+    },
+    {
+      "file": "summary.public.json",
+      "sha256": "66757bd052e22a2888467f58176bf173bec663806763f6fa0bfe13cc80b4b5cb"
+    },
+    {
+      "file": "stability.public.json",
+      "sha256": "7434512a7054f89f86610bf21016bde312e04c4e8dd65e9425eaf7678c9853eb"
+    },
+    {
+      "file": "reviews/receipt.json",
+      "sha256": "26cccf7a25883b2f9e427e3fb3ea09665783cea0fa68de856b9204aac82fd6eb"
+    }
+  ],
+  "reviews": {
+    "status": "passed_with_disclosed_limits",
+    "code_commit": "cf5f534",
+    "code": {
+      "driver": "7ce3e9b172ef36be1434aba6b8e31e19bba8f0435e00f23db6a54d93f4c9e7b8",
+      "metrics": "79b21de71a7685fc5e66fa670af5ac5bc58a354a9fa51db0f608d28b40c91e9a",
+      "guard": "07e4131d35882db3ab3bdace67ef692ff9b5d523d6443f21304d2a40d98448e6"
+    },
+    "reviewers": [
+      {
+        "name": "decomposition_review_a",
+        "model": "gpt-5.6-luna",
+        "effort": "max",
+        "result": "No blocking defect. Frozen inputs, parameters, actual calls, denominators and evidence stability checked. Public report boundaries accepted."
+      },
+      {
+        "name": "decomposition_review_b",
+        "model": "gpt-5.6-luna",
+        "effort": "max",
+        "result": "No blocking defect. Actual requests and frozen manifests checked; metrics and controls reproduced. Guard alone does not bind each API attempt to an arm."
+      }
+    ],
+    "disclosed_limits": [
+      "67/67 evidence and fact sets stable; only 21/67 full JSON exactly equal. Numeric rankings/counters may vary.",
+      "Guard uses both arms allowed text union. Actual per-row requests were audited against the frozen inputs; attempt logs do not include per-input hashes.",
+      "Exploratory fixed development decomposition only, not final200 or arbitrary Agent decomposition."
+    ]
+  }
+}

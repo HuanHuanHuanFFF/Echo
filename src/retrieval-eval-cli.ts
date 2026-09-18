@@ -18,7 +18,7 @@ try {
   });
   if (values.help) {
     console.log(
-      'Usage: eval:retrieval -- snapshot --config PATH --output FILE\n       eval:retrieval -- run --config PATH --dataset FILE --output NEW_DIRECTORY [--budget 12000] [--max-api-calls N]\nReads pre-synchronized indexes. It never syncs notes, runs an Agent, or supplements source text.',
+      'Usage: eval:retrieval -- snapshot --config PATH --output FILE\n       eval:retrieval -- run --config PATH --dataset FILE --output NEW_DIRECTORY [--budget 16000] [--max-api-calls N]\nReads pre-synchronized indexes. It never syncs notes, runs an Agent, or supplements source text.',
     );
   } else {
     const [command, ...extra] = positionals;

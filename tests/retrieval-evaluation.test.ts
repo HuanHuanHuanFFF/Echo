@@ -94,6 +94,17 @@ it('scores actual indexed evidence from a frozen corpus without an Agent or sour
     expect(report.rows[1]!.covered_facts).toEqual([]);
     expect(report.summary.fact_coverage).toEqual({ covered: 1, expected: 1 });
     expect(report.api_usage).toBeNull();
+    const defaultOutput = join(f.root, 'default-budget-run');
+    const defaultRun = await runRetrievalEvaluation({
+      ...f,
+      outputDir: defaultOutput,
+    });
+    const defaultManifest = JSON.parse(
+      await readFile(join(defaultOutput, 'manifest.json'), 'utf8'),
+    );
+    expect(defaultManifest.budget_chars).toBe(16000);
+    expect(defaultManifest.retrieval.rrf_k).toBe(30);
+    expect(defaultRun.report.status).toBe('complete');
     for (const row of report.rows) {
       expect(row.request_chars + row.response_chars).toBe(row.context_chars);
       expect(row.context_chars).toBeLessThanOrEqual(2000);

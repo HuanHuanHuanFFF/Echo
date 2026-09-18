@@ -1,16 +1,34 @@
 # Echo 文档入口
 
-更新日期：2026-09-17。
+更新日期：2026-09-18。
 
 Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前四阶段已合并并通过双平台 CI；第五阶段已完成独立安装、真实文档向量及100题开发对照；默认组合选择与最终评测仍待验收。安装使用从[README](../README.md)开始，当前配置以[v2 配置契约](design/configuration-profiles.md)为准。
 
 ## 当前下一步
 
-- [开源与商业Markdown切块调查](research/2026-09-17-markdown-chunking-solutions.md)：Luna/max调查7个方案，另核对QMD固定参考；比较结构保护、超长回退、尺寸/overlap口径与Echo采用边界。建议未实施。
+- [固定16000预算：RRF40与30/60对照](evals/2026-09-18-rrf40-comparison.md)：仅新增40组100题；40为89/95、219/226，略低于30，默认仍30；两位独立复核通过。
 
-- [开发语料段落与chunk尺寸分布](evals/2026-09-17-corpus-shape.md)：337篇只读结构统计；不支持统一缩小，heading可考虑适度放大／保护切点，八股段落暂保留。尚未实施或运行新检索对照。
+- [采用RRF30＋预算16000并验证联合条件](evals/2026-09-18-rrf-budget-joint.md)：用户已确认默认调整，只新增联合100题，三份旧条件只读复用；联合90/95、220/226，与只改RRF相同；预算受限题74→18，双人独立复核通过。
 
-- [小范围排查与问题清单](project/2026-09-17-small-scope-retrieval-investigation.md)：按用户最新要求，先记录疑点；下一次优先用6道开发题比较完整问句与固定子题，暂缓最终评测及默认冻结。
+- [四项独立单参数对照](evals/2026-09-17-four-parameter-comparisons.md)：四组800次检索与双人复核完成：RRF30小幅获益，标题1退化，阈值/更大预算无标注覆盖收益；当时未改默认，后续采用决定见上条。
+
+- [新综合＋拆分＋每篇3：BM25权重0.5/0.25](evals/2026-09-17-bm25-weight-comparison.md)：权重降低后完整89/95→87/95，事实总数相同但分库得失不同；零新增API，两位独立复核通过，继续保留0.5。
+
+- [新综合＋固定拆分：每篇3/4对照](evals/2026-09-17-source-limit-comparison.md)：单篇上限3→4只补回B-D17，完整89/95→90/95；同真实向量，两位独立复核通过，默认仍3。
+
+- [新综合：保留/取消固定子问题对照](evals/2026-09-17-decomposition-comparison.md)：只用新综合，两组100题真实运行完成；33拆分题完整覆盖27/33对父问句21/33，两位独立复核通过；披露数值波动与唯一完整题反例。
+
+- [三策略Hit、Recall与MRR](evals/2026-09-17-chunk-ranking-metrics.md)：同一100题离线重算，分库列出K=1/3/5/10；区分单块命中、跨块事实覆盖及已标注来源指标。
+
+- [三策略100题同参数结果](evals/2026-09-17-structure-chunker-comparison.md)：heading90/95、原八股83/95、新综合89/95；完整参数、分库事实、上下文及得失均保留，双人结果复核通过；本轮未替换默认。
+
+- [综合切块实施与100题同参数对照](development/2026-09-17-structure-chunker-comparison.md)：三策略hybrid100题对照与复核已完成；固定0.5/1权重、topk10、每篇3；实现与结果已push，本轮未新建PR或合并。
+
+- [开源与商业Markdown切块调查](research/2026-09-17-markdown-chunking-solutions.md)：Luna/max调查7个方案，另核对QMD固定参考；比较结构保护、超长回退、尺寸/overlap口径与Echo采用边界；后续实施见上方综合策略记录。
+
+- [开发语料段落与chunk尺寸分布](evals/2026-09-17-corpus-shape.md)：337篇只读结构统计，作为本轮综合策略设计依据；原始分布与判断边界保留。
+
+- [小范围排查与问题清单](project/2026-09-17-small-scope-retrieval-investigation.md)：保留早期诊断假设与历史安排；已执行项见上方对照，后续按用户指示逐项推进。
 
 ## 从这里继续
 

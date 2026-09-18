@@ -74,6 +74,8 @@ it('CLI initializes, discovers, switches and shows profiles without exposing key
   expect(show.files.embedding).toBe(join(dir, 'config/embedding/default.json'));
   expect(show.embedding.api_key_env).toBe('ECHO_EMBEDDING_API_KEY');
   expect(show.retrieval.mode).toBe('bm25');
+  expect(show.retrieval.rrf_k).toBe(30);
+  expect(show.retrieval.max_context_chars).toBe(16000);
   expect(show).not.toHaveProperty('api_key');
   expect(
     JSON.parse((await run('search', '--query', 'apple')).stdout).results.length,
