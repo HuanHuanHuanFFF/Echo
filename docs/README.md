@@ -2,11 +2,13 @@
 
 更新日期：2026-09-18。
 
-Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前四阶段已合并并通过双平台 CI；第五阶段已完成独立安装、真实文档向量及100题开发对照；默认组合选择与最终评测仍待验收。安装使用从[README](../README.md)开始，当前配置以[v2 配置契约](design/configuration-profiles.md)为准。
+Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前四阶段已合并并通过双平台 CI；第五阶段已完成独立安装、真实向量、100题开发及最终200题四臂对照；产品默认采用与最新安装回归仍待验收。安装使用从[README](../README.md)开始，当前配置以[v2 配置契约](design/configuration-profiles.md)为准。
 
 ## 当前下一步
 
-- [最终200题四臂冻结](evals/2026-09-18-final-evaluation-freeze.md)：新综合三模式＋heading混合；固定当前参数，200题/40既有题配对另列，真实运行准备中。
+- [最终200题四臂结果](evals/2026-09-18-final-four-arms.md)：新综合混合179/196、纯向量178/196、纯BM25 139/196，heading混合159/196；40同题干扰另列，两位独立复核通过，未据最终集调参或改默认。
+
+- [最终200题四臂冻结](evals/2026-09-18-final-evaluation-freeze.md)：新综合三模式＋heading混合；固定当前参数，200题/40既有题配对另列，已运行并复核，结果见上条。
 
 - [标签修订与当前切块/模式对照](evals/2026-09-18-label-revision-and-current-architecture.md)：48个历史条件统一重算；当前同参数新综合hybrid92/95、heading91/95，新综合dense88/95、BM25 82/95。新增300次父题检索，零API，两位独立结果复核通过；默认未改。
 
