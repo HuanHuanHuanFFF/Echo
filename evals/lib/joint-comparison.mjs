@@ -14,8 +14,26 @@ const scopes = [
 ];
 const expectedDelivery =
   'de55af401f736ac892677ad2e75b4b7800521e08286a66cdebe950b307ab5558';
-// Three independently authorized candidates against the adopted 30/16000 baseline.
+// Explicitly authorized candidates, each bound to its stated frozen baseline.
 export const currentParameterConditions = {
+  'bm25-03-rrf10': {
+    id: 'bm25_03_rrf10',
+    key: 'bm25_weight',
+    value: 0.3,
+    rrf_k: 10,
+    bm25_weight: 0.3,
+    budget: 16000,
+    reference_rrf_k: 10,
+  },
+  'bm25-04-rrf10': {
+    id: 'bm25_04_rrf10',
+    key: 'bm25_weight',
+    value: 0.4,
+    rrf_k: 10,
+    bm25_weight: 0.4,
+    budget: 16000,
+    reference_rrf_k: 10,
+  },
   'bm25-02-current': {
     id: 'bm25_02',
     key: 'bm25_weight',
@@ -44,7 +62,7 @@ export const currentParameterConditions = {
 export function checkCurrentSingleVariable(reference, candidate, experiment) {
   const condition = currentParameterConditions[experiment];
   assert.ok(condition, 'Unknown current-baseline experiment');
-  assert.equal(reference.rrf_k, 30);
+  assert.equal(reference.rrf_k, condition.reference_rrf_k ?? 30);
   assert.equal(reference.bm25_weight, 0.5);
   assert.equal(reference.max_context_chars, 16000);
   assert.deepEqual(candidate, {
@@ -54,6 +72,50 @@ export function checkCurrentSingleVariable(reference, candidate, experiment) {
 }
 export async function jointReferences(lab, experiment = 'rrf-budget-combined') {
   const current = currentParameterConditions[experiment];
+  if (current?.reference_rrf_k === 10) {
+    const expected =
+      'a80265d390a787bfd41c93ff930519116088751f7f77f3dfeb02315d18fd2c19';
+    const file = path.join(
+      lab,
+      'evidence/current-parameter-single-variable-2026-09-18-v1/delivery.public.json',
+    );
+    assert.equal(await digest(file), expected);
+    const study = await get(file);
+    const origin = study.conditions.find((c) => c.id === 'rrf10');
+    assert.ok(origin);
+    assert.equal(origin.k, 10);
+    assert.equal(origin.weight, 0.5);
+    const files = study.artifact_hashes
+      .filter(
+        (f) =>
+          f.run === origin.run &&
+          (scopes.some((scope) =>
+            f.file.startsWith('queries/' + scope + '-10/'),
+          ) ||
+            f.file === 'queries/vector-uses.jsonl'),
+      )
+      .map(({ file, sha256 }) => ({ file, sha256 }));
+    assert.equal(files.length, 17);
+    for (const item of files)
+      assert.equal(
+        await digest(path.join(lab, 'evidence', origin.run, item.file)),
+        item.sha256,
+      );
+    return {
+      delivery_sha256: expected,
+      conditions: [
+        {
+          id: 'rrf10',
+          run: origin.run,
+          value: 10,
+          rrf_k: 10,
+          bm25_weight: 0.5,
+          budget: 16000,
+          files,
+        },
+      ],
+    };
+  }
   if (current || experiment === 'rrf40-budget16000') {
     const file = path.join(
       lab,
