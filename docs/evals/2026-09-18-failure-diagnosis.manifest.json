@@ -1,0 +1,539 @@
+{
+  "status": "complete",
+  "baseline": "rrf30-budget16000",
+  "network_requests": 0,
+  "new_evaluation_conditions": 0,
+  "final_queries": 0,
+  "verified_reconstructed_rows": 10,
+  "missing_facts": 6,
+  "cases": [
+    {
+      "id": "a-dev-020",
+      "scope": "A-development",
+      "no_answer": true,
+      "covered": 0,
+      "expected": 0,
+      "context_chars": 12217,
+      "result_count": 10,
+      "excluded": {
+        "source_limit": 0,
+        "duplicate": 0,
+        "budget": 0,
+        "topk": 81
+      },
+      "missing": []
+    },
+    {
+      "id": "a-dev-021",
+      "scope": "A-development",
+      "no_answer": true,
+      "covered": 0,
+      "expected": 0,
+      "context_chars": 10970,
+      "result_count": 10,
+      "excluded": {
+        "source_limit": 0,
+        "duplicate": 0,
+        "budget": 0,
+        "topk": 93
+      },
+      "missing": []
+    },
+    {
+      "id": "B-D09",
+      "scope": "B-development",
+      "no_answer": false,
+      "covered": 2,
+      "expected": 3,
+      "context_chars": 15397,
+      "result_count": 10,
+      "excluded": {
+        "source_limit": 2,
+        "duplicate": 8,
+        "budget": 0,
+        "topk": 163
+      },
+      "missing": [
+        {
+          "fact": "B-D09-f2",
+          "index_coverage": true,
+          "candidate_coverage": false,
+          "chunks": [
+            {
+              "id": "7c6f53d2996400413d77b329ad64e99c5323db0295a4fd63474d500ce9191f7c",
+              "lines": [136, 151],
+              "single_covers": true,
+              "ranks": [],
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B-D17",
+      "scope": "B-development",
+      "no_answer": false,
+      "covered": 3,
+      "expected": 4,
+      "context_chars": 15094,
+      "result_count": 10,
+      "excluded": {
+        "source_limit": 31,
+        "duplicate": 8,
+        "budget": 0,
+        "topk": 139
+      },
+      "missing": [
+        {
+          "fact": "B-D17-f1",
+          "index_coverage": true,
+          "candidate_coverage": true,
+          "chunks": [
+            {
+              "id": "7e60333d13a46052644388e848437fc6cd0b8f19953ec195d659f285412fb112",
+              "lines": [220, 240],
+              "single_covers": true,
+              "ranks": [
+                {
+                  "query_id": "part-1",
+                  "fused_rank": 3,
+                  "bm25_rank": 2,
+                  "dense_rank": 3,
+                  "similarity": 0.6551749408245087,
+                  "score": 0.045928030303030304
+                },
+                {
+                  "query_id": "part-2",
+                  "fused_rank": 5,
+                  "bm25_rank": 3,
+                  "dense_rank": 6,
+                  "similarity": 0.5735287964344025,
+                  "score": 0.04292929292929293
+                }
+              ],
+              "events": [
+                {
+                  "query_id": "part-1",
+                  "rank": 3,
+                  "chunk_id": "7e60333d13a46052644388e848437fc6cd0b8f19953ec195d659f285412fb112",
+                  "reason": "source_limit",
+                  "per_source": 3,
+                  "selected_count": 3
+                },
+                {
+                  "query_id": "part-2",
+                  "rank": 5,
+                  "chunk_id": "7e60333d13a46052644388e848437fc6cd0b8f19953ec195d659f285412fb112",
+                  "reason": "source_limit",
+                  "per_source": 3,
+                  "selected_count": 3
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mix-dev-014",
+      "scope": "mixed-development",
+      "no_answer": false,
+      "covered": 4,
+      "expected": 5,
+      "context_chars": 13804,
+      "result_count": 10,
+      "excluded": {
+        "source_limit": 2,
+        "duplicate": 1,
+        "budget": 0,
+        "topk": 180
+      },
+      "missing": [
+        {
+          "fact": "mix-dev-014-f5",
+          "index_coverage": true,
+          "candidate_coverage": true,
+          "chunks": [
+            {
+              "id": "42e53765b9cf024ef377e6321d40c417f13a7cd9c0739728139bcb2e2d6c21c9",
+              "lines": [103, 127],
+              "single_covers": true,
+              "ranks": [
+                {
+                  "query_id": "s2",
+                  "fused_rank": 8,
+                  "bm25_rank": 22,
+                  "dense_rank": 12,
+                  "similarity": 0.5194374322891235,
+                  "score": 0.033424908424908424
+                }
+              ],
+              "events": [
+                {
+                  "query_id": "s2",
+                  "rank": 8,
+                  "chunk_id": "42e53765b9cf024ef377e6321d40c417f13a7cd9c0739728139bcb2e2d6c21c9",
+                  "reason": "topk",
+                  "per_source": 3,
+                  "selected_count": 10
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mix-dev-019",
+      "scope": "mixed-development",
+      "no_answer": false,
+      "covered": 4,
+      "expected": 5,
+      "context_chars": 13839,
+      "result_count": 10,
+      "excluded": {
+        "source_limit": 0,
+        "duplicate": 1,
+        "budget": 0,
+        "topk": 197
+      },
+      "missing": [
+        {
+          "fact": "mix-dev-019-f1",
+          "index_coverage": true,
+          "candidate_coverage": true,
+          "chunks": [
+            {
+              "id": "86dbd02336fbd087fd52eaaf54a3e2652ea4193f46bbabac7b633a0392cdb1b2",
+              "lines": [26, 35],
+              "single_covers": true,
+              "ranks": [
+                {
+                  "query_id": "s1",
+                  "fused_rank": 6,
+                  "bm25_rank": 20,
+                  "dense_rank": 4,
+                  "similarity": 0.7603901624679565,
+                  "score": 0.039411764705882354
+                }
+              ],
+              "events": [
+                {
+                  "query_id": "s1",
+                  "rank": 6,
+                  "chunk_id": "86dbd02336fbd087fd52eaaf54a3e2652ea4193f46bbabac7b633a0392cdb1b2",
+                  "reason": "topk",
+                  "per_source": 3,
+                  "selected_count": 10
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mix-dev-024",
+      "scope": "mixed-development",
+      "no_answer": false,
+      "covered": 2,
+      "expected": 4,
+      "context_chars": 15949,
+      "result_count": 10,
+      "excluded": {
+        "source_limit": 9,
+        "duplicate": 5,
+        "budget": 43,
+        "topk": 140
+      },
+      "missing": [
+        {
+          "fact": "mix-dev-024-f1",
+          "index_coverage": true,
+          "candidate_coverage": true,
+          "chunks": [
+            {
+              "id": "de6fd305728b4f2df79fcf49fce58022ca7a3475458b890bd757c87b71950934",
+              "lines": [4, 42],
+              "single_covers": true,
+              "ranks": [
+                {
+                  "query_id": "s1",
+                  "fused_rank": 7,
+                  "dense_rank": 1,
+                  "similarity": 0.7925008535385132,
+                  "score": 0.03225806451612903
+                },
+                {
+                  "query_id": "s2",
+                  "fused_rank": 14,
+                  "dense_rank": 8,
+                  "similarity": 0.5322121679782867,
+                  "score": 0.02631578947368421
+                }
+              ],
+              "events": [
+                {
+                  "query_id": "s1",
+                  "rank": 7,
+                  "chunk_id": "de6fd305728b4f2df79fcf49fce58022ca7a3475458b890bd757c87b71950934",
+                  "reason": "budget",
+                  "per_source": 0,
+                  "selected_count": 9
+                },
+                {
+                  "query_id": "s2",
+                  "rank": 14,
+                  "chunk_id": "de6fd305728b4f2df79fcf49fce58022ca7a3475458b890bd757c87b71950934",
+                  "reason": "budget",
+                  "per_source": 0,
+                  "selected_count": 9
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "fact": "mix-dev-024-f2",
+          "index_coverage": true,
+          "candidate_coverage": true,
+          "chunks": [
+            {
+              "id": "f7a13d37678789937201f2cbc9cd392cb23bb72cbae709c5b89e6e8a90950903",
+              "lines": [4, 26],
+              "single_covers": true,
+              "ranks": [
+                {
+                  "query_id": "s1",
+                  "fused_rank": 8,
+                  "dense_rank": 2,
+                  "similarity": 0.6679125428199768,
+                  "score": 0.03125
+                },
+                {
+                  "query_id": "s2",
+                  "fused_rank": 18,
+                  "dense_rank": 13,
+                  "similarity": 0.47445690631866455,
+                  "score": 0.023255813953488372
+                }
+              ],
+              "events": [
+                {
+                  "query_id": "s1",
+                  "rank": 8,
+                  "chunk_id": "f7a13d37678789937201f2cbc9cd392cb23bb72cbae709c5b89e6e8a90950903",
+                  "reason": "budget",
+                  "per_source": 0,
+                  "selected_count": 9
+                },
+                {
+                  "query_id": "s2",
+                  "rank": 18,
+                  "chunk_id": "f7a13d37678789937201f2cbc9cd392cb23bb72cbae709c5b89e6e8a90950903",
+                  "reason": "budget",
+                  "per_source": 0,
+                  "selected_count": 9
+                }
+              ]
+            },
+            {
+              "id": "de6fd305728b4f2df79fcf49fce58022ca7a3475458b890bd757c87b71950934",
+              "lines": [4, 42],
+              "single_covers": true,
+              "ranks": [
+                {
+                  "query_id": "s1",
+                  "fused_rank": 7,
+                  "dense_rank": 1,
+                  "similarity": 0.7925008535385132,
+                  "score": 0.03225806451612903
+                },
+                {
+                  "query_id": "s2",
+                  "fused_rank": 14,
+                  "dense_rank": 8,
+                  "similarity": 0.5322121679782867,
+                  "score": 0.02631578947368421
+                }
+              ],
+              "events": [
+                {
+                  "query_id": "s1",
+                  "rank": 7,
+                  "chunk_id": "de6fd305728b4f2df79fcf49fce58022ca7a3475458b890bd757c87b71950934",
+                  "reason": "budget",
+                  "per_source": 0,
+                  "selected_count": 9
+                },
+                {
+                  "query_id": "s2",
+                  "rank": 14,
+                  "chunk_id": "de6fd305728b4f2df79fcf49fce58022ca7a3475458b890bd757c87b71950934",
+                  "reason": "budget",
+                  "per_source": 0,
+                  "selected_count": 9
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mix-dev-028",
+      "scope": "mixed-development",
+      "no_answer": true,
+      "covered": 0,
+      "expected": 0,
+      "context_chars": 10962,
+      "result_count": 10,
+      "excluded": {
+        "source_limit": 1,
+        "duplicate": 0,
+        "budget": 0,
+        "topk": 98
+      },
+      "missing": []
+    },
+    {
+      "id": "mix-dev-029",
+      "scope": "mixed-development",
+      "no_answer": true,
+      "covered": 0,
+      "expected": 0,
+      "context_chars": 10823,
+      "result_count": 10,
+      "excluded": {
+        "source_limit": 1,
+        "duplicate": 0,
+        "budget": 0,
+        "topk": 90
+      },
+      "missing": []
+    },
+    {
+      "id": "mix-dev-030",
+      "scope": "mixed-development",
+      "no_answer": true,
+      "covered": 0,
+      "expected": 0,
+      "context_chars": 12154,
+      "result_count": 10,
+      "excluded": {
+        "source_limit": 2,
+        "duplicate": 0,
+        "budget": 0,
+        "topk": 91
+      },
+      "missing": []
+    }
+  ],
+  "bindings": [
+    {
+      "scope": "A-development",
+      "dataset_sha256": "0ab3c960526eca7f958588d8219433ebdf8e804a8cc73a93863a598e0c7d0d70",
+      "rows_sha256": "e8fb58e23eb77aa8ac743b132f4c14408a463d3e09baa664e5bb39d4bbfe6dde",
+      "config_sha256": "91b895af94af6c7d7387c0480592627084528b9c15a8e1bc644656480043805a",
+      "database_sha256": "7890776ff817f5c111f82c3691b6183cf5ae72c6076f03f7c19ea1b9c3932718",
+      "vector_response_sha256": [
+        "c607da02ad581212afc04926e93404dfaccee5490bade4cff2e21784d83e4e1a",
+        "3886a0b0b402c7ebee5b2806f6a55274e15448f57ca252a5849905afbe70fc7e"
+      ]
+    },
+    {
+      "scope": "B-development",
+      "dataset_sha256": "8a0a85ff1016242a5094aceea4437691396957b402dbc97ea81dbaea22642925",
+      "rows_sha256": "90c6ac7dff1ae12fa7a8dc08a6014b1553e47f5a7aa365ad88588a38ea109f05",
+      "config_sha256": "3326d6820dadb5c7fe5bddbc6ba3667c9fcdec93a3184f31ed0c82a7c1e8c6fd",
+      "database_sha256": "8539113fe8dce9dcc868d287ff35ca999e6167c8ba40e57c2f38847da039ed40",
+      "vector_response_sha256": [
+        "d667c07025ed9db14cc9b849d9186233f29f0c511af9aadf9aae64e3cac54d0e",
+        "6d84977774e31522c8dade6923cd3439dd7a7377b836567b6e2258c69cdccaed",
+        "4bb6f903414a5d3811810fe44ee2d62c64c1e5510e77b2b2cf824146128e2be5",
+        "eb2d799cbd83f8c4ce06fad4cbea8bbf5e54f44b07949ff566c14f18e44931db"
+      ]
+    },
+    {
+      "scope": "C-development",
+      "dataset_sha256": "833b32f4d42fd15dd7ebb1aef875040901338f120a92ed731fdd3d53dca75391",
+      "rows_sha256": "af3a5b92bbc270b941e30c80050f22cbb76f8f93ab825767ac5c7c4530348e6b",
+      "config_sha256": "e7716f00d2b85ed720ba4cdce821cb50ac4ee62a067e4227b5ebaba9f1ebd160",
+      "database_sha256": "61a66a4effeb9c2ad21953e619a504fe9f2fe487d215d6a255562c0192e88804",
+      "vector_response_sha256": []
+    },
+    {
+      "scope": "mixed-development",
+      "dataset_sha256": "2501fbe85e44b8bfc905f42e4790ec71754e0cb6c05d9963a1641a949c135a76",
+      "rows_sha256": "c1f8a25b667f0304fbf4665388f64bf114db275018ac80b4f34edd7d821e74e8",
+      "config_sha256": "f7013bf090fddb455000fd2552a9ca37339a474afaaa7f9e86716bea40a3d0da",
+      "database_sha256": "6d249cadc58875a7ea661c348ff96d95e652b76ad293f93851acd41e78277b12",
+      "vector_response_sha256": [
+        "00fa86e5eda5b187c7fb71a4aed6719ec95190580000aab1acf55f2f4a936830",
+        "492607a96d87f8992fd16abf7484d19079db221245103bb531aeba5f94126a2a",
+        "addffdf3d88d74a224fe1c30eb8d3673338ab60490165d15849625f6ca711358",
+        "124be879f958a1a211a990fb63410e68b193c86a4bd92d945f302bfd7405806c",
+        "ce772cfc038796805a0be30004c570aa9e69e6005c46549b1fce7c6f5297931d",
+        "87ce7b95b65ef6445848a66591e6cfee55e51fbc2c9df55e5dcd76867e8aa1bb",
+        "d32861644510afdde184f5aed493c660e40cf3ea6be4b87e9f1426cb0a816424",
+        "7789a160b8cb4027be7bb1793326c53d6ffba0eb15c86fd1ad918ff225241c95",
+        "2aa408d7694c0ae32e021ba1faa8787111ca6ffb885f6ec20e67d65b038d29ce"
+      ]
+    }
+  ],
+  "private_report_sha256": "7b6ed339a96e09e4f8046f1cc279af9cce5658a219a79d0048ea8ecaf6e8a5a0",
+  "script_sha256": "8c0c4cec415ade9d5314b039932df9056cdc003fbb3989bf6431a22c18058440",
+  "baseline_delivery_sha256": "cf0c15f439e2341dd962c2d4a51afa8e0db6ade6a781b591ba30e33d0f6380ce",
+  "verified_baseline_artifacts": 151,
+  "diagnosis_public_sha256": "80cd14936c0072beb53759ba92250139fb6b3fb31d6a14e60e95777dfe83f183",
+  "b09_lane_ranks_sha256": "358f27b57294fc62e8a6cb4a205794a1b016c7c9781c94bdb8deb7687d8561e6",
+  "b09_lane_ranks": [
+    {
+      "query_id": "part-1",
+      "dense_rank": 129,
+      "similarity": 0.46007275581359863,
+      "bm25_rank": 287,
+      "bm25_total": 366
+    },
+    {
+      "query_id": "part-2",
+      "dense_rank": 143,
+      "similarity": 0.4233770966529846,
+      "bm25_rank": 81,
+      "bm25_total": 342
+    }
+  ],
+  "reviews": {
+    "date": "2026-09-18",
+    "model": "gpt-5.6-luna",
+    "reasoning": "max",
+    "read_only": true,
+    "reviewers": [
+      {
+        "id": "diagnosis_noanswer_review",
+        "result": "no_blocker",
+        "verified": [
+          "five no-answer labels in original datasets",
+          "A150 and mixed337 bound corpus search plus returned text",
+          "related TLS/checkpoint/SQLite mentions do not supply complete answers",
+          "nonempty retrieval is not generated answer correctness"
+        ]
+      },
+      {
+        "id": "diagnosis_trace_review",
+        "result": "no_blocker_after_wording_clarification",
+        "verified": [
+          "five incomplete questions and six exact missing anchors",
+          "candidate ranks and pack decision order",
+          "same-source cap already full for both topk cases",
+          "B-D09 alternate deployment-name configuration evidence",
+          "no complete alternate evidence for remaining four questions"
+        ],
+        "clarification": "B-D09 equivalence is the deployment-name configuration, not the exact original example line; frozen score remains unchanged."
+      }
+    ],
+    "changes": "Only diagnostic documents and public metadata; no parameters, labels, product code, indexes or API calls changed.",
+    "receipt_sha256": "3721286120bf5a477fada173a5921fffea27037fe44d3b3938a5e8548cb6b211"
+  }
+}
