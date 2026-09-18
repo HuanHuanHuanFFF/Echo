@@ -6,6 +6,8 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 当前下一步
 
+- [标签修订与当前切块/模式对照](evals/2026-09-18-label-revision-and-current-architecture.md)：48个历史条件统一重算；当前同参数新综合hybrid92/95、heading91/95，新综合dense88/95、BM25 82/95。新增300次父题检索，零API，两位独立结果复核通过；默认未改。
+
 - [固定RRF10：BM25 0.3/0.4组合对照](evals/2026-09-18-rrf10-bm25-combinations.md)：新增两组各100题；均90/95、220/226，低于0.5/RRF10基线91/95、222/226；课程丢证据，无新增K10事实，默认未改。
 
 - [当前基线的BM25 0.2/0.25与RRF10单变量对照](evals/2026-09-18-current-parameter-comparisons.md)：新增3组各100题；分别89/95、90/95、91/95，基线90/95只读复用。RRF10补混合024且K10事实无回退，默认未改。
