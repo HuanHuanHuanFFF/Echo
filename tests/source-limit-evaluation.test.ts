@@ -16,6 +16,9 @@ const {
 } = await import(
   pathToFileURL(resolve('evals/run-source-limit-comparison.mjs')).href
 );
+const { checkCurrentSingleVariable } = await import(
+  pathToFileURL(resolve('evals/lib/joint-comparison.mjs')).href
+);
 const endpoint = 'https://example.invalid/embeddings';
 const options = (text = 'fixed', signal?: AbortSignal) => ({
   method: 'POST',
@@ -42,6 +45,55 @@ const setup = (fetchFn: () => Promise<Response>) =>
       expect(body.data[0]?.embedding).toHaveLength(2),
   });
 describe('single source-limit experiment', () => {
+  it.each([
+    ['bm25-02-current', 'bm25_weight', 0.2],
+    ['bm25-025-current', 'bm25_weight', 0.25],
+    ['rrf10-current', 'rrf_k', 10],
+  ] as const)(
+    'compares only %s with the adopted baseline and rejects a combined change',
+    (name, field, value) => {
+      const historical = retrievalSchema.parse({
+        rrf_k: 60,
+        max_context_chars: 12000,
+      });
+      const baseline = retrievalSchema.parse({});
+      const candidate = experimentRetrieval(historical, name, value);
+      expect(candidate).toEqual({ ...baseline, [field]: value });
+      expect(experimentMetadata(name).values).toEqual([value]);
+      expect(experimentMetadata(name).authorization).toContain(
+        'single-variable',
+      );
+      expect(experimentBudget(historical, name, value)).toBe(16000);
+      expect(() =>
+        checkCurrentSingleVariable(baseline, candidate, name),
+      ).not.toThrow();
+      expect(() =>
+        checkCurrentSingleVariable(
+          baseline,
+          {
+            ...candidate,
+            [field === 'rrf_k' ? 'bm25_weight' : 'rrf_k']:
+              field === 'rrf_k' ? 0.2 : 10,
+          },
+          name,
+        ),
+      ).toThrow();
+      expect(() =>
+        checkCurrentSingleVariable(baseline, { ...candidate, topk: 12 }, name),
+      ).toThrow();
+      expect(() =>
+        checkCurrentSingleVariable(
+          { ...baseline, max_context_chars: 12000 },
+          candidate,
+          name,
+        ),
+      ).toThrow();
+      expect(() => experimentRetrieval(historical, name, 999)).toThrow();
+      expect(historical.rrf_k).toBe(60);
+      expect(baseline.bm25_weight).toBe(0.5);
+      expect(baseline.rrf_k).toBe(30);
+    },
+  );
   it('runs only RRF40 at the adopted16000 budget and leaves product defaults unchanged', () => {
     const frozenBase = retrievalSchema.parse({
       rrf_k: 60,
