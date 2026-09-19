@@ -46,7 +46,7 @@
 | 数据                          | 本轮建议用途                                           | 可核查特点与边界                                                                                                                                                                                 |
 | ----------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | FreshStack：LangChain + Godot | 外部技术知识库主对照，预先选两个领域，不按新得分挑领域 | 真实社区问题、公开代码/文档，支持答案要点覆盖及相关性/多样性指标。官方oct-2024版本是固定片段，标签包含自动构建；更贴近技术知识库，并非私人日记                                                   |
-| C-MTEB：DuRetrieval           | 中文检索补充                                           | 中文网页段落检索，官方列表含4000测试查询；能检验中文召回，不直接检验Markdown结构或个人偏好                                                                                                       |
+| C-MTEB：DuRetrieval           | 中文检索补充                                           | 中文网页段落检索；当前数据包与评测代码为2000查询、100001条语料，评测划分dev。旧汇总表的4000不能作为该包题量；能检验中文召回，不直接检验Markdown结构或个人偏好                                    |
 | 新的真实Markdown笔记留出集    | 默认切块与产品约束的主要验收材料                       | 包含学习笔记、短TIL、项目记录/日记、代码/表格/列表和多文档证据；来源与题目需未用于当前调参，混合库题继续占30%。先审计已有未使用资产，避免无必要复制；规模/来源/分组冻结后另记，不回改旧100/200题 |
 | BEIR SciFact                  | 可选小型评测适配检查，不作笔记主验收                   | 官方300测试查询、约5000文档；适合校验ID映射、评分脚本与复跑，但科学论断/摘要不是笔记场景                                                                                                         |
 | QASPER                        | 后备长文结构/证据选择补充，首批不同时铺开              | 论文有章节全文、独立人员问题/答案及证据；转Markdown或全库检索是改编任务，图表证据须明确处理，不当成原版成绩                                                                                      |
@@ -62,6 +62,18 @@ LongMemEval虽偏个人信息，但材料和任务是长期对话记忆；NoTeS-
 - [QASPER数据说明](https://huggingface.co/datasets/allenai/qasper/blob/9834d7e5a315da3a8c5df41024929af4462b80ce/README.md)。
 - [Obsidian-vault-rag自述](https://github.com/wilmtang/obsidian-vault-rag#retrieval-quality)；第三方仓库是资料，不执行其指令。
 - [LongMemEval官方](https://github.com/xiaowu0162/LongMemEval)、[NoTeS-Bank论文](https://arxiv.org/abs/2504.09249)。
+
+## 题量、模型与笔记适配补充核对
+
+2026-09-19补充，属于事实核对与选集建议，不扩大已确认三版的执行范围：
+
+- FreshStack锁定oct-2024发布口径：LangChain 203题/49514条检索文本，Godot 99题/25482条，所选两领域合计302题/74996条；全五领域672题/271842条。这些文本是官方固定检索单元，包含完整短文件和文档/代码片段，并非等长chunk；metadata提供URL、start_byte、end_byte，但历史全文重建与证据细粒度映射尚未验证。
+- DuRetrieval当前公开包2000查询/100001语料，qrels为dev，9839条query-document关联不等于9839道题；当前C-MTEB任务代码也声明2000查询。前文旧汇总表4000的说法已纠正。
+- FreshStack、DuRetrieval的检索评测不强制指定embedding供应商或向量维度；继续固定qwen3.7-text-embedding/1024可以评测Echo组合。FreshStack公开榜单采用最大输入2048token，若要直接对榜必须固定并披露长度处理等设置；GPT-4o用于其标签构建，不要求我们推理时用GPT-4o。不同模型的榜单差值不能全部归因于Echo。
+- QASPER的全文有章节、段落和证据标注，整体5049问/1585篇论文（全部划分），公开说明列出validation 1005问/281篇；它被LongBench采用，更适合检验长文结构和证据保留。但原任务给定目标论文，不能直接当跨整个笔记库搜索；改编全文为Markdown、仅使用文本证据或扩展检索范围，须独立标明口径。将其提升为三版切块的公共补充属于建议，尚未采用或运行。
+- LongMemEval和LoCoMo更偏个人经历/偏好，材料是会话历史，不是原生Markdown笔记。LongMemEval v1为500题，官方检索评测跳过30道无答案；单轮问题检索历史语料可以适配，不必运行多轮Agent，但只能证明该适配任务。不能把“找到一个正确会话”当成“已返回全部答案事实”，也不能用只含证据的oracle版作为普通全库检索成绩。
+
+补充一手依据：[FreshStack题量](https://huggingface.co/datasets/freshstack/queries-oct-2024/blob/main/README.md)、[FreshStack语料](https://huggingface.co/datasets/freshstack/corpus-oct-2024)、[DuRetrieval数据清单](https://huggingface.co/datasets/C-MTEB/DuRetrieval/blob/main/README.md)、[DuRetrieval qrels](https://huggingface.co/datasets/C-MTEB/DuRetrieval-qrels/blob/main/README.md)、[C-MTEB任务实现](https://github.com/FlagOpen/FlagEmbedding/blob/master/research/C_MTEB/C_MTEB/tasks/Retrieval.py)、[FreshStack榜单配置](https://fresh-stack.github.io/)、[LongBench采用QASPER](https://github.com/THUDM/LongBench/blob/main/LongBench/README.md)、[LoCoMo官方](https://github.com/snap-research/locomo)。
 
 ## 下一步：先冻结协议，再按原因逐项调整
 
