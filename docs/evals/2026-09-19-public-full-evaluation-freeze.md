@@ -49,3 +49,19 @@ FreshStack用官方query-to-nugget/qrels和alpha-nDCG@10、Coverage@20、Recall@
 - FreshStack重复外部ID遵循官方last-row覆盖：LangChain 49514原始行/49505有效ID，Godot 25482/25477。85/302个长问题超过MCP公共schema限制，固定片段适配走生产retrieveQuery保留原问题；明确不属于MCP端到端验收。
 - 公开排名同时保存RRF原分与实际rank，向官方scorer导出唯一递减rank_score，固定Echo已产生的顺序，避免不同评分库二次打破同分。官方源码固定提交：QASPER afd0fb96bf78ce8cd8157639c6f6a6995e4f9089；FreshStack f1c4ec96477f5100f10c83798d33b3101db727fa。库pyndeval0.0.6、pytrec-eval-terrier0.5.10（Python3.12），源码与依赖另存reference清单。
 - QASPER向量1801次HTTP成功。FreshStack首次4并发发生459次429并保留记录；[官方错误码](https://help.aliyun.com/zh/model-studio/error-code)将insufficient_quota解释为TPS/TPM限流。经检查同一批次退避后可成功，调整为2并发、至少1秒启动间隔及按输入规模平滑、429冷却；每输入最多12次累计尝试，历史失败不重置，属于调用调度修正，不改变检索输入或参数。
+
+## 独立复跑入口
+
+在新的外部目录准备 Node 24.15、Python 3.12；`ROOT`表示该目录。先从仓库构建，将 `dist/`、`package.json`、`package-lock.json`复制到 `ROOT/runtime/`，在该runtime目录执行 `npm ci --omit=dev`。所有数据、向量和API回执留在ROOT，不放Git。
+
+1. `node evals/download-public-benchmarks.mjs ROOT`；向 `ROOT/tooling` 安装 `pyarrow==25.0.1`，再运行 `python evals/convert-public-benchmarks.py ROOT`。
+2. `node evals/prepare-public-benchmarks.mjs ROOT ROOT/runtime/dist`；运行 `capture-public-vectors.mjs ROOT register` 冻结用途/输入。初次只调用 `register`；已有捕获时不要重置注册计划。
+3. 设置 `CHROMA_OPENAI_API_KEY` 环境变量。依次运行 `node evals/capture-public-vectors.mjs ROOT capture qasper`，再将scope依次替换为langchain、godot、du。只有这一步调用真实API；成功向量缓存持久化，恢复沿用累计尝试，不重置费用记录。
+4. QASPER运行器依次执行 `configure`、`index`、`run`；固定单元运行器 `node evals/run-public-fixed.mjs ROOT SCOPE PHASE` 对每scope依次执行 `index`、`vectors`、`run`。已存在结果拒绝覆盖。离线运行器只读取缓存，缺向量直接报错。
+5. `node evals/download-public-scorers.mjs ROOT` 下载固定版本官方代码。向 `ROOT/scoring-tools` 安装Python3.12依赖：pyndeval0.0.6、pytrec-eval-terrier0.5.10、numpy2.5.3、scipy1.18.1、scikit-learn1.9.1、joblib1.5.3、threadpoolctl3.6.0、narwhals2.26.0。
+6. `python evals/score-public-benchmarks.py ROOT SCOPE`；QASPER另运行 `analyze-public-qasper.py`、`run-public-qasper-baselines.py`；`node evals/audit-public-vectors.mjs ROOT SCOPE`核对真实回执。所有scope完成后才运行audit的 `all`。
+7. `node evals/collect-public-receipts.mjs ROOT qasper` 或验收后 `final` 生成仓库侧小型指纹清单。语料、完整题目/响应、API返回、数据库仍留外部；换目录复跑的路径与时间字段会改变，按ID、证据范围、评分及输入向量指纹复核，不要求整份结果字节一致。
+
+实际执行的FreshStack官方模块是独立 `metrics.py`（配套pyndeval/pytrec_eval）；下载的loader/evaluation仅作协议核对资料，不宣称已运行官方完整包。QASPER无模型启发式基线按用户后续“分析并对比公开基线”授权复跑，不增加模型或修改冻结检索条件。
+
+`embedding-plan.json`保留初次注册/输入配置快照，不能用其中旧并发、尝试上限或usage作为最终事实。实际策略按 `capture-policy-history.jsonl` 及原始attempts账本核对：恢复LangChain为2并发/至少1秒启动间隔；后续Godot沿用，Du短文本为4并发/至少200ms，均按估算输入token平滑至每秒12000并设429冷却。实际脚本按启动时SHA归档；LangChain已从6749849精确恢复，哈希与启动记录一致。模型/输入/检索参数不随调度改变。

@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict';
+import { archiveSources } from './lib/public-provenance.mjs';
+import { fileURLToPath } from 'node:url';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { performance } from 'node:perf_hooks';
@@ -173,6 +175,11 @@ try {
         queries.length,
         { langchain: 203, godot: 99, du: 2000 }[scope],
       );
+      const archived = await archiveSources(root, 'fixed-' + scope, [
+        fileURLToPath(import.meta.url),
+        fileURLToPath(new URL('./lib/public-runtime.mjs', import.meta.url)),
+        fileURLToPath(new URL('./lib/public-provenance.mjs', import.meta.url)),
+      ]);
       const before = digest(await fs.readFile(dbFile));
       for (const k of [30, 10]) {
         const file = await fs.open(
@@ -238,6 +245,23 @@ try {
         digest(await fs.readFile(dbFile)),
         before,
         'Query mutated fixed index',
+      );
+      await fs.writeFile(
+        path.join(dir, scope + '-run-receipt.json'),
+        JSON.stringify(
+          {
+            scope,
+            queries: queries.length,
+            conditions: [30, 10],
+            config,
+            index_sha256: before,
+            query_sha256: digest(await fs.readFile(queryFile)),
+            archived_sources: archived,
+            unchanged_index: true,
+          },
+          null,
+          2,
+        ) + '\n',
       );
     } finally {
       db.close();

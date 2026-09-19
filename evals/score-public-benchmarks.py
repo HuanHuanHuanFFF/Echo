@@ -1,4 +1,6 @@
 import sys,json,pathlib,importlib.util,importlib.metadata,hashlib,math
+sys.path.insert(0,str(pathlib.Path(__file__).resolve().parent/'lib'))
+from public_score_validation import unique_rows, fixed_run
 root=pathlib.Path(sys.argv[1]).resolve();task=sys.argv[2]
 sys.path.insert(0,str(root/'scoring-tools'))
 def load_module(name,file):
@@ -7,7 +9,9 @@ def rows(file):
     with open(file,encoding='utf8') as f:
         for line in f:
             if line.strip():yield json.loads(line)
-def sha(file):return hashlib.sha256(pathlib.Path(file).read_bytes()).hexdigest()
+def sha(file):
+    with open(file,'rb') as f: return hashlib.file_digest(f,'sha256').hexdigest()
+def bindings(files):return {str(pathlib.Path(f).relative_to(root)).replace(chr(92),'/'):sha(f) for f in files}
 out=root/'analysis';out.mkdir(exist_ok=True)
 if task=='qasper':
     scorer=load_module('official_qasper',root/'reference/qasper_evaluator.py')
@@ -18,7 +22,7 @@ if task=='qasper':
     summary={};per_question=[]
     for arm in ['p0','p1','p2']:
         prediction={};old={}
-        for r in rows(root/f'qasper/{arm}-results.jsonl'):
+        for r in unique_rows(rows(root/f'qasper/{arm}-results.jsonl'),gold):
             selected=r['score']['selected_paragraphs']
             paragraphs=docs[r['paper_id']]['paragraphs']
             evidence=[paragraphs[i]['text'] for i in selected]
@@ -34,7 +38,7 @@ if task=='qasper':
             per_question.append({'arm':arm,'id':q,'official_evidence_f1':value})
         assert not mismatches,mismatches
         summary[arm]={'questions':1005,'raw_all_evidence_f1':evaluation['Evidence F1'],'text_evidence_only_f1':text_evaluation['Evidence F1'],'missing':evaluation['Missing predictions'],'local_formula_all_rows_equal':True,'result_sha256':sha(root/f'qasper/{arm}-results.jsonl')}
-    receipt={'metric':'Official QASPER paragraph Evidence F1; blank answer placeholders used only to satisfy evaluator input; no Answer F1 reported','scorer_sha256':sha(root/'reference/qasper_evaluator.py'),'summary':summary}
+    receipt={'metric':'Official QASPER paragraph Evidence F1; blank answer placeholders used only to satisfy evaluator input; no Answer F1 reported','scorer_sha256':sha(root/'reference/qasper_evaluator.py'),'bindings':bindings([root/'data/qasper-dev.jsonl',root/'prepared/audit.json',root/'embedding-plan.json',root/'conversion-manifest.json']+[root/f'qasper/{arm}-summary.json' for arm in ['p0','p1','p2']]),'summary':summary}
     (out/'qasper-official-score.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf8')
     (out/'qasper-official-per-question.jsonl').write_text(''.join(json.dumps(x)+'\n' for x in per_question),encoding='utf8')
     print(json.dumps(receipt))
@@ -55,18 +59,24 @@ else:
                 values.update({d:1 for d in nugget['relevant_corpus_ids']});nuggets[nid]=values
                 for doc,rel in values.items():qrels.setdefault(qid,{})[doc]=qrels.setdefault(qid,{}).get(doc,0)+rel
         expected=set(mapping)
+    expected=sorted(expected)
+    corpus_file=root/'data'/('du-corpus.jsonl' if task=='du' else f'freshstack-{task}-corpus.jsonl')
+    corpus_ids={str(r.get('_id',r.get('id'))) for r in rows(corpus_file)}
     result={}
     for k in [30,10]:
-        run={r['id']:{x['id']:x['rank_score'] for x in r['rankings']} for r in rows(root/f'fixed/{task}-rrf{k}.jsonl')}
-        assert set(run)==expected
+        run=fixed_run(rows(root/f'fixed/{task}-rrf{k}.jsonl'),expected,corpus_ids,k)
         ev=pytrec_eval.RelevanceEvaluator(qrels,{'ndcg_cut.10','recall.10,50','recip_rank'})
         raw=ev.evaluate(run)
         metrics={name:sum(raw.get(q,{}).get(name,0) for q in expected)/len(expected) for name in ['ndcg_cut_10','recall_10','recall_50','recip_rank']}
+        cut10={q:dict(list(sorted(ds.items(),key=lambda x:x[1],reverse=True))[:10]) for q,ds in run.items()}
+        rank10=pytrec_eval.RelevanceEvaluator(qrels,{'recip_rank'}).evaluate(cut10)
+        metrics['MRR@10']=sum(rank10.get(q,{}).get('recip_rank',0) for q in expected)/len(expected)
+        metrics['Hit@10']=sum(any(qrels[q].get(d,0)>0 for d in cut10[q]) for q in expected)/len(expected)
         if task!='du':
             metrics.update(official.alpha_ndcg(nuggets,mapping,run,[10]))
             metrics.update(official.coverage(nuggets,mapping,run,[10,20]))
             metrics.update(official.recall(qrels,run,[10,50]))
         result['rrf'+str(k)]={'questions':len(expected),'metrics':metrics}
         (out/f'{task}-rrf{k}-per-question.json').write_text(json.dumps(raw,ensure_ascii=False)+'\n',encoding='utf8')
-    receipt={'scope':task,'versions':{x:importlib.metadata.version(x) for x in ['pyndeval','pytrec-eval-terrier','numpy','scipy']},'official_scorer_sha256':sha(root/'reference/freshstack_metrics.py'),'rank_export':'Unique descending rank_score preserves Echo candidate order; original RRF scores retained in runfile.','results':result}
+    receipt={'scope':task,'versions':{x:importlib.metadata.version(x) for x in ['pyndeval','pytrec-eval-terrier','numpy','scipy']},'official_scorer_sha256':sha(root/'reference/freshstack_metrics.py'),'rank_export':'Unique descending rank_score preserves Echo candidate order; original RRF scores retained in runfile.','bindings':bindings([corpus_file,root/'embedding-plan.json',root/'conversion-manifest.json',root/f'fixed/{task}-index.json',root/f'fixed/{task}-run-receipt.json',root/f'fixed/{task}.sqlite',root/'data'/('du-queries.jsonl' if task=='du' else f'freshstack-{task}-queries.jsonl')]+[root/f'fixed/{task}-rrf{k}.jsonl' for k in [30,10]]+([root/'data/du-qrels.jsonl'] if task=='du' else [])),'results':result}
     (out/f'{task}-official-score.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf8');print(json.dumps(receipt))

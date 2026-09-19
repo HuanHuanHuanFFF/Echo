@@ -17,3 +17,6 @@ echo.config.json
 /chunkers/
 /tokenizers/
 /echo.config.json.*
+
+__pycache__/
+*.pyc
