@@ -65,3 +65,5 @@ FreshStack用官方query-to-nugget/qrels和alpha-nDCG@10、Coverage@20、Recall@
 实际执行的FreshStack官方模块是独立 `metrics.py`（配套pyndeval/pytrec_eval）；下载的loader/evaluation仅作协议核对资料，不宣称已运行官方完整包。QASPER无模型启发式基线按用户后续“分析并对比公开基线”授权复跑，不增加模型或修改冻结检索条件。
 
 `embedding-plan.json`保留初次注册/输入配置快照，不能用其中旧并发、尝试上限或usage作为最终事实。实际策略按 `capture-policy-history.jsonl` 及原始attempts账本核对：恢复LangChain为2并发/至少1秒启动间隔；后续Godot沿用，Du短文本为4并发/至少200ms，均按估算输入token平滑至每秒12000并设429冷却。实际脚本按启动时SHA归档；LangChain已从6749849精确恢复，哈希与启动记录一致。模型/输入/检索参数不随调度改变。
+
+- 2026-09-20：LangChain 203×2串行全量完成。Godot/Du允许4个只读worker并行回放，每个query/RRF条件仍独立调用同一生产retrieveQuery和真实缓存；不复用检索lane、不调整输入/候选/阈值。LangChain8题×2条件真实probe除计时外逐字段相同，绑定原串行receipt、配置、query、DB与run哈希，已两位独立复核；并行耗时含资源竞争，不冒称单请求提速。原串行运行器保留。Godot/Du完成后另用1个worker抽查8题×2档与4-worker结果一致。

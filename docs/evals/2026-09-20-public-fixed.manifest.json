@@ -1,0 +1,290 @@
+{
+  "created": "2026-09-19T17:11:08.291Z",
+  "status": "partial_execution",
+  "results": {
+    "langchain": {
+      "official": {
+        "scope": "langchain",
+        "versions": {
+          "pyndeval": "0.0.6",
+          "pytrec-eval-terrier": "0.5.10",
+          "numpy": "2.5.3",
+          "scipy": "1.18.1"
+        },
+        "official_scorer_sha256": "0f3316491bb6adfcf06c6fbc91bd2734cba0f19575602cd99c0b652c0fb3e0b9",
+        "rank_export": "Unique descending rank_score preserves Echo candidate order; original RRF scores retained in runfile.",
+        "bindings": {
+          "data/freshstack-langchain-corpus.jsonl": "882f20823cb2b7ceb9ab9f895a25884e10a16e2977dfdbae2b89af455cc27852",
+          "embedding-plan.json": "49f12deeca2bf81233cf2d5ad117c5b4f7abdee675407a1053162a54a12a29e1",
+          "conversion-manifest.json": "37be4ffb1d384450c7cd3cca49ff1136d9d79b2b3954af415bac059fadb78b1b",
+          "fixed/langchain-index.json": "f2e6b04496059bb0bf4116ba49c7100c84c5aabac3ea36b08409a06e7b00c38f",
+          "fixed/langchain-run-receipt.json": "b4c43161e5a51385d4bb7706dfcb0a3a78490382d1c4ad2cade10e9c918d300a",
+          "fixed/langchain.sqlite": "6379f1adeaad95c8f8b65074a6d8d7206c03ecd2c419636865dba5d224abf5be",
+          "data/freshstack-langchain-queries.jsonl": "f211526a18c99e7d1e680bc9790505158baeb285f8b83479221d9c1287811761",
+          "fixed/langchain-rrf30.jsonl": "9df72e56cd2b71ed6d4199458873e2a4e20272b8aed57f1d3eed609e9bfeaf0d",
+          "fixed/langchain-rrf10.jsonl": "38faf1c47be2cae90401fb7cd20a0ca0b3426bb0a446612fee9ff93976e30bcc"
+        },
+        "results": {
+          "rrf30": {
+            "questions": 203,
+            "metrics": {
+              "ndcg_cut_10": 0.2598728080896843,
+              "recall_10": 0.2440729675300706,
+              "recall_50": 0.4589067137249134,
+              "recip_rank": 0.5292000352777467,
+              "MRR@10": 0.5220873406833998,
+              "Hit@10": 0.7832512315270936,
+              "alpha-nDCG@10": 0.3598,
+              "Coverage@10": 0.5926,
+              "Coverage@20": 0.6773,
+              "Recall@10": 0.2441,
+              "Recall@50": 0.4589
+            }
+          },
+          "rrf10": {
+            "questions": 203,
+            "metrics": {
+              "ndcg_cut_10": 0.2523653949739076,
+              "recall_10": 0.23717684260971705,
+              "recall_50": 0.45197272401344646,
+              "recip_rank": 0.515650603445076,
+              "MRR@10": 0.5080870279146141,
+              "Hit@10": 0.7783251231527094,
+              "alpha-nDCG@10": 0.35,
+              "Coverage@10": 0.5774,
+              "Coverage@20": 0.6734,
+              "Recall@10": 0.2372,
+              "Recall@50": 0.452
+            }
+          }
+        }
+      },
+      "paired": {
+        "scope": "langchain",
+        "questions": 203,
+        "paired": {
+          "alpha-nDCG@10": {
+            "rrf10_minus_rrf30": -0.009802785831355186,
+            "query_bootstrap_ci95": [
+              -0.021632226261742552, 0.0020168661934288927
+            ],
+            "wins": 53,
+            "losses": 62,
+            "ties": 88
+          },
+          "Coverage@20": {
+            "rrf10_minus_rrf30": -0.0038704926108374398,
+            "query_bootstrap_ci95": [-0.02627256157635468, 0.01765343103448274],
+            "wins": 10,
+            "losses": 9,
+            "ties": 184
+          },
+          "recall_50": {
+            "rrf10_minus_rrf30": -0.006933989711466893,
+            "query_bootstrap_ci95": [
+              -0.015397144939563791, 0.0011685871507085609
+            ],
+            "wins": 14,
+            "losses": 29,
+            "ties": 160
+          }
+        },
+        "diagnostics": {
+          "10": {
+            "empty": 0,
+            "mean_candidates": 114.27093596059113,
+            "mean_bm25_candidates": 60,
+            "mean_dense_candidates": 60,
+            "offline_p50_ms": 2214.8519000000088,
+            "offline_p95_ms": 2564.5360299999943
+          },
+          "30": {
+            "empty": 0,
+            "mean_candidates": 114.27093596059113,
+            "mean_bm25_candidates": 60,
+            "mean_dense_candidates": 60,
+            "offline_p50_ms": 2272.5982999999833,
+            "offline_p95_ms": 2699.745030000014
+          }
+        },
+        "same_candidate_pool_all_queries": true,
+        "top10_order_changed": 167,
+        "top10_members_changed": 104,
+        "bootstrap": {
+          "unit": "query",
+          "iterations": 10000,
+          "seed": 20260919,
+          "limitation": "Query-level uncertainty conditional on this fixed corpus; not cross-domain generalization or multiple-comparison correction."
+        }
+      },
+      "vector_audit": {
+        "scope": "langchain",
+        "created": "2026-09-19T16:48:52.755Z",
+        "model": "qwen3.7-text-embedding",
+        "dimensions": 1024,
+        "fingerprint": "2e6e9f07b732465d9a61d6336eb9901ccb3f525d8c626e294c8554ccc00c36c0",
+        "active_inputs": 44732,
+        "successful_requests_referenced": 5593,
+        "known_tokens_for_referenced_requests": 56247027,
+        "unknown_usage_successes": 0,
+        "inputs_vectors_request_ids_sha256": "6fe35afa3a9b0984db604a28cda119ab76b51642aee2281a39693f73ede832df",
+        "raw_response_chain_sha256": "b54a5b99bc69420db9d3c5175d671d64caffd84c43f4d2b8decfe9ffdb9a922e",
+        "checks": [
+          "all inputs match fingerprint/purpose/text key",
+          "all raw success models and dimensions match",
+          "all cache vectors equal normalized raw API vectors",
+          "all raw response indexes and counts match request keys",
+          "all raw token usage and input character counts match ledger"
+        ],
+        "usage": [
+          {
+            "status": "http_429",
+            "attempts": 463,
+            "input_chars": 16276653,
+            "reported_tokens": null
+          },
+          {
+            "status": "inflight",
+            "attempts": 1,
+            "input_chars": 25044,
+            "reported_tokens": null
+          },
+          {
+            "status": "success",
+            "attempts": 7410,
+            "input_chars": 207593107,
+            "reported_tokens": 59213221
+          }
+        ],
+        "usage_note": "Global ledger snapshot; per-scope referenced request tokens may overlap other scopes; failed calls without reported tokens are unknown, not zero."
+      },
+      "run_receipt": {
+        "scope": "langchain",
+        "queries": 203,
+        "conditions": [30, 10],
+        "config": {
+          "database": "E:\\幻\\Documents\\八股-Echo测试\\public-benchmarks-2026-09-19\\fixed\\langchain.sqlite",
+          "collections": [],
+          "chunker": {
+            "version": "1",
+            "options": {
+              "max_chars": 1000
+            }
+          },
+          "embedding": {
+            "provider": "http",
+            "model": "qwen3.7-text-embedding",
+            "dimensions": 1024,
+            "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+            "api_key_env": "CHROMA_OPENAI_API_KEY",
+            "timeout_ms": 30000,
+            "batch_size": 8,
+            "document_prefix": "",
+            "query_prefix": "",
+            "send_dimensions": true
+          },
+          "lexical": {
+            "locale": "zh-CN",
+            "dictionary": []
+          },
+          "runtime": {
+            "search_timeout_ms": 120000,
+            "max_concurrent_searches": 2
+          },
+          "logging": {
+            "level": "warn",
+            "max_file_bytes": 1048576,
+            "retain": 3
+          },
+          "retrieval": {
+            "mode": "hybrid",
+            "topk": 10,
+            "max_chunks_per_source": 3,
+            "bm25_candidates": 60,
+            "dense_candidates": 60,
+            "rrf_k": 30,
+            "title_weight": 2,
+            "bm25_weight": 0.5,
+            "dense_weight": 1,
+            "max_context_chars": 16000,
+            "min_dense_similarity": 0.3
+          }
+        },
+        "index_sha256": "6379f1adeaad95c8f8b65074a6d8d7206c03ecd2c419636865dba5d224abf5be",
+        "query_sha256": "f211526a18c99e7d1e680bc9790505158baeb285f8b83479221d9c1287811761",
+        "archived_sources": [
+          {
+            "source": "run-public-fixed.mjs",
+            "file": "repro/sources/59b59945bb22caa4d2c206b92c468cd555feac3fd5b874150a6b4984678823ec-run-public-fixed.mjs",
+            "sha256": "59b59945bb22caa4d2c206b92c468cd555feac3fd5b874150a6b4984678823ec"
+          },
+          {
+            "source": "public-runtime.mjs",
+            "file": "repro/sources/70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c-public-runtime.mjs",
+            "sha256": "70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c"
+          },
+          {
+            "source": "public-provenance.mjs",
+            "file": "repro/sources/47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382-public-provenance.mjs",
+            "sha256": "47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382"
+          }
+        ],
+        "unchanged_index": true
+      }
+    }
+  },
+  "pending": ["godot", "du"],
+  "artifacts": {
+    "analysis/langchain-official-score.json": "f2c961f8cad27d4fe2484ffc1e5729852b28a7945c8388aebaaa66eee4573dc9",
+    "analysis/langchain-paired-analysis.json": "95b79e249e6d643a12b17abfd4404169bedd606810831e614c26d42942d9e692",
+    "analysis/langchain-vector-audit.json": "aaafc69600e9210d19a7e577a7794a2487ceaf92f1d4dc2d34ee0fd6dae07c7b",
+    "fixed/langchain-run-receipt.json": "b4c43161e5a51385d4bb7706dfcb0a3a78490382d1c4ad2cade10e9c918d300a",
+    "analysis/langchain-parallel-conformance.json": "44c456a9dfa4442e84df44025428dae8a029e95267f20192d04b958aeece268e"
+  },
+  "reference": {
+    "commit": "72f48c7560f1694796b0b4af6cf96b49e083d9bd",
+    "url": "https://raw.githubusercontent.com/fresh-stack/fresh-stack.github.io/72f48c7560f1694796b0b4af6cf96b49e083d9bd/leaderboard_data.json",
+    "sha256": "39eb0fc14b23de29cbbdb21c4756129e42f644dc6c42203466633164885976fa",
+    "accessed": "2026-09-19"
+  },
+  "usage_note": "Per-scope referenced tokens can overlap; final global attempts ledger is authoritative. Registration plan usage is historical.",
+  "parallel_conformance": {
+    "scope": "langchain",
+    "workers": 4,
+    "compared": 16,
+    "reference_receipt_sha256": "b4c43161e5a51385d4bb7706dfcb0a3a78490382d1c4ad2cade10e9c918d300a",
+    "reference_run_sha256": {
+      "10": "38faf1c47be2cae90401fb7cd20a0ca0b3426bb0a446612fee9ff93976e30bcc",
+      "30": "9df72e56cd2b71ed6d4199458873e2a4e20272b8aed57f1d3eed609e9bfeaf0d"
+    },
+    "equal_all_fields_except_timing": true,
+    "index_sha256": "6379f1adeaad95c8f8b65074a6d8d7206c03ecd2c419636865dba5d224abf5be",
+    "archived_sources": [
+      {
+        "source": "run-public-fixed-parallel.mjs",
+        "file": "repro/sources/fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60-run-public-fixed-parallel.mjs",
+        "sha256": "fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60"
+      },
+      {
+        "source": "public-fixed-worker.mjs",
+        "file": "repro/sources/f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370-public-fixed-worker.mjs",
+        "sha256": "f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370"
+      },
+      {
+        "source": "public-eval-pool.mjs",
+        "file": "repro/sources/25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526-public-eval-pool.mjs",
+        "sha256": "25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526"
+      },
+      {
+        "source": "public-runtime.mjs",
+        "file": "repro/sources/70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c-public-runtime.mjs",
+        "sha256": "70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c"
+      },
+      {
+        "source": "public-provenance.mjs",
+        "file": "repro/sources/47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382-public-provenance.mjs",
+        "sha256": "47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382"
+      }
+    ]
+  }
+}
