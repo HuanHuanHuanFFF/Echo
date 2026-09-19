@@ -6,6 +6,8 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 当前下一步
 
+- [默认方案外部验证与暂存设想](project/2026-09-19-default-validation-and-deferred-ideas.md)：索引式预览先记录、暂缓实施；优先验证默认策略。区分产品heading/RRF30和候选新综合/RRF10，建议FreshStack、DuRetrieval及新的笔记留出集，官方检索与Markdown切块分开计分；尚未运行。
+
 - [渐进式取证、MMR与重排调研](research/2026-09-19-progressive-retrieval-and-reranking.md)：一个Luna/max子线程与主线程核对官方方案；建议紧凑预览、按范围补读，并区分MMR与精排。200份输出纯格式估算可减少19.61% token；尚未实现或验证Agent效果。
 
 - [纯向量与混合的最终集诊断](evals/2026-09-18-dense-hybrid-diagnosis.md)：11题12项事实差异均已有候选，直接由排序与每篇3块竞争形成；全部缺失锚点也已进候选，另记录子问定位词与严格标签边界。50份原响应同条件重建相等，两位独立复核通过。
