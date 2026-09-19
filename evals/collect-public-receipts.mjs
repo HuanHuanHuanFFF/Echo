@@ -39,7 +39,7 @@ const common = [
   'conversion-manifest.json',
   'prepared/audit.json',
   'embedding-plan.json',
-  'reference/manifest.json',
+  ...list('reference', (p) => !p.endsWith('.pyc')),
   'runtime/package-lock.json',
   ...list('runtime/dist'),
 ];
@@ -54,6 +54,13 @@ const receipt = {
   status:
     target === 'qasper' ? 'qasper_executed_reviewed' : 'all_executed_reviewed',
   created: new Date().toISOString(),
+  environment: {
+    platform: process.platform,
+    architecture: process.arch,
+    node: process.version,
+    icu: process.versions.icu,
+    v8: process.versions.v8,
+  },
   external_root: root,
   conditions: {
     qasper: ['heading/RRF30', 'structure1.0.1/RRF30', 'structure1.0.1/RRF10'],

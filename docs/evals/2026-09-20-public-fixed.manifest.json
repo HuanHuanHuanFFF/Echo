@@ -1,5 +1,5 @@
 {
-  "created": "2026-09-19T17:11:08.291Z",
+  "created": "2026-09-19T18:12:02.498Z",
   "status": "partial_execution",
   "results": {
     "langchain": {
@@ -231,14 +231,263 @@
         ],
         "unchanged_index": true
       }
+    },
+    "godot": {
+      "official": {
+        "scope": "godot",
+        "versions": {
+          "pyndeval": "0.0.6",
+          "pytrec-eval-terrier": "0.5.10",
+          "numpy": "2.5.3",
+          "scipy": "1.18.1"
+        },
+        "official_scorer_sha256": "0f3316491bb6adfcf06c6fbc91bd2734cba0f19575602cd99c0b652c0fb3e0b9",
+        "rank_export": "Unique descending rank_score preserves Echo candidate order; original RRF scores retained in runfile.",
+        "bindings": {
+          "data/freshstack-godot-corpus.jsonl": "61f0ae114476f7bbb225b1db54d69c350768a28a11854818d8e63a56feed7a48",
+          "embedding-plan.json": "49f12deeca2bf81233cf2d5ad117c5b4f7abdee675407a1053162a54a12a29e1",
+          "conversion-manifest.json": "37be4ffb1d384450c7cd3cca49ff1136d9d79b2b3954af415bac059fadb78b1b",
+          "fixed/godot-index.json": "29b8beb8b86bfc70d704f1ebe3b5c5093a2f32f8c9afd5a9de3e559f84c654a4",
+          "fixed/godot-run-receipt.json": "60b6f13099ce64842fd7922b2d77fe5810c6bcb522d9f83ebbb2fd2824ec4ae8",
+          "fixed/godot.sqlite": "0a08c74a0bf91cb7213a688643a1ec611ee6680338c68316869daa16d5ffcca2",
+          "data/freshstack-godot-queries.jsonl": "3b047104b84d53a92524adc6c4b25fc13778013fe5bbde339478e4bd71fc97f5",
+          "fixed/godot-rrf30.jsonl": "7370fb64574c1ffdcc954031023b429a5b7f11dba00bb44af5a4e43d6d42fee5",
+          "fixed/godot-rrf10.jsonl": "10304e6d9c7b50e635519c6aed47c21700e6b5682f55c83aeb5f06715557f22f"
+        },
+        "results": {
+          "rrf30": {
+            "questions": 99,
+            "metrics": {
+              "ndcg_cut_10": 0.23440112872492713,
+              "recall_10": 0.2613566936932168,
+              "recall_50": 0.45913521176679073,
+              "recip_rank": 0.4508075179300842,
+              "MRR@10": 0.4415905082571749,
+              "Hit@10": 0.6868686868686869,
+              "alpha-nDCG@10": 0.2812,
+              "Coverage@10": 0.4444,
+              "Coverage@20": 0.552,
+              "Recall@10": 0.2614,
+              "Recall@50": 0.4591
+            }
+          },
+          "rrf10": {
+            "questions": 99,
+            "metrics": {
+              "ndcg_cut_10": 0.23646540604655075,
+              "recall_10": 0.25481071441996483,
+              "recall_50": 0.45750345407442694,
+              "recip_rank": 0.47322494460672315,
+              "MRR@10": 0.46415343915343915,
+              "Hit@10": 0.6767676767676768,
+              "alpha-nDCG@10": 0.2885,
+              "Coverage@10": 0.4348,
+              "Coverage@20": 0.5483,
+              "Recall@10": 0.2548,
+              "Recall@50": 0.4575
+            }
+          }
+        }
+      },
+      "paired": {
+        "scope": "godot",
+        "questions": 99,
+        "paired": {
+          "alpha-nDCG@10": {
+            "rrf10_minus_rrf30": 0.007278064870269627,
+            "query_bootstrap_ci95": [
+              -0.007112239396018711, 0.023809735665122386
+            ],
+            "wins": 21,
+            "losses": 13,
+            "ties": 65
+          },
+          "Coverage@20": {
+            "rrf10_minus_rrf30": -0.0037036363636363647,
+            "query_bootstrap_ci95": [
+              -0.02694046212121212, 0.019364906565656502
+            ],
+            "wins": 4,
+            "losses": 7,
+            "ties": 88
+          },
+          "recall_50": {
+            "rrf10_minus_rrf30": -0.0016317576923637518,
+            "query_bootstrap_ci95": [-0.014089670150276208, 0.0117209796376463],
+            "wins": 5,
+            "losses": 9,
+            "ties": 85
+          }
+        },
+        "diagnostics": {
+          "10": {
+            "empty": 0,
+            "mean_candidates": 115.48484848484848,
+            "mean_bm25_candidates": 60,
+            "mean_dense_candidates": 60,
+            "offline_p50_ms": 2610.828099999999,
+            "offline_p95_ms": 3457.489480000003
+          },
+          "30": {
+            "empty": 0,
+            "mean_candidates": 115.48484848484848,
+            "mean_bm25_candidates": 60,
+            "mean_dense_candidates": 60,
+            "offline_p50_ms": 2622.3917999999976,
+            "offline_p95_ms": 3513.893860000008
+          }
+        },
+        "same_candidate_pool_all_queries": true,
+        "top10_order_changed": 63,
+        "top10_members_changed": 28,
+        "bootstrap": {
+          "unit": "query",
+          "iterations": 10000,
+          "seed": 20260919,
+          "limitation": "Query-level uncertainty conditional on this fixed corpus; not cross-domain generalization or multiple-comparison correction."
+        }
+      },
+      "vector_audit": {
+        "scope": "godot",
+        "created": "2026-09-19T18:03:23.141Z",
+        "model": "qwen3.7-text-embedding",
+        "dimensions": 1024,
+        "fingerprint": "2e6e9f07b732465d9a61d6336eb9901ccb3f525d8c626e294c8554ccc00c36c0",
+        "active_inputs": 25069,
+        "successful_requests_referenced": 3140,
+        "known_tokens_for_referenced_requests": 31503894,
+        "unknown_usage_successes": 0,
+        "inputs_vectors_request_ids_sha256": "068ed50695583d588e5ed02b2a3f5b75ea985b0e71410c455ae4bfdb38aa4b4e",
+        "raw_response_chain_sha256": "5311fbea698536d2eb227e803a2524b8ff23ea537fa976b84d78c1d44bfeb96d",
+        "checks": [
+          "all inputs match fingerprint/purpose/text key",
+          "all raw success models and dimensions match",
+          "all cache vectors equal normalized raw API vectors",
+          "all raw response indexes and counts match request keys",
+          "all raw token usage and input character counts match ledger"
+        ],
+        "usage": [
+          {
+            "status": "http_429",
+            "attempts": 467,
+            "input_chars": 16390991,
+            "reported_tokens": null
+          },
+          {
+            "status": "inflight",
+            "attempts": 2,
+            "input_chars": 9104,
+            "reported_tokens": null
+          },
+          {
+            "status": "success",
+            "attempts": 10547,
+            "input_chars": 306490681,
+            "reported_tokens": 90632341
+          }
+        ],
+        "usage_note": "Global ledger snapshot; per-scope referenced request tokens may overlap other scopes; failed calls without reported tokens are unknown, not zero."
+      },
+      "run_receipt": {
+        "scope": "godot",
+        "queries": 99,
+        "conditions": [30, 10],
+        "config": {
+          "database": "E:\\幻\\Documents\\八股-Echo测试\\public-benchmarks-2026-09-19\\fixed\\godot.sqlite",
+          "collections": [],
+          "chunker": {
+            "version": "1",
+            "options": {
+              "max_chars": 1000
+            }
+          },
+          "embedding": {
+            "provider": "http",
+            "model": "qwen3.7-text-embedding",
+            "dimensions": 1024,
+            "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+            "api_key_env": "CHROMA_OPENAI_API_KEY",
+            "timeout_ms": 30000,
+            "batch_size": 8,
+            "document_prefix": "",
+            "query_prefix": "",
+            "send_dimensions": true
+          },
+          "lexical": {
+            "locale": "zh-CN",
+            "dictionary": []
+          },
+          "runtime": {
+            "search_timeout_ms": 120000,
+            "max_concurrent_searches": 2
+          },
+          "logging": {
+            "level": "warn",
+            "max_file_bytes": 1048576,
+            "retain": 3
+          },
+          "retrieval": {
+            "mode": "hybrid",
+            "topk": 10,
+            "max_chunks_per_source": 3,
+            "bm25_candidates": 60,
+            "dense_candidates": 60,
+            "rrf_k": 30,
+            "title_weight": 2,
+            "bm25_weight": 0.5,
+            "dense_weight": 1,
+            "max_context_chars": 16000,
+            "min_dense_similarity": 0.3
+          }
+        },
+        "index_sha256": "0a08c74a0bf91cb7213a688643a1ec611ee6680338c68316869daa16d5ffcca2",
+        "query_sha256": "3b047104b84d53a92524adc6c4b25fc13778013fe5bbde339478e4bd71fc97f5",
+        "archived_sources": [
+          {
+            "source": "run-public-fixed-parallel.mjs",
+            "file": "repro/sources/fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60-run-public-fixed-parallel.mjs",
+            "sha256": "fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60"
+          },
+          {
+            "source": "public-fixed-worker.mjs",
+            "file": "repro/sources/f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370-public-fixed-worker.mjs",
+            "sha256": "f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370"
+          },
+          {
+            "source": "public-eval-pool.mjs",
+            "file": "repro/sources/25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526-public-eval-pool.mjs",
+            "sha256": "25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526"
+          },
+          {
+            "source": "public-runtime.mjs",
+            "file": "repro/sources/70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c-public-runtime.mjs",
+            "sha256": "70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c"
+          },
+          {
+            "source": "public-provenance.mjs",
+            "file": "repro/sources/47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382-public-provenance.mjs",
+            "sha256": "47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382"
+          }
+        ],
+        "unchanged_index": true,
+        "execution": {
+          "workers": 4,
+          "mode": "readonly independent production retrieveQuery calls; no lane reuse",
+          "latency": "Concurrent offline timing includes contention; not standalone latency"
+        }
+      }
     }
   },
-  "pending": ["godot", "du"],
+  "pending": ["du"],
   "artifacts": {
     "analysis/langchain-official-score.json": "f2c961f8cad27d4fe2484ffc1e5729852b28a7945c8388aebaaa66eee4573dc9",
     "analysis/langchain-paired-analysis.json": "95b79e249e6d643a12b17abfd4404169bedd606810831e614c26d42942d9e692",
     "analysis/langchain-vector-audit.json": "aaafc69600e9210d19a7e577a7794a2487ceaf92f1d4dc2d34ee0fd6dae07c7b",
     "fixed/langchain-run-receipt.json": "b4c43161e5a51385d4bb7706dfcb0a3a78490382d1c4ad2cade10e9c918d300a",
+    "analysis/godot-official-score.json": "98d3f8878ffc2cf475c0bf14dbe099db634ed58eb6a3384da897a43367dbf851",
+    "analysis/godot-paired-analysis.json": "450540a30da032194088266f593aa4dc6958e4a88ce9b38609d3681c00773249",
+    "analysis/godot-vector-audit.json": "368ad21180b4a8f5467386b5b186b463dac009b0c2c1a0e49abd04b86556b26d",
+    "fixed/godot-run-receipt.json": "60b6f13099ce64842fd7922b2d77fe5810c6bcb522d9f83ebbb2fd2824ec4ae8",
     "analysis/langchain-parallel-conformance.json": "44c456a9dfa4442e84df44025428dae8a029e95267f20192d04b958aeece268e"
   },
   "reference": {

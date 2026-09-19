@@ -67,3 +67,7 @@ FreshStack用官方query-to-nugget/qrels和alpha-nDCG@10、Coverage@20、Recall@
 `embedding-plan.json`保留初次注册/输入配置快照，不能用其中旧并发、尝试上限或usage作为最终事实。实际策略按 `capture-policy-history.jsonl` 及原始attempts账本核对：恢复LangChain为2并发/至少1秒启动间隔；后续Godot沿用，Du短文本为4并发/至少200ms，均按估算输入token平滑至每秒12000并设429冷却。实际脚本按启动时SHA归档；LangChain已从6749849精确恢复，哈希与启动记录一致。模型/输入/检索参数不随调度改变。
 
 - 2026-09-20：LangChain 203×2串行全量完成。Godot/Du允许4个只读worker并行回放，每个query/RRF条件仍独立调用同一生产retrieveQuery和真实缓存；不复用检索lane、不调整输入/候选/阈值。LangChain8题×2条件真实probe除计时外逐字段相同，绑定原串行receipt、配置、query、DB与run哈希，已两位独立复核；并行耗时含资源竞争，不冒称单请求提速。原串行运行器保留。Godot/Du完成后另用1个worker抽查8题×2档与4-worker结果一致。
+
+## 用户暂停（2026-09-20）
+
+用户要求尽快停止，明天再做。QASPER1005×3、LangChain203×2、Godot99×2均已完成及两位独立复核；Du已缓存12489/102001个去重输入，尚未检索2000题。已阻止新API请求、让在途响应落盘并确认捕获进程退出、inflight=0、锁释放。E盘STATE.json和PAUSE-REQUEST.json保存断点。vectors.sqlite保留user_pause_capture触发器防止误启动；仅在用户明确继续后移除再续跑，不清空缓存或重置尝试数。Godot/Du probe指纹补齐、Du全部评分和总分析仍待完成。

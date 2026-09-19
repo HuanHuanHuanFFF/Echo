@@ -1,12 +1,12 @@
 # Echo 文档入口
 
-更新日期：2026-09-19。
+更新日期：2026-09-20。
 
 Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前四阶段已合并并通过双平台 CI；第五阶段已完成独立安装、真实向量、100题开发及最终200题四臂对照；产品默认采用与最新安装回归仍待验收。安装使用从[README](../README.md)开始，当前配置以[v2 配置契约](design/configuration-profiles.md)为准。
 
 ## 当前下一步
 
-- [公开固定片段检索结果](evals/2026-09-20-public-fixed-results.md)：LangChain203题两档完成，RRF30/10的α-nDCG为35.98%/35.00%，小幅差异尚不稳健；Godot/Du仍在执行。
+- [公开固定片段检索结果](evals/2026-09-20-public-fixed-results.md)：LangChain203题两档完成，RRF30/10的α-nDCG为35.98%/35.00%，小幅差异尚不稳健；Godot也已完成并复核；用户已要求暂停，Du等待断点续跑。
 
 - [QASPER公开全文三版结果](evals/2026-09-19-public-qasper-results.md)：1005题三版已跑，严格800题完整覆盖460/480/492；官方段落F1与完整覆盖存在取舍，3015响应逐题官方核分一致，公开启发式基线已复跑；两位独立结果复核通过，固定片段数据集继续执行。
 
