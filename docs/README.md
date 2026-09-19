@@ -1,10 +1,12 @@
 # Echo 文档入口
 
-更新日期：2026-09-18。
+更新日期：2026-09-19。
 
 Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前四阶段已合并并通过双平台 CI；第五阶段已完成独立安装、真实向量、100题开发及最终200题四臂对照；产品默认采用与最新安装回归仍待验收。安装使用从[README](../README.md)开始，当前配置以[v2 配置契约](design/configuration-profiles.md)为准。
 
 ## 当前下一步
+
+- [渐进式取证、MMR与重排调研](research/2026-09-19-progressive-retrieval-and-reranking.md)：一个Luna/max子线程与主线程核对官方方案；建议紧凑预览、按范围补读，并区分MMR与精排。200份输出纯格式估算可减少19.61% token；尚未实现或验证Agent效果。
 
 - [纯向量与混合的最终集诊断](evals/2026-09-18-dense-hybrid-diagnosis.md)：11题12项事实差异均已有候选，直接由排序与每篇3块竞争形成；全部缺失锚点也已进候选，另记录子问定位词与严格标签边界。50份原响应同条件重建相等，两位独立复核通过。
 
