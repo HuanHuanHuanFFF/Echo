@@ -6,6 +6,8 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 当前下一步
 
+- [全量公开评测执行冻结](evals/2026-09-19-public-full-evaluation-freeze.md)：用户已授权全量QASPER三版、FreshStack/DuRetrieval固定片段RRF30/10。数据与协议核对完成，QASPER3015条检索已跑并按官方评分器核分，其余真实向量获取及全量对照进行中；不改默认。
+
 - [默认方案外部验证与暂存设想](project/2026-09-19-default-validation-and-deferred-ideas.md)：索引式预览先记录、暂缓实施；优先验证默认策略。区分产品heading/RRF30和候选新综合/RRF10，建议FreshStack、DuRetrieval及新的笔记留出集，官方检索与Markdown切块分开计分；尚未运行。
 
 - [渐进式取证、MMR与重排调研](research/2026-09-19-progressive-retrieval-and-reranking.md)：一个Luna/max子线程与主线程核对官方方案；建议紧凑预览、按范围补读，并区分MMR与精排。200份输出纯格式估算可减少19.61% token；尚未实现或验证Agent效果。
