@@ -40,7 +40,7 @@ function boundedTitle(title) {
 }
 export default {
   id: 'markdown-structure-v1',
-  version: '1',
+  version: '1.0.1',
   chunk(input) {
     const lines = input.lines;
     if (!lines.length) return [];
@@ -159,6 +159,7 @@ export default {
         });
     }
     const ranges = [];
+    const emitted = new Set();
     for (const group of groups) {
       let container = group.owner;
       while (
@@ -169,7 +170,10 @@ export default {
       const emit = (a, b) => {
         while (a <= b && blank(a)) a++;
         while (b >= a && blank(b)) b--;
-        if (a <= b)
+        // Overlap can revisit the same span when only blank lines advance.
+        const key = a + ':' + b;
+        if (a <= b && !emitted.has(key)) {
+          emitted.add(key);
           ranges.push({
             startLine: lines[a].number,
             endLine: lines[b].number,
@@ -177,6 +181,7 @@ export default {
             sectionStartLine: lines[container.start].number,
             sectionEndLine: lines[container.end].number,
           });
+        }
       };
       const isTable = (i) =>
         i < group.end &&

@@ -243,3 +243,15 @@ it('recognizes indented pipe text as code before testing table syntax', async ()
     oversized.some((c, i) => i > 0 && c.startLine <= oversized[i - 1]!.endLine),
   ).toBe(true);
 });
+
+it('makes new nonblank progress when overlap reuses long list rows separated by blanks', async () => {
+  const text =
+    '# List\n\n' +
+    ['a', 'b', 'c', 'd']
+      .map((x, i) => String(i + 1) + '. ' + x.repeat(640))
+      .join('\n\n');
+  const chunks = await split(text);
+  expect(chunks.filter((c) => c.text.includes('b'.repeat(640)))).toHaveLength(
+    1,
+  );
+});
