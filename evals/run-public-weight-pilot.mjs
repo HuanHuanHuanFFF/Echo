@@ -7,6 +7,13 @@ import { jsonLines } from './prepare-public-benchmarks.mjs';
 import { runtimeContext } from './lib/public-runtime.mjs';
 import { archiveSources } from './lib/public-provenance.mjs';
 const hash = (bytes) => createHash('sha256').update(bytes).digest('hex');
+export function parseWeights(input) {
+  const weights = input === undefined ? [0, 0.1, 0.25, 0.5] : JSON.parse(input);
+  assert.ok(Array.isArray(weights) && weights.length > 0);
+  assert.ok(weights.every((w) => Number.isFinite(w) && w >= 0 && w <= 10));
+  assert.equal(new Set(weights).size, weights.length);
+  return weights;
+}
 export function sampleIds(ids, scope, count, seed = 20260920) {
   assert.equal(new Set(ids).size, ids.length);
   assert.ok(Number.isInteger(count) && count > 0 && count <= ids.length);
@@ -56,6 +63,18 @@ async function main() {
       rel !== '..' &&
       !rel.startsWith('..' + path.sep),
   );
+  const weights = parseWeights(process.argv[4]);
+  const previousFile = process.argv[5] ? path.resolve(process.argv[5]) : null;
+  if (previousFile) {
+    const previousRel = path.relative(root, previousFile);
+    assert.ok(
+      previousRel &&
+        !path.isAbsolute(previousRel) &&
+        previousRel !== '..' &&
+        !previousRel.startsWith('..' + path.sep),
+    );
+    assert.equal(path.basename(previousFile), 'freeze.json');
+  }
   await fs.mkdir(out);
   globalThis.fetch = async () => {
     throw new Error('Network forbidden');
@@ -67,6 +86,32 @@ async function main() {
     const bytes = await fs.readFile(path.join(root, file));
     bindings[file] = hash(bytes);
     return bytes;
+  }
+  const previous = previousFile
+    ? JSON.parse(
+        (
+          await bind(
+            path
+              .relative(root, previousFile)
+              .replaceAll(String.fromCharCode(92), '/'),
+          )
+        ).toString('utf8'),
+      )
+    : null;
+  if (previous) {
+    for (const [key, value] of Object.entries({
+      rrf_k: 30,
+      dense_weight: 1,
+      candidates_per_lane_upper_bound: 60,
+      min_dense_similarity: 0.3,
+      title_weight: 2,
+      model: 'qwen3.7-text-embedding',
+      dimensions: 1024,
+      lexical: 'ICU zh-CN',
+      source_cap: null,
+      context_budget: null,
+    }))
+      assert.deepEqual(previous[key], value, key);
   }
   for (const [scope, total, count] of [
     ['langchain', 203, 20],
@@ -92,11 +137,18 @@ async function main() {
           : (q.query_title + ' ' + q.query_text).trim(),
       ]),
     );
-    cohorts[scope] = {
-      population: total,
-      sample: count,
-      ids: sampleIds([...queries[scope].keys()], scope, count),
-    };
+    cohorts[scope] = previous
+      ? structuredClone(previous.cohorts[scope])
+      : {
+          population: total,
+          sample: count,
+          ids: sampleIds([...queries[scope].keys()], scope, count),
+        };
+    assert.equal(cohorts[scope].population, total);
+    assert.equal(cohorts[scope].sample, count);
+    assert.equal(cohorts[scope].ids.length, count);
+    assert.equal(new Set(cohorts[scope].ids).size, count);
+    assert.ok(cohorts[scope].ids.every((id) => queries[scope].has(id)));
   }
   const plan = {
     created: new Date().toISOString(),
@@ -108,7 +160,15 @@ async function main() {
         'Sort SHA256(JSON.stringify([seed,scope,query_id])); take first rounded 10 percent within each corpus; independent of labels/scores',
     },
     cohorts,
-    bm25_weights: [0, 0.1, 0.25, 0.5],
+    bm25_weights: weights,
+    ...(previousFile
+      ? {
+          previous_freeze: path
+            .relative(root, previousFile)
+            .replaceAll(String.fromCharCode(92), '/'),
+          sample_reused_without_resampling: true,
+        }
+      : {}),
     dense_weight: 1,
     rrf_k: 30,
     candidates_per_lane_upper_bound: 60,
@@ -273,7 +333,9 @@ async function main() {
         Object.entries(cohorts).map(([s, c]) => [s, c.sample]),
       ),
       conditions: plan.bm25_weights,
-      scored_query_conditions: 230 * 4,
+      scored_query_conditions:
+        Object.values(cohorts).reduce((n, c) => n + c.sample, 0) *
+        weights.length,
       production_probes: probes.length,
       all_equal: true,
     }),

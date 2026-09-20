@@ -16,7 +16,15 @@ def read(p):return json.loads(p.read_text(encoding='utf8'))
 def write(name,x):
  with open(out/name,'x',encoding='utf8') as f:json.dump(x,f,ensure_ascii=False,indent=2);f.write('\n')
 plan=read(out/'freeze.json');receipt=read(out/'run-receipt.json')
-assert plan['bm25_weights']==[0,0.1,0.25,0.5] and plan['rrf_k']==30
+assert plan['rrf_k']==30
+assert plan['bm25_weights'] and len(set(plan['bm25_weights']))==len(plan['bm25_weights'])
+assert all(isinstance(w,(int,float)) and not isinstance(w,bool) and math.isfinite(w) and 0<=w<=10 for w in plan['bm25_weights'])
+previous_dir=(root/plan['previous_freeze']).parent if plan.get('previous_freeze') else None
+if previous_dir:
+ assert previous_dir.is_relative_to(root)
+ previous_plan=read(previous_dir/'freeze.json')
+ assert previous_plan['cohorts']==plan['cohorts'] and plan['sample_reused_without_resampling']
+ previous_summary=read(previous_dir/'summary.json')
 assert not (out/'summary.json').exists()
 for p,h in receipt['bindings'].items():assert sha(root/p)==h,p
 spec=importlib.util.spec_from_file_location('official_freshstack',root/'reference/freshstack_metrics.py')
@@ -42,6 +50,15 @@ for scope,cohort in plan['cohorts'].items():
     for d,rel in values.items():qrels.setdefault(qid,{})[d]=qrels.setdefault(qid,{}).get(d,0)+rel
  assert set(qrels)==set(ids)
  per={};conditions={}
+ if previous_dir:
+  baseline_file=previous_dir/f'{scope}-w0.5-per-question.json'
+  expected_hash=previous_summary['bindings'][baseline_file.name]
+  assert sha(baseline_file)==expected_hash
+  per['0.5']=read(baseline_file);assert set(per['0.5'])==set(ids)
+  for metric,value in previous_summary['results'][scope]['conditions']['0.5']['metrics'].items():
+   assert math.isclose(statistics.mean(per['0.5'][q][metric] for q in ids),value,abs_tol=1e-10)
+  summary['bindings'][str(baseline_file.relative_to(root)).replace(chr(92),'/')]=sha(baseline_file)
+  summary['bindings'][str((previous_dir/'summary.json').relative_to(root)).replace(chr(92),'/')]=sha(previous_dir/'summary.json')
  for w in plan['bm25_weights']:
   label=str(w);file=out/f'{scope}-w{w}.jsonl';data=list(rows(file));assert all(r['bm25_weight']==w for r in data)
   run=fixed_run(data,ids,corpus_ids,30)
@@ -75,12 +92,12 @@ for scope,cohort in plan['cohorts'].items():
   summary['bindings'][f'{scope}-w{w}-per-question.json']=sha(out/f'{scope}-w{w}-per-question.json')
   conditions[label]={'questions':len(ids),'metrics':metrics,'hit10_count':sum(per[label][q]['Hit@10'] for q in ids),'empty_queries':sum(not run[q] for q in ids)}
  comparisons={}
- for w in [0,0.1,0.25]:
+ for w in [w for w in plan['bm25_weights'] if w!=0.5]:
   label=str(w);comparisons[label]={}
   for metric in (['ndcg_cut_10','recall_10','recall_50'] if scope=='du' else ['alpha-nDCG@10','Coverage@20','recall_50']):
    delta=np.array([per[label][q][metric]-per['0.5'][q][metric] for q in ids]);rng=np.random.default_rng(20260920)
    boot=np.array([delta[rng.integers(0,len(ids),len(ids))].mean() for _ in range(10000)])
    comparisons[label][metric]={'delta':float(delta.mean()),'ci95':np.quantile(boot,[.025,.975]).tolist(),'wins':int((delta>1e-12).sum()),'losses':int((delta < -1e-12).sum()),'ties':int((abs(delta)<=1e-12).sum())}
- summary['results'][scope]={'sample':len(ids),'full_corpus_documents':len(corpus_ids),'conditions':conditions,'versus_bm25_0_5':comparisons,'zero_and_half_match_original_sampled_scores':True}
+ summary['results'][scope]={'sample':len(ids),'full_corpus_documents':len(corpus_ids),'conditions':conditions,'versus_bm25_0_5':comparisons,'zero_and_half_match_original_sampled_scores':all(w in plan['bm25_weights'] for w in [0,0.5]),'previous_half_scores_reused':bool(previous_dir)}
  print(json.dumps({'scope':scope,**summary['results'][scope]}),flush=True)
 write('summary.json',summary)

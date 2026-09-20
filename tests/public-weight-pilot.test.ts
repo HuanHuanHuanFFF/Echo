@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
-const { sampleIds, weightedRanks } = await import(
+const { sampleIds, weightedRanks, parseWeights } = await import(
   pathToFileURL(resolve('evals/run-public-weight-pilot.mjs')).href
 );
 it('samples only by frozen identity and seed, independently of input order', () => {
@@ -33,4 +33,11 @@ it('removes zero-weight-only matches, applies weights, and uses production ID ti
   const broken = structuredClone(row);
   broken.rankings[0]!.dense_rank = 2;
   expect(() => weightedRanks(broken, 0.5)).toThrow();
+});
+
+it('accepts explicit new weights and rejects ambiguous or invalid batches', () => {
+  expect(parseWeights()).toEqual([0, 0.1, 0.25, 0.5]);
+  expect(parseWeights('[0.3,0.4]')).toEqual([0.3, 0.4]);
+  for (const bad of ['[]', '[0.3,0.3]', '["0.3"]', '[-1]', '[11]'])
+    expect(() => parseWeights(bad)).toThrow();
 });
