@@ -51,3 +51,36 @@ export function denseLane(row) {
   );
   return found;
 }
+
+// Evaluation-only ablation. Score every match before truncation; the native
+// ranking is retained as a same-call control against the frozen previous run.
+export function miniRankWithoutCoverage(index, terms, allowedIds) {
+  assert.ok(terms.length <= 128 && new Set(terms).size === terms.length);
+  const all = index.search(terms.join(' '), {
+    bm25: { ...miniArms.default },
+    ...(allowedIds ? { filter: (r) => allowedIds.has(r.id) } : {}),
+  });
+  const compare = (a, b) => b.score - a.score || a.id.localeCompare(b.id);
+  const native = all.map(({ id, score }) => ({ id, score })).sort(compare);
+  const nativeRanks = new Map(native.map((r, i) => [r.id, i + 1]));
+  const adjusted = all
+    .map(({ id, score, queryTerms: matched }) => {
+      assert.ok(Number.isFinite(score) && score >= 0);
+      assert.ok(Array.isArray(matched) && matched.length > 0);
+      assert.equal(new Set(matched).size, matched.length);
+      assert.ok(matched.every((term) => terms.includes(term)));
+      return {
+        id,
+        score: score / matched.length,
+        native_score: score,
+        matched_terms: matched.length,
+        native_rank: nativeRanks.get(id),
+      };
+    })
+    .sort(compare);
+  return {
+    native: native.slice(0, 60),
+    without_coverage: adjusted.slice(0, 60),
+    matching_documents: all.length,
+  };
+}

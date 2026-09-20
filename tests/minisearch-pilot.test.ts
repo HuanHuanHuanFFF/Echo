@@ -2,9 +2,8 @@ import { expect, it } from 'vitest';
 import MiniSearch from 'minisearch';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
-const { miniArms, miniOptions, miniRank } = await import(
-  pathToFileURL(resolve('evals/lib/minisearch-pilot.mjs')).href
-);
+const { miniArms, miniOptions, miniRank, miniRankWithoutCoverage } =
+  await import(pathToFileURL(resolve('evals/lib/minisearch-pilot.mjs')).href);
 
 it('matches native MiniSearch BM25+ including repeated terms, unique field length and query coverage multiplier', () => {
   const docs = [
@@ -99,4 +98,49 @@ it('freezes exactly two independent 30 percent changes and keeps shared options 
   miniRank(index, ['apple'], 'b_minus30');
   expect(miniRank(index, ['apple'], 'default')).toEqual(first);
   expect(first[0].id).toBe('a');
+});
+
+it('removes the matched-term multiplier before truncation and recovers a native rank beyond sixty', () => {
+  const index = new MiniSearch(miniOptions());
+  index.addAll([
+    ...Array.from({ length: 60 }, (_, i) => ({
+      id: 'd' + i,
+      title: '',
+      body: 'alpha beta',
+    })),
+    { id: 'target', title: '', body: Array(200).fill('gamma').join(' ') },
+    ...Array.from({ length: 39 }, (_, i) => ({
+      id: 'f' + i,
+      title: '',
+      body:
+        'gamma ' + Array.from({ length: 40 }, (_, j) => 'extra' + j).join(' '),
+    })),
+  ]);
+  const result = miniRankWithoutCoverage(index, ['alpha', 'beta', 'gamma']);
+  expect(result.native).toEqual(
+    miniRank(index, ['alpha', 'beta', 'gamma'], 'default'),
+  );
+  expect(result.native.some((r: { id: string }) => r.id === 'target')).toBe(
+    false,
+  );
+  expect(result.without_coverage[0]).toMatchObject({
+    id: 'target',
+    matched_terms: 1,
+    native_rank: 61,
+  });
+  expect(result.without_coverage).toHaveLength(60);
+  expect(result.matching_documents).toBe(100);
+  const filtered = miniRankWithoutCoverage(
+    index,
+    ['alpha', 'beta', 'gamma'],
+    new Set(['target']),
+  );
+  expect(filtered.without_coverage).toHaveLength(1);
+  expect(filtered.without_coverage[0].id).toBe('target');
+  expect(miniRankWithoutCoverage(index, []).without_coverage).toEqual([]);
+  const raw = index.search('alpha beta gamma');
+  for (const row of result.without_coverage) {
+    const hit = raw.find((r) => r.id === row.id)!;
+    expect(row.score).toBeCloseTo(hit.score / hit.queryTerms.length, 12);
+  }
 });
