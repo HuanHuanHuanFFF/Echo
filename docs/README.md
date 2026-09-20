@@ -6,13 +6,15 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 当前下一步
 
-- [公开固定片段检索结果](evals/2026-09-20-public-fixed-results.md)：LangChain203题两档完成，RRF30/10的α-nDCG为35.98%/35.00%，小幅差异尚不稳健；Godot也已完成并复核；用户已明确继续，Du正复用暂停缓存完成剩余输入。
+- [全量公开评测总结](evals/2026-09-20-public-full-results.md)：3307父题、7619次主执行全部完成，两位Luna/max独立复核通过；新综合提高QASPER完整覆盖但段落F1下降，RRF10提高Du前10排序，FreshStack差异不稳定；与强公开参考仍有差距，默认未改。
 
-- [QASPER公开全文三版结果](evals/2026-09-19-public-qasper-results.md)：1005题三版已跑，严格800题完整覆盖460/480/492；官方段落F1与完整覆盖存在取舍，3015响应逐题官方核分一致，公开启发式基线已复跑；两位独立结果复核通过，固定片段数据集继续执行。
+- [公开固定片段检索结果](evals/2026-09-20-public-fixed-results.md)：LangChain203、Godot99、Du2000题各两档完成；Du RRF30/10 nDCG@10为81.77%/84.16%，前50召回略降，完整指标与公开参考分列。
 
-- [全量公开评测执行冻结](evals/2026-09-19-public-full-evaluation-freeze.md)：用户已授权全量QASPER三版、FreshStack/DuRetrieval固定片段RRF30/10。数据与协议核对完成，QASPER3015条检索已跑并按官方评分器核分，其余真实向量获取及全量对照进行中；不改默认。
+- [QASPER公开全文三版结果](evals/2026-09-19-public-qasper-results.md)：1005题三版已跑，严格800题完整覆盖460/480/492；官方段落F1与完整覆盖存在取舍，3015响应逐题官方核分一致，公开启发式基线已复跑。
 
-- [默认方案外部验证与暂存设想](project/2026-09-19-default-validation-and-deferred-ideas.md)：索引式预览先记录、暂缓实施；优先验证默认策略。区分产品heading/RRF30和候选新综合/RRF10，建议FreshStack、DuRetrieval及新的笔记留出集，官方检索与Markdown切块分开计分；尚未运行。
+- [全量公开评测执行冻结](evals/2026-09-19-public-full-evaluation-freeze.md)：本批固定配置、有效分母、原文映射、评分与复跑入口；历史暂停/恢复记录保留，最终执行状态以上方总结为准。
+
+- [默认方案外部验证与暂存设想](project/2026-09-19-default-validation-and-deferred-ideas.md)：历史提案；其中公开评测已执行，结果见本页上方。索引式预览与新的笔记留出集仍暂缓，未据公开结果自动采用候选默认。
 
 - [渐进式取证、MMR与重排调研](research/2026-09-19-progressive-retrieval-and-reranking.md)：一个Luna/max子线程与主线程核对官方方案；建议紧凑预览、按范围补读，并区分MMR与精排。200份输出纯格式估算可减少19.61% token；尚未实现或验证Agent效果。
 

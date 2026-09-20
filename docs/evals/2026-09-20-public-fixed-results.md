@@ -1,6 +1,6 @@
 # 公开固定片段检索：全量结果与参考比较
 
-日期：2026-09-20。状态：LangChain 203题及Godot 99题×2档已执行；用户已明确继续；DuRetrieval从12489/102001个缓存输入恢复，2000题尚待全量检索。本文随已冻结范围补齐，不调整参数、不改变产品默认。小型指纹见[公开收据](2026-09-20-public-fixed.manifest.json)。承接[执行冻结](2026-09-19-public-full-evaluation-freeze.md)；QASPER全文切块结果[另列](2026-09-19-public-qasper-results.md)。
+日期：2026-09-20。状态：LangChain 203题、Godot 99题、DuRetrieval 2000题各两档全量执行、评分和等价检查完成，两位Luna/max独立复核通过。参数与产品默认保持冻结。[分阶段收据](2026-09-20-public-fixed.manifest.json)保留各项细节，最终入口见[全量总结](2026-09-20-public-full-results.md)。承接[执行冻结](2026-09-19-public-full-evaluation-freeze.md)；QASPER全文切块结果[另列](2026-09-19-public-qasper-results.md)。
 
 ## 条件与可比边界
 
@@ -84,7 +84,40 @@ BM25在候选层确有补充：整池相对Dense候选的事实支持增加约6.
 
 ## DuRetrieval
 
-待全量向量、排名、官方评分和独立复核完成后补齐。Du只采用C-MTEB dev的100001文档/2000题，不与原DuReader-Retrieval约809万段落任务混称。
+采用C-MTEB dev的100001文档、2000题、9839个相关文档标注对，相关性均为1；不是原DuReader-Retrieval约809万段落任务。两档各2000题唯一完整，均无空结果。问题ID与文档ID无交集，排除同ID文档的规则不会改变本批分数。
+
+| 条件       | nDCG@10 | Recall@10 | Recall@50 |            Hit@10 | MRR@10 |
+| ---------- | ------: | --------: | --------: | ----------------: | -----: |
+| Echo RRF30 |  81.77% |    85.46% |    96.85% | 1952/2000；97.60% | 88.97% |
+| Echo RRF10 |  84.16% |    87.85% |    96.57% | 1960/2000；98.00% | 90.07% |
+
+nDCG@10衡量相关文档是否排在前10且靠前；Hit只要求前10至少有一篇相关文档，因此98% Hit不能解释为98%问题证据完整。Recall按每题已标注相关文档比例宏平均，MRR@10取前10中首个相关文档名次的倒数。所有相关文档也不是一道问题必须同时具备的事实集合。
+
+| RRF10−30  | 差值（百分点） | 95%题级bootstrap区间 |     赢/输/平 |
+| --------- | -------------: | -------------------- | -----------: |
+| nDCG@10   |          +2.40 | [+2.12, +2.67]       | 693/133/1174 |
+| Recall@10 |          +2.39 | [+1.94, +2.83]       |  227/28/1745 |
+| Recall@50 |          −0.27 | [−0.46, −0.13]       |    6/28/1966 |
+
+固定10000次bootstrap、种子20260919；这些区间描述当前语料上的题级差异，不代表跨领域保证或多重比较校正。RRF10改善前排相关性，但少数相关文档掉出前50；不能只报告两项增长。
+
+两档候选池逐题相同，1652题前10顺序变化、1126题前10成员变化；RRF公式已逐项复算。向量每题60，BM25平均59.9715，两路并集平均104.5675。Du整池相关文档Recall为97.39%，dense前60池为97.10%，BM25前60池为77.73%；BM25的整池增量约0.30个百分点。这仍是候选支持诊断，不是纯向量/纯BM25前10受控实验。15题整池无正例；RRF10前10无正例40题，其中25题在池内有正例，说明候选缺失与排序丢失同时存在。
+
+### C-MTEB公开参考
+
+[固定历史榜单](https://huggingface.co/spaces/mteb/leaderboard/resolve/0bf00d928befcc69a5ce08a4bda9b59016722e37/boards_data/zh/data_tasks/Retrieval/default.jsonl)的DuRetrieval nDCG@10单项如下，不使用C-MTEB整体均分替代：
+
+| 方法                    | nDCG@10 | 向量维度 / 最大输入tokens |
+| ----------------------- | ------: | ------------------------: |
+| BGE-base-zh-v1.5        |  85.07% |                 768 / 512 |
+| BGE-large-zh-v1.5       |  86.32% |                1024 / 512 |
+| gte-Qwen1.5-7B-instruct |  86.01% |              4096 / 32768 |
+| MiniCPM-Embedding       |  90.98% |               2304 / 2048 |
+| bge-multilingual-gemma2 |  90.46% |               3584 / 8192 |
+
+Echo RRF10为84.16%，比BGE-base参考低0.91个百分点，比MiniCPM低6.82个百分点。可说明该系统已获得较高的前10命中与排序分数，但这批公开数据不能证明达到强基线水平。榜单为固定旧快照，各行模型、维度、最大输入及整套pipeline不同；本轮是qwen3.7/1024的完整输入hybrid，不能把差值单独归因于切块或RRF，也不称为严格复现榜单。
+
+实际计分遵循[C-MTEB任务定义](https://github.com/FlagOpen/FlagEmbedding/blob/fd1a2bdf69488ffebe0327999d4400d8c8058a0b/research/C_MTEB/C_MTEB/tasks/Retrieval.py)的dev/nDCG@10，用pytrec-eval-terrier0.5.10计算，绑定Python封装及native模块SHA；官方任务源码仅作协议核对，没有执行完整MTEB pipeline。4-worker全量4000次之后用1-worker核对16次，除计时外逐字段一致，索引前后SHA相等。
 
 ## 验证与执行代价
 
@@ -92,8 +125,10 @@ LangChain去重用途/输入44732条，引用5593份成功API响应、服务报�
 
 串行LangChain离线P50约2.21–2.27秒、P95约2.56–2.70秒，不含API/MCP/Agent。后续Godot/Du采用4个只读worker，每个条件仍独立调用生产retrieveQuery。16条真实LangChain串行/并行probe除耗时外逐字段相同，绑定串行配置、查询、索引和结果SHA；并行计时含资源竞争，不作为单请求速度横比。
 
-新增调度隔离测试验证乱序完成仍保持题目身份、失败后终止worker。当前本地170项测试通过、1既有跳过，另3项Python评分输入回归；QASPER阶段提交2dcc116双平台CI通过。LangChain评分、成对统计、向量绑定和16条等价probe已由两位Luna/max独立复核通过；该probe是抽样等价检查，不是对其余数据集全部题目的预先证明。
+新增调度隔离测试验证乱序完成仍保持题目身份、失败后终止worker。本地170项测试通过、1既有跳过，另4项Python评分输入回归；提交c601786双平台CI通过，最终收尾提交的CI另按远程记录核对。三个固定数据集各16条等价probe均通过；这是抽样检查，全量结果另外验证ID、评分、RRF公式和来源绑定。
 
-原始文件：E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19 的 fixed/langchain-rrf30.jsonl、rrf10.jsonl、langchain-run-receipt.json；analysis/langchain-official-score.json、langchain-paired-analysis.json、langchain-vector-audit.json、langchain-parallel-conformance.json。评分器拒绝重复/漏题、未知文档、重复名次与非法rank导出。
+Du离线4-worker P50约1.16秒、P95约1.46–1.47秒，含资源竞争，未含API/MCP/Agent。全局186198条用途/输入去重向量已全部核对原始真实API响应，三个fixed索引的官方正文、缓存及索引向量逐条相等。共23749次尝试，23278成功、467次429、4次其他失败；成功响应报告111974895 tokens，失败未报告用量，不能当作零费用。每输入最多累计5次尝试，低于12次限制；scope引用tokens有交叉，不相加计总账。详见[全量总结](2026-09-20-public-full-results.md)。
+
+原始文件根目录为 E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19。对每个scope（langchain、godot、du），fixed/保存scope-rrf30.jsonl、scope-rrf10.jsonl、scope-run-receipt.json；analysis/保存scope-official-score.json、scope-paired-analysis.json、scope-vector-audit.json、scope-parallel-conformance.json、scope-candidate-pool.json。评分器拒绝重复/漏题、未知文档、重复名次与非法rank导出。
 
 复跑入口：[串行运行器](../../evals/run-public-fixed.mjs)、[只读并行运行器](../../evals/run-public-fixed-parallel.mjs)、[官方评分](../../evals/score-public-benchmarks.py)、[成对分析](../../evals/analyze-public-fixed.py)、[原始向量审计](../../evals/audit-public-vectors.mjs)。已有结果以wx保护；失败残留由操作者核对并另存后重跑，不自动覆盖原产物。

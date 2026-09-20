@@ -1,6 +1,6 @@
 {
-  "created": "2026-09-20T03:50:47.405Z",
-  "status": "partial_execution",
+  "created": "2026-09-20T04:27:01.546Z",
+  "status": "all_executed_review_pending",
   "results": {
     "langchain": {
       "official": {
@@ -672,9 +672,370 @@
         },
         "meaning": "FreshStack nugget coverage; Du relevant-document recall (all qrels are not a required evidence set). Lane values describe support in the recorded top60 lane pools, not a new pure-mode top10 evaluation. All-pool support is diagnostic, not achievable packing accuracy or an official leaderboard metric."
       }
+    },
+    "du": {
+      "official": {
+        "scope": "du",
+        "versions": {
+          "pyndeval": "0.0.6",
+          "pytrec-eval-terrier": "0.5.10",
+          "numpy": "2.5.3",
+          "scipy": "1.18.1"
+        },
+        "rank_export": "Unique descending rank_score preserves Echo candidate order; original RRF scores retained in runfile.",
+        "bindings": {
+          "data/du-corpus.jsonl": "832b9af76e04815651963deed1d167870f0aa466c3079c40c71d2989974d612a",
+          "embedding-plan.json": "49f12deeca2bf81233cf2d5ad117c5b4f7abdee675407a1053162a54a12a29e1",
+          "conversion-manifest.json": "37be4ffb1d384450c7cd3cca49ff1136d9d79b2b3954af415bac059fadb78b1b",
+          "fixed/du-index.json": "94d7a43b6433a267d7ab0623f47d16a7df789d0d86c3aa820c9f4f25184b97ff",
+          "fixed/du-run-receipt.json": "db13791a97a4c633cc50469175a4e55822bc1194e7eb5377bf986580f5b4a367",
+          "fixed/du.sqlite": "4ec07f8b6075f6e1428bee16420fdb5c8aae1f744ebf90ebc9f68654f5780816",
+          "data/du-queries.jsonl": "20722074d3dab144c07c8ffc1b374cfa0603fb0ce0ccdf842bd95cf524d78272",
+          "fixed/du-rrf30.jsonl": "5089f0a469720a774f28fb16f84f5062e1185d44baa2d31dbe456077af1753e0",
+          "fixed/du-rrf10.jsonl": "ed1df824fa3d68e00a7757b9073d60e4f54a6d7007d5a7753001a8479b4cdeb5",
+          "data/du-qrels.jsonl": "78e54bfdcc726c3bbb27fe4023b8d03a436de53f4d7bbc6d991209083d685238",
+          "reference/c-mteb-retrieval-task-receipt.json": "5babe9a368be3bef814661d2344f9533aca85340c0c803c907940f4cc1e8cdcf",
+          "reference/c-mteb-retrieval-task.py": "bfe759fb76802c6816c0531a74237c8778eb5d96a49700c6fd75935d7a6f9ace"
+        },
+        "results": {
+          "rrf30": {
+            "questions": 2000,
+            "metrics": {
+              "ndcg_cut_10": 0.8176774755144044,
+              "recall_10": 0.8546232293942971,
+              "recall_50": 0.9684799946791034,
+              "recip_rank": 0.8907127906427255,
+              "MRR@10": 0.8897380952380952,
+              "Hit@10": 0.976
+            }
+          },
+          "rrf10": {
+            "questions": 2000,
+            "metrics": {
+              "ndcg_cut_10": 0.8416477116115186,
+              "recall_10": 0.8785190520753468,
+              "recall_50": 0.9657468164145693,
+              "recip_rank": 0.9012954667170151,
+              "MRR@10": 0.9006549603174603,
+              "Hit@10": 0.98
+            }
+          }
+        },
+        "official_protocol": {
+          "repository": "FlagOpen/FlagEmbedding",
+          "commit": "fd1a2bdf69488ffebe0327999d4400d8c8058a0b",
+          "path": "research/C_MTEB/C_MTEB/tasks/Retrieval.py",
+          "url": "https://raw.githubusercontent.com/FlagOpen/FlagEmbedding/fd1a2bdf69488ffebe0327999d4400d8c8058a0b/research/C_MTEB/C_MTEB/tasks/Retrieval.py",
+          "sha256": "bfe759fb76802c6816c0531a74237c8778eb5d96a49700c6fd75935d7a6f9ace",
+          "accessed": "2026-09-20T03:39:04.275Z",
+          "purpose": "Read-only protocol reference; not executed",
+          "executed": false
+        },
+        "metric_implementation": {
+          "package": "pytrec-eval-terrier",
+          "version": "0.5.10",
+          "metric": "ndcg_cut.10",
+          "meaning": "pytrec_eval implements C-MTEB dev nDCG@10 on unchanged binary qrels; not the complete MTEB pipeline",
+          "file_bindings": {
+            "scoring-tools/pytrec_eval/__init__.py": "6733afda3ea7409d3a96560dbb4e095917cb94f29bb16279ef52994402257e76",
+            "scoring-tools/pytrec_eval_ext.cp312-win_amd64.pyd": "f209f5818632eb2a22653d1029d59114baed3e2a366127dee94b67811fe8cd0e"
+          }
+        },
+        "implementation": {
+          "adapter_sha256": "e3cf946bf576a8cbae538d7bfc67e074e8afb3d166dc83e37c1fb7612a1b816c",
+          "validator_sha256": "7d39b991e4dde37c09b43e8a17ca34bab1eeaa0d232b225f80becdf25d6c5af4",
+          "python": "3.12.13 (main, Jun  2 2026, 22:47:20) [MSC v.1944 64 bit (AMD64)]"
+        },
+        "per_question_bindings": {
+          "analysis/du-rrf30-per-question.json": "9afd78e900b3ef0bbbb7850c3ce1a0b139b5054d022fb3fd1ec6c379cd717e9b",
+          "analysis/du-rrf10-per-question.json": "f8b16967ef6101c460a0ae0f149d7d66b420cdd8f08bee83874a78d5a2e8b89a"
+        }
+      },
+      "paired": {
+        "scope": "du",
+        "questions": 2000,
+        "paired": {
+          "ndcg_cut_10": {
+            "rrf10_minus_rrf30": 0.023970236097114326,
+            "query_bootstrap_ci95": [0.02124000039020413, 0.02673820551215751],
+            "wins": 693,
+            "losses": 133,
+            "ties": 1174
+          },
+          "recall_10": {
+            "rrf10_minus_rrf30": 0.023895822681049544,
+            "query_bootstrap_ci95": [
+              0.019381308250033775, 0.028302703373246953
+            ],
+            "wins": 227,
+            "losses": 28,
+            "ties": 1745
+          },
+          "recall_50": {
+            "rrf10_minus_rrf30": -0.002733178264534157,
+            "query_bootstrap_ci95": [
+              -0.004592406311445938, -0.0012503621604995064
+            ],
+            "wins": 6,
+            "losses": 28,
+            "ties": 1966
+          }
+        },
+        "diagnostics": {
+          "10": {
+            "empty": 0,
+            "mean_candidates": 104.5675,
+            "mean_bm25_candidates": 59.9715,
+            "mean_dense_candidates": 60,
+            "offline_p50_ms": 1163.2631500000134,
+            "offline_p95_ms": 1470.9367649999906
+          },
+          "30": {
+            "empty": 0,
+            "mean_candidates": 104.5675,
+            "mean_bm25_candidates": 59.9715,
+            "mean_dense_candidates": 60,
+            "offline_p50_ms": 1159.96940000006,
+            "offline_p95_ms": 1463.4463149999967
+          }
+        },
+        "same_candidate_pool_all_queries": true,
+        "top10_order_changed": 1652,
+        "top10_members_changed": 1126,
+        "bootstrap": {
+          "unit": "query",
+          "iterations": 10000,
+          "seed": 20260919,
+          "limitation": "Query-level uncertainty conditional on this fixed corpus; not cross-domain generalization or multiple-comparison correction."
+        },
+        "bindings": {
+          "analysis/du-official-score.json": "17bad1a78521a850c7586e6ece06369da0c7f9e3a46e63ac7ee26ff0943bd768",
+          "fixed/du-rrf30.jsonl": "5089f0a469720a774f28fb16f84f5062e1185d44baa2d31dbe456077af1753e0",
+          "analysis/du-rrf30-per-question.json": "9afd78e900b3ef0bbbb7850c3ce1a0b139b5054d022fb3fd1ec6c379cd717e9b",
+          "fixed/du-rrf10.jsonl": "ed1df824fa3d68e00a7757b9073d60e4f54a6d7007d5a7753001a8479b4cdeb5",
+          "analysis/du-rrf10-per-question.json": "f8b16967ef6101c460a0ae0f149d7d66b420cdd8f08bee83874a78d5a2e8b89a"
+        },
+        "implementation": {
+          "analyzer_sha256": "fdf735c2c93bcb0c88f0353dbd7628074c246a134ad747d807d3ad98cce7ab8d",
+          "validator_sha256": "7d39b991e4dde37c09b43e8a17ca34bab1eeaa0d232b225f80becdf25d6c5af4"
+        }
+      },
+      "vector_audit": {
+        "scope": "du",
+        "created": "2026-09-20T03:58:39.190Z",
+        "model": "qwen3.7-text-embedding",
+        "dimensions": 1024,
+        "fingerprint": "2e6e9f07b732465d9a61d6336eb9901ccb3f525d8c626e294c8554ccc00c36c0",
+        "active_inputs": 102001,
+        "successful_requests_referenced": 12751,
+        "known_tokens_for_referenced_requests": 21402405,
+        "unknown_usage_successes": 0,
+        "inputs_vectors_request_ids_sha256": "7635740095c42f95a835ce2beacab3a96c437d89257d4351b4fd469ef44726a7",
+        "raw_response_chain_sha256": "0d329d9f796b45924ba5a4ee42de3d688056d22cad3728e34ee33c4c7431ffba",
+        "checks": [
+          "all inputs match fingerprint/purpose/text key",
+          "all raw success models and dimensions match",
+          "all cache vectors equal normalized raw API vectors",
+          "all raw response indexes and counts match request keys",
+          "all raw token usage and input character counts match ledger"
+        ],
+        "usage": [
+          {
+            "status": "failed",
+            "attempts": 4,
+            "input_chars": 8122,
+            "reported_tokens": null
+          },
+          {
+            "status": "http_429",
+            "attempts": 467,
+            "input_chars": 16390991,
+            "reported_tokens": null
+          },
+          {
+            "status": "success",
+            "attempts": 23278,
+            "input_chars": 339567735,
+            "reported_tokens": 111974895
+          }
+        ],
+        "usage_note": "Global ledger snapshot; per-scope referenced request tokens may overlap other scopes; failed calls without reported tokens are unknown, not zero."
+      },
+      "run_receipt": {
+        "scope": "du",
+        "queries": 2000,
+        "conditions": [30, 10],
+        "config": {
+          "database": "E:\\幻\\Documents\\八股-Echo测试\\public-benchmarks-2026-09-19\\fixed\\du.sqlite",
+          "collections": [],
+          "chunker": {
+            "version": "1",
+            "options": {
+              "max_chars": 1000
+            }
+          },
+          "embedding": {
+            "provider": "http",
+            "model": "qwen3.7-text-embedding",
+            "dimensions": 1024,
+            "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+            "api_key_env": "CHROMA_OPENAI_API_KEY",
+            "timeout_ms": 30000,
+            "batch_size": 8,
+            "document_prefix": "",
+            "query_prefix": "",
+            "send_dimensions": true
+          },
+          "lexical": {
+            "locale": "zh-CN",
+            "dictionary": []
+          },
+          "runtime": {
+            "search_timeout_ms": 120000,
+            "max_concurrent_searches": 2
+          },
+          "logging": {
+            "level": "warn",
+            "max_file_bytes": 1048576,
+            "retain": 3
+          },
+          "retrieval": {
+            "mode": "hybrid",
+            "topk": 10,
+            "max_chunks_per_source": 3,
+            "bm25_candidates": 60,
+            "dense_candidates": 60,
+            "rrf_k": 30,
+            "title_weight": 2,
+            "bm25_weight": 0.5,
+            "dense_weight": 1,
+            "max_context_chars": 16000,
+            "min_dense_similarity": 0.3
+          }
+        },
+        "index_sha256": "4ec07f8b6075f6e1428bee16420fdb5c8aae1f744ebf90ebc9f68654f5780816",
+        "query_sha256": "20722074d3dab144c07c8ffc1b374cfa0603fb0ce0ccdf842bd95cf524d78272",
+        "archived_sources": [
+          {
+            "source": "run-public-fixed-parallel.mjs",
+            "file": "repro/sources/fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60-run-public-fixed-parallel.mjs",
+            "sha256": "fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60"
+          },
+          {
+            "source": "public-fixed-worker.mjs",
+            "file": "repro/sources/f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370-public-fixed-worker.mjs",
+            "sha256": "f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370"
+          },
+          {
+            "source": "public-eval-pool.mjs",
+            "file": "repro/sources/25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526-public-eval-pool.mjs",
+            "sha256": "25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526"
+          },
+          {
+            "source": "public-runtime.mjs",
+            "file": "repro/sources/70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c-public-runtime.mjs",
+            "sha256": "70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c"
+          },
+          {
+            "source": "public-provenance.mjs",
+            "file": "repro/sources/47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382-public-provenance.mjs",
+            "sha256": "47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382"
+          }
+        ],
+        "unchanged_index": true,
+        "execution": {
+          "workers": 4,
+          "mode": "readonly independent production retrieveQuery calls; no lane reuse",
+          "latency": "Concurrent offline timing includes contention; not standalone latency"
+        }
+      },
+      "parallel_conformance": {
+        "scope": "du",
+        "workers": 1,
+        "compared": 16,
+        "reference_receipt_sha256": "db13791a97a4c633cc50469175a4e55822bc1194e7eb5377bf986580f5b4a367",
+        "reference_run_sha256": {
+          "10": "ed1df824fa3d68e00a7757b9073d60e4f54a6d7007d5a7753001a8479b4cdeb5",
+          "30": "5089f0a469720a774f28fb16f84f5062e1185d44baa2d31dbe456077af1753e0"
+        },
+        "equal_all_fields_except_timing": true,
+        "index_sha256": "4ec07f8b6075f6e1428bee16420fdb5c8aae1f744ebf90ebc9f68654f5780816",
+        "archived_sources": [
+          {
+            "source": "run-public-fixed-parallel.mjs",
+            "file": "repro/sources/fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60-run-public-fixed-parallel.mjs",
+            "sha256": "fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60"
+          },
+          {
+            "source": "public-fixed-worker.mjs",
+            "file": "repro/sources/f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370-public-fixed-worker.mjs",
+            "sha256": "f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370"
+          },
+          {
+            "source": "public-eval-pool.mjs",
+            "file": "repro/sources/25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526-public-eval-pool.mjs",
+            "sha256": "25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526"
+          },
+          {
+            "source": "public-runtime.mjs",
+            "file": "repro/sources/70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c-public-runtime.mjs",
+            "sha256": "70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c"
+          },
+          {
+            "source": "public-provenance.mjs",
+            "file": "repro/sources/47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382-public-provenance.mjs",
+            "sha256": "47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382"
+          }
+        ]
+      },
+      "candidate_pool": {
+        "scope": "du",
+        "questions": 2000,
+        "results": {
+          "rrf30": {
+            "coverage_macro": {
+              "top10": 0.8546232293942971,
+              "top20": 0.9339951567683139,
+              "top50": 0.9684799946791034,
+              "pool": 0.9739485084880679,
+              "dense_pool": 0.9709628847651484,
+              "bm25_pool": 0.777301755532269
+            },
+            "no_relevant_support_queries": {
+              "top10": 48,
+              "top20": 30,
+              "top50": 18,
+              "pool": 15,
+              "dense_pool": 16,
+              "bm25_pool": 126
+            },
+            "all_nuggets_supported_queries": null
+          },
+          "rrf10": {
+            "coverage_macro": {
+              "top10": 0.8785190520753468,
+              "top20": 0.9383626129738758,
+              "top50": 0.9657468164145692,
+              "pool": 0.9739485084880679,
+              "dense_pool": 0.9709628847651484,
+              "bm25_pool": 0.777301755532269
+            },
+            "no_relevant_support_queries": {
+              "top10": 40,
+              "top20": 29,
+              "top50": 20,
+              "pool": 15,
+              "dense_pool": 16,
+              "bm25_pool": 126
+            },
+            "all_nuggets_supported_queries": null
+          }
+        },
+        "meaning": "FreshStack nugget coverage; Du relevant-document recall (all qrels are not a required evidence set). Lane values describe support in the recorded top60 lane pools, not a new pure-mode top10 evaluation. All-pool support is diagnostic, not achievable packing accuracy or an official leaderboard metric."
+      }
     }
   },
-  "pending": ["du"],
+  "pending": [],
   "artifacts": {
     "analysis/langchain-official-score.json": "f2c961f8cad27d4fe2484ffc1e5729852b28a7945c8388aebaaa66eee4573dc9",
     "analysis/langchain-paired-analysis.json": "95b79e249e6d643a12b17abfd4404169bedd606810831e614c26d42942d9e692",
@@ -688,6 +1049,12 @@
     "fixed/godot-run-receipt.json": "60b6f13099ce64842fd7922b2d77fe5810c6bcb522d9f83ebbb2fd2824ec4ae8",
     "analysis/godot-parallel-conformance.json": "fe8637a2a99314863ed7d21bed67ffd0cbeafaa39882cbfc42d41429f0f03531",
     "analysis/godot-candidate-pool.json": "8a5d27ea3b988a88ccf79d8c56730437363980147b749ae3aeedc6d2794f133f",
+    "analysis/du-official-score.json": "17bad1a78521a850c7586e6ece06369da0c7f9e3a46e63ac7ee26ff0943bd768",
+    "analysis/du-paired-analysis.json": "18b1d68d02a1c8541a04937a7018e15a85cccbc9decbfaffce8458762625d2f5",
+    "analysis/du-vector-audit.json": "3537892847a3c3b8e00fe0adabbd208f67a38d51eff85ee82fb09f7c738c1d33",
+    "fixed/du-run-receipt.json": "db13791a97a4c633cc50469175a4e55822bc1194e7eb5377bf986580f5b4a367",
+    "analysis/du-parallel-conformance.json": "dd5e0a3160d9bd74cc11be4d3093979daf4db50d7c4e19b7859ab956cb97ee17",
+    "analysis/du-candidate-pool.json": "7f92fb771d3df4931d5862434339c20fa2511bd94e02e2b0024741f667a3fbeb",
     "analysis/scoring-replay/verification.json": "944a1011d9300e5b4c8825d9de8795ab10fc5c150a3caf55203c3049a912c6c5"
   },
   "reference": {

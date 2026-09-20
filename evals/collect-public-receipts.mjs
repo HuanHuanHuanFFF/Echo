@@ -112,6 +112,46 @@ if (target === 'final') {
     );
   }
   receipt.final_vector_audit = read('analysis/all-vector-audit.json');
+  assert.equal(
+    receipt.final_vector_audit.all_success_attempts_referenced,
+    true,
+  );
+  for (const [scope, documents] of Object.entries({
+    langchain: 49505,
+    godot: 25477,
+    du: 100001,
+  })) {
+    const binding = receipt.final_vector_audit.fixed_index_bindings[scope];
+    assert.equal(binding.documents, documents);
+    assert.equal(binding.official_text_and_cache_vector_equal, true);
+  }
+  receipt.attempt_bound_audit = read(
+    'analysis/capture-attempt-bound-audit.json',
+  );
+  assert.equal(receipt.attempt_bound_audit.no_inflight, true);
+  receipt.independent_reviews = read('analysis/public-final-reviews.json');
+  assert.equal(receipt.independent_reviews.status, 'passed');
+  assert.equal(
+    new Set(receipt.independent_reviews.reviewers.map((r) => r.agent)).size,
+    2,
+  );
+  for (const review of receipt.independent_reviews.reviewers)
+    assert.equal(review.status, 'passed');
+  receipt.execution_counts = {
+    unique_parent_questions: 3307,
+    primary_retrieval_executions: 7619,
+    additional_fixed_conformance_executions: 48,
+    scoring_replays_are_not_additional_questions: true,
+  };
+  for (const [scope, count] of Object.entries({
+    langchain: 203,
+    godot: 99,
+    du: 2000,
+  }))
+    for (const condition of ['rrf30', 'rrf10'])
+      assert.equal(receipt.fixed[scope].results[condition].questions, count);
+  receipt.raw_api_response_binding =
+    'Original gzip response files stay outside Git. Their paths are retained in the bound vectors.sqlite attempts ledger; all successful responses were re-read and bound by final_vector_audit.raw_response_chain_sha256. The chain is used instead of listing 23278 individual files here.';
   receipt.scoring_replay = read('analysis/scoring-replay/verification.json');
   receipt.artifacts.push(
     ...[
