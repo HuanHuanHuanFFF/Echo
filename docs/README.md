@@ -12,6 +12,8 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 历史评测（各自条件保持冻结）
 
+- [MiniSearch三组十分之一样本](evals/2026-09-20-minisearch-pilot.md)：331题三组已核分；Mini默认混合在Du/QASPER小幅改善、英文排名下降，降参无共同收益，附完整索引的内存与耗时，两位独立复核通过；默认保持。
+
 - [Du200分词与IDF对照](evals/2026-09-20-lexical-pilot.md)：保留完整100001语料，Jieba接入现扩展链使纯BM25 nDCG下降2.14个百分点；只换IDF几乎无收益。混合仍低于同题dense，双人复核通过，默认不变。
 
 以下记录中的“默认”描述对应报告当时状态；当前产品默认只以本页上方的冻结记录为准。
