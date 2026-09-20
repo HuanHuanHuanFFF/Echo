@@ -23,8 +23,15 @@ def write(name,value):
 def module(name,p):
  spec=importlib.util.spec_from_file_location(name,p);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
 plan=read(out/'freeze.json');receipt=read(out/'run-receipt.json')
-arms=['default','k_minus30','b_minus30'];labels=['dense']+[a+'-'+m for a in ['sqlite']+arms for m in ['bm25','hybrid']]
-assert plan['arms']=={'default':{'k':1.2,'b':.7,'d':.5},'k_minus30':{'k':.84,'b':.7,'d':.5},'b_minus30':{'k':1.2,'b':.49,'d':.5}}
+no_coverage=plan.get('variant')=='without_coverage'
+arms=['default','without_coverage'] if no_coverage else ['default','k_minus30','b_minus30']
+changes=arms[1:]
+labels=['dense']+[a+'-'+m for a in ['sqlite']+arms for m in ['bm25','hybrid']]
+assert plan['arms']==({'default':{'k':1.2,'b':.7,'d':.5},'without_coverage':{'k':1.2,'b':.7,'d':.5}} if no_coverage else {'default':{'k':1.2,'b':.7,'d':.5},'k_minus30':{'k':.84,'b':.7,'d':.5},'b_minus30':{'k':1.2,'b':.49,'d':.5}})
+previous=root/plan['previous'] if no_coverage else None
+if no_coverage:
+ assert previous.is_relative_to(root)
+ assert read(previous/'freeze.json')['cohorts']==plan['cohorts']
 assert receipt['unchanged_inputs'] and plan['fixed']['rrf_k']==10 and plan['fixed']['bm25_weight']==.5
 for p,h in receipt['bindings'].items():assert sha(root/p)==h,p
 bindings={'freeze.json':sha(out/'freeze.json'),'run-receipt.json':sha(out/'run-receipt.json')}
@@ -37,6 +44,15 @@ def node_tie_order(ids):
  assert value['node']==plan['environment']['node'] and value['icu']==plan['environment']['icu']
  assert len(value['ids'])==len(set(value['ids']))==len(ids) and set(value['ids'])==set(ids)
  return {d:i for i,d in enumerate(value['ids'])}
+
+def validate_removed_multiplier(pool):
+ if not no_coverage:return
+ assert len(pool['without_coverage'])<=60
+ for row in pool['without_coverage']:
+  assert isinstance(row['matched_terms'],int) and 1<=row['matched_terms']<=len(pool['query_terms'])
+  assert math.isclose(row['score'],row['native_score']/row['matched_terms'],rel_tol=0,abs_tol=1e-12)
+  assert isinstance(row['native_rank'],int) and 1<=row['native_rank']<=pool['matching_documents']
+ assert pool['without_coverage']==sorted(pool['without_coverage'],key=lambda r:(-r['score'],tie_order[r['id']]))
 
 def expected_ranks(pool,label):
  if label=='dense':return [r['id'] for r in pool['dense']]
@@ -73,6 +89,7 @@ for scope in ['langchain','godot','du']:
  assert len(corpus_ids)==plan['document_counts'][scope]
  tie_order=node_tie_order(corpus_ids)
  pools=list(rows(out/f'{scope}-candidates.jsonl'));assert [p['id'] for p in pools]==ids
+ for pool in pools:validate_removed_multiplier(pool)
  qrels={};nuggets={};mapping={}
  if scope=='du':
   for r in rows(root/'data/du-qrels.jsonl'):
@@ -110,14 +127,18 @@ for scope in ['langchain','godot','du']:
    old=read(root/f'analysis/mode-contrast-2026-09-20-v1/{scope}-{old_label}-per-question.json')
    for q in ids:
     for m,v in values[q].items():assert math.isclose(v,old[q][m],abs_tol=1e-10),(scope,label,q,m)
+  if no_coverage and label.startswith('default-'):
+   old=read(previous/f'{scope}-{label}-per-question.json')
+   assert values==old,(scope,label,'Frozen MiniSearch scores changed')
   per[label]=values;write(f'{scope}-{label}-per-question.json',values)
   conditions[label]={'questions':len(ids),'metrics':metrics,'hit10_count':sum(values[q]['Hit@10'] for q in ids)}
  comparisons={}
  metric=['ndcg_cut_10','recall_10','recall_50'] if scope=='du' else ['alpha-nDCG@10','Coverage@20','recall_50']
  for mode in ['bm25','hybrid']:
-  for a in ['k_minus30','b_minus30']:comparisons[a+'-'+mode]=paired(per,ids,a+'-'+mode,'default-'+mode,metric)
+  for a in changes:comparisons[a+'-'+mode]=paired(per,ids,a+'-'+mode,'default-'+mode,metric)
   comparisons['default-'+mode+'-vs-sqlite']=paired(per,ids,'default-'+mode,'sqlite-'+mode,metric)
  summary['results'][scope]={'conditions':conditions,'paired':comparisons,'full_corpus_documents':len(corpus_ids),'old_sqlite_and_dense_per_question_equal':True}
+ if no_coverage:summary['results'][scope]['new_candidates_beyond_native_60']={'questions':sum(any(x['native_rank']>60 for x in p['without_coverage']) for p in pools),'candidate_occurrences':sum(x['native_rank']>60 for p in pools for x in p['without_coverage'])}
  print(json.dumps({'scope':scope,'conditions':conditions}),flush=True)
 
 scope='qasper';ids=plan['cohorts'][scope]['ids'];assert len(ids)==101
@@ -127,6 +148,7 @@ texts={p:pathlib.Path(docs[p]['file']).read_bytes().decode('utf8').split('\n') f
 official=module('qasper_official',root/'reference/qasper_evaluator.py');papers={p['id']:p for p in rows(root/'data/qasper-dev.jsonl')};gold_all=official.get_answers_and_evidence(papers,False);gold={q:gold_all[q] for q in ids}
 per={};conditions={};pools={p['id']:p for p in rows(out/'qasper-candidates.jsonl')}
 tie_order=node_tie_order({x['id'] for p in pools.values() for key in ['dense','sqlite']+arms for x in p[key]})
+for pool in pools.values():validate_removed_multiplier(pool)
 for label in labels:
  data=list(rows(out/f'qasper-{label}.jsonl'));assert [r['id'] for r in data]==ids
  metrics={};predictions={}
@@ -156,12 +178,15 @@ for label in labels:
  assert math.isclose(ev['Evidence F1'],statistics.mean(m['evidence_f1'] for m in metrics.values()),abs_tol=1e-12)
  eligible=[m for m in metrics.values() if m['eligible']];assert len(eligible)==78
  conditions[label]={'questions':101,'eligible':78,'complete':sum(m['strict_complete'] for m in eligible),'complete_rate':statistics.mean(m['strict_complete'] for m in eligible),'strict_coverage':statistics.mean(m['strict_coverage'] for m in eligible),'official_evidence_f1_all':ev['Evidence F1'],'mean_context_chars':statistics.mean(m['context_chars'] for m in metrics.values()),'budget_exclusion_questions':sum(r['result']['excluded']['budget']>0 for r in data)}
+ if no_coverage and label.startswith('default-'):
+  assert metrics==read(previous/f'qasper-{label}-per-question.json'),label
  per[label]=metrics;write(f'qasper-{label}-per-question.json',metrics)
 comparisons={}
 for mode in ['bm25','hybrid']:
- for a in ['k_minus30','b_minus30']:comparisons[a+'-'+mode]=paired(per,ids,a+'-'+mode,'default-'+mode,['strict_complete','strict_coverage','evidence_f1'],True)
+ for a in changes:comparisons[a+'-'+mode]=paired(per,ids,a+'-'+mode,'default-'+mode,['strict_complete','strict_coverage','evidence_f1'],True)
  comparisons['default-'+mode+'-vs-sqlite']=paired(per,ids,'default-'+mode,'sqlite-'+mode,['strict_complete','strict_coverage','evidence_f1'],True)
 summary['results']['qasper']={'conditions':conditions,'paired':comparisons,'official_f1_and_strict_lines_independently_recomputed':True}
+if no_coverage:summary['results']['qasper']['new_candidates_beyond_native_60']={'questions':sum(any(x['native_rank']>60 for x in p['without_coverage']) for p in pools.values()),'candidate_occurrences':sum(x['native_rank']>60 for p in pools.values() for x in p['without_coverage'])}
 for f in sorted(out.iterdir()):
  if f.is_file() and f.suffix in ['.json','.jsonl']:bindings[f.name]=sha(f)
 summary['resources']={}

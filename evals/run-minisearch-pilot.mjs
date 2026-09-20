@@ -19,6 +19,7 @@ import {
   miniArms,
   miniOptions,
   miniRank,
+  miniRankWithoutCoverage,
   denseLane,
   splitTerms,
 } from './lib/minisearch-pilot.mjs';
@@ -61,6 +62,19 @@ const MiniSearch = createRequire(path.join(root, dependency, 'package.json'))(
 );
 
 async function prepare() {
+  const noCoverage = process.argv[4] === '--without-coverage';
+  const previous = noCoverage ? process.argv[5] : null;
+  if (noCoverage) {
+    assert.ok(previous, 'Pass previous frozen output relative to ROOT');
+    const rel = path.relative(root, path.resolve(root, previous));
+    assert.ok(
+      rel &&
+        !path.isAbsolute(rel) &&
+        rel !== '..' &&
+        !rel.startsWith('..' + path.sep),
+    );
+    assert.notEqual(path.resolve(root, previous), out);
+  }
   await fs.mkdir(out);
   const known = new Map(),
     manifestHashes = {};
@@ -73,6 +87,13 @@ async function prepare() {
     const file = 'docs/evals/2026-09-20-' + name + '.manifest.json';
     const m = await read(file);
     manifestHashes[file] = await sha(file);
+    for (const a of m.artifacts) known.set(a.file, a.sha256);
+  }
+  if (noCoverage) {
+    const file = 'docs/evals/2026-09-20-minisearch-pilot.manifest.json';
+    const m = await read(file);
+    manifestHashes[file] = await sha(file);
+    assert.equal(m.output, previous.replaceAll('\\', '/'));
     for (const a of m.artifacts) known.set(a.file, a.sha256);
   }
   const bindings = {};
@@ -168,6 +189,23 @@ async function prepare() {
     await bind(file, false);
     assert.equal(bindings[file], d.sha256);
   }
+  if (noCoverage) {
+    for (const name of ['freeze.json', 'summary.json'])
+      await bind(previous + '/' + name);
+    const prior = await read(path.join(root, previous, 'freeze.json'));
+    assert.deepEqual(cohorts, prior.cohorts);
+    for (const scope of Object.keys(cohorts)) {
+      for (const name of [
+        'candidates.jsonl',
+        'receipt.json',
+        'default-bm25.jsonl',
+        'default-hybrid.jsonl',
+        'default-bm25-per-question.json',
+        'default-hybrid-per-question.json',
+      ])
+        await bind(previous + '/' + scope + '-' + name);
+    }
+  }
   const sources = await archiveSources(out, 'minisearch-pilot-pre-run', [
     'evals/run-minisearch-pilot.mjs',
     'evals/lib/minisearch-pilot.mjs',
@@ -179,14 +217,23 @@ async function prepare() {
   ]);
   const plan = {
     created: new Date().toISOString(),
-    arms: miniArms,
+    variant: noCoverage ? 'without_coverage' : 'parameters',
+    previous,
+    arms: noCoverage
+      ? { default: miniArms.default, without_coverage: miniArms.default }
+      : miniArms,
     cohorts,
     baseline:
       'MiniSearch 7.2.0 library BM25+ defaults; old SQLite is a separate reference, not one of the three MiniSearch arms',
-    changed_parameters: {
-      k_minus30: 'k only, 1.2 -> 0.84 (-30%)',
-      b_minus30: 'b only, 0.7 -> 0.49 (-30%)',
-    },
+    changed_parameters: noCoverage
+      ? {
+          without_coverage:
+            'Only remove native matched-query-term multiplier before candidate truncation; k/b/d unchanged',
+        }
+      : {
+          k_minus30: 'k only, 1.2 -> 0.84 (-30%)',
+          b_minus30: 'b only, 0.7 -> 0.49 (-30%)',
+        },
     fixed: {
       tokenizer:
         'Exact frozen Echo ICU + expansions; reuse stored encoded document terms',
@@ -217,6 +264,11 @@ async function prepare() {
     fixed_unit_budget: null,
     fixed_unit_source_cap: null,
     engine_semantics: [
+      ...(noCoverage
+        ? [
+            'without_coverage divides native score by the actual distinct matching queryTerms length, sorts all matches, then takes 60; one native search also verifies old control',
+          ]
+        : []),
       'BM25+ with log1p IDF',
       'Per-field length counts unique preprocessed input terms; term frequency retains repetitions',
       'Native search score multiplies summed field/term scores by matched query-term count',
@@ -242,6 +294,11 @@ async function prepare() {
       'No answer generation or new Agent decomposition',
     ],
   };
+  if (noCoverage) {
+    const prior = await read(path.join(root, previous, 'freeze.json'));
+    assert.deepEqual(plan.fixed, prior.fixed);
+    assert.deepEqual(plan.qasper, prior.qasper);
+  }
   await write('freeze.json', plan);
   for (const scope of ['langchain', 'godot', 'du', 'qasper']) {
     await new Promise((resolve, reject) => {
@@ -295,7 +352,20 @@ async function finish() {
 async function worker(scope) {
   assert.ok(globalThis.gc, 'Run child with --expose-gc');
   const plan = await read(path.join(out, 'freeze.json'));
-  assert.deepEqual(plan.arms, miniArms);
+  const noCoverage = plan.variant === 'without_coverage';
+  assert.deepEqual(
+    plan.arms,
+    noCoverage
+      ? { default: miniArms.default, without_coverage: miniArms.default }
+      : miniArms,
+  );
+  const armNames = Object.keys(plan.arms);
+  const previousPools = new Map();
+  if (noCoverage)
+    for await (const row of jsonLines(
+      path.join(root, plan.previous, scope + '-candidates.jsonl'),
+    ))
+      previousPools.set(row.id, row);
   assert.equal(
     await sha(miniFile),
     plan.bindings[dependency + '/node_modules/minisearch/dist/cjs/index.cjs'],
@@ -390,6 +460,39 @@ async function worker(scope) {
       mark('query_' + arm);
       return result;
     };
+    const compareDefault = (pools, terms, filter) => {
+      const start = performance.now();
+      const compared = miniRankWithoutCoverage(mini, terms, filter);
+      (metrics.query_ms.default_and_without_coverage ??= []).push(
+        performance.now() - start,
+      );
+      mark('query_without_coverage');
+      const prior = previousPools.get(pools.id);
+      assert.ok(prior);
+      assert.deepEqual(terms, prior.query_terms);
+      assert.deepEqual(
+        compared.native,
+        prior.default,
+        'Original MiniSearch default control',
+      );
+      assert.deepEqual(pools.dense, prior.dense);
+      assert.deepEqual(pools.sqlite, prior.sqlite);
+      pools.default = compared.native;
+      pools.without_coverage = compared.without_coverage;
+      pools.matching_documents = compared.matching_documents;
+    };
+    if (noCoverage) {
+      const prior = await read(
+        path.join(root, plan.previous, scope + '-receipt.json'),
+      );
+      assert.equal(
+        metrics.exact_index_input_sha256,
+        prior.exact_index_input_sha256,
+      );
+      assert.equal(metrics.documents, prior.documents);
+      metrics.original_minisearch_default_equal = true;
+      metrics.new_minisearch_calls = ids.length;
+    }
     const tokenize = (text) =>
       ctx.tokenize(text, { locale: 'zh-CN', dictionary: [] });
     if (scope !== 'qasper') {
@@ -434,13 +537,16 @@ async function worker(scope) {
           'Frozen SQLite candidates',
         );
         const pools = { id, query_terms: terms, dense, sqlite };
-        const ordering = [
-          ...Object.keys(miniArms).slice(i % 3),
-          ...Object.keys(miniArms).slice(0, i % 3),
-        ];
-        for (const arm of ordering) pools[arm] = timed(arm, terms);
+        if (noCoverage) compareDefault(pools, terms);
+        else {
+          const ordering = [
+            ...armNames.slice(i % 3),
+            ...armNames.slice(0, i % 3),
+          ];
+          for (const arm of ordering) pools[arm] = timed(arm, terms);
+        }
         await emit('candidates', pools);
-        for (const arm of ['sqlite', ...Object.keys(miniArms)]) {
+        for (const arm of ['sqlite', ...armNames]) {
           for (const mode of ['bm25', 'hybrid'])
             await emit(arm + '-' + mode, {
               id,
@@ -584,16 +690,19 @@ async function worker(scope) {
             dense,
             sqlite,
           };
-        const ordering = [
-          ...Object.keys(miniArms).slice(i % 3),
-          ...Object.keys(miniArms).slice(0, i % 3),
-        ];
-        for (const arm of ordering)
-          pools[arm] = timed(arm, terms, allowed.get(q.source_id));
+        if (noCoverage) compareDefault(pools, terms, allowed.get(q.source_id));
+        else {
+          const ordering = [
+            ...armNames.slice(i % 3),
+            ...armNames.slice(0, i % 3),
+          ];
+          for (const arm of ordering)
+            pools[arm] = timed(arm, terms, allowed.get(q.source_id));
+        }
         await emit('candidates', pools);
         for (const label of [
           'dense',
-          ...['sqlite', ...Object.keys(miniArms)].flatMap((a) => [
+          ...['sqlite', ...armNames].flatMap((a) => [
             a + '-bm25',
             a + '-hybrid',
           ]),
