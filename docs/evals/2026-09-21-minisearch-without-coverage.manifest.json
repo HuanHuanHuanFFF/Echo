@@ -1,6 +1,6 @@
 {
   "date": "2026-09-21",
-  "status": "official-scored; independent reviews pending",
+  "status": "complete: official scoring, two independent reviews, code Windows/Linux CI passed",
   "root_local_reference": "E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19",
   "output": "analysis/minisearch-without-coverage-2026-09-21-v1",
   "variant": "without_coverage",
@@ -1287,6 +1287,11 @@
   },
   "artifacts": [
     {
+      "file": "analysis/minisearch-without-coverage-2026-09-21-v1/ci-7decf67.json",
+      "sha256": "61b9cdf29612fd4ea7837b27be1f3740cc4f33ba8d3643305a7815ed5d01ef0c",
+      "bytes": 291
+    },
+    {
       "file": "analysis/minisearch-without-coverage-2026-09-21-v1/du-candidates.jsonl",
       "sha256": "9c9cb9fd358b00e5c3173f9aadd96507c92009ac1fcadf47d06070660d9f6b23",
       "bytes": 6315071
@@ -1450,6 +1455,11 @@
       "file": "analysis/minisearch-without-coverage-2026-09-21-v1/godot-without_coverage-hybrid.jsonl",
       "sha256": "4fd9f96e2eb3078b16141c50e257e60b85efef53bbd2b22c91c60dc7ee3dd3ce",
       "bytes": 223933
+    },
+    {
+      "file": "analysis/minisearch-without-coverage-2026-09-21-v1/independent-reviews.json",
+      "sha256": "bce4102fd4b27fe0c153a840b27defad74db3c5e7358b8f9f6889e727f1482c0",
+      "bytes": 867
     },
     {
       "file": "analysis/minisearch-without-coverage-2026-09-21-v1/langchain-candidates.jsonl",
@@ -1918,6 +1928,38 @@
   "verification": {
     "local_check": "181 passed, 1 existing skipped; format/type/build/default CLI-MCP smoke passed",
     "python_validation": "6 passed",
-    "remote_ci": "pending final commit"
+    "remote_ci": {
+      "verified": "2026-09-20T16:58:28.152Z",
+      "head": "7decf67e34d1ec756d13b489c478b8a078b0d7ee",
+      "run": 35524155154,
+      "url": "https://github.com/HuanHuanHuanFFF/Echo/actions/runs/35524155154",
+      "conclusion": "success",
+      "jobs": {
+        "windows": "success",
+        "linux": "success"
+      }
+    }
+  },
+  "independent_reviews": {
+    "created": "2026-09-20T16:59:35.150Z",
+    "status": "two-independent-reviews-passed",
+    "summary_sha256": "b0b36c15dda421227c3e784221df21ce245d0a715530230cf578728f318e27db",
+    "reviewers": [
+      {
+        "agent": "/root/qasper_cap_review_a",
+        "model": "luna",
+        "effort": "max",
+        "result": "no blocker",
+        "scope": "Independently checked four-corpus candidate controls, actual matching term counts and division, ranks and caps, per-query aggregation, 245 input bindings and 7 source archives"
+      },
+      {
+        "agent": "/root/qasper_cap_review_b",
+        "model": "luna",
+        "effort": "max",
+        "result": "no blocker",
+        "scope": "Independently reran official scoring/paired statistics in system TEMP; verified default, SQLite/dense and QASPER original lines; beyond-native-60 counts reproduced"
+      }
+    ],
+    "new_embedding_calls": 0
   }
 }

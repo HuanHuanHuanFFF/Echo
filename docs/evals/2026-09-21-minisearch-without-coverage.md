@@ -1,6 +1,6 @@
 # MiniSearch：仅取消匹配词数量乘数
 
-日期：2026-09-21。状态：331题检索与官方核分完成，两位独立复核进行中。用户明确授权“取消乘数”，承接[原生MiniSearch三组小样本](2026-09-20-minisearch-pilot.md)。只修改隔离评测中的评分适配，尚未正式切换Echo产品引擎；[产品默认](../project/2026-09-20-default-freeze.md)保持。
+日期：2026-09-21。状态：331题检索、官方核分、两位Luna/max独立复核与代码双平台CI完成。用户明确授权“取消乘数”，承接[原生MiniSearch三组小样本](2026-09-20-minisearch-pilot.md)。只修改隔离评测中的评分适配，尚未正式切换Echo产品引擎；[产品默认](../project/2026-09-20-default-freeze.md)保持。
 
 ## 唯一变化
 
@@ -102,4 +102,4 @@ Du题cooper是什么车（ef6ef4237a5431a33532c1878721dbee）：相关片段c336
 
 - 331次原生MiniSearch调用产生原生控制与唯一新条件；新条件BM25/hybrid共662条输出，加入参考后共2317条官方计分记录，独立题数仍331。
 - 四库完整词项输入SHA与上轮相同；原生Mini默认候选ID/原始分数、默认逐题官方指标、SQLite/dense控制、QASPER原文证据均复现。所有绑定输入前后SHA一致；新增API为0。
-- 本地完整检查181通过、1既有跳过；评分输入Python6通过；默认CLI/MCP烟测通过。两位独立复核与最终CI待补。
+- 本地完整检查181通过、1既有跳过；评分输入Python6通过；默认CLI/MCP烟测通过。两位Luna/max独立复核通过：实际匹配词数量/候选顺序/边界及SHA核验一致，另一位在系统TEMP独立复跑官方核分与配对统计。代码提交7decf67的[Windows/Linux CI](https://github.com/HuanHuanHuanFFF/Echo/actions/runs/35524155154)通过。

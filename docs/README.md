@@ -12,7 +12,7 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 历史评测（各自条件保持冻结）
 
-- [MiniSearch取消匹配词乘数](evals/2026-09-21-minisearch-without-coverage.md)：331题已核分；仅取消乘数恢复Du纯BM25与LangChain混合的部分退化，QASPER完整50→48；保留默认k/b/d，独立复核进行中。
+- [MiniSearch取消匹配词乘数](evals/2026-09-21-minisearch-without-coverage.md)：331题已核分；仅取消乘数恢复Du纯BM25与LangChain混合的部分退化，QASPER完整50→48；保留默认k/b/d，双人复核及代码双平台CI通过，产品未切换。
 
 - [MiniSearch三组十分之一样本](evals/2026-09-20-minisearch-pilot.md)：331题三组已核分；Mini默认混合在Du/QASPER小幅改善、英文排名下降，降参无共同收益，附完整索引的内存与耗时，两位独立复核通过；默认保持。
 
