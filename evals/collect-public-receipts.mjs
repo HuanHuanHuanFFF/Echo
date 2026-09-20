@@ -48,7 +48,11 @@ const qasperFiles = [
   'prepared/qasper-docs.jsonl',
   'prepared/qasper-queries.jsonl',
   ...list('qasper', (p) => !p.endsWith('-wal') && !p.endsWith('-shm')),
-  ...list('analysis', (p) => p.includes('qasper') && p.endsWith('.json')),
+  ...list(
+    'analysis',
+    (p) =>
+      p.includes('qasper') && (p.endsWith('.json') || p.endsWith('.jsonl')),
+  ),
 ];
 const receipt = {
   status:
@@ -85,6 +89,8 @@ const receipt = {
           .digest('hex'),
       };
     }),
+  historical_receipts_note:
+    'Dated QASPER/fixed original receipts are preserved historical snapshots. Current adapter replay is separately bound; current implementation hashes do not claim to be the original capture driver.',
   analysis: read('analysis/qasper-analysis.json'),
   official_qasper: read('analysis/qasper-official-score.json'),
   vector_audit: read('analysis/qasper-vector-audit.json'),
@@ -106,12 +112,18 @@ if (target === 'final') {
     );
   }
   receipt.final_vector_audit = read('analysis/all-vector-audit.json');
+  receipt.scoring_replay = read('analysis/scoring-replay/verification.json');
   receipt.artifacts.push(
     ...[
       'vectors.sqlite',
       'capture-policy-history.jsonl',
       ...list('data'),
-      ...list('analysis', (p) => !p.includes('qasper') && p.endsWith('.json')),
+      ...list(
+        'analysis',
+        (p) =>
+          !p.includes('qasper') &&
+          (p.endsWith('.json') || p.endsWith('.jsonl')),
+      ),
       ...list('repro'),
     ].map(artifact),
   );

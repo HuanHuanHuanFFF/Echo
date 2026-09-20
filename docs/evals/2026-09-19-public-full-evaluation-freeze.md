@@ -42,7 +42,7 @@ FreshStack用官方query-to-nugget/qrels和alpha-nDCG@10、Coverage@20、Recall@
 
 ## 执行中的可复核修正
 
-- QASPER实读1005题：800至少一组完整可映射纯文本证据、145不适用/映射缺口、60全标注无答。75题有可答/无答冲突，另有148题同时存在valid/invalid证据组；这些审计分类不是官方标签类别。
+- QASPER实读1005题：800至少一组完整可映射纯文本证据、145不适用/映射缺口、60全标注无答。75题同时含unanswerable=true与false标注；其中53题有有效文本证据组，另22题非无答标注均不满足本轮文本映射条件，另有148题同时存在valid/invalid证据组；这些审计分类不是官方标签类别。
 - 官方默认全1005 Evidence F1使用原始字符串精确匹配及原列表长度分母，annotation逐题取max；strict800允许预定空白规范化映射。另列官方text_evidence_only诊断。当前3015条响应已与固定官方evaluator逐题核对一致，无Answer F1。
 - 新综合1.0.1仅修复长列表空行/overlap导致的重复范围；隔离红绿回归通过，281篇旧切块去重后的有序内容与新结果逐项相等：7407→7404，仅删3个完全重复块，真实向量输入集合不变。生产默认仍heading/RRF30；这不是一次新的切块参数实验。E盘qasper/chunk-fix-audit.json绑定版本与内容指纹。
 - UUID映射固定于[公开ID映射](../../evals/fixtures/qasper-v0.3-source-ids.json)，复跑保留源ID与切块身份。
@@ -75,3 +75,9 @@ FreshStack用官方query-to-nugget/qrels和alpha-nDCG@10、Coverage@20、Recall@
 ## 恢复执行（2026-09-20）
 
 用户明确“继续”后，已核对无活动捕获进程、无owner/锁、inflight=0；在独占写锁内移除user_pause_capture，保留12489条Du缓存和全部历史attempts。恢复仍使用4并发、200ms最小间隔、每输入最多12次，模型/正文/query/batch8/检索参数不变。本次只将每20批的进度日志从整库status扫描改为仅读attempts用量：恢复前同一只读快照中全库范围统计耗时24715ms、账本统计181ms；这是一项日志开销修正，不是新的检索条件或服务延迟评测。
+
+### 收据与评分重放（2026-09-20）
+
+旧QASPER/fixed收据保持为历史快照，脚本后续改动不回写成“当时版本”。当前评分器记录adapter/validator及逐题文件SHA；成对统计验证原查询ID集合、run/per-question SHA与四项基础指标均值。已完成的3619条逐题分数在独立analysis/scoring-replay目录复核，QASPER逐行及FreshStack逐题/成对结果均与原件一致。重放所用脚本按SHA保存在repro/sources；verify-public-score-replay.mjs检查对应关系。需要重算时，score-public-benchmarks.py和analyze-public-fixed.py第三个位置参数传新的ROOT内输出目录，旧score拒绝覆盖。
+
+Du按C-MTEB官方任务定义的dev/nDCG@10计分，任务源码固定为FlagEmbedding fd1a2bdf69488ffebe0327999d4400d8c8058a0b；实际指标由pytrec-eval-terrier实现，收据单独绑定Python封装与native模块，不称为FreshStack scorer或完整MTEB pipeline。新下载入口保留已有reference/manifest.json，并另写scorer-source-manifest.json涵盖六份固定源码。最终all-vector审计还核对每份成功请求都被有效缓存引用，及官方正文、缓存与三份固定索引的逐条一致。

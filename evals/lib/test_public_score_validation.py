@@ -1,5 +1,5 @@
 import unittest
-from public_score_validation import unique_rows, fixed_run
+from public_score_validation import unique_rows, fixed_run, validate_per_question
 
 class RunValidationTest(unittest.TestCase):
     def test_duplicate_cannot_hide_complete_id_set(self):
@@ -20,6 +20,16 @@ class RunValidationTest(unittest.TestCase):
         row["rankings"][0]["rank_score"]=4
         with self.assertRaisesRegex(AssertionError,"order"):
             fixed_run([row],{"q"},{"d"},30)
+
+    def test_per_question_ids_and_aggregate_are_bound(self):
+        good={"a":{"ndcg_cut_10":1.0},"b":{"ndcg_cut_10":0.0}}
+        validate_per_question(good,["a","b"],{"ndcg_cut_10":0.5},["ndcg_cut_10"])
+        with self.assertRaisesRegex(AssertionError,"Per-question IDs"):
+            validate_per_question({"a":good["a"]},["a","b"],{"ndcg_cut_10":0.5},["ndcg_cut_10"])
+        with self.assertRaisesRegex(AssertionError,"Aggregate mismatch"):
+            validate_per_question(good,["a","b"],{"ndcg_cut_10":0.8},["ndcg_cut_10"])
+        with self.assertRaisesRegex(AssertionError,"Invalid per-question"):
+            validate_per_question({"a":{"ndcg_cut_10":float("nan")}},["a"],{"ndcg_cut_10":0},["ndcg_cut_10"])
 
 if __name__ == "__main__":
     unittest.main()

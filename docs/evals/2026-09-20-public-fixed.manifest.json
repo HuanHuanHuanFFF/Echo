@@ -1,5 +1,5 @@
 {
-  "created": "2026-09-20T03:12:45.556Z",
+  "created": "2026-09-20T03:50:47.405Z",
   "status": "partial_execution",
   "results": {
     "langchain": {
@@ -687,7 +687,8 @@
     "analysis/godot-vector-audit.json": "368ad21180b4a8f5467386b5b186b463dac009b0c2c1a0e49abd04b86556b26d",
     "fixed/godot-run-receipt.json": "60b6f13099ce64842fd7922b2d77fe5810c6bcb522d9f83ebbb2fd2824ec4ae8",
     "analysis/godot-parallel-conformance.json": "fe8637a2a99314863ed7d21bed67ffd0cbeafaa39882cbfc42d41429f0f03531",
-    "analysis/godot-candidate-pool.json": "8a5d27ea3b988a88ccf79d8c56730437363980147b749ae3aeedc6d2794f133f"
+    "analysis/godot-candidate-pool.json": "8a5d27ea3b988a88ccf79d8c56730437363980147b749ae3aeedc6d2794f133f",
+    "analysis/scoring-replay/verification.json": "944a1011d9300e5b4c8825d9de8795ab10fc5c150a3caf55203c3049a912c6c5"
   },
   "reference": {
     "commit": "72f48c7560f1694796b0b4af6cf96b49e083d9bd",
@@ -695,6 +696,13 @@
     "sha256": "39eb0fc14b23de29cbbdb21c4756129e42f644dc6c42203466633164885976fa",
     "accessed": "2026-09-19"
   },
+  "implementation_snapshot": {
+    "score-public-benchmarks.py": "e3cf946bf576a8cbae538d7bfc67e074e8afb3d166dc83e37c1fb7612a1b816c",
+    "analyze-public-fixed.py": "fdf735c2c93bcb0c88f0353dbd7628074c246a134ad747d807d3ad98cce7ab8d",
+    "diagnose-public-fixed-pool.py": "14383f307e28814340cff6ac3f7aeba0141df082d572bd1e15f6592b541f029f",
+    "lib/public_score_validation.py": "7d39b991e4dde37c09b43e8a17ca34bab1eeaa0d232b225f80becdf25d6c5af4"
+  },
+  "implementation_note": "Current reporting code snapshot. Original scoring receipts remain historical; separately archived replay code is identified by each replay receipt.",
   "usage_note": "Per-scope referenced tokens can overlap; final global attempts ledger is authoritative. Registration plan usage is historical.",
   "parallel_conformance": {
     "scope": "langchain",
@@ -734,5 +742,63 @@
         "sha256": "47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382"
       }
     ]
+  },
+  "scoring_replay": {
+    "created": "2026-09-20T03:34:40.896Z",
+    "status": "replay_equal_to_preserved_original_scores",
+    "scopes": {
+      "qasper": {
+        "per_question_rows": 3015,
+        "all_scores_equal": true,
+        "paired_equal": null,
+        "current_implementation": {
+          "adapter_sha256": "587937b95888000fdd1bf9acfb18f3ed117d9e37ea98364754e0ecbd29796c57",
+          "validator_sha256": "7d39b991e4dde37c09b43e8a17ca34bab1eeaa0d232b225f80becdf25d6c5af4",
+          "python": "3.12.13 (main, Jun  2 2026, 22:47:20) [MSC v.1944 64 bit (AMD64)]"
+        }
+      },
+      "langchain": {
+        "per_question_rows": 406,
+        "all_scores_equal": true,
+        "paired_equal": true,
+        "current_implementation": {
+          "adapter_sha256": "587937b95888000fdd1bf9acfb18f3ed117d9e37ea98364754e0ecbd29796c57",
+          "validator_sha256": "7d39b991e4dde37c09b43e8a17ca34bab1eeaa0d232b225f80becdf25d6c5af4",
+          "python": "3.12.13 (main, Jun  2 2026, 22:47:20) [MSC v.1944 64 bit (AMD64)]"
+        }
+      },
+      "godot": {
+        "per_question_rows": 198,
+        "all_scores_equal": true,
+        "paired_equal": true,
+        "current_implementation": {
+          "adapter_sha256": "587937b95888000fdd1bf9acfb18f3ed117d9e37ea98364754e0ecbd29796c57",
+          "validator_sha256": "7d39b991e4dde37c09b43e8a17ca34bab1eeaa0d232b225f80becdf25d6c5af4",
+          "python": "3.12.13 (main, Jun  2 2026, 22:47:20) [MSC v.1944 64 bit (AMD64)]"
+        }
+      }
+    },
+    "bindings": {
+      "analysis/qasper-official-score.json": "6de95cb8ad5d562b1473d42cf87d08631a7456b76e04dcdd699577d7d3cba3ad",
+      "analysis/scoring-replay/qasper-official-score.json": "60bfff22aa25e479fbba1e9b95c6ca2d3ab8b2a7dd12f2fb831101bb1ea10096",
+      "analysis/qasper-official-per-question.jsonl": "3afde737649533c65d31311c9596f2293c0fc83e64b0ffac4a5331072aecc90d",
+      "analysis/scoring-replay/qasper-official-per-question.jsonl": "3afde737649533c65d31311c9596f2293c0fc83e64b0ffac4a5331072aecc90d",
+      "analysis/langchain-official-score.json": "f2c961f8cad27d4fe2484ffc1e5729852b28a7945c8388aebaaa66eee4573dc9",
+      "analysis/scoring-replay/langchain-official-score.json": "13cb2f9b6eb3086be44ac6230f65553995de885410f8a0b9b5d864d250a469f6",
+      "analysis/langchain-rrf30-per-question.json": "4d2916a290236eabe9c6a05c1094d3cf6a9d0a4e64092120247edadae1536248",
+      "analysis/scoring-replay/langchain-rrf30-per-question.json": "c8224ffedc1ef03b472756d5986a2ce9ea9b228a1d58037c56e8d4a7a5535dc0",
+      "analysis/langchain-rrf10-per-question.json": "054aca58ee0d9cef5aa64705b6d0a97ff8b1ba08ffefc676eb595efa4c24bfb7",
+      "analysis/scoring-replay/langchain-rrf10-per-question.json": "a8dffea02bb4c6ed0c9995f53eaf0862b55567b9450d3c0cae07ce7fa1bf32bf",
+      "analysis/langchain-paired-analysis.json": "95b79e249e6d643a12b17abfd4404169bedd606810831e614c26d42942d9e692",
+      "analysis/scoring-replay/langchain-paired-analysis.json": "1e2c583c762de1c0db27eea413974183e52f7f30d958f91792a0cf5d54294881",
+      "analysis/godot-official-score.json": "98d3f8878ffc2cf475c0bf14dbe099db634ed58eb6a3384da897a43367dbf851",
+      "analysis/scoring-replay/godot-official-score.json": "5bfad0dd007eb2a623c11b66317347ef202f8a8a60ce346fb6ec8f9ac19165d5",
+      "analysis/godot-rrf30-per-question.json": "a024c75e924b5e4cd629c6be02f816a019a6193c3a728f98bb50e44682b21bd6",
+      "analysis/scoring-replay/godot-rrf30-per-question.json": "7332b8add997283be733bbbf5f284a7769d7214803f34b20435bb08d6a7a8363",
+      "analysis/godot-rrf10-per-question.json": "488c399e0dc111f5ffd4e150e30db62986920b0163bc8dc00e3d5f60cf8cfc3f",
+      "analysis/scoring-replay/godot-rrf10-per-question.json": "6ab4368572a3a65dd9affbb9b807775419039aa6071a30b2d1b848e1c5b03aa2",
+      "analysis/godot-paired-analysis.json": "450540a30da032194088266f593aa4dc6958e4a88ce9b38609d3681c00773249",
+      "analysis/scoring-replay/godot-paired-analysis.json": "abe8718ba361abc761874a789e66ccfd8138296237558a93577ff0667f4400f2"
+    }
   }
 }

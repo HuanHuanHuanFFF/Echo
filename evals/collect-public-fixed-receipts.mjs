@@ -26,6 +26,21 @@ const receipt = {
   pending: [],
   artifacts: {},
   reference: read('reference/freshstack-leaderboard-receipt.json'),
+  implementation_snapshot: Object.fromEntries(
+    [
+      'score-public-benchmarks.py',
+      'analyze-public-fixed.py',
+      'diagnose-public-fixed-pool.py',
+      'lib/public_score_validation.py',
+    ].map((file) => [
+      file,
+      createHash('sha256')
+        .update(fs.readFileSync(path.join('evals', file)))
+        .digest('hex'),
+    ]),
+  ),
+  implementation_note:
+    'Current reporting code snapshot. Original scoring receipts remain historical; separately archived replay code is identified by each replay receipt.',
   usage_note:
     'Per-scope referenced tokens can overlap; final global attempts ledger is authoritative. Registration plan usage is historical.',
 };
@@ -83,6 +98,15 @@ const probe = 'analysis/langchain-parallel-conformance.json';
 if (fs.existsSync(path.join(root, probe))) {
   receipt.parallel_conformance = read(probe);
   receipt.artifacts[probe] = hash(probe);
+}
+const replay = 'analysis/scoring-replay/verification.json';
+if (fs.existsSync(path.join(root, replay))) {
+  receipt.scoring_replay = read(replay);
+  receipt.artifacts[replay] = hash(replay);
+  for (const [file, expected] of Object.entries(
+    receipt.scoring_replay.bindings,
+  ))
+    assert.equal(hash(file), expected, 'Replay binding mismatch');
 }
 if (!receipt.pending.length) receipt.status = 'all_executed_review_pending';
 fs.writeFileSync(

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { lastRowsById } from './prepare-public-benchmarks.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { gunzipSync } from 'node:zlib';
@@ -112,6 +113,78 @@ try {
       'Global ledger snapshot; per-scope referenced request tokens may overlap other scopes; failed calls without reported tokens are unknown, not zero.',
   };
   if (scope === 'all') {
+    const successIds = db
+      .prepare("SELECT id FROM attempts WHERE status='success' ORDER BY id")
+      .all()
+      .map((r) => r.id);
+    assert.deepEqual(
+      [...requestIds].sort((a, b) => a - b),
+      successIds,
+      'Successful attempt not referenced by active cache',
+    );
+    receipt.all_success_attempts_referenced = true;
+    receipt.fixed_index_bindings = {};
+    for (const name of ['langchain', 'godot', 'du']) {
+      const corpusFile = path.join(
+        root,
+        'data',
+        name === 'du'
+          ? 'du-corpus.jsonl'
+          : 'freshstack-' + name + '-corpus.jsonl',
+      );
+      const officialRows = await lastRowsById(corpusFile);
+      const index = ctx.openDatabase(
+        path.join(root, 'fixed', name + '.sqlite'),
+        { readOnly: true },
+      );
+      const chain = createHash('sha256');
+      let count = 0;
+      try {
+        for (const row of index
+          .prepare(
+            'SELECT c.chunk_id,c.source_id,c.text,c.retrieval_text,v.embedding FROM chunks c JOIN embeddings v ON v.chunk_rowid=c.rowid ORDER BY c.chunk_id',
+          )
+          .iterate()) {
+          assert.equal(row.source_id, row.chunk_id);
+          assert.equal(
+            row.text,
+            officialRows.get(row.chunk_id)?.text,
+            'Index body differs from last official row',
+          );
+          assert.equal(row.retrieval_text, row.text);
+          const key = hash(
+            JSON.stringify([ctx.plan.fingerprint, 'document', row.text]),
+          );
+          const saved = find.get(key);
+          assert.ok(saved?.vector);
+          assert.deepEqual(
+            row.embedding,
+            saved.vector,
+            'Fixed index vector differs from real cache',
+          );
+          chain.update(
+            JSON.stringify([row.chunk_id, key, saved.vector_sha]) + '\n',
+          );
+          count++;
+        }
+        assert.equal(count, officialRows.size);
+        assert.equal(
+          index.prepare('SELECT count(*) n FROM chunks').get().n,
+          count,
+        );
+        assert.equal(
+          index.prepare('SELECT count(*) n FROM embeddings').get().n,
+          count,
+        );
+      } finally {
+        index.close();
+      }
+      receipt.fixed_index_bindings[name] = {
+        documents: count,
+        official_text_and_cache_vector_equal: true,
+        ordered_id_input_vector_chain_sha256: chain.digest('hex'),
+      };
+    }
     assert.equal(
       db
         .prepare("SELECT count(*) n FROM attempts WHERE status='inflight'")

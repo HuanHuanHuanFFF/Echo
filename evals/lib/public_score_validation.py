@@ -23,3 +23,10 @@ def fixed_run(records, expected, corpus_ids, rrf_k):
             assert math.isfinite(item["rrf_score"]), "Invalid RRF score"
         result[row["id"]] = {x["id"]: x["rank_score"] for x in rankings}
     return result
+
+def validate_per_question(scores, expected, aggregate, metrics):
+    assert expected and set(scores)==set(expected), "Per-question IDs mismatch"
+    for metric in metrics:
+        values=[scores[q].get(metric) for q in expected]
+        assert all(isinstance(v,(int,float)) and math.isfinite(v) and 0<=v<=1 for v in values), "Invalid per-question metric"
+        assert math.isclose(sum(values)/len(expected),aggregate[metric],rel_tol=0,abs_tol=1e-10), "Aggregate mismatch: "+metric
