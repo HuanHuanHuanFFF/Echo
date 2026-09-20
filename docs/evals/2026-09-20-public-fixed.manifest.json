@@ -1,5 +1,5 @@
 {
-  "created": "2026-09-19T18:12:02.498Z",
+  "created": "2026-09-20T03:12:45.556Z",
   "status": "partial_execution",
   "results": {
     "langchain": {
@@ -230,6 +230,104 @@
           }
         ],
         "unchanged_index": true
+      },
+      "parallel_conformance": {
+        "scope": "langchain",
+        "workers": 4,
+        "compared": 16,
+        "reference_receipt_sha256": "b4c43161e5a51385d4bb7706dfcb0a3a78490382d1c4ad2cade10e9c918d300a",
+        "reference_run_sha256": {
+          "10": "38faf1c47be2cae90401fb7cd20a0ca0b3426bb0a446612fee9ff93976e30bcc",
+          "30": "9df72e56cd2b71ed6d4199458873e2a4e20272b8aed57f1d3eed609e9bfeaf0d"
+        },
+        "equal_all_fields_except_timing": true,
+        "index_sha256": "6379f1adeaad95c8f8b65074a6d8d7206c03ecd2c419636865dba5d224abf5be",
+        "archived_sources": [
+          {
+            "source": "run-public-fixed-parallel.mjs",
+            "file": "repro/sources/fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60-run-public-fixed-parallel.mjs",
+            "sha256": "fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60"
+          },
+          {
+            "source": "public-fixed-worker.mjs",
+            "file": "repro/sources/f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370-public-fixed-worker.mjs",
+            "sha256": "f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370"
+          },
+          {
+            "source": "public-eval-pool.mjs",
+            "file": "repro/sources/25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526-public-eval-pool.mjs",
+            "sha256": "25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526"
+          },
+          {
+            "source": "public-runtime.mjs",
+            "file": "repro/sources/70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c-public-runtime.mjs",
+            "sha256": "70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c"
+          },
+          {
+            "source": "public-provenance.mjs",
+            "file": "repro/sources/47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382-public-provenance.mjs",
+            "sha256": "47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382"
+          }
+        ]
+      },
+      "candidate_pool": {
+        "scope": "langchain",
+        "questions": 203,
+        "results": {
+          "rrf30": {
+            "coverage_macro": {
+              "top10": 0.5925756509500352,
+              "top20": 0.677304714989444,
+              "top50": 0.8075123152709359,
+              "pool": 0.8644909688013136,
+              "dense_pool": 0.7950445695519587,
+              "bm25_pool": 0.6122273047149894
+            },
+            "no_relevant_support_queries": {
+              "top10": 44,
+              "top20": 32,
+              "top50": 17,
+              "pool": 11,
+              "dense_pool": 17,
+              "bm25_pool": 49
+            },
+            "all_nuggets_supported_queries": {
+              "top10": 82,
+              "top20": 101,
+              "top50": 137,
+              "pool": 152,
+              "dense_pool": 132,
+              "bm25_pool": 87
+            }
+          },
+          "rrf10": {
+            "coverage_macro": {
+              "top10": 0.5773868167956838,
+              "top20": 0.6734342012667136,
+              "top50": 0.8022577996715927,
+              "pool": 0.8644909688013136,
+              "dense_pool": 0.7950445695519587,
+              "bm25_pool": 0.6122273047149894
+            },
+            "no_relevant_support_queries": {
+              "top10": 45,
+              "top20": 34,
+              "top50": 17,
+              "pool": 11,
+              "dense_pool": 17,
+              "bm25_pool": 49
+            },
+            "all_nuggets_supported_queries": {
+              "top10": 79,
+              "top20": 101,
+              "top50": 135,
+              "pool": 152,
+              "dense_pool": 132,
+              "bm25_pool": 87
+            }
+          }
+        },
+        "meaning": "FreshStack nugget coverage; Du relevant-document recall (all qrels are not a required evidence set). Lane values describe support in the recorded top60 lane pools, not a new pure-mode top10 evaluation. All-pool support is diagnostic, not achievable packing accuracy or an official leaderboard metric."
       }
     },
     "godot": {
@@ -475,6 +573,104 @@
           "mode": "readonly independent production retrieveQuery calls; no lane reuse",
           "latency": "Concurrent offline timing includes contention; not standalone latency"
         }
+      },
+      "parallel_conformance": {
+        "scope": "godot",
+        "workers": 1,
+        "compared": 16,
+        "reference_receipt_sha256": "60b6f13099ce64842fd7922b2d77fe5810c6bcb522d9f83ebbb2fd2824ec4ae8",
+        "reference_run_sha256": {
+          "10": "10304e6d9c7b50e635519c6aed47c21700e6b5682f55c83aeb5f06715557f22f",
+          "30": "7370fb64574c1ffdcc954031023b429a5b7f11dba00bb44af5a4e43d6d42fee5"
+        },
+        "equal_all_fields_except_timing": true,
+        "index_sha256": "0a08c74a0bf91cb7213a688643a1ec611ee6680338c68316869daa16d5ffcca2",
+        "archived_sources": [
+          {
+            "source": "run-public-fixed-parallel.mjs",
+            "file": "repro/sources/fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60-run-public-fixed-parallel.mjs",
+            "sha256": "fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60"
+          },
+          {
+            "source": "public-fixed-worker.mjs",
+            "file": "repro/sources/f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370-public-fixed-worker.mjs",
+            "sha256": "f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370"
+          },
+          {
+            "source": "public-eval-pool.mjs",
+            "file": "repro/sources/25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526-public-eval-pool.mjs",
+            "sha256": "25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526"
+          },
+          {
+            "source": "public-runtime.mjs",
+            "file": "repro/sources/70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c-public-runtime.mjs",
+            "sha256": "70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c"
+          },
+          {
+            "source": "public-provenance.mjs",
+            "file": "repro/sources/47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382-public-provenance.mjs",
+            "sha256": "47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382"
+          }
+        ]
+      },
+      "candidate_pool": {
+        "scope": "godot",
+        "questions": 99,
+        "results": {
+          "rrf30": {
+            "coverage_macro": {
+              "top10": 0.4444444444444444,
+              "top20": 0.552020202020202,
+              "top50": 0.6902356902356902,
+              "pool": 0.7747474747474747,
+              "dense_pool": 0.6904040404040404,
+              "bm25_pool": 0.4090909090909091
+            },
+            "no_relevant_support_queries": {
+              "top10": 31,
+              "top20": 23,
+              "top50": 14,
+              "pool": 11,
+              "dense_pool": 13,
+              "bm25_pool": 42
+            },
+            "all_nuggets_supported_queries": {
+              "top10": 24,
+              "top20": 36,
+              "top50": 53,
+              "pool": 63,
+              "dense_pool": 53,
+              "bm25_pool": 26
+            }
+          },
+          "rrf10": {
+            "coverage_macro": {
+              "top10": 0.4348484848484849,
+              "top20": 0.5483164983164983,
+              "top50": 0.6968013468013468,
+              "pool": 0.7747474747474747,
+              "dense_pool": 0.6904040404040404,
+              "bm25_pool": 0.4090909090909091
+            },
+            "no_relevant_support_queries": {
+              "top10": 32,
+              "top20": 25,
+              "top50": 13,
+              "pool": 11,
+              "dense_pool": 13,
+              "bm25_pool": 42
+            },
+            "all_nuggets_supported_queries": {
+              "top10": 24,
+              "top20": 36,
+              "top50": 53,
+              "pool": 63,
+              "dense_pool": 53,
+              "bm25_pool": 26
+            }
+          }
+        },
+        "meaning": "FreshStack nugget coverage; Du relevant-document recall (all qrels are not a required evidence set). Lane values describe support in the recorded top60 lane pools, not a new pure-mode top10 evaluation. All-pool support is diagnostic, not achievable packing accuracy or an official leaderboard metric."
       }
     }
   },
@@ -484,11 +680,14 @@
     "analysis/langchain-paired-analysis.json": "95b79e249e6d643a12b17abfd4404169bedd606810831e614c26d42942d9e692",
     "analysis/langchain-vector-audit.json": "aaafc69600e9210d19a7e577a7794a2487ceaf92f1d4dc2d34ee0fd6dae07c7b",
     "fixed/langchain-run-receipt.json": "b4c43161e5a51385d4bb7706dfcb0a3a78490382d1c4ad2cade10e9c918d300a",
+    "analysis/langchain-parallel-conformance.json": "44c456a9dfa4442e84df44025428dae8a029e95267f20192d04b958aeece268e",
+    "analysis/langchain-candidate-pool.json": "e727b2c27528ef8599239ded2b42d034a5ab3fc6db3c58e5baf5ddccd6c0b9f4",
     "analysis/godot-official-score.json": "98d3f8878ffc2cf475c0bf14dbe099db634ed58eb6a3384da897a43367dbf851",
     "analysis/godot-paired-analysis.json": "450540a30da032194088266f593aa4dc6958e4a88ce9b38609d3681c00773249",
     "analysis/godot-vector-audit.json": "368ad21180b4a8f5467386b5b186b463dac009b0c2c1a0e49abd04b86556b26d",
     "fixed/godot-run-receipt.json": "60b6f13099ce64842fd7922b2d77fe5810c6bcb522d9f83ebbb2fd2824ec4ae8",
-    "analysis/langchain-parallel-conformance.json": "44c456a9dfa4442e84df44025428dae8a029e95267f20192d04b958aeece268e"
+    "analysis/godot-parallel-conformance.json": "fe8637a2a99314863ed7d21bed67ffd0cbeafaa39882cbfc42d41429f0f03531",
+    "analysis/godot-candidate-pool.json": "8a5d27ea3b988a88ccf79d8c56730437363980147b749ae3aeedc6d2794f133f"
   },
   "reference": {
     "commit": "72f48c7560f1694796b0b4af6cf96b49e083d9bd",

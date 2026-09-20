@@ -33,9 +33,11 @@ for (const scope of ['langchain', 'godot', 'du']) {
   const scoreFile = 'analysis/' + scope + '-official-score.json',
     pairedFile = 'analysis/' + scope + '-paired-analysis.json',
     vectorFile = 'analysis/' + scope + '-vector-audit.json',
-    runFile = 'fixed/' + scope + '-run-receipt.json';
+    runFile = 'fixed/' + scope + '-run-receipt.json',
+    probeFile = 'analysis/' + scope + '-parallel-conformance.json',
+    diagnosticFile = 'analysis/' + scope + '-candidate-pool.json';
   if (
-    ![scoreFile, pairedFile, vectorFile, runFile].every((p) =>
+    ![scoreFile, pairedFile, vectorFile, runFile, probeFile].every((p) =>
       fs.existsSync(path.join(root, p)),
     )
   ) {
@@ -50,14 +52,32 @@ for (const scope of ['langchain', 'godot', 'du']) {
     { langchain: 203, godot: 99, du: 2000 }[scope],
   );
   assert.equal(score.results.rrf10.questions, score.results.rrf30.questions);
+  const runReceipt = read(runFile);
+  const probe = read(probeFile);
+  assert.equal(probe.scope, scope);
+  assert.equal(probe.compared, 16);
+  assert.equal(probe.equal_all_fields_except_timing, true);
+  assert.equal(probe.index_sha256, runReceipt.index_sha256);
+  assert.equal(probe.reference_receipt_sha256, hash(runFile));
+  for (const k of [30, 10])
+    assert.equal(
+      probe.reference_run_sha256[k],
+      hash('fixed/' + scope + '-rrf' + k + '.jsonl'),
+    );
   receipt.results[scope] = {
     official: score,
     paired: read(pairedFile),
     vector_audit: read(vectorFile),
-    run_receipt: read(runFile),
+    run_receipt: runReceipt,
+    parallel_conformance: probe,
   };
-  for (const file of [scoreFile, pairedFile, vectorFile, runFile])
+  for (const file of [scoreFile, pairedFile, vectorFile, runFile, probeFile])
     receipt.artifacts[file] = hash(file);
+  if (fs.existsSync(path.join(root, diagnosticFile))) {
+    const { per_query_rrf30: _rows, ...summary } = read(diagnosticFile);
+    receipt.results[scope].candidate_pool = summary;
+    receipt.artifacts[diagnosticFile] = hash(diagnosticFile);
+  }
 }
 const probe = 'analysis/langchain-parallel-conformance.json';
 if (fs.existsSync(path.join(root, probe))) {

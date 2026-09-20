@@ -6,7 +6,7 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 当前下一步
 
-- [公开固定片段检索结果](evals/2026-09-20-public-fixed-results.md)：LangChain203题两档完成，RRF30/10的α-nDCG为35.98%/35.00%，小幅差异尚不稳健；Godot也已完成并复核；用户已要求暂停，Du等待断点续跑。
+- [公开固定片段检索结果](evals/2026-09-20-public-fixed-results.md)：LangChain203题两档完成，RRF30/10的α-nDCG为35.98%/35.00%，小幅差异尚不稳健；Godot也已完成并复核；用户已明确继续，Du正复用暂停缓存完成剩余输入。
 
 - [QASPER公开全文三版结果](evals/2026-09-19-public-qasper-results.md)：1005题三版已跑，严格800题完整覆盖460/480/492；官方段落F1与完整覆盖存在取舍，3015响应逐题官方核分一致，公开启发式基线已复跑；两位独立结果复核通过，固定片段数据集继续执行。
 

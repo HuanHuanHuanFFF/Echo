@@ -71,3 +71,7 @@ FreshStack用官方query-to-nugget/qrels和alpha-nDCG@10、Coverage@20、Recall@
 ## 用户暂停（2026-09-20）
 
 用户要求尽快停止，明天再做。QASPER1005×3、LangChain203×2、Godot99×2均已完成及两位独立复核；Du已缓存12489/102001个去重输入，尚未检索2000题。已阻止新API请求、让在途响应落盘并确认捕获进程退出、inflight=0、锁释放。E盘STATE.json和PAUSE-REQUEST.json保存断点。vectors.sqlite保留user_pause_capture触发器防止误启动；仅在用户明确继续后移除再续跑，不清空缓存或重置尝试数。Godot/Du probe指纹补齐、Du全部评分和总分析仍待完成。
+
+## 恢复执行（2026-09-20）
+
+用户明确“继续”后，已核对无活动捕获进程、无owner/锁、inflight=0；在独占写锁内移除user_pause_capture，保留12489条Du缓存和全部历史attempts。恢复仍使用4并发、200ms最小间隔、每输入最多12次，模型/正文/query/batch8/检索参数不变。本次只将每20批的进度日志从整库status扫描改为仅读attempts用量：恢复前同一只读快照中全库范围统计耗时24715ms、账本统计181ms；这是一项日志开销修正，不是新的检索条件或服务延迟评测。

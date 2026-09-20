@@ -1,6 +1,6 @@
 # 公开固定片段检索：全量结果与参考比较
 
-日期：2026-09-20。状态：LangChain 203题及Godot 99题×2档已执行；用户要求暂停；DuRetrieval已缓存12489/102001个输入，2000题尚未检索。本文随已冻结范围补齐，不调整参数、不改变产品默认。小型指纹见[公开收据](2026-09-20-public-fixed.manifest.json)。承接[执行冻结](2026-09-19-public-full-evaluation-freeze.md)；QASPER全文切块结果[另列](2026-09-19-public-qasper-results.md)。
+日期：2026-09-20。状态：LangChain 203题及Godot 99题×2档已执行；用户已明确继续；DuRetrieval从12489/102001个缓存输入恢复，2000题尚待全量检索。本文随已冻结范围补齐，不调整参数、不改变产品默认。小型指纹见[公开收据](2026-09-20-public-fixed.manifest.json)。承接[执行冻结](2026-09-19-public-full-evaluation-freeze.md)；QASPER全文切块结果[另列](2026-09-19-public-qasper-results.md)。
 
 ## 条件与可比边界
 

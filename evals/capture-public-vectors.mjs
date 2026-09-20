@@ -94,17 +94,19 @@ try {
     insert.run(key, purpose, text);
     membership.run(group, key);
   }
+  const usage = () =>
+    db
+      .prepare(
+        "SELECT count(*) attempts,sum(input_chars) input_chars,sum(tokens) reported_tokens,sum(status='success') succeeded,sum(status!='success') failed_or_inflight FROM attempts",
+      )
+      .get();
   const status = () => ({
     scopes: db
       .prepare(
         'SELECT scope,count(*) texts,sum(e.vector IS NOT NULL) ready FROM members m JOIN entries e USING(key) GROUP BY scope',
       )
       .all(),
-    usage: db
-      .prepare(
-        "SELECT count(*) attempts,sum(input_chars) input_chars,sum(tokens) reported_tokens,sum(status='success') succeeded,sum(status!='success') failed_or_inflight FROM attempts",
-      )
-      .get(),
+    usage: usage(),
   });
   if (phase === 'register') {
     if (!existing)
@@ -380,7 +382,7 @@ try {
                 scope,
                 completed_batches: done,
                 total_batches: groups.length,
-                ...status().usage,
+                ...usage(),
               }),
             );
         } catch (e) {
