@@ -6,6 +6,8 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 当前下一步
 
+- [公开纯向量/BM25/混合事后对照](evals/2026-09-20-public-mode-contrast.md)：2302题原排名离线重评分，48次真实缓存probe一致；LangChain混合有收益，Du纯向量86.70%高于两档混合，Godot差异不稳定。两位Luna/max独立复核通过；权重未改。
+
 - [全量公开评测总结](evals/2026-09-20-public-full-results.md)：3307父题、7619次主执行全部完成，两位Luna/max独立复核通过；新综合提高QASPER完整覆盖但段落F1下降，RRF10提高Du前10排序，FreshStack差异不稳定；与强公开参考仍有差距，默认未改。
 
 - [公开固定片段检索结果](evals/2026-09-20-public-fixed-results.md)：LangChain203、Godot99、Du2000题各两档完成；Du RRF30/10 nDCG@10为81.77%/84.16%，前50召回略降，完整指标与公开参考分列。

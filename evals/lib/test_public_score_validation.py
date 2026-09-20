@@ -31,5 +31,25 @@ class RunValidationTest(unittest.TestCase):
         with self.assertRaisesRegex(AssertionError,"Invalid per-question"):
             validate_per_question({"a":{"ndcg_cut_10":float("nan")}},["a"],{"ndcg_cut_10":0},["ndcg_cut_10"])
 
+
+    def test_lane_projection_preserves_original_order_and_empty_lane(self):
+        from public_lane_projection import lane_ids
+        row={"candidates":{"dense":2,"bm25":0},"rankings":[{"id":"b","dense_rank":2,"bm25_rank":None},{"id":"a","dense_rank":1,"bm25_rank":None}]}
+        self.assertEqual(lane_ids(row,"dense"),["a","b"])
+        self.assertEqual(lane_ids(row,"bm25"),[])
+
+    def test_lane_projection_rejects_gaps_duplicates_missing_and_boolean_rank(self):
+        from public_lane_projection import lane_ids
+        import copy
+        row={"candidates":{"dense":2},"rankings":[{"id":"a","dense_rank":1},{"id":"b","dense_rank":2}]}
+        bad=copy.deepcopy(row);bad["rankings"][1]["dense_rank"]=3
+        with self.assertRaisesRegex(AssertionError,"Non-contiguous"):lane_ids(bad,"dense")
+        bad=copy.deepcopy(row);bad["rankings"][1]["id"]="a"
+        with self.assertRaisesRegex(AssertionError,"Duplicate"):lane_ids(bad,"dense")
+        bad=copy.deepcopy(row);bad["rankings"].pop()
+        with self.assertRaisesRegex(AssertionError,"Missing"):lane_ids(bad,"dense")
+        bad=copy.deepcopy(row);bad["rankings"][0]["dense_rank"]=True
+        with self.assertRaisesRegex(AssertionError,"type"):lane_ids(bad,"dense")
+
 if __name__ == "__main__":
     unittest.main()
