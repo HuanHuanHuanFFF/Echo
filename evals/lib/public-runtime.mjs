@@ -70,13 +70,18 @@ export async function runtimeContext(root) {
     provider,
   };
 }
-export function boundedRequest(query, sourceId, budget = 16000) {
+export function boundedRequest(
+  query,
+  sourceId,
+  budget = 16000,
+  overrides = {},
+) {
   let allowance = budget;
   for (let i = 0; i < 5; i++) {
     const request = {
       query,
       filters: { source_ids: [sourceId] },
-      overrides: { max_context_chars: allowance },
+      overrides: { ...overrides, max_context_chars: allowance },
     };
     const next = budget - JSON.stringify(request).length;
     if (next >= allowance) {

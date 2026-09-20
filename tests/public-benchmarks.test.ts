@@ -155,3 +155,18 @@ it('charges filters and overrides against the same cumulative context budget', (
     '123e4567-e89b-42d3-a456-426614174000',
   ]);
 });
+
+it('includes explicit retrieval overrides in the budget without accepting their own budget', () => {
+  const overrides = {
+    mode: 'hybrid',
+    bm25_weight: 0.25,
+    max_context_chars: 999999,
+  };
+  const request = boundedRequest('Question', 'source', 16000, overrides);
+  expect(request.overrides.mode).toBe('hybrid');
+  expect(request.overrides.bm25_weight).toBe(0.25);
+  expect(
+    JSON.stringify(request).length + request.overrides.max_context_chars,
+  ).toBeLessThanOrEqual(16000);
+  expect(overrides.max_context_chars).toBe(999999);
+});
