@@ -6,6 +6,8 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 当前下一步
 
+- [默认冻结与当前实际配置](project/2026-09-20-default-freeze.md)：统一列出产品初始化默认、近期实验与E盘旧入口；召回固定0.5/1、RRF30、topk10/每篇3。切块最终采用待本轮用户选择。
+
 - [QASPER每篇3与5补测](evals/2026-09-20-qasper-source-cap-pilot.md)：同一101题，仅新增cap5；完整46/78→55/78，F1 19.88%→17.62%，平均上下文+56.17%。两位Luna/max独立复核通过；默认未改，新增API为0。
 
 - [QASPER段落长度分布](evals/2026-09-20-qasper-paragraph-lengths.md)：全量13547段中位421字符，有效证据1373段中位515；当前101题证据129段中位649。原始段落/证据去重口径、完整区间与分位数已核验。

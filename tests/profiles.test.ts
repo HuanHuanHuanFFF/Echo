@@ -24,6 +24,16 @@ async function fixture() {
 it('initializes without model calls and preserves user files on repeated initialization', async () => {
   const { dir, path } = await fixture();
   const file = join(dir, 'config/retrieval/balanced.json');
+  const frozen = JSON.parse(
+    await readFile(
+      new URL(
+        '../examples/profiles/config/retrieval/balanced.json',
+        import.meta.url,
+      ),
+      'utf8',
+    ),
+  );
+  expect(JSON.parse(await readFile(file, 'utf8'))).toEqual(frozen);
   await writeFile(file, JSON.stringify({ id: 'balanced', topk: 3 }));
   expect((await initializeWorkspace(path)).created).toEqual([]);
   expect((await loadConfig(path)).retrieval.topk).toBe(3);

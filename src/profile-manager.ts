@@ -11,7 +11,7 @@ import {
 } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { randomUUID } from 'node:crypto';
-import { loadConfig } from './config.js';
+import { loadConfig, retrievalSchema } from './config.js';
 import {
   defaultMain,
   defaultTokenizer,
@@ -48,7 +48,7 @@ export async function initializeWorkspace(path: string) {
       }),
       'config/retrieval/balanced.json': json({
         id: 'balanced',
-        mode: 'hybrid',
+        ...retrievalSchema.parse({}),
       }),
       'config/retrieval/bm25.json': json({ id: 'bm25', mode: 'bm25' }),
       'config/sources.json': json({ collections: [] }),

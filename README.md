@@ -3,7 +3,7 @@
 本地 Markdown 证据检索 MCP：TypeScript + 嵌入式 SQLite，支持本地 BM25、API embedding、RRF 和 Agent 子问题查询。
 Agent 负责拆问题、补读与回答；Echo 返回原文证据和定位。
 
-**前四阶段已合并并通过 Windows/Linux CI。第五阶段工具已实现，真实 API 默认方案评测尚待配置及调用额度。**
+**前四阶段已合并并通过 Windows/Linux CI。个人笔记与公开数据的真实 API 评测已有结果；默认采用与剩余产品验收分别记录。** 当前默认统一见[冻结记录](docs/project/2026-09-20-default-freeze.md)，效果与限制见[公开评测总结](docs/evals/2026-09-20-public-full-results.md)。
 
 ## 先跑一个无 key 的样本
 
@@ -81,7 +81,7 @@ node /absolute/path/to/echo/dist/cli.js serve --config /absolute/path/to/echo/ec
 
 默认：标题感知 max_chars=1000，hybrid，每路候选 60，RRF k=30、BM25/向量权重 0.5/1，
 topk=10、每篇最多 3、最低余弦相似度 0.3、完整结果 JSON 预算 16000 字符。
-2026-09-17 按用户决定调整三个默认值；该组合尚未完成真实模型效果评测，历史成绩仍对应各自记录的参数。
+以上是当前新工作区的实际默认。近期新综合切块属于评测候选，最终采用状态统一见[默认冻结记录](docs/project/2026-09-20-default-freeze.md)；历史成绩仍对应各自冻结条件。新init会完整写出召回参数，已有配置不自动改写。
 
 召回配置支持部分覆盖；单次搜索可传 overrides 和 filters。切块策略的规则固定，改变数字应另建策略 ID。
 topk 与每篇上限同时生效，数量不足时不放宽约束填满。

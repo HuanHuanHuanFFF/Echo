@@ -2,6 +2,8 @@
 
 日期：2026-09-16。状态：实现与隔离回归已具备，最终验证见[修订开发记录](../development/2026-09-16-configuration-revision.md)。本文落实[用户确认决定](../project/2026-09-16-configuration-decisions.md)，替代[旧配置契约](configuration.md)的配置组织与索引选择部分；证据定位、RRF、数量和预算规则延续。
 
+2026-09-20：[默认冻结记录](../project/2026-09-20-default-freeze.md)统一说明当前产品默认与实验候选。新init的balanced.json完整保存召回参数，重复init仍保留已有文件；不批量改写旧安装或冻结评测。
+
 ## 初始化与选择
 
 先构建，再在自己的工作目录执行：
