@@ -12,6 +12,8 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 历史评测（各自条件保持冻结）
 
+- [Du200分词与IDF对照](evals/2026-09-20-lexical-pilot.md)：保留完整100001语料，Jieba接入现扩展链使纯BM25 nDCG下降2.14个百分点；只换IDF几乎无收益。混合仍低于同题dense，双人复核通过，默认不变。
+
 以下记录中的“默认”描述对应报告当时状态；当前产品默认只以本页上方的冻结记录为准。
 
 - [QASPER每篇3与5补测](evals/2026-09-20-qasper-source-cap-pilot.md)：同一101题，仅新增cap5；完整46/78→55/78，F1 19.88%→17.62%，平均上下文+56.17%。两位Luna/max独立复核通过；默认未改，新增API为0。
