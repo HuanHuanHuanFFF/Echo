@@ -2,7 +2,7 @@
 
 日期：2026-09-16。状态：实现与隔离回归已具备，最终验证见[修订开发记录](../development/2026-09-16-configuration-revision.md)。本文落实[用户确认决定](../project/2026-09-16-configuration-decisions.md)，替代[旧配置契约](configuration.md)的配置组织与索引选择部分；证据定位、RRF、数量和预算规则延续。
 
-2026-09-20：[默认冻结记录](../project/2026-09-20-default-freeze.md)统一说明当前产品默认与实验候选。新init的balanced.json完整保存召回参数，重复init仍保留已有文件；不批量改写旧安装或冻结评测。
+2026-09-20：[默认冻结记录](../project/2026-09-20-default-freeze.md)确认新综合＋BM25 0.5＋RRF10，替代旧初始化heading/RRF30默认。新init完整保存召回参数并安装新综合，重复init保留已有文件；不批量改写旧安装或冻结评测。
 
 ## 初始化与选择
 
@@ -20,6 +20,7 @@ node /absolute/path/to/echo/dist/cli.js sync
 
 ```text
 echo.config.json
+chunkers/markdown-structure-v1.mjs
 chunkers/heading-1000.mjs
 chunkers/heading-500.mjs
 tokenizers/icu-zh.mjs
@@ -38,7 +39,7 @@ config/logging.json
   "version": 2,
   "database": ".echo/index.sqlite",
   "active": {
-    "chunker": "heading-1000",
+    "chunker": "markdown-structure-v1",
     "tokenizer": "icu-zh",
     "embedding": "default",
     "retrieval": "balanced"
@@ -70,9 +71,9 @@ export default {
 };
 ```
 
-input 提供 sourceId、path、带完整原文件行号的 lines，以及只读 resources。headingLines(maxChars) 是默认标题切块 helper；也可完全自行返回 startLine/endLine/headingPath 和成对的 sectionStartLine/sectionEndLine。行号 1-based、两端包含；范围必须是未过滤的连续原文。Echo 从捕获的原文生成证据，不接受插件自造正文。原 frontmatter 整体不进入切块。
+input 提供 sourceId、path、带完整原文件行号的 lines，以及只读 resources。headingLines(maxChars) 是兼容标题切块 helper；也可完全自行返回 startLine/endLine/headingPath 和成对的 sectionStartLine/sectionEndLine。行号 1-based、两端包含；范围必须是未过滤的连续原文。Echo 从捕获的原文生成证据，不接受插件自造正文。原 frontmatter 整体不进入切块。
 
-默认 heading-1000 与 heading-500 分别固定 1000/500 字符软上限，ATX 标题、整行聚合、不重叠，围栏代码中的伪标题不分章节；超长单行允许超过软上限，表格/代码块可按行分段。
+新默认markdown-structure-v1@1.0.1的规则以[冻结记录](../project/2026-09-20-default-freeze.md)为准。可选heading-1000与heading-500分别固定 1000/500 字符软上限，ATX 标题、整行聚合、不重叠，围栏代码中的伪标题不分章节；超长单行允许超过软上限，表格/代码块可按行分段。
 
 分词模块返回原始词项字符串，Echo 统一 NFKC、小写和十六进制编码后交给 FTS5：
 
@@ -107,7 +108,7 @@ export default {
 
 不自动重试计费请求。API key、超时和 batch_size 不影响向量身份；服务端点、模型、维度、前缀、维度字段和向量变换规则影响身份。空模板可以保存，实际 dense/hybrid 同步必须配置模型；已有向量完整时，同步不因 key 缺失而重新请求模型。
 
-召回 JSON 也包含 id，支持多套配置。字段/范围沿用 [retrievalSchema](../../src/config.ts)：mode、topk、max_chunks_per_source、两路 candidates、rrf_k、title_weight、两路 weight、min_dense_similarity、max_context_chars。优先级：内置默认 → 选中的召回配置 → 单次 overrides。默认 hybrid、topk=10、每篇上限=3、候选=60/60、RRF k=30、BM25/向量权重=0.5/1、标题权重=2、最低余弦=0.3、完整 JSON 预算=16000 字符。topk 和单篇上限同时约束，不凑满数量。召回配置不参与表身份。
+召回 JSON 也包含 id，支持多套配置。字段/范围沿用 [retrievalSchema](../../src/config.ts)：mode、topk、max_chunks_per_source、两路 candidates、rrf_k、title_weight、两路 weight、min_dense_similarity、max_context_chars。优先级：内置默认 → 选中的召回配置 → 单次 overrides。默认 hybrid、topk=10、每篇上限=3、候选=60/60、RRF k=10、BM25/向量权重=0.5/1、标题权重=2、最低余弦=0.3、完整 JSON 预算=16000 字符。topk 和单篇上限同时约束，不凑满数量。召回配置不参与表身份。
 
 2026-09-18 用户确认：RRF k改为30，完整返回JSON预算改为16000；支持单次overrides。省略字段时继承新默认，已有显式值继续优先；旧冻结评测不回写，当前新综合联合验证见[联合对照](../evals/2026-09-18-rrf-budget-joint.md)。这替代此前仅把30/16000列为候选、默认仍60/12000的状态，仅涉及这两项。
 

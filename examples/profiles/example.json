@@ -2,7 +2,7 @@
   "version": 2,
   "database": "../../.echo/profile-example/index.sqlite",
   "active": {
-    "chunker": "heading-1000",
+    "chunker": "markdown-structure-v1",
     "tokenizer": "icu-zh",
     "embedding": "default",
     "retrieval": "bm25"

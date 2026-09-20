@@ -75,7 +75,7 @@ describe('foundation', () => {
       chunker: { options: { custom: true } },
     });
     expect(cfg.retrieval.max_chunks_per_source).toBe(3);
-    expect(cfg.retrieval.rrf_k).toBe(30);
+    expect(cfg.retrieval.rrf_k).toBe(10);
     expect(cfg.retrieval.max_context_chars).toBe(16000);
     const explicit = parseConfig({
       retrieval: { rrf_k: 60, max_context_chars: 12000 },

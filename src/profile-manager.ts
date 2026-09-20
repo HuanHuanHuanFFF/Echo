@@ -37,7 +37,17 @@ export async function initializeWorkspace(path: string) {
   const created: string[] = [];
   if (!exists) {
     const json = (v: unknown) => JSON.stringify(v, null, 2) + '\n';
+    const structureStrategy = await readFile(
+      new URL(
+        import.meta.url.endsWith('.ts')
+          ? '../examples/profiles/chunkers/markdown-structure-v1.mjs'
+          : './strategies/markdown-structure-v1.mjs',
+        import.meta.url,
+      ),
+      'utf8',
+    );
     const files: Record<string, string> = {
+      'chunkers/markdown-structure-v1.mjs': structureStrategy,
       'chunkers/heading-1000.mjs': headingStrategy(1000),
       'chunkers/heading-500.mjs': headingStrategy(500),
       'tokenizers/icu-zh.mjs': defaultTokenizer,

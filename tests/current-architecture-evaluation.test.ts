@@ -90,5 +90,5 @@ it('rejects accidental parameter drift while producing separate fixed-mode arms'
       currentRetrieval({ ...original, ...patch }, 'hybrid'),
     ).toThrow();
   expect(original.rrf_k).toBe(60);
-  expect(retrievalSchema.parse({}).rrf_k).toBe(30);
+  expect(retrievalSchema.parse({}).rrf_k).toBe(10);
 });

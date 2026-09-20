@@ -79,9 +79,9 @@ node /absolute/path/to/echo/dist/cli.js serve --config /absolute/path/to/echo/ec
 
 ## 默认与自定义方案
 
-默认：标题感知 max_chars=1000，hybrid，每路候选 60，RRF k=30、BM25/向量权重 0.5/1，
+默认：新综合 markdown-structure-v1@1.0.1（目标1000/常规最大1500字符），hybrid，每路候选60，RRF k=10、BM25/向量权重0.5/1，
 topk=10、每篇最多 3、最低余弦相似度 0.3、完整结果 JSON 预算 16000 字符。
-以上是当前新工作区的实际默认。近期新综合切块属于评测候选，最终采用状态统一见[默认冻结记录](docs/project/2026-09-20-default-freeze.md)；历史成绩仍对应各自冻结条件。新init会完整写出召回参数，已有配置不自动改写。
+2026-09-20已按用户决定采用并冻结，完整规则见[默认冻结记录](docs/project/2026-09-20-default-freeze.md)。新init完整写出召回参数并安装对应策略；已有显式配置不自动覆盖，省略字段仍继承内置默认。历史评测保持各自冻结条件。
 
 召回配置支持部分覆盖；单次搜索可传 overrides 和 filters。切块策略的规则固定，改变数字应另建策略 ID。
 topk 与每篇上限同时生效，数量不足时不放宽约束填满。

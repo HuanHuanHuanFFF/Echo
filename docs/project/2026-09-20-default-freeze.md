@@ -1,60 +1,55 @@
-# Echo默认冻结：当前状态与采用边界
+# Echo默认冻结：2026-09-20
 
-日期：2026-09-20。状态：召回基线已明确，切块最终采用等待本轮用户选择。当前实现仍为heading-1000；新综合只处于已测候选状态。本记录不把推荐自动改写成已确认需求。
+日期：2026-09-20。状态：用户已确认采用“新综合＋BM25 0.5＋RRF10”，实现、本地验证与两位Luna/max独立复核完成。本决定替代此前heading-1000/RRF30产品默认及本文“切块待采用”状态；不改写历史实验配置、标签或分数，不采纳此前讨论的BM25 0.4。
 
-本文是当前默认值的统一入口，替代[9月19日记录](2026-09-19-default-validation-and-deferred-ideas.md)中分散说明“产品默认/实验候选”的展示方式；已有实验条件、旧配置与评测分数保留。最终默认切块确认后在本文收束，不另外创建相互冲突的“推荐默认”。
+## 唯一默认组合
 
-## 当前实际产品默认
+适用于新建v2工作区。可执行入口为[defaultMain](../../src/profiles.ts)、[retrievalSchema](../../src/config.ts)和[初始化器](../../src/profile-manager.ts)。
 
-以下针对新建v2工作区；可执行依据为[defaultMain](../../src/profiles.ts)、[retrievalSchema](../../src/config.ts)、[初始化器](../../src/profile-manager.ts)。
+| 项目                 | 冻结值                                                                                                           |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| 切块                 | markdown-structure-v1@1.0.1（新综合）                                                                            |
+| 切块规则             | 目标1000/常规最大1500字符、短节合并阈值200、长单元回退拆分时80字符整行overlap；保留标题与代码/列表/表格/引用结构 |
+| 分词                 | icu-zh@1，zh-CN，无自定义词典；保持现有ICU词切分＋中文双字补充＋技术标识符处理                                   |
+| 召回配置ID / 模式    | balanced / hybrid                                                                                                |
+| BM25 / 向量权重      | 0.5 / 1                                                                                                          |
+| RRF k                | 10                                                                                                               |
+| BM25 / dense候选上限 | 60 / 60                                                                                                          |
+| topk / 每篇上限      | 10 / 3                                                                                                           |
+| 标题权重 / 最低余弦  | 2 / 0.3                                                                                                          |
+| max_context_chars    | 16000，完整业务结果JSON的UTF-16长度上限                                                                          |
+| rerank / MMR         | 无                                                                                                               |
 
-| 项目                | 当前值                                                          |
-| ------------------- | --------------------------------------------------------------- |
-| 切块                | heading-1000@1：标题感知、1000字符软上限、按整行聚合、无overlap |
-| 分词                | icu-zh@1，zh-CN，无自定义词典                                   |
-| 召回配置ID / 模式   | balanced / hybrid                                               |
-| BM25 / 向量权重     | 0.5 / 1                                                         |
-| RRF k               | 30                                                              |
-| 两路候选上限        | 60 / 60                                                         |
-| topk / 每篇上限     | 10 / 3                                                          |
-| 标题权重 / 最低余弦 | 2 / 0.3                                                         |
-| max_context_chars   | 16000，完整业务结果JSON的UTF-16长度上限                         |
-| rerank / MMR        | 无                                                              |
+默认只选择已经存在并评测过的[固定策略文件](../../examples/profiles/chunkers/markdown-structure-v1.mjs)，不改其算法、尺寸或版本。1500不是强制切断所有结构的绝对上限；80也不是每个相邻块固定重叠80字符。更改切块规则仍应另建策略ID。
 
-本轮正在确认：是否将切块默认改为markdown-structure-v1@1.0.1（新综合，1000目标/1500常规上限、200短节阈值、长单元80整行overlap、代码/列表/表格/引用结构保护）。其个人笔记和QASPER完整覆盖较高，附带段落与上下文也可能更多，不能称为所有指标均最优。未收到采用决定前，不更改active.chunker。
+依据：[个人开发统一标签对照](../evals/2026-09-18-label-revision-and-current-architecture.md)、[个人最终四臂](../evals/2026-09-18-final-four-arms.md)、[公开全量结果](../evals/2026-09-20-public-full-results.md)。这些结果支持选定一个可复现基线，但不证明它在所有数据、模型、指标上最优；尤其新综合段落F1、中文Du混合排序仍有已记录取舍。采用默认不等于产生新的盲测成绩。
 
-## 模型不与默认算法绑死
+## 模型配置
 
-产品使用用户配置的HTTP embedding API，model、dimensions、base_url由用户填写，API key通过ECHO_EMBEDDING_API_KEY等环境变量引用，不写入Git。调用默认：batch_size=8、timeout_ms=30000、空正文/查询前缀、send_dimensions=true。
+产品使用用户配置的HTTP embedding API；model、dimensions、base_url由用户填写，key通过环境变量引用，不写入Git。模型调用默认：batch_size=8、timeout_ms=30000、空正文/查询前缀、send_dimensions=true。
 
-qwen3.7-text-embedding/1024是现有评测模型，不是所有用户必须使用的产品默认。默认模型配置ID为default，不表示默认已填好模型或无需API key。
+qwen3.7-text-embedding/1024是现有评测模型，后续同批对照继续使用它；不是所有用户必须使用的产品默认。默认模型配置ID为default，初始化不会自动获得模型或凭据。
 
-## 产品预算与评测预算
+## 参数覆盖与预算
 
-max_context_chars约束[检索层](../../src/retrieval.ts)返回的完整业务结果JSON，不包括MCP外层协议封装和输入请求。当前QASPER试验另要求“请求＋结果≤16000”，由[评测辅助函数](../../evals/lib/public-runtime.mjs)先扣除请求长度后，把剩余数值传给max_context_chars。
+新init会完整写出balanced.json，和[示例](../../examples/profiles/config/retrieval/balanced.json)一致。内置默认→所选配置→单次overrides的优先级不变；topk与单篇上限同时约束，不足时返回实际数量。冻结默认不禁止Agent显式扩大范围。
 
-两者都使用UTF-16字符计量，但计入范围不同。独立可配置硬预算、游标、预览补读仍是暂存设计，不能在默认冻结中声称已实现。
+max_context_chars约束[检索层](../../src/retrieval.ts)完整业务结果JSON，不包括输入请求和MCP外层封装。现有QASPER评测另按“请求＋结果≤16000”，由[辅助函数](../../evals/lib/public-runtime.mjs)扣除请求长度。独立硬预算、游标和预览补读仍未实现，不能作为本次默认功能宣称交付。
 
-## 为什么最近看到的配置不同
+## 初始化、构建与兼容
 
-| 入口                                           | 性质与实际配置                                                          |
-| ---------------------------------------------- | ----------------------------------------------------------------------- |
-| 新工作区init                                   | 产品默认，heading-1000＋balanced，以上表为准                            |
-| 最近QASPER单篇上限补测                         | 实验候选：新综合＋hybrid、0.5/1、RRF30；只比较每篇3/5                   |
-| E盘2026-09-16/echo.config.json                 | 历史安装入口，仍选heading-1000＋bm25，显式topk8/每篇2/RRF60/权重1/12000 |
-| E盘public-benchmarks-2026-09-19/qasper/p1.json | 近期公共评测入口，新综合＋hybrid、topk10/每篇3/RRF30/权重0.5/16000      |
+- 新工作区默认选择新综合，同时仍提供heading-1000、heading-500作为显式替代策略。
+- 源码开发读取同一固定示例；npm run build通过[资源复制脚本](../../scripts/copy-builtin-strategies.mjs)将原字节复制到dist/strategies，编译后的初始化不依赖仓库examples目录。不是重新实现一套切块算法。
+- 不覆盖已有工作区文件。旧显式值（例如rrf_k=30）继续优先；省略字段的稀疏配置仍继承当前代码默认，因此缺省RRF会采用10。
+- 旧格式v1的heading helper与迁移语义保留；迁移不把已有heading策略偷偷换成新综合。采用不同chunk策略需要显式选择并同步，表身份仍按策略/分词/模型规则隔离。
+- 旧安装升级时需显式放入新综合策略文件并选择对应配置；仅升级程序或重复init不会覆写已有主入口。E盘历史安装和冻结评测本轮未批量迁移，原笔记与旧Chroma不动。
 
-最近101题及其cap5补测使用的是各自记录的冻结配置，不是9月16日旧入口。以上E盘配置本轮只读核对，没有修改旧实验、原笔记或索引，也不能据新仓库默认宣称旧安装已升级。
+## 后续实验约束
 
-## 冻结的落实方式
+新实验以本表为共同起点，明确记录唯一变化项，不把某个小样本最高分自动回写默认。BM25权重0.4、RRF30、每篇5都是各自已测条件；旧报告保留原条件，不再称作新的产品默认。分词替代研究见[BM25现状与候选](../research/2026-09-20-bm25-tokenizer-options.md)，本次不同时改变分词。
 
-- 新init写出的balanced.json完整保存全部召回字段，内容与[固定示例](../../examples/profiles/config/retrieval/balanced.json)一致；此前只写mode，其余隐式继承代码。
-- 不覆盖已有工作区配置；完整自定义和部分覆盖继续可用。优先级仍为内置默认→所选配置→本次overrides，冻结默认不禁止Agent显式扩大范围。
-- 后续新实验必须明确写出“基于冻结默认，唯一变化为何”；不把本次最优点估计自动写回默认，不更改历史结果。
-- 原有显式配置继续优先。旧的稀疏配置仍按契约继承未填字段；本轮没有批量迁移或宣称全部旧工作区已固定化。
+## 验证与剩余边界
 
-## 验证与剩余项
+本地完整检查175通过、1既有跳过，另6项Python评分回归通过。新增[可移植运行时烟测](../../scripts/verify-default-runtime.mjs)已通过并纳入npm run check：复制dist＋package.json后初始化（复制目录没有src/examples，依赖仍从仓库node_modules解析），核对完整默认、旧显式heading/RRF30不被重复init覆盖、隔离Markdown同步与精确原文行、CLI与真实MCP返回证据一致。新综合源码SHA与QASPER冻结1.0.1逐字节相同；npm pack --dry-run确认CLI/检索实现/策略资源包含在包清单中。[验证收据](../evals/2026-09-20-default-adoption-smoke.json)记录实际检查和边界。两位Luna/max独立复核均无产品阻断。Windows/Linux CI运行同一npm run check（包含编译运行时烟测），结果以本文所在提交的Actions记录为准。
 
-[初始化回归](../../tests/profiles.test.ts)核对新balanced.json与完整固定示例一致，再修改用户topk并重复init，验证既有文件保留。定向3项通过；完整检查174通过、1既有跳过，另6项Python评分回归通过，格式/类型/构建通过。
-
-剩余：等待本轮切块采用选择，再完成唯一默认组合的最终状态；未做新效果评测、API调用、个人索引重建或安装迁移。
+本轮不重跑个人最终集或公开全量、不调用真实模型、不迁移旧E盘安装；隔离烟测不等于模型质量评测。默认采用决定已生效；旧E盘安装的显式升级仍是独立动作。

@@ -46,7 +46,7 @@ export type MainConfig = z.infer<typeof mainSchema>;
 export const defaultMain: MainConfig = mainSchema.parse({
   version: 2,
   active: {
-    chunker: 'heading-1000',
+    chunker: 'markdown-structure-v1',
     tokenizer: 'icu-zh',
     embedding: 'default',
     retrieval: 'balanced',

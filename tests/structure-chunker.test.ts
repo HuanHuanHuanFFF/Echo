@@ -1,12 +1,5 @@
 import { afterEach, expect, it } from 'vitest';
-import {
-  mkdtemp,
-  mkdir,
-  writeFile,
-  readFile,
-  copyFile,
-  rm,
-} from 'node:fs/promises';
+import { mkdtemp, mkdir, writeFile, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { loadChunker, runChunker } from '../src/chunker.js';
@@ -184,7 +177,9 @@ it('loads as a v2 strategy, indexes locally and returns exact source evidence', 
   dirs.push(dir);
   const configPath = join(dir, 'echo.config.json');
   await initializeWorkspace(configPath);
-  await copyFile(modulePath, join(dir, 'chunkers/markdown-structure-v1.mjs'));
+  expect((await loadConfig(configPath)).profile!.active.chunker).toBe(
+    'markdown-structure-v1',
+  );
   await mkdir(join(dir, 'notes'));
   const raw =
     '---\necho_id: ' +

@@ -11,7 +11,7 @@ export const retrievalSchema = z
     max_chunks_per_source: positive(100).default(3),
     bm25_candidates: positive(1000).default(60),
     dense_candidates: positive(1000).default(60),
-    rrf_k: positive(1000).default(30),
+    rrf_k: positive(1000).default(10),
     title_weight: z.number().min(0).max(20).default(2),
     bm25_weight: z.number().min(0).max(10).default(0.5),
     dense_weight: z.number().min(0).max(10).default(1),

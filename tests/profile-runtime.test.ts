@@ -74,7 +74,7 @@ it('CLI initializes, discovers, switches and shows profiles without exposing key
   expect(show.files.embedding).toBe(join(dir, 'config/embedding/default.json'));
   expect(show.embedding.api_key_env).toBe('ECHO_EMBEDDING_API_KEY');
   expect(show.retrieval.mode).toBe('bm25');
-  expect(show.retrieval.rrf_k).toBe(30);
+  expect(show.retrieval.rrf_k).toBe(10);
   expect(show.retrieval.max_context_chars).toBe(16000);
   expect(show).not.toHaveProperty('api_key');
   expect(
@@ -153,7 +153,7 @@ it('keeps captured runtime snapshots stable while subsequent loads get new profi
   const old = await runtime.snapshot();
   await useProfiles(path, { chunker: 'heading-500' });
   const next = await runtime.snapshot();
-  expect(old!.profile!.active.chunker).toBe('heading-1000');
+  expect(old!.profile!.active.chunker).toBe('markdown-structure-v1');
   expect(next!.profile!.active.chunker).toBe('heading-500');
   expect(old!.profile!.revision).not.toBe(next!.profile!.revision);
 });
@@ -209,7 +209,9 @@ it('evaluates a selected fixed profile against only the isolated corpus', async 
     outputDir: join(dir, 'evaluation'),
   });
   expect(report.report.status).toBe('lexical_only');
-  expect(report.report.profile.chunker_implementation.id).toBe('heading-1000');
+  expect(report.report.profile.chunker_implementation.id).toBe(
+    'markdown-structure-v1',
+  );
 });
 
 it('keeps an in-flight MCP query on its original snapshot while later calls use the new selection', async () => {
@@ -322,7 +324,7 @@ it('keeps an in-flight MCP query on its original snapshot while later calls use 
     release = undefined;
     const old = decode(await waiting);
     expect(old.selection.retrieval).toBe('balanced');
-    expect(old.results).toHaveLength(3);
+    expect(old.results).toHaveLength(2);
     expect(old.selection.revision).not.toBe(next.selection.revision);
   } finally {
     release?.();
@@ -434,7 +436,7 @@ it('reports malformed model JSON as a model failure while preserving hybrid evid
       }),
     );
     expect(result.status).toBe('partial_failure');
-    expect(result.results).toHaveLength(3);
+    expect(result.results).toHaveLength(2);
     expect(result.queries[0].code).toBe('MODEL_UNAVAILABLE');
     expect(result.queries[0].next).toMatch(/model|API/);
     expect(result.queries[0].error).not.toContain('<html>');

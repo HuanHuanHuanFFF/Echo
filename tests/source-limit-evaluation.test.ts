@@ -68,7 +68,7 @@ describe('single source-limit experiment', () => {
         checkCurrentSingleVariable(reference, candidate, name),
       ).not.toThrow();
       expect(() =>
-        checkCurrentSingleVariable(defaults, candidate, name),
+        checkCurrentSingleVariable({ ...defaults, rrf_k: 30 }, candidate, name),
       ).toThrow();
       expect(() =>
         checkCurrentSingleVariable(
@@ -85,7 +85,7 @@ describe('single source-limit experiment', () => {
         ),
       ).toThrow();
       expect(() => experimentRetrieval(historical, name, 0.2)).toThrow();
-      expect(defaults.rrf_k).toBe(30);
+      expect(defaults.rrf_k).toBe(10);
       expect(defaults.bm25_weight).toBe(0.5);
     },
   );
@@ -100,7 +100,7 @@ describe('single source-limit experiment', () => {
         rrf_k: 60,
         max_context_chars: 12000,
       });
-      const baseline = retrievalSchema.parse({});
+      const baseline = retrievalSchema.parse({ rrf_k: 30 });
       const candidate = experimentRetrieval(historical, name, value);
       expect(candidate).toEqual({ ...baseline, [field]: value });
       expect(experimentMetadata(name).values).toEqual([value]);
@@ -153,7 +153,7 @@ describe('single source-limit experiment', () => {
       'No default change',
     );
     expect(experimentBudget(frozenBase, 'rrf40-budget16000', 40)).toBe(16000);
-    expect(current.rrf_k).toBe(30);
+    expect(current.rrf_k).toBe(10);
     expect(frozenBase.rrf_k).toBe(60);
     expect(() =>
       experimentRetrieval(frozenBase, 'rrf40-budget16000', 30),

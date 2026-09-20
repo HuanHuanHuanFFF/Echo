@@ -23,6 +23,20 @@ async function fixture() {
 }
 it('initializes without model calls and preserves user files on repeated initialization', async () => {
   const { dir, path } = await fixture();
+  const initial = await loadConfig(path);
+  expect(initial.profile!.active.chunker).toBe('markdown-structure-v1');
+  expect(initial.profile!.chunker.version).toBe('1.0.1');
+  expect(
+    await readFile(join(dir, 'chunkers/markdown-structure-v1.mjs'), 'utf8'),
+  ).toBe(
+    await readFile(
+      new URL(
+        '../examples/profiles/chunkers/markdown-structure-v1.mjs',
+        import.meta.url,
+      ),
+      'utf8',
+    ),
+  );
   const file = join(dir, 'config/retrieval/balanced.json');
   const frozen = JSON.parse(
     await readFile(
@@ -40,6 +54,7 @@ it('initializes without model calls and preserves user files on repeated initial
   expect((await listProfiles(path)).available.chunkers).toEqual([
     'heading-1000',
     'heading-500',
+    'markdown-structure-v1',
   ]);
 });
 it('selects profiles atomically and rejects mismatched IDs and parameter overlays', async () => {
