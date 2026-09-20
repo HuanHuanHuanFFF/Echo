@@ -1,6 +1,6 @@
 # MiniSearch 默认采用与参数基线
 
-日期：2026-09-21。状态：用户已确认，产品接入与验收中。
+日期：2026-09-21。状态：用户已确认；产品接入、本地验证、双平台CI与两位Luna/max独立复核完成。
 
 ## 决定与替代范围
 
@@ -54,7 +54,8 @@ SQLite继续持久化来源、chunk、FTS词项和向量，MiniSearch索引是�
 - [MiniSearch产品回归](../../tests/minisearch.test.ts)：库评分与冻结评测适配器一致；原生第61名在取消乘数后进入第1；过滤先于候选截断；标题权重0、参数覆盖、取消未完成构建、缓存复用、内容/路径/删除刷新、旧库兼容、真实Worker复用/并发取消/超时/关闭。
 - [多配置同步回归](../../tests/profile-index.test.ts)：分词/模型/切块组合隔离、向量复用、失败同步回滚版本；[MCP回归](../../tests/mcp.test.ts)和[热切换回归](../../tests/profile-runtime.test.ts)通过。
 - [产品候选等价收据](../evals/2026-09-21-minisearch-production-parity.json)：LangChain20、Godot10、Du200、QASPER101共331题，16279条候选ID/顺序/原始分数全部精确匹配取消乘数的冻结实验。由[只读复核脚本](../../evals/verify-minisearch-production.mjs)运行实际dist模块，完整库49505/25477/100001/7404块；数据库及候选文件哈希前后不变，新增API调用0。这是接入等价验收，不是新的端到端混合检索或盲测成绩。
-- 两位Luna/max独立审查进行中，完成后补记结论；没有用模拟embedding证明语义质量。
+- 两位Luna/max独立复核均无功能阻断。审查提出的MCP引擎热切换测试缺口已补齐：MiniSearch→SQLite→MiniSearch、b参数覆盖和在途配置快照，审查者独立9/9通过。旧库缺少版本时重复冷建的性能边界保留，建议升级后正常sync一次启用缓存。
+- 实现提交8630799的[Windows/Linux CI](https://github.com/HuanHuanHuanFFF/Echo/actions/runs/35526899092)全部通过（npm run check及6项Python评分回归）。npm pack --dry-run确认MiniSearch、池/线程入口及固定chunk策略在运行包清单中。没有用模拟embedding证明语义质量。
 
 工程依据：[MiniSearch官方API](https://lucaong.github.io/minisearch/classes/MiniSearch.MiniSearch.html)；[Node工作线程复用/ref/unref](https://nodejs.org/docs/latest-v24.x/api/worker_threads.html)。实际规则以锁定的7.2.0代码及本地回归为准。采用缓存版本而非新连接的[SQLite data_version](https://www.sqlite.org/pragma.html#pragma_data_version)，因为后者只适合同一连接比较。
 
