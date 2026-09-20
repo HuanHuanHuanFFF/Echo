@@ -4,7 +4,8 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { boundedErrorText } from './transport.js';
 import type { EchoConfig } from './config.js';
 import { searchSchema } from './retrieval.js';
-import { runSearchInWorker, runStatusInWorker } from './executor.js';
+import { runStatusInWorker } from './executor.js';
+import { SearchWorkerPool } from './search-pool.js';
 
 export function createServer(
   initialConfig?: EchoConfig,
@@ -12,6 +13,17 @@ export function createServer(
 ) {
   const snapshot = async () => (reload ? reload() : initialConfig);
   const server = new McpServer({ name: 'echo', version: '0.1.0' });
+  const searches = new SearchWorkerPool();
+  const close = server.close.bind(server);
+  server.close = async () => {
+    await searches.close();
+    await close();
+  };
+  const onclose = server.server.onclose;
+  server.server.onclose = () => {
+    void searches.close();
+    onclose?.();
+  };
   let activeSearches = 0,
     activeStatuses = 0;
   const errorResult = (error: unknown) => ({
@@ -111,7 +123,7 @@ export function createServer(
       activeSearches++;
       try {
         const started = performance.now();
-        const result = await runSearchInWorker(config, input, extra.signal);
+        const result = await searches.run(config, input, extra.signal);
         createLogger(config.logging)(
           result.status === 'ok' ? 'info' : 'warn',
           'search.' + result.status,

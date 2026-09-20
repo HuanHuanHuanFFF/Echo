@@ -212,6 +212,9 @@ it('rolls back a failed model update and publishes it only after a successful re
     undefined,
     good.provider,
   );
+  const revision = rows(config, 'meta').find(
+    (r) => (r as { key: string }).key === 'index_revision',
+  );
   const original = await readFile(join(notes, 'a.md'), 'utf8');
   await writeFile(join(notes, 'a.md'), original.replace('apple', 'banana'));
   const failing = {
@@ -224,9 +227,19 @@ it('rolls back a failed model update and publishes it only after a successful re
     'injected',
   );
   expect(
+    rows(config, 'meta').find(
+      (r) => (r as { key: string }).key === 'index_revision',
+    ),
+  ).toEqual(revision);
+  expect(
     await searchIndex(config, { query: 'apple' }, undefined, good.provider),
   ).toEqual(before);
   await syncIndex(config, undefined, good.provider);
+  expect(
+    rows(config, 'meta').find(
+      (r) => (r as { key: string }).key === 'index_revision',
+    ),
+  ).not.toEqual(revision);
   expect(
     (await searchIndex(config, { query: 'banana' }, undefined, good.provider))
       .results[0]!.text,

@@ -1,0 +1,93 @@
+{
+  "date": "2026-09-21",
+  "status": "passed",
+  "node": "v24.15.0",
+  "icu": "78.2",
+  "scope": "production lexical candidate parity only; not a new relevance evaluation or end-to-end hybrid score",
+  "previous": "analysis/minisearch-without-coverage-2026-09-21-v1",
+  "parameters": {
+    "mode": "hybrid",
+    "lexical_engine": "minisearch",
+    "minisearch_k": 1.2,
+    "minisearch_b": 0.7,
+    "minisearch_d": 0.5,
+    "topk": 10,
+    "max_chunks_per_source": 3,
+    "bm25_candidates": 60,
+    "dense_candidates": 60,
+    "rrf_k": 10,
+    "title_weight": 2,
+    "bm25_weight": 0.5,
+    "dense_weight": 1,
+    "max_context_chars": 16000,
+    "min_dense_similarity": 0.3
+  },
+  "results": [
+    {
+      "scope": "langchain",
+      "queries": 20,
+      "documents": 49505,
+      "candidates_compared": 1200,
+      "candidate_ids_and_scores_exact": true,
+      "input_unchanged": true,
+      "bindings": {
+        "database": "6379f1adeaad95c8f8b65074a6d8d7206c03ecd2c419636865dba5d224abf5be",
+        "candidates": "cf243f6340ea32fb67d2bacbbb34f5120d7b4865297a51ba3f8434e590f83f74"
+      },
+      "duration_ms": 145054,
+      "new_embedding_calls": 0
+    },
+    {
+      "scope": "godot",
+      "queries": 10,
+      "documents": 25477,
+      "candidates_compared": 600,
+      "candidate_ids_and_scores_exact": true,
+      "input_unchanged": true,
+      "bindings": {
+        "database": "0a08c74a0bf91cb7213a688643a1ec611ee6680338c68316869daa16d5ffcca2",
+        "candidates": "224693a51a8b9552d0f27da17d3da2e1aaaab42317ebef0625ef9108478abca5"
+      },
+      "duration_ms": 28563,
+      "new_embedding_calls": 0
+    },
+    {
+      "scope": "du",
+      "queries": 200,
+      "documents": 100001,
+      "candidates_compared": 12000,
+      "candidate_ids_and_scores_exact": true,
+      "input_unchanged": true,
+      "bindings": {
+        "database": "4ec07f8b6075f6e1428bee16420fdb5c8aae1f744ebf90ebc9f68654f5780816",
+        "candidates": "9c9cb9fd358b00e5c3173f9aadd96507c92009ac1fcadf47d06070660d9f6b23"
+      },
+      "duration_ms": 100701,
+      "new_embedding_calls": 0
+    },
+    {
+      "scope": "qasper",
+      "queries": 101,
+      "documents": 7404,
+      "candidates_compared": 2479,
+      "candidate_ids_and_scores_exact": true,
+      "input_unchanged": true,
+      "bindings": {
+        "database": "11a9c804f7f10ef9a65d0bd4691b7613c01895f1c58abb39896dfacc09b28089",
+        "candidates": "c7af103c3bd178b449b4d05f5c0f27909ea4b2f8cfaa5f82087bd93c25bd8188"
+      },
+      "duration_ms": 5065,
+      "new_embedding_calls": 0
+    }
+  ],
+  "queries": 331,
+  "new_embedding_calls": 0,
+  "sources": {
+    "src/minisearch.ts": "5ee40bf6f0fc2129127572d5f617822a03706bbf8605d7f02c18d1092fe915d0",
+    "dist/minisearch.js": "5f212188d3b4661eb6bff21f8d924ab829f1a1fa05c8f49d1914a964eb8f4e1c",
+    "src/config.ts": "d70f9496c1a7b6f053178ca47b71eeb127b42302686db9a51e3a5a205decbb8a",
+    "dist/config.js": "a8f19bfae02dd382fb06dd072d12827a662c6c59694945eede204ddb0c586170",
+    "package-lock.json": "1cb4b27b3d401d39542282c7f93d45fe5bd661e6f9080684030ded63b4168dfe",
+    "evals/verify-minisearch-production.mjs": "5ddc4ae30523b06d7d097078b562fef547527dc1251e6eb418c098af32da2afd"
+  }
+}

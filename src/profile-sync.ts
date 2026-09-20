@@ -1,3 +1,5 @@
+import { setMeta } from './store.js';
+import { randomUUID } from 'node:crypto';
 import { readFile, realpath } from 'node:fs/promises';
 import { basename, relative } from 'node:path';
 import type { EchoConfig } from './config.js';
@@ -385,6 +387,7 @@ export async function syncProfiles(
     result.chunks = (
       db.prepare('SELECT count(*) AS n FROM ' + chunks).get() as { n: number }
     ).n;
+    setMeta(db, 'index_revision', randomUUID());
     db.exec('COMMIT');
     return result;
   } catch (error) {

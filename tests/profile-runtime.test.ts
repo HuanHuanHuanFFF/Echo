@@ -94,15 +94,41 @@ it('real MCP uses profile changes on the next call and reports invalid/restart s
     await client.connect(transport);
     const search = () =>
       client.callTool({ name: 'echo_search', arguments: { query: 'apple' } });
-    expect(decode(await search()).selection.retrieval).toBe('bm25');
+    const initial = decode(await search());
+    expect(initial.selection.retrieval).toBe('bm25');
+    expect(initial.applied.lexical_engine).toBe('minisearch');
     await writeFile(
       join(dir, 'config/retrieval/tight.json'),
-      JSON.stringify({ id: 'tight', mode: 'bm25', topk: 1 }),
+      JSON.stringify({
+        id: 'tight',
+        mode: 'bm25',
+        topk: 1,
+        lexical_engine: 'sqlite',
+      }),
     );
     await run('config', 'use', '--retrieval', 'tight');
     const tight = decode(await search());
     expect(tight.results).toHaveLength(1);
     expect(tight.selection.retrieval).toBe('tight');
+    expect(tight.applied.lexical_engine).toBe('sqlite');
+    await writeFile(
+      join(dir, 'config/retrieval/tight.json'),
+      JSON.stringify({
+        id: 'tight',
+        mode: 'bm25',
+        topk: 1,
+        lexical_engine: 'minisearch',
+        minisearch_b: 0.49,
+      }),
+    );
+    const switchedBack = decode(await search());
+    expect(switchedBack.results).toHaveLength(1);
+    expect(switchedBack.applied).toMatchObject({
+      lexical_engine: 'minisearch',
+      minisearch_k: 1.2,
+      minisearch_b: 0.49,
+      minisearch_d: 0.5,
+    });
     await run('config', 'use', '--chunker', 'heading-500');
     expect(decode(await search()).code).toBe('INDEX_REQUIRED');
     await run('sync');
@@ -309,7 +335,12 @@ it('keeps an in-flight MCP query on its original snapshot while later calls use 
     ]);
     await writeFile(
       join(dir, 'config/retrieval/tight.json'),
-      JSON.stringify({ id: 'tight', mode: 'bm25', topk: 1 }),
+      JSON.stringify({
+        id: 'tight',
+        mode: 'bm25',
+        topk: 1,
+        lexical_engine: 'sqlite',
+      }),
     );
     await useProfiles(path, { retrieval: 'tight' });
     const next = decode(
@@ -319,11 +350,13 @@ it('keeps an in-flight MCP query on its original snapshot while later calls use 
       }),
     );
     expect(next.selection.retrieval).toBe('tight');
+    expect(next.applied.lexical_engine).toBe('sqlite');
     expect(next.results).toHaveLength(1);
     release!();
     release = undefined;
     const old = decode(await waiting);
     expect(old.selection.retrieval).toBe('balanced');
+    expect(old.applied.lexical_engine).toBe('minisearch');
     expect(old.results).toHaveLength(2);
     expect(old.selection.revision).not.toBe(next.selection.revision);
   } finally {

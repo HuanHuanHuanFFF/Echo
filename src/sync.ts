@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { hasProfiles, EchoError } from './profile-store.js';
 import { lstat, readFile, readdir, realpath } from 'node:fs/promises';
 import { basename, relative, resolve, matchesGlob } from 'node:path';
@@ -269,6 +270,7 @@ export async function syncIndex(
     result.chunks = (
       db.prepare('SELECT count(*) AS n FROM chunks').get() as { n: number }
     ).n;
+    setMeta(db, 'index_revision', randomUUID());
     setMeta(db, 'last_sync', new Date().toISOString());
     setMeta(db, 'chunker_fingerprint', chunkerFingerprint);
     setMeta(db, 'lexical_fingerprint', lexicalVersion);

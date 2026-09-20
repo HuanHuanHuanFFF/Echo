@@ -55,6 +55,10 @@ try {
   assert.deepEqual(retrieval, {
     id: 'balanced',
     mode: 'hybrid',
+    lexical_engine: 'minisearch',
+    minisearch_k: 1.2,
+    minisearch_b: 0.7,
+    minisearch_d: 0.5,
     topk: 10,
     max_chunks_per_source: 3,
     bm25_candidates: 60,
@@ -82,7 +86,10 @@ try {
     ),
   );
   // Existing explicit RRF and chunk selection must survive repeated init.
-  await writeFile(retrievalPath, JSON.stringify({ ...retrieval, rrf_k: 30 }));
+  await writeFile(
+    retrievalPath,
+    JSON.stringify({ ...retrieval, rrf_k: 30, lexical_engine: 'sqlite' }),
+  );
   await writeFile(
     configPath,
     JSON.stringify({
@@ -92,6 +99,10 @@ try {
   );
   assert.deepEqual((await invoke('init')).created, []);
   assert.equal(JSON.parse(await readFile(retrievalPath, 'utf8')).rrf_k, 30);
+  assert.equal(
+    JSON.parse(await readFile(retrievalPath, 'utf8')).lexical_engine,
+    'sqlite',
+  );
   assert.equal(
     JSON.parse(await readFile(configPath, 'utf8')).active.chunker,
     'heading-1000',
@@ -113,6 +124,7 @@ try {
   assert.equal(found.status, 'ok');
   assert.equal(found.selection.chunker, 'markdown-structure-v1');
   assert.equal(found.applied.rrf_k, 10);
+  assert.equal(found.applied.lexical_engine, 'minisearch');
   assert.ok(found.results.length > 0);
   for (const piece of found.results)
     assert.equal(

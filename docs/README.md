@@ -6,13 +6,15 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 当前默认与下一步
 
-- [默认冻结与当前实际配置](project/2026-09-20-default-freeze.md)：用户已确认新综合1.0.1＋权重0.5/1＋RRF10；topk10、每篇3、结果JSON预算16000。新初始化固定完整参数；旧显式配置与历史评测不覆盖。
+- [MiniSearch默认采用与参数基线](project/2026-09-21-minisearch-default.md)：当前产品默认MiniSearch 7.2.0、取消匹配查询词乘数；k/b/d=1.2/0.7/0.5，其余新综合＋权重0.5/1＋RRF10保持。后续参数实验以此为起点。
+
+- [前版默认冻结](project/2026-09-20-default-freeze.md)：用户已确认新综合1.0.1＋权重0.5/1＋RRF10；topk10、每篇3、结果JSON预算16000。新初始化固定完整参数；旧显式配置与历史评测不覆盖。
 
 - [BM25现状与分词候选](research/2026-09-20-bm25-tokenizer-options.md)：公开全量显示词法信号有互补也有排序损失；ICU扩展词项、Jieba搜索模式与词典的适用边界已核对，未更换分词或宣称效果提升。
 
 ## 历史评测（各自条件保持冻结）
 
-- [MiniSearch取消匹配词乘数](evals/2026-09-21-minisearch-without-coverage.md)：331题已核分；仅取消乘数恢复Du纯BM25与LangChain混合的部分退化，QASPER完整50→48；保留默认k/b/d，双人复核及代码双平台CI通过，产品未切换。
+- [MiniSearch取消匹配词乘数](evals/2026-09-21-minisearch-without-coverage.md)：331题已核分；仅取消乘数恢复Du纯BM25与LangChain混合的部分退化，QASPER完整50→48；保留默认k/b/d，双人复核及代码双平台CI通过；报告保留实验当时状态，后续产品采用见上方决定。
 
 - [MiniSearch三组十分之一样本](evals/2026-09-20-minisearch-pilot.md)：331题三组已核分；Mini默认混合在Du/QASPER小幅改善、英文排名下降，降参无共同收益，附完整索引的内存与耗时，两位独立复核通过；默认保持。
 
