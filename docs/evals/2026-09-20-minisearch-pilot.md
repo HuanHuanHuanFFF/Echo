@@ -1,6 +1,6 @@
 # MiniSearch：三组单变量与十分之一公开样本
 
-日期：2026-09-20。状态：检索、官方核分和两位Luna/max独立复核完成；最终提交CI待核对。用户授权在测试副本先替换关键词引擎，比较三组配置；产品默认仍以[默认冻结](../project/2026-09-20-default-freeze.md)为准。本轮只替换隔离评测的词法适配器，不把实验能力表述为已交付的 MCP 引擎切换。
+日期：2026-09-20。状态：检索、官方核分、两位Luna/max独立复核和实验代码双平台CI完成；验收日期2026-09-21。用户授权在测试副本先替换关键词引擎，比较三组配置；产品默认仍以[默认冻结](../project/2026-09-20-default-freeze.md)为准。本轮只替换隔离评测的词法适配器，不把实验能力表述为已交付的 MCP 引擎切换。
 
 ## 冻结条件
 
@@ -86,7 +86,7 @@ RSS包括Node、SQLite连接和评测代码；查询计时是MiniSearch搜索、
 - 所有文档直接使用冻结FTS的词项；230条原生SQLite候选与旧前60逐项相等，三库SQLite/dense的官方逐题分数全部复现；QASPER101条SQLite混合证据和score与原P2相同。
 - 官方pytrec_eval/pyndeval与FreshStack脚本核对全部固定结果；QASPER逐题用官方evaluator核对F1，并从返回原文行独立重算完整证据。未改标签。
 - 真实MiniSearch隔离回归覆盖原生BM25+公式、重复TF/唯一词项长度/匹配词乘数、过滤在截断前、精确匹配、序列化复载和三组不互相污染。完整工程检查180通过、1既有跳过；评分输入Python6通过；默认CLI/MCP烟测通过。
-- 两位Luna/max独立复核通过：一位核对实际引擎语义、输入/输出与恢复归档，另一位在系统TEMP独立复跑官方评分和bootstrap。最新评分器归档通过completion-receipt和公开manifest补齐，原summary与排名不覆写。最终CI待补。
+- 两位Luna/max独立复核通过：一位核对实际引擎语义、输入/输出与恢复归档，另一位在系统TEMP独立复跑官方评分和bootstrap。最新评分器归档通过completion-receipt和公开manifest补齐，原summary与排名不覆写。实验代码提交21f62a1的[Windows/Linux CI](https://github.com/HuanHuanHuanFFF/Echo/actions/runs/35521276447)通过。
 
 实现：[运行器](../../evals/run-minisearch-pilot.mjs)、[引擎适配](../../evals/lib/minisearch-pilot.mjs)、[独立核分](../../evals/score-minisearch-pilot.py)、[真实MiniSearch隔离回归](../../tests/minisearch-pilot.test.ts)。
 

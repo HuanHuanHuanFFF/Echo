@@ -1,6 +1,6 @@
 {
   "date": "2026-09-20",
-  "status": "official-scored; two independent reviews passed",
+  "status": "complete: official scoring, two independent reviews, Windows/Linux code CI passed",
   "root_local_reference": "E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19",
   "output": "analysis/minisearch-pilot-2026-09-20-v3",
   "arms": {
@@ -1672,6 +1672,11 @@
   },
   "artifacts": [
     {
+      "file": "analysis/minisearch-pilot-2026-09-20-v3/ci-21f62a1.json",
+      "sha256": "e8c961e92057fff7ac13941789545a4208f9a0c1ed72074820d7f837dc8cef3d",
+      "bytes": 316
+    },
+    {
       "file": "analysis/minisearch-pilot-2026-09-20-v3/completion-receipt.json",
       "sha256": "b467886471f20b7382d0bf4fd54c7b612ce8987cbf47eb47b6b0d58a223bb0d3",
       "bytes": 5414
@@ -2382,7 +2387,18 @@
   "verification": {
     "local_check": "180 passed, 1 existing skipped; format, type, build and default CLI/MCP smoke passed",
     "python_score_validation": "6 passed",
-    "remote_ci": "pending final commit"
+    "remote_ci": {
+      "verified": "2026-09-20T16:03:06.242Z",
+      "head": "21f62a1ff9827fac0ab286b6cb1f9820932d64b5",
+      "run": 35521276447,
+      "url": "https://github.com/HuanHuanHuanFFF/Echo/actions/runs/35521276447",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": {
+        "windows": "success",
+        "linux": "success"
+      }
+    }
   },
   "independent_reviews": {
     "created": "2026-09-20T15:58:22.499Z",
@@ -2411,5 +2427,6 @@
       "Memory is whole-process through retrieval, not engine-only or production",
       "SQLite read-only may update shm; database main files unchanged"
     ]
-  }
+  },
+  "completed_on": "2026-09-21"
 }
