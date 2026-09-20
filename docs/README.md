@@ -6,6 +6,8 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 当前下一步
 
+- [BM25权重10%小样本试验](evals/2026-09-20-bm25-weight-pilot.md)：固定20/10/200题、RRF30，仅比较权重0/0.1/0.25/0.5；低权重改善Du、损失LangChain，没有共同赢家。24次实际缓存probe一致，两位Luna/max独立复核通过；默认不变。
+
 - [公开纯向量/BM25/混合事后对照](evals/2026-09-20-public-mode-contrast.md)：2302题原排名离线重评分，48次真实缓存probe一致；LangChain混合有收益，Du纯向量86.70%高于两档混合，Godot差异不稳定。两位Luna/max独立复核通过；权重未改。
 
 - [全量公开评测总结](evals/2026-09-20-public-full-results.md)：3307父题、7619次主执行全部完成，两位Luna/max独立复核通过；新综合提高QASPER完整覆盖但段落F1下降，RRF10提高Du前10排序，FreshStack差异不稳定；与强公开参考仍有差距，默认未改。
