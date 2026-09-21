@@ -153,17 +153,18 @@ def score_public_scope(scope):
         per_condition[label] = values
     primary_metric = "ndcg_cut_10" if scope == "du" else "alpha-nDCG@10"
     paired = {}
-    for label in labels:
-        if label in ("dense", "default-hybrid"):
-            continue
-        delta = np.array([per_condition[label][q][primary_metric] - per_condition["default-hybrid"][q][primary_metric] for q in ids])
-        paired[label] = {
-            "metric": primary_metric,
-            "delta": float(delta.mean()),
-            "wins": int((delta > 1e-12).sum()),
-            "losses": int((delta < -1e-12).sum()),
-            "ties": int((abs(delta) <= 1e-12).sum()),
-        }
+    if "default-hybrid" in per_condition:
+        for label in labels:
+            if label in ("dense", "default-hybrid"):
+                continue
+            delta = np.array([per_condition[label][q][primary_metric] - per_condition["default-hybrid"][q][primary_metric] for q in ids])
+            paired[label] = {
+                "metric": primary_metric,
+                "delta": float(delta.mean()),
+                "wins": int((delta > 1e-12).sum()),
+                "losses": int((delta < -1e-12).sum()),
+                "ties": int((abs(delta) <= 1e-12).sum()),
+            }
     return {"conditions": conditions, "paired_vs_default_hybrid": paired}
 
 
@@ -207,14 +208,15 @@ def score_qasper():
             "budget_exclusion_questions": sum(row["result"]["excluded"]["budget"] > 0 for row in data),
         }
     paired = {}
-    for label in labels:
-        if label in ("dense", "default-hybrid"):
-            continue
-        paired[label] = {
-            "complete_delta": conditions[label]["complete"] - conditions["default-hybrid"]["complete"],
-            "strict_coverage_delta": conditions[label]["strict_coverage"] - conditions["default-hybrid"]["strict_coverage"],
-            "evidence_f1_delta": conditions[label]["official_evidence_f1_all"] - conditions["default-hybrid"]["official_evidence_f1_all"],
-        }
+    if "default-hybrid" in conditions:
+        for label in labels:
+            if label in ("dense", "default-hybrid"):
+                continue
+            paired[label] = {
+                "complete_delta": conditions[label]["complete"] - conditions["default-hybrid"]["complete"],
+                "strict_coverage_delta": conditions[label]["strict_coverage"] - conditions["default-hybrid"]["strict_coverage"],
+                "evidence_f1_delta": conditions[label]["official_evidence_f1_all"] - conditions["default-hybrid"]["official_evidence_f1_all"],
+            }
     return {"conditions": conditions, "paired_vs_default_hybrid": paired}
 
 
@@ -235,4 +237,7 @@ summary = {
     },
 }
 (OUT / "public-score.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf8")
-print(json.dumps({"status": summary["status"], "scopes": list(summary["results"]), "qasper": summary["qasper"]["conditions"]["default-hybrid"]}, ensure_ascii=False))
+qasper_preview = summary["qasper"]["conditions"].get("default-hybrid")
+if qasper_preview is None:
+    qasper_preview = summary["qasper"]["conditions"]
+print(json.dumps({"status": summary["status"], "scopes": list(summary["results"]), "qasper": qasper_preview}, ensure_ascii=False))

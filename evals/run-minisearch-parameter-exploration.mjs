@@ -130,8 +130,39 @@ const arms = Object.freeze({
     reason:
       '只把 MiniSearch d 从 0.5 提到 1.0；该评分轴尚未在上一批公开样本中测量。',
   }),
+  bm25w023: Object.freeze({
+    id: 'bm25w023',
+    minisearch_k: 1.2,
+    minisearch_b: 0.7,
+    minisearch_d: 0.5,
+    bm25_weight: 0.23,
+    dense_weight: 1,
+    rrf_k: 10,
+    reason: '只降低 BM25 融合权重到 0.23，细化 0.25 附近的候选。',
+  }),
+  bm25w017: Object.freeze({
+    id: 'bm25w017',
+    minisearch_k: 1.2,
+    minisearch_b: 0.7,
+    minisearch_d: 0.5,
+    bm25_weight: 0.17,
+    dense_weight: 1,
+    rrf_k: 10,
+    reason: '只降低 BM25 融合权重到 0.17，测试更强 dense 主导是否继续改善。',
+  }),
+  bm25w029: Object.freeze({
+    id: 'bm25w029',
+    minisearch_k: 1.2,
+    minisearch_b: 0.7,
+    minisearch_d: 0.5,
+    bm25_weight: 0.29,
+    dense_weight: 1,
+    rrf_k: 10,
+    reason: '只降低 BM25 融合权重到 0.29，连接 0.25 与 0.4 两侧的候选。',
+  }),
 });
-const armIds = Object.keys(arms);
+const extensionArmIds = ['bm25w023', 'bm25w017', 'bm25w029'];
+let armIds = Object.keys(arms);
 const defaultArm = arms.default;
 const fixedRetrieval = Object.freeze({
   lexical_engine: 'minisearch',
@@ -962,7 +993,7 @@ async function runPublicRankingScope({
         id,
         ...publicRanking(hy, `${armId}-hybrid`, arm.rrf_k),
       });
-      if (armId === 'default')
+      if (!pools.some((item) => item.id === id))
         pools.push({
           id,
           query_terms: await context.index.tokenize(text),
@@ -1262,7 +1293,7 @@ async function loadPublicFreeze(root) {
   };
 }
 
-async function buildFreeze(privateRoot, publicRoot, out) {
+async function buildFreeze(privateRoot, publicRoot, out, variant = 'v1') {
   const privateFreeze = await loadPrivateFreeze(privateRoot);
   const publicFreeze = await loadPublicFreeze(publicRoot);
   const embeddingRaw = await readJson(
@@ -1277,7 +1308,7 @@ async function buildFreeze(privateRoot, publicRoot, out) {
   const freeze = {
     status: 'frozen',
     created_at: new Date().toISOString(),
-    experiment: '2026-09-21-minisearch-parameter-exploration-v1',
+    experiment: `2026-09-21-minisearch-parameter-exploration-${variant}`,
     arms: Object.fromEntries(armIds.map((id) => [id, arms[id]])),
     fixed: {
       chunker: 'markdown-structure-v1@1.0.1',
@@ -1603,7 +1634,12 @@ async function execute(privateRoot, publicRoot, out, mode) {
   return receipt;
 }
 
-async function finalizeFull(privateRoot, publicRoot, out) {
+async function finalizeFull(
+  privateRoot,
+  publicRoot,
+  out,
+  scopePrefix = 'full',
+) {
   const freeze = await readJson(path.join(out, 'freeze.json'));
   const scopes = [
     ...[...PRIVATE_SCOPE_ORDER, 'paired-test'].map(
@@ -1613,7 +1649,10 @@ async function finalizeFull(privateRoot, publicRoot, out) {
   ];
   const results = {};
   for (const scope of scopes) {
-    const file = path.join(out, `full-scope-${scope.replace(':', '-')}.json`);
+    const file = path.join(
+      out,
+      `${scopePrefix}-scope-${scope.replace(':', '-')}.json`,
+    );
     assert.ok(
       await fs.stat(file).catch(() => null),
       `Missing scope receipt ${scope}`,
@@ -1638,7 +1677,7 @@ async function finalizeFull(privateRoot, publicRoot, out) {
   const receipt = {
     status: 'complete',
     created_at: new Date().toISOString(),
-    mode: 'full',
+    mode: scopePrefix,
     scopes,
     results,
     before_database_sha256: before,
@@ -1651,19 +1690,36 @@ async function finalizeFull(privateRoot, publicRoot, out) {
     },
     new_embedding_calls: 0,
     network: 'not configured; provider is frozen-cache-only',
-    execution_correction: {
-      initial_frozen_script_sha256: freeze.code.script,
-      final_script_sha256: await shaFile(
-        path.join(
-          repoRoot,
-          'evals',
-          'run-minisearch-parameter-exploration.mjs',
-        ),
-      ),
-      scope: 'QASPER rerun only',
-      reason:
-        'The adapter was corrected to apply the production searchSchema trim boundary before frozen-vector lookup, then formatted without semantic changes; no arm, question ID, corpus, vector, or scoring parameter changed.',
-    },
+    execution_correction:
+      scopePrefix === 'extension'
+        ? {
+            initial_frozen_script_sha256: freeze.code.script,
+            final_script_sha256: await shaFile(
+              path.join(
+                repoRoot,
+                'evals',
+                'run-minisearch-parameter-exploration.mjs',
+              ),
+            ),
+            scope: 'public scopes rerun after receipt-pool initialization fix',
+            reason:
+              'The first extension attempt completed private scopes, then failed before writing public rows because the candidate receipt pool was initialized only for a default arm. Public scopes were rerun with the same weights, inputs, vectors and retrieval logic.',
+          }
+        : scopePrefix === 'full'
+          ? {
+              initial_frozen_script_sha256: freeze.code.script,
+              final_script_sha256: await shaFile(
+                path.join(
+                  repoRoot,
+                  'evals',
+                  'run-minisearch-parameter-exploration.mjs',
+                ),
+              ),
+              scope: 'QASPER rerun only',
+              reason:
+                'The adapter was corrected to apply the production searchSchema trim boundary before frozen-vector lookup, then formatted without semantic changes; no arm, question ID, corpus, vector, or scoring parameter changed.',
+            }
+          : null,
   };
   assert.equal(unchangedDatabases, true);
   assert.equal(vectorStat.size, freeze.public.vector_cache_stat.size);
@@ -1680,12 +1736,18 @@ async function main() {
     'Usage: node evals/run-minisearch-parameter-exploration.mjs PRIVATE_ROOT PUBLIC_ROOT OUT [freeze|smoke|full]',
   );
   const out = path.resolve(outArg);
-  if (mode === 'freeze') {
+  if (mode === 'freeze' || mode === 'freeze-extension') {
+    armIds = mode === 'freeze-extension' ? extensionArmIds : Object.keys(arms);
     assert.ok(
       !(await fs.stat(out).catch(() => null)),
       'Output directory already exists',
     );
-    await buildFreeze(path.resolve(privateRoot), path.resolve(publicRoot), out);
+    await buildFreeze(
+      path.resolve(privateRoot),
+      path.resolve(publicRoot),
+      out,
+      mode === 'freeze-extension' ? 'weight-extension-v1' : 'v1',
+    );
     console.log(
       JSON.stringify({ status: 'frozen', output: out, arms: armIds }),
     );
@@ -1695,6 +1757,8 @@ async function main() {
     await fs.stat(path.join(out, 'freeze.json')).catch(() => null),
     'Run freeze phase first',
   );
+  if (mode === 'extension' || mode === 'finalize-extension')
+    armIds = extensionArmIds;
   if (scopeArg) {
     const result = await executeScope(
       path.resolve(privateRoot),
@@ -1708,11 +1772,12 @@ async function main() {
     );
     return;
   }
-  if (mode === 'finalize') {
+  if (mode === 'finalize' || mode === 'finalize-extension') {
     const receipt = await finalizeFull(
       path.resolve(privateRoot),
       path.resolve(publicRoot),
       out,
+      mode === 'finalize-extension' ? 'extension' : 'full',
     );
     console.log(
       JSON.stringify({

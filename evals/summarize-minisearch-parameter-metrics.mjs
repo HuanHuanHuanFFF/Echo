@@ -24,7 +24,8 @@ const scopes = [
   'paired-test',
 ];
 const primaryScopes = scopes.slice(0, 5);
-const arms = ['default', 'rrf30', 'bm25w04', 'bm25w025', 'k084', 'd10'];
+const freeze = await readJson(path.join(out, 'freeze.json'));
+const arms = Object.keys(freeze.arms);
 const labels = [
   ...arms.flatMap((arm) => [`${arm}-hybrid`, `${arm}-bm25`]),
   'dense-reference',
