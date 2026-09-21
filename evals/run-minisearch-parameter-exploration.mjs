@@ -23,6 +23,20 @@ const json = (value) => JSON.stringify(value, null, 2) + '\n';
 const compact = (value) => JSON.stringify(value);
 const shaText = (value) => createHash('sha256').update(value).digest('hex');
 
+function makeOtherParamArm(id, retrieval, reason) {
+  return Object.freeze({
+    id,
+    minisearch_k: 1.2,
+    minisearch_b: 0.7,
+    minisearch_d: 0.5,
+    bm25_weight: 0.31,
+    dense_weight: 1,
+    rrf_k: 10,
+    retrieval: Object.freeze(retrieval),
+    reason,
+  });
+}
+
 async function shaFile(file) {
   const hash = createHash('sha256');
   for await (const chunk of createReadStream(file)) hash.update(chunk);
@@ -190,9 +204,122 @@ const arms = Object.freeze({
     rrf_k: 10,
     reason: '只提高 BM25 融合权重到 0.43，观察接近当前0.5时的回升曲线。',
   }),
+  'bm25w031-cap4': makeOtherParamArm(
+    'bm25w031-cap4',
+    { max_chunks_per_source: 4 },
+    '固定 BM25=0.31、RRF=10，只把每篇上限从3调到4。',
+  ),
+  'bm25w031-cap5': makeOtherParamArm(
+    'bm25w031-cap5',
+    { max_chunks_per_source: 5 },
+    '固定 BM25=0.31、RRF=10，只把每篇上限从3调到5。',
+  ),
+  'bm25w031-sim02': makeOtherParamArm(
+    'bm25w031-sim02',
+    { min_dense_similarity: 0.2 },
+    '固定 BM25=0.31、RRF=10，只把最低余弦相似度降到0.2。',
+  ),
+  'bm25w031-sim04': makeOtherParamArm(
+    'bm25w031-sim04',
+    { min_dense_similarity: 0.4 },
+    '固定 BM25=0.31、RRF=10，只把最低余弦相似度升到0.4。',
+  ),
+  'bm25w031-title1': makeOtherParamArm(
+    'bm25w031-title1',
+    { title_weight: 1 },
+    '固定 BM25=0.31、RRF=10，只把标题权重降到1。',
+  ),
+  'bm25w031-title3': makeOtherParamArm(
+    'bm25w031-title3',
+    { title_weight: 3 },
+    '固定 BM25=0.31、RRF=10，只把标题权重升到3。',
+  ),
+  'bm25w031-budget20': makeOtherParamArm(
+    'bm25w031-budget20',
+    { max_context_chars: 20000 },
+    '固定 BM25=0.31、RRF=10，只把检索结果预算升到20000字符。',
+  ),
+  'bm25w031-budget24': makeOtherParamArm(
+    'bm25w031-budget24',
+    { max_context_chars: 24000 },
+    '固定 BM25=0.31、RRF=10，只把检索结果预算升到24000字符。',
+  ),
+  'bm25w031-topk12': makeOtherParamArm(
+    'bm25w031-topk12',
+    { topk: 12 },
+    '固定 BM25=0.31、RRF=10，只把最终 topk 升到12。',
+  ),
+  'bm25w031-topk15': makeOtherParamArm(
+    'bm25w031-topk15',
+    { topk: 15 },
+    '固定 BM25=0.31、RRF=10，只把最终 topk 升到15。',
+  ),
+  'bm25w031-cap4-budget20': makeOtherParamArm(
+    'bm25w031-cap4-budget20',
+    { max_chunks_per_source: 4, max_context_chars: 20000 },
+    '固定 BM25=0.31、RRF=10，把每篇上限调到4、预算调到20000。',
+  ),
+  'bm25w031-cap4-budget24': makeOtherParamArm(
+    'bm25w031-cap4-budget24',
+    { max_chunks_per_source: 4, max_context_chars: 24000 },
+    '固定 BM25=0.31、RRF=10，把每篇上限调到4、预算调到24000。',
+  ),
+  'bm25w031-cap5-budget20': makeOtherParamArm(
+    'bm25w031-cap5-budget20',
+    { max_chunks_per_source: 5, max_context_chars: 20000 },
+    '固定 BM25=0.31、RRF=10，把每篇上限调到5、预算调到20000。',
+  ),
+  'bm25w031-cap5-budget24': makeOtherParamArm(
+    'bm25w031-cap5-budget24',
+    { max_chunks_per_source: 5, max_context_chars: 24000 },
+    '固定 BM25=0.31、RRF=10，把每篇上限调到5、预算调到24000。',
+  ),
+  'bm25w031-cap4-topk12': makeOtherParamArm(
+    'bm25w031-cap4-topk12',
+    { max_chunks_per_source: 4, topk: 12 },
+    '固定 BM25=0.31、RRF=10，把每篇上限调到4、topk调到12。',
+  ),
+  'bm25w031-cap4-topk15': makeOtherParamArm(
+    'bm25w031-cap4-topk15',
+    { max_chunks_per_source: 4, topk: 15 },
+    '固定 BM25=0.31、RRF=10，把每篇上限调到4、topk调到15。',
+  ),
+  'bm25w031-cap5-topk12': makeOtherParamArm(
+    'bm25w031-cap5-topk12',
+    { max_chunks_per_source: 5, topk: 12 },
+    '固定 BM25=0.31、RRF=10，把每篇上限调到5、topk调到12。',
+  ),
+  'bm25w031-cap5-topk15': makeOtherParamArm(
+    'bm25w031-cap5-topk15',
+    { max_chunks_per_source: 5, topk: 15 },
+    '固定 BM25=0.31、RRF=10，把每篇上限调到5、topk调到15。',
+  ),
 });
 const extensionArmIds = ['bm25w023', 'bm25w017', 'bm25w029'];
 const extension2ArmIds = ['bm25w031', 'bm25w037', 'bm25w043'];
+const otherParamsArmIds = [
+  'bm25w031',
+  'bm25w031-cap4',
+  'bm25w031-cap5',
+  'bm25w031-sim02',
+  'bm25w031-sim04',
+  'bm25w031-title1',
+  'bm25w031-title3',
+  'bm25w031-budget20',
+  'bm25w031-budget24',
+  'bm25w031-topk12',
+  'bm25w031-topk15',
+];
+const combinationArmIds = [
+  'bm25w031-cap4-budget20',
+  'bm25w031-cap4-budget24',
+  'bm25w031-cap5-budget20',
+  'bm25w031-cap5-budget24',
+  'bm25w031-cap4-topk12',
+  'bm25w031-cap4-topk15',
+  'bm25w031-cap5-topk12',
+  'bm25w031-cap5-topk15',
+];
 let armIds = Object.keys(arms);
 const defaultArm = arms.default;
 const fixedRetrieval = Object.freeze({
@@ -493,6 +620,7 @@ function closeContext(context) {
 function armOptions(arm, mode, responseLimit = 16000) {
   return {
     ...fixedRetrieval,
+    ...(arm.retrieval ?? {}),
     mode,
     minisearch_k: arm.minisearch_k,
     minisearch_b: arm.minisearch_b,
@@ -614,10 +742,11 @@ function requestFor(question, budget, responseLimit, filters) {
 }
 
 async function packed(context, question, arm, mode, filters = {}) {
+  const responseBudget = arm.retrieval?.max_context_chars ?? 16000;
   const request = requestFor(
     question,
-    16000,
-    16000,
+    responseBudget,
+    responseBudget,
     Object.keys(filters).length ? filters : undefined,
   );
   const responseLimit = request.overrides.max_context_chars;
@@ -1601,7 +1730,11 @@ async function execute(privateRoot, publicRoot, out, mode) {
   const freeze = await readJson(path.join(out, 'freeze.json'));
   await verifyFreezeInputs(freeze, privateRoot, publicRoot, false);
   const vectorBeforeSha =
-    mode === 'full' || mode === 'extension' || mode === 'extension2'
+    mode === 'full' ||
+    mode === 'extension' ||
+    mode === 'extension2' ||
+    mode === 'other-params' ||
+    mode === 'combinations'
       ? await shaFile(freeze.public.vector_cache)
       : null;
   const scopes =
@@ -1787,14 +1920,20 @@ async function main() {
   if (
     mode === 'freeze' ||
     mode === 'freeze-extension' ||
-    mode === 'freeze-extension2'
+    mode === 'freeze-extension2' ||
+    mode === 'freeze-other-params' ||
+    mode === 'freeze-combinations'
   ) {
     armIds =
       mode === 'freeze-extension'
         ? extensionArmIds
         : mode === 'freeze-extension2'
           ? extension2ArmIds
-          : Object.keys(arms);
+          : mode === 'freeze-other-params'
+            ? otherParamsArmIds
+            : mode === 'freeze-combinations'
+              ? combinationArmIds
+              : Object.keys(arms);
     assert.ok(
       !(await fs.stat(out).catch(() => null)),
       'Output directory already exists',
@@ -1807,7 +1946,11 @@ async function main() {
         ? 'weight-extension-v1'
         : mode === 'freeze-extension2'
           ? 'weight-extension2-v1'
-          : 'v1',
+          : mode === 'freeze-other-params'
+            ? 'other-params-v1'
+            : mode === 'freeze-combinations'
+              ? 'combinations-v1'
+              : 'v1',
     );
     console.log(
       JSON.stringify({ status: 'frozen', output: out, arms: armIds }),
@@ -1822,6 +1965,10 @@ async function main() {
     armIds = extensionArmIds;
   if (mode === 'extension2' || mode === 'finalize-extension2')
     armIds = extension2ArmIds;
+  if (mode === 'other-params' || mode === 'finalize-other-params')
+    armIds = otherParamsArmIds;
+  if (mode === 'combinations' || mode === 'finalize-combinations')
+    armIds = combinationArmIds;
   if (scopeArg) {
     const result = await executeScope(
       path.resolve(privateRoot),
@@ -1838,7 +1985,9 @@ async function main() {
   if (
     mode === 'finalize' ||
     mode === 'finalize-extension' ||
-    mode === 'finalize-extension2'
+    mode === 'finalize-extension2' ||
+    mode === 'finalize-other-params' ||
+    mode === 'finalize-combinations'
   ) {
     const receipt = await finalizeFull(
       path.resolve(privateRoot),
@@ -1848,7 +1997,11 @@ async function main() {
         ? 'extension'
         : mode === 'finalize-extension2'
           ? 'extension2'
-          : 'full',
+          : mode === 'finalize-other-params'
+            ? 'other-params'
+            : mode === 'finalize-combinations'
+              ? 'combinations'
+              : 'full',
     );
     console.log(
       JSON.stringify({

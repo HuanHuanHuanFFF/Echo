@@ -62,6 +62,19 @@ def unique_rows(path, expected):
     return data
 
 
+def qasper_limits(label):
+    if label == "dense-reference":
+        return {"topk": 10, "max_chunks_per_source": 3, "budget": 16000}
+    suffix = "-hybrid" if label.endswith("-hybrid") else "-bm25"
+    arm = freeze["arms"][label[: -len(suffix)]]
+    retrieval = arm.get("retrieval", {})
+    return {
+        "topk": retrieval.get("topk", 10),
+        "max_chunks_per_source": retrieval.get("max_chunks_per_source", 3),
+        "budget": retrieval.get("max_context_chars", 16000),
+    }
+
+
 def validate_ranking(row, corpus_ids, label):
     assert row["condition"] == label
     rankings = row["rankings"]
@@ -180,11 +193,12 @@ def score_qasper():
     for label in labels:
         file_label = "dense-reference" if label == "dense" else label
         data = unique_rows(OUT / "public" / f"qasper-{file_label}.jsonl", ids)
+        limits = qasper_limits(file_label)
         for row in data:
             assert row["condition"] == file_label
-            assert row["request_chars"] + row["response_chars"] <= 16000
-            assert len(row["result"]["results"]) <= 10
-            assert len(row["result"]["results"]) <= 3
+            assert row["request_chars"] + row["response_chars"] <= limits["budget"]
+            assert len(row["result"]["results"]) <= limits["topk"]
+            assert len(row["result"]["results"]) <= limits["max_chunks_per_source"]
             assert row["score"]["eligible"] in (True, False)
         eligible = [row for row in data if row["score"]["eligible"]]
         predictions = {}

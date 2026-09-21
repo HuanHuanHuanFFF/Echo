@@ -112,11 +112,40 @@ QASPER 保持产品打包口径，严格文本分母为 78，官方 Evidence F1 
 
 结论：`0.31` 和 `0.37` 在自设 200 题上都比 default 多 2 道完整题、多覆盖 2 个事实、多 1 个单块 Hit；其中 `0.31` 的私有 MRR 更高，`0.37` 的公开 LangChain MRR 和 QASPER F1 略高。`0.43` 没有带来私有收益，Du 也随权重升高而下降。三组都没有在私有、LangChain、Godot、Du、QASPER 上全面胜过 default，因此暂不改默认；如果只看这批数据，优先保留 `0.31` 作为下一轮调参中心，细扫 `0.29–0.37`。本次收据在 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-weight-extension2-v1`。
 
+## BM25=0.31、RRF=10 的其他参数
+
+在 `bm25_weight=0.31`、`dense_weight=1`、`RRF k=10` 下，第一轮单变量测试了每篇上限、最低余弦阈值、标题权重、结果预算和 topk；随后把有私有收益的 cap4/cap5 与预算/topk 组合复测。没有新增 embedding/API 调用。
+
+私有主集仍以 196 道可答题、403 个事实为分母：
+
+| 参数条件            |  完整题 | 事实覆盖 | 单块 Hit@10 | 单块 MRR@10 | paired40 完整 |
+| ------------------- | ------: | -------: | ----------: | ----------: | ------------: |
+| 0.31 当前配置       | 178/196 |  380/403 |     191/196 |      85.62% |         36/40 |
+| 每篇最多 4 块       | 183/196 |  385/403 |     192/196 |      85.75% |         38/40 |
+| 每篇最多 5 块       | 188/196 |  390/403 |     193/196 |      85.85% |         40/40 |
+| 余弦 0.2 或 0.4     | 178/196 |  380/403 |     191/196 |      85.62% |         36/40 |
+| 标题权重 1 或 3     | 178/196 |  380/403 |     191/196 |      85.62% |         36/40 |
+| 预算 20000 或 24000 | 178/196 |  380/403 |     191/196 |      85.62% |         36/40 |
+| topk 12 或 15       | 178/196 |  380/403 |     191/196 |      85.62% |         36/40 |
+
+组合没有叠加出额外收益：`cap4 + 预算20k/24k`、`cap4 + topk12/15` 都是 `183/196、385/403`；`cap5` 与这些预算/topk组合都仍是 `188/196、390/403`。
+
+公开 LC/Godot/Du 是候选排名口径，不受最终打包 cap、topk、预算影响，因此这些参数的排名分数与 0.31 当前配置完全相同。QASPER 的打包结果体现了取舍：
+
+| 条件          | 严格完整 | 严格覆盖 | Evidence F1/101 | 平均上下文字符 |
+| ------------- | -------: | -------: | --------------: | -------------: |
+| 0.31 当前配置 |    48/78 |   65.81% |          22.32% |           5867 |
+| 每篇最多 4 块 |    52/78 |   70.30% |          18.91% |           7575 |
+| 每篇最多 5 块 |    57/78 |   76.28% |          17.43% |           9153 |
+
+结论：真正有效的轴是 `max_chunks_per_source`。`cap4` 是较温和的私有覆盖提升，`cap5` 是更强的证据扩展；但 QASPER 的官方 F1 因未标注上下文增加而下降，不能把它们直接改成全局默认。预算从 16000 增到 20000/24000、topk 从 10 增到 12/15 在本批没有额外收益；余弦阈值和标题权重也可暂时排后。第一轮与组合收据分别在 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-other-params-v1` 和 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-combinations-v1`。
+
 ## 证据与边界
 
 - 运行器：[run-minisearch-parameter-exploration.mjs](../../evals/run-minisearch-parameter-exploration.mjs)；官方评分器：[score-minisearch-parameter-exploration.py](../../evals/score-minisearch-parameter-exploration.py)。二者只放公开脚本，不包含私有题干、正文、向量或 key。
 - E 盘输出目录：`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-parameter-exploration-v1`；其中 `freeze.json`、`run-receipt.json`、`public-score.json` 和逐题 JSONL 是本批原始收据。
 - BM25 权重扩展输出目录：`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-weight-extension-v1` 和 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-weight-extension2-v1`；两次扩展均使用冻结向量和同一评分口径。
+- BM25=0.31 其他参数输出目录：`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-other-params-v1` 和 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-combinations-v1`；RRF=10 全程固定。
 - 私有 Hit/MRR/宏微 Recall 重算脚本：[summarize-minisearch-parameter-metrics.mjs](../../evals/summarize-minisearch-parameter-metrics.mjs)；摘要为 E 盘 `private-score.json`。
 - 最终收据记录 9 份 SQLite 输入前后 SHA 相同、向量缓存冻结 stat 未变、收尾 SHA `306b5eb6aa8acff83f1caa9026c5403bb5163d775cea0025e388500f437dec32`、新增 embedding/API 调用 0。
 - 执行中发现并修正了生产等价的 query trim 边界，只重跑 QASPER；参数、题目 ID、语料、向量和评分条件没有变化。收据保留初始/最终脚本 SHA，不把这次 correction 隐藏成同一代码哈希。
