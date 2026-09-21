@@ -34,6 +34,19 @@ b 降 30% 已在此前 331 题单变量批次测过且没有跨库一致收益�
 
 在本批主集上，bm25w025 的完整题数最高，但事实总数没有超过 bm25w04/default；rrf30 明显退化；k084/d10 没有主集收益。paired40 仅作诊断：default 36/40、bm25w04 37/40、bm25w025/k084/d10 各36/40、rrf30 34/40。
 
+### 私有主集的 Hit/MRR 与宏微 Recall
+
+这些指标从同一批已返回结果前缀离线重算，没有重新检索。default hybrid 的 K 前缀如下；`FactRecall` 同时给微平均和宏平均，严格单块 MRR 只把单块完整覆盖任一事实视为相关。
+
+|   K | 严格单块 Hit | 严格单块 MRR | FactRecall 微平均 | FactRecall 宏平均 |  完整题 | 前缀任一事实 Hit | 前缀首事实 RR |
+| --: | -----------: | -----------: | ----------------: | ----------------: | ------: | ---------------: | ------------: |
+|   1 |      149/196 |       0.7602 |  228/403 (56.58%) |            60.48% |  90/196 |          149/196 |        0.7602 |
+|   3 |      186/196 |       0.8486 |  349/403 (86.60%) |            89.10% | 157/196 |          189/196 |        0.8554 |
+|   5 |      189/196 |       0.8517 |  371/403 (92.06%) |            93.19% | 171/196 |          192/196 |        0.8585 |
+|  10 |      190/196 |       0.8524 |  378/403 (93.80%) |            94.57% | 176/196 |          193/196 |        0.8592 |
+
+K=10 hybrid 各条件的额外指标为：default `Hit190/196, MRR0.8524`；rrf30 `186/196, 0.8269`；bm25w04 `190/196, 0.8551`；bm25w025 `190/196, 0.8569`；k084 `189/196, 0.8537`；d10 `189/196, 0.8562`；dense 参考 `190/196, 0.8617`。完整机器可读结果在 E 盘 `private-score.json`。
+
 ## 公开 331 题
 
 LC/Godot 为 alpha-nDCG@10，Du 为 nDCG@10；这里不施加私有产品正文预算、每篇3或 topk 打包，保持官方候选库口径。表中为 hybrid 主条件，dense 与 default BM25 只作参考。
@@ -63,6 +76,7 @@ QASPER 保持产品打包口径，严格文本分母为 78，官方 Evidence F1 
 
 - 运行器：[run-minisearch-parameter-exploration.mjs](../../evals/run-minisearch-parameter-exploration.mjs)；官方评分器：[score-minisearch-parameter-exploration.py](../../evals/score-minisearch-parameter-exploration.py)。二者只放公开脚本，不包含私有题干、正文、向量或 key。
 - E 盘输出目录：`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-parameter-exploration-v1`；其中 `freeze.json`、`run-receipt.json`、`public-score.json` 和逐题 JSONL 是本批原始收据。
+- 私有 Hit/MRR/宏微 Recall 重算脚本：[summarize-minisearch-parameter-metrics.mjs](../../evals/summarize-minisearch-parameter-metrics.mjs)；摘要为 E 盘 `private-score.json`。
 - 最终收据记录 9 份 SQLite 输入前后 SHA 相同、向量缓存冻结 stat 未变、收尾 SHA `306b5eb6aa8acff83f1caa9026c5403bb5163d775cea0025e388500f437dec32`、新增 embedding/API 调用 0。
 - 执行中发现并修正了生产等价的 query trim 边界，只重跑 QASPER；参数、题目 ID、语料、向量和评分条件没有变化。收据保留初始/最终脚本 SHA，不把这次 correction 隐藏成同一代码哈希。
 - 仓库验证：`npm run check` 为 188 tests passed、1 项既有 skipped，格式、类型、构建和默认运行时冒烟通过；公开官方评分器独立完成。
