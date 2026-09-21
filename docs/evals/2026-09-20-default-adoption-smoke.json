@@ -1,0 +1,80 @@
+{
+  "date": "2026-09-20",
+  "status": "default_adopted_local_checks_and_reviews_passed",
+  "runtime_smoke": {
+    "status": "passed",
+    "node": "v24.15.0",
+    "icu": "78.2",
+    "default_active": {
+      "chunker": "markdown-structure-v1",
+      "tokenizer": "icu-zh",
+      "embedding": "default",
+      "retrieval": "balanced"
+    },
+    "default_retrieval": {
+      "id": "balanced",
+      "mode": "hybrid",
+      "topk": 10,
+      "max_chunks_per_source": 3,
+      "bm25_candidates": 60,
+      "dense_candidates": 60,
+      "rrf_k": 10,
+      "title_weight": 2,
+      "bm25_weight": 0.5,
+      "dense_weight": 1,
+      "max_context_chars": 16000,
+      "min_dense_similarity": 0.3
+    },
+    "strategy_sha256": "ac3e1686394fed2da44e1eb395a5b428407c760c3fe13686d26d8ff9b9120c24",
+    "runtime_layout": "copied dist + package.json; no examples/src in copied runtime; dependencies resolved from repository",
+    "preserved_explicit_existing_settings": true,
+    "cli_and_mcp_evidence_equal": true,
+    "exact_source_lines": true,
+    "fixture_unchanged": true,
+    "tested_mode": "bm25; hybrid defaults checked without a model call",
+    "new_embedding_calls": 0
+  },
+  "checks": {
+    "vitest_passed": 175,
+    "existing_skipped": 1,
+    "python_scoring_regressions": 6,
+    "format": "passed",
+    "types": "passed",
+    "build": "passed"
+  },
+  "strategy_equals_qasper_frozen": true,
+  "source_sha256": {
+    "src/config.ts": "58cf2ea2ee21f18c8e5d60f52f900c235698f01fecb807f1503063c55fdbb5e3",
+    "src/profiles.ts": "516fd49b1deac817c3c0739ea1f4dbfb4e1602084af0c5254beebd4bbd5a09b9",
+    "src/profile-manager.ts": "b3c3c43d6a270a737cc20b91cf82bc221fcd0cf007a2641a4e496d75aa67e7bd",
+    "scripts/copy-builtin-strategies.mjs": "965090caf12abf470c97a8f6480b578867d7698ffa2084a644319790404403e4",
+    "scripts/verify-default-runtime.mjs": "6c0b09d95057c2f0c1649a6bef34d0ae92914a7a8e5fb43bde20816cc0efb758",
+    "examples/profiles/chunkers/markdown-structure-v1.mjs": "ac3e1686394fed2da44e1eb395a5b428407c760c3fe13686d26d8ff9b9120c24",
+    "examples/profiles/config/retrieval/balanced.json": "572a76139345def1647f18129b0736df5eea4e91e34d8634e0ff27fc198c1cf9",
+    "package.json": "8f8fe2b82a7885cb4c5a24073ae1ec19b341b47208c2ad3ebd857f712d19dc6d"
+  },
+  "limits": [
+    "Isolated keyword CLI/MCP smoke; no new real-model retrieval evaluation",
+    "Existing E-drive installs and frozen corpora/indexes unchanged"
+  ],
+  "reviews": {
+    "recorded_by": "primary agent from independent review final responses",
+    "reviewers": [
+      {
+        "agent": "qasper_cap_review_a",
+        "model": "gpt-5.6-luna",
+        "reasoning": "max",
+        "status": "passed",
+        "scope": "Default wiring, strategy identity/build resources, existing settings, legacy vector isolation, tests and smoke boundary."
+      },
+      {
+        "agent": "qasper_cap_review_b",
+        "model": "gpt-5.6-luna",
+        "reasoning": "max",
+        "status": "no_product_blocker",
+        "scope": "Static source/config/test and documentation review; BM25 table compared with frozen results, tokenizer remains unchanged.",
+        "boundary": "Dist smoke uses repository node_modules; not a self-contained install claim. Reviewer read-only restrictions do not constrain the authorized main-thread/CI smoke artifacts."
+      }
+    ]
+  }
+}

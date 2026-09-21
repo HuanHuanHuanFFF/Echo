@@ -74,7 +74,7 @@ it('CLI initializes, discovers, switches and shows profiles without exposing key
   expect(show.files.embedding).toBe(join(dir, 'config/embedding/default.json'));
   expect(show.embedding.api_key_env).toBe('ECHO_EMBEDDING_API_KEY');
   expect(show.retrieval.mode).toBe('bm25');
-  expect(show.retrieval.rrf_k).toBe(30);
+  expect(show.retrieval.rrf_k).toBe(10);
   expect(show.retrieval.max_context_chars).toBe(16000);
   expect(show).not.toHaveProperty('api_key');
   expect(
@@ -94,15 +94,41 @@ it('real MCP uses profile changes on the next call and reports invalid/restart s
     await client.connect(transport);
     const search = () =>
       client.callTool({ name: 'echo_search', arguments: { query: 'apple' } });
-    expect(decode(await search()).selection.retrieval).toBe('bm25');
+    const initial = decode(await search());
+    expect(initial.selection.retrieval).toBe('bm25');
+    expect(initial.applied.lexical_engine).toBe('minisearch');
     await writeFile(
       join(dir, 'config/retrieval/tight.json'),
-      JSON.stringify({ id: 'tight', mode: 'bm25', topk: 1 }),
+      JSON.stringify({
+        id: 'tight',
+        mode: 'bm25',
+        topk: 1,
+        lexical_engine: 'sqlite',
+      }),
     );
     await run('config', 'use', '--retrieval', 'tight');
     const tight = decode(await search());
     expect(tight.results).toHaveLength(1);
     expect(tight.selection.retrieval).toBe('tight');
+    expect(tight.applied.lexical_engine).toBe('sqlite');
+    await writeFile(
+      join(dir, 'config/retrieval/tight.json'),
+      JSON.stringify({
+        id: 'tight',
+        mode: 'bm25',
+        topk: 1,
+        lexical_engine: 'minisearch',
+        minisearch_b: 0.49,
+      }),
+    );
+    const switchedBack = decode(await search());
+    expect(switchedBack.results).toHaveLength(1);
+    expect(switchedBack.applied).toMatchObject({
+      lexical_engine: 'minisearch',
+      minisearch_k: 1.2,
+      minisearch_b: 0.49,
+      minisearch_d: 0.5,
+    });
     await run('config', 'use', '--chunker', 'heading-500');
     expect(decode(await search()).code).toBe('INDEX_REQUIRED');
     await run('sync');
@@ -153,7 +179,7 @@ it('keeps captured runtime snapshots stable while subsequent loads get new profi
   const old = await runtime.snapshot();
   await useProfiles(path, { chunker: 'heading-500' });
   const next = await runtime.snapshot();
-  expect(old!.profile!.active.chunker).toBe('heading-1000');
+  expect(old!.profile!.active.chunker).toBe('markdown-structure-v1');
   expect(next!.profile!.active.chunker).toBe('heading-500');
   expect(old!.profile!.revision).not.toBe(next!.profile!.revision);
 });
@@ -209,7 +235,9 @@ it('evaluates a selected fixed profile against only the isolated corpus', async 
     outputDir: join(dir, 'evaluation'),
   });
   expect(report.report.status).toBe('lexical_only');
-  expect(report.report.profile.chunker_implementation.id).toBe('heading-1000');
+  expect(report.report.profile.chunker_implementation.id).toBe(
+    'markdown-structure-v1',
+  );
 });
 
 it('keeps an in-flight MCP query on its original snapshot while later calls use the new selection', async () => {
@@ -307,7 +335,12 @@ it('keeps an in-flight MCP query on its original snapshot while later calls use 
     ]);
     await writeFile(
       join(dir, 'config/retrieval/tight.json'),
-      JSON.stringify({ id: 'tight', mode: 'bm25', topk: 1 }),
+      JSON.stringify({
+        id: 'tight',
+        mode: 'bm25',
+        topk: 1,
+        lexical_engine: 'sqlite',
+      }),
     );
     await useProfiles(path, { retrieval: 'tight' });
     const next = decode(
@@ -317,12 +350,14 @@ it('keeps an in-flight MCP query on its original snapshot while later calls use 
       }),
     );
     expect(next.selection.retrieval).toBe('tight');
+    expect(next.applied.lexical_engine).toBe('sqlite');
     expect(next.results).toHaveLength(1);
     release!();
     release = undefined;
     const old = decode(await waiting);
     expect(old.selection.retrieval).toBe('balanced');
-    expect(old.results).toHaveLength(3);
+    expect(old.applied.lexical_engine).toBe('minisearch');
+    expect(old.results).toHaveLength(2);
     expect(old.selection.revision).not.toBe(next.selection.revision);
   } finally {
     release?.();
@@ -434,7 +469,7 @@ it('reports malformed model JSON as a model failure while preserving hybrid evid
       }),
     );
     expect(result.status).toBe('partial_failure');
-    expect(result.results).toHaveLength(3);
+    expect(result.results).toHaveLength(2);
     expect(result.queries[0].code).toBe('MODEL_UNAVAILABLE');
     expect(result.queries[0].next).toMatch(/model|API/);
     expect(result.queries[0].error).not.toContain('<html>');

@@ -1,0 +1,1171 @@
+{
+  "created": "2026-09-20T04:27:01.546Z",
+  "status": "all_executed_review_pending",
+  "results": {
+    "langchain": {
+      "official": {
+        "scope": "langchain",
+        "versions": {
+          "pyndeval": "0.0.6",
+          "pytrec-eval-terrier": "0.5.10",
+          "numpy": "2.5.3",
+          "scipy": "1.18.1"
+        },
+        "official_scorer_sha256": "0f3316491bb6adfcf06c6fbc91bd2734cba0f19575602cd99c0b652c0fb3e0b9",
+        "rank_export": "Unique descending rank_score preserves Echo candidate order; original RRF scores retained in runfile.",
+        "bindings": {
+          "data/freshstack-langchain-corpus.jsonl": "882f20823cb2b7ceb9ab9f895a25884e10a16e2977dfdbae2b89af455cc27852",
+          "embedding-plan.json": "49f12deeca2bf81233cf2d5ad117c5b4f7abdee675407a1053162a54a12a29e1",
+          "conversion-manifest.json": "37be4ffb1d384450c7cd3cca49ff1136d9d79b2b3954af415bac059fadb78b1b",
+          "fixed/langchain-index.json": "f2e6b04496059bb0bf4116ba49c7100c84c5aabac3ea36b08409a06e7b00c38f",
+          "fixed/langchain-run-receipt.json": "b4c43161e5a51385d4bb7706dfcb0a3a78490382d1c4ad2cade10e9c918d300a",
+          "fixed/langchain.sqlite": "6379f1adeaad95c8f8b65074a6d8d7206c03ecd2c419636865dba5d224abf5be",
+          "data/freshstack-langchain-queries.jsonl": "f211526a18c99e7d1e680bc9790505158baeb285f8b83479221d9c1287811761",
+          "fixed/langchain-rrf30.jsonl": "9df72e56cd2b71ed6d4199458873e2a4e20272b8aed57f1d3eed609e9bfeaf0d",
+          "fixed/langchain-rrf10.jsonl": "38faf1c47be2cae90401fb7cd20a0ca0b3426bb0a446612fee9ff93976e30bcc"
+        },
+        "results": {
+          "rrf30": {
+            "questions": 203,
+            "metrics": {
+              "ndcg_cut_10": 0.2598728080896843,
+              "recall_10": 0.2440729675300706,
+              "recall_50": 0.4589067137249134,
+              "recip_rank": 0.5292000352777467,
+              "MRR@10": 0.5220873406833998,
+              "Hit@10": 0.7832512315270936,
+              "alpha-nDCG@10": 0.3598,
+              "Coverage@10": 0.5926,
+              "Coverage@20": 0.6773,
+              "Recall@10": 0.2441,
+              "Recall@50": 0.4589
+            }
+          },
+          "rrf10": {
+            "questions": 203,
+            "metrics": {
+              "ndcg_cut_10": 0.2523653949739076,
+              "recall_10": 0.23717684260971705,
+              "recall_50": 0.45197272401344646,
+              "recip_rank": 0.515650603445076,
+              "MRR@10": 0.5080870279146141,
+              "Hit@10": 0.7783251231527094,
+              "alpha-nDCG@10": 0.35,
+              "Coverage@10": 0.5774,
+              "Coverage@20": 0.6734,
+              "Recall@10": 0.2372,
+              "Recall@50": 0.452
+            }
+          }
+        }
+      },
+      "paired": {
+        "scope": "langchain",
+        "questions": 203,
+        "paired": {
+          "alpha-nDCG@10": {
+            "rrf10_minus_rrf30": -0.009802785831355186,
+            "query_bootstrap_ci95": [
+              -0.021632226261742552, 0.0020168661934288927
+            ],
+            "wins": 53,
+            "losses": 62,
+            "ties": 88
+          },
+          "Coverage@20": {
+            "rrf10_minus_rrf30": -0.0038704926108374398,
+            "query_bootstrap_ci95": [-0.02627256157635468, 0.01765343103448274],
+            "wins": 10,
+            "losses": 9,
+            "ties": 184
+          },
+          "recall_50": {
+            "rrf10_minus_rrf30": -0.006933989711466893,
+            "query_bootstrap_ci95": [
+              -0.015397144939563791, 0.0011685871507085609
+            ],
+            "wins": 14,
+            "losses": 29,
+            "ties": 160
+          }
+        },
+        "diagnostics": {
+          "10": {
+            "empty": 0,
+            "mean_candidates": 114.27093596059113,
+            "mean_bm25_candidates": 60,
+            "mean_dense_candidates": 60,
+            "offline_p50_ms": 2214.8519000000088,
+            "offline_p95_ms": 2564.5360299999943
+          },
+          "30": {
+            "empty": 0,
+            "mean_candidates": 114.27093596059113,
+            "mean_bm25_candidates": 60,
+            "mean_dense_candidates": 60,
+            "offline_p50_ms": 2272.5982999999833,
+            "offline_p95_ms": 2699.745030000014
+          }
+        },
+        "same_candidate_pool_all_queries": true,
+        "top10_order_changed": 167,
+        "top10_members_changed": 104,
+        "bootstrap": {
+          "unit": "query",
+          "iterations": 10000,
+          "seed": 20260919,
+          "limitation": "Query-level uncertainty conditional on this fixed corpus; not cross-domain generalization or multiple-comparison correction."
+        }
+      },
+      "vector_audit": {
+        "scope": "langchain",
+        "created": "2026-09-19T16:48:52.755Z",
+        "model": "qwen3.7-text-embedding",
+        "dimensions": 1024,
+        "fingerprint": "2e6e9f07b732465d9a61d6336eb9901ccb3f525d8c626e294c8554ccc00c36c0",
+        "active_inputs": 44732,
+        "successful_requests_referenced": 5593,
+        "known_tokens_for_referenced_requests": 56247027,
+        "unknown_usage_successes": 0,
+        "inputs_vectors_request_ids_sha256": "6fe35afa3a9b0984db604a28cda119ab76b51642aee2281a39693f73ede832df",
+        "raw_response_chain_sha256": "b54a5b99bc69420db9d3c5175d671d64caffd84c43f4d2b8decfe9ffdb9a922e",
+        "checks": [
+          "all inputs match fingerprint/purpose/text key",
+          "all raw success models and dimensions match",
+          "all cache vectors equal normalized raw API vectors",
+          "all raw response indexes and counts match request keys",
+          "all raw token usage and input character counts match ledger"
+        ],
+        "usage": [
+          {
+            "status": "http_429",
+            "attempts": 463,
+            "input_chars": 16276653,
+            "reported_tokens": null
+          },
+          {
+            "status": "inflight",
+            "attempts": 1,
+            "input_chars": 25044,
+            "reported_tokens": null
+          },
+          {
+            "status": "success",
+            "attempts": 7410,
+            "input_chars": 207593107,
+            "reported_tokens": 59213221
+          }
+        ],
+        "usage_note": "Global ledger snapshot; per-scope referenced request tokens may overlap other scopes; failed calls without reported tokens are unknown, not zero."
+      },
+      "run_receipt": {
+        "scope": "langchain",
+        "queries": 203,
+        "conditions": [30, 10],
+        "config": {
+          "database": "E:\\幻\\Documents\\八股-Echo测试\\public-benchmarks-2026-09-19\\fixed\\langchain.sqlite",
+          "collections": [],
+          "chunker": {
+            "version": "1",
+            "options": {
+              "max_chars": 1000
+            }
+          },
+          "embedding": {
+            "provider": "http",
+            "model": "qwen3.7-text-embedding",
+            "dimensions": 1024,
+            "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+            "api_key_env": "CHROMA_OPENAI_API_KEY",
+            "timeout_ms": 30000,
+            "batch_size": 8,
+            "document_prefix": "",
+            "query_prefix": "",
+            "send_dimensions": true
+          },
+          "lexical": {
+            "locale": "zh-CN",
+            "dictionary": []
+          },
+          "runtime": {
+            "search_timeout_ms": 120000,
+            "max_concurrent_searches": 2
+          },
+          "logging": {
+            "level": "warn",
+            "max_file_bytes": 1048576,
+            "retain": 3
+          },
+          "retrieval": {
+            "mode": "hybrid",
+            "topk": 10,
+            "max_chunks_per_source": 3,
+            "bm25_candidates": 60,
+            "dense_candidates": 60,
+            "rrf_k": 30,
+            "title_weight": 2,
+            "bm25_weight": 0.5,
+            "dense_weight": 1,
+            "max_context_chars": 16000,
+            "min_dense_similarity": 0.3
+          }
+        },
+        "index_sha256": "6379f1adeaad95c8f8b65074a6d8d7206c03ecd2c419636865dba5d224abf5be",
+        "query_sha256": "f211526a18c99e7d1e680bc9790505158baeb285f8b83479221d9c1287811761",
+        "archived_sources": [
+          {
+            "source": "run-public-fixed.mjs",
+            "file": "repro/sources/59b59945bb22caa4d2c206b92c468cd555feac3fd5b874150a6b4984678823ec-run-public-fixed.mjs",
+            "sha256": "59b59945bb22caa4d2c206b92c468cd555feac3fd5b874150a6b4984678823ec"
+          },
+          {
+            "source": "public-runtime.mjs",
+            "file": "repro/sources/70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c-public-runtime.mjs",
+            "sha256": "70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c"
+          },
+          {
+            "source": "public-provenance.mjs",
+            "file": "repro/sources/47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382-public-provenance.mjs",
+            "sha256": "47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382"
+          }
+        ],
+        "unchanged_index": true
+      },
+      "parallel_conformance": {
+        "scope": "langchain",
+        "workers": 4,
+        "compared": 16,
+        "reference_receipt_sha256": "b4c43161e5a51385d4bb7706dfcb0a3a78490382d1c4ad2cade10e9c918d300a",
+        "reference_run_sha256": {
+          "10": "38faf1c47be2cae90401fb7cd20a0ca0b3426bb0a446612fee9ff93976e30bcc",
+          "30": "9df72e56cd2b71ed6d4199458873e2a4e20272b8aed57f1d3eed609e9bfeaf0d"
+        },
+        "equal_all_fields_except_timing": true,
+        "index_sha256": "6379f1adeaad95c8f8b65074a6d8d7206c03ecd2c419636865dba5d224abf5be",
+        "archived_sources": [
+          {
+            "source": "run-public-fixed-parallel.mjs",
+            "file": "repro/sources/fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60-run-public-fixed-parallel.mjs",
+            "sha256": "fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60"
+          },
+          {
+            "source": "public-fixed-worker.mjs",
+            "file": "repro/sources/f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370-public-fixed-worker.mjs",
+            "sha256": "f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370"
+          },
+          {
+            "source": "public-eval-pool.mjs",
+            "file": "repro/sources/25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526-public-eval-pool.mjs",
+            "sha256": "25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526"
+          },
+          {
+            "source": "public-runtime.mjs",
+            "file": "repro/sources/70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c-public-runtime.mjs",
+            "sha256": "70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c"
+          },
+          {
+            "source": "public-provenance.mjs",
+            "file": "repro/sources/47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382-public-provenance.mjs",
+            "sha256": "47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382"
+          }
+        ]
+      },
+      "candidate_pool": {
+        "scope": "langchain",
+        "questions": 203,
+        "results": {
+          "rrf30": {
+            "coverage_macro": {
+              "top10": 0.5925756509500352,
+              "top20": 0.677304714989444,
+              "top50": 0.8075123152709359,
+              "pool": 0.8644909688013136,
+              "dense_pool": 0.7950445695519587,
+              "bm25_pool": 0.6122273047149894
+            },
+            "no_relevant_support_queries": {
+              "top10": 44,
+              "top20": 32,
+              "top50": 17,
+              "pool": 11,
+              "dense_pool": 17,
+              "bm25_pool": 49
+            },
+            "all_nuggets_supported_queries": {
+              "top10": 82,
+              "top20": 101,
+              "top50": 137,
+              "pool": 152,
+              "dense_pool": 132,
+              "bm25_pool": 87
+            }
+          },
+          "rrf10": {
+            "coverage_macro": {
+              "top10": 0.5773868167956838,
+              "top20": 0.6734342012667136,
+              "top50": 0.8022577996715927,
+              "pool": 0.8644909688013136,
+              "dense_pool": 0.7950445695519587,
+              "bm25_pool": 0.6122273047149894
+            },
+            "no_relevant_support_queries": {
+              "top10": 45,
+              "top20": 34,
+              "top50": 17,
+              "pool": 11,
+              "dense_pool": 17,
+              "bm25_pool": 49
+            },
+            "all_nuggets_supported_queries": {
+              "top10": 79,
+              "top20": 101,
+              "top50": 135,
+              "pool": 152,
+              "dense_pool": 132,
+              "bm25_pool": 87
+            }
+          }
+        },
+        "meaning": "FreshStack nugget coverage; Du relevant-document recall (all qrels are not a required evidence set). Lane values describe support in the recorded top60 lane pools, not a new pure-mode top10 evaluation. All-pool support is diagnostic, not achievable packing accuracy or an official leaderboard metric."
+      }
+    },
+    "godot": {
+      "official": {
+        "scope": "godot",
+        "versions": {
+          "pyndeval": "0.0.6",
+          "pytrec-eval-terrier": "0.5.10",
+          "numpy": "2.5.3",
+          "scipy": "1.18.1"
+        },
+        "official_scorer_sha256": "0f3316491bb6adfcf06c6fbc91bd2734cba0f19575602cd99c0b652c0fb3e0b9",
+        "rank_export": "Unique descending rank_score preserves Echo candidate order; original RRF scores retained in runfile.",
+        "bindings": {
+          "data/freshstack-godot-corpus.jsonl": "61f0ae114476f7bbb225b1db54d69c350768a28a11854818d8e63a56feed7a48",
+          "embedding-plan.json": "49f12deeca2bf81233cf2d5ad117c5b4f7abdee675407a1053162a54a12a29e1",
+          "conversion-manifest.json": "37be4ffb1d384450c7cd3cca49ff1136d9d79b2b3954af415bac059fadb78b1b",
+          "fixed/godot-index.json": "29b8beb8b86bfc70d704f1ebe3b5c5093a2f32f8c9afd5a9de3e559f84c654a4",
+          "fixed/godot-run-receipt.json": "60b6f13099ce64842fd7922b2d77fe5810c6bcb522d9f83ebbb2fd2824ec4ae8",
+          "fixed/godot.sqlite": "0a08c74a0bf91cb7213a688643a1ec611ee6680338c68316869daa16d5ffcca2",
+          "data/freshstack-godot-queries.jsonl": "3b047104b84d53a92524adc6c4b25fc13778013fe5bbde339478e4bd71fc97f5",
+          "fixed/godot-rrf30.jsonl": "7370fb64574c1ffdcc954031023b429a5b7f11dba00bb44af5a4e43d6d42fee5",
+          "fixed/godot-rrf10.jsonl": "10304e6d9c7b50e635519c6aed47c21700e6b5682f55c83aeb5f06715557f22f"
+        },
+        "results": {
+          "rrf30": {
+            "questions": 99,
+            "metrics": {
+              "ndcg_cut_10": 0.23440112872492713,
+              "recall_10": 0.2613566936932168,
+              "recall_50": 0.45913521176679073,
+              "recip_rank": 0.4508075179300842,
+              "MRR@10": 0.4415905082571749,
+              "Hit@10": 0.6868686868686869,
+              "alpha-nDCG@10": 0.2812,
+              "Coverage@10": 0.4444,
+              "Coverage@20": 0.552,
+              "Recall@10": 0.2614,
+              "Recall@50": 0.4591
+            }
+          },
+          "rrf10": {
+            "questions": 99,
+            "metrics": {
+              "ndcg_cut_10": 0.23646540604655075,
+              "recall_10": 0.25481071441996483,
+              "recall_50": 0.45750345407442694,
+              "recip_rank": 0.47322494460672315,
+              "MRR@10": 0.46415343915343915,
+              "Hit@10": 0.6767676767676768,
+              "alpha-nDCG@10": 0.2885,
+              "Coverage@10": 0.4348,
+              "Coverage@20": 0.5483,
+              "Recall@10": 0.2548,
+              "Recall@50": 0.4575
+            }
+          }
+        }
+      },
+      "paired": {
+        "scope": "godot",
+        "questions": 99,
+        "paired": {
+          "alpha-nDCG@10": {
+            "rrf10_minus_rrf30": 0.007278064870269627,
+            "query_bootstrap_ci95": [
+              -0.007112239396018711, 0.023809735665122386
+            ],
+            "wins": 21,
+            "losses": 13,
+            "ties": 65
+          },
+          "Coverage@20": {
+            "rrf10_minus_rrf30": -0.0037036363636363647,
+            "query_bootstrap_ci95": [
+              -0.02694046212121212, 0.019364906565656502
+            ],
+            "wins": 4,
+            "losses": 7,
+            "ties": 88
+          },
+          "recall_50": {
+            "rrf10_minus_rrf30": -0.0016317576923637518,
+            "query_bootstrap_ci95": [-0.014089670150276208, 0.0117209796376463],
+            "wins": 5,
+            "losses": 9,
+            "ties": 85
+          }
+        },
+        "diagnostics": {
+          "10": {
+            "empty": 0,
+            "mean_candidates": 115.48484848484848,
+            "mean_bm25_candidates": 60,
+            "mean_dense_candidates": 60,
+            "offline_p50_ms": 2610.828099999999,
+            "offline_p95_ms": 3457.489480000003
+          },
+          "30": {
+            "empty": 0,
+            "mean_candidates": 115.48484848484848,
+            "mean_bm25_candidates": 60,
+            "mean_dense_candidates": 60,
+            "offline_p50_ms": 2622.3917999999976,
+            "offline_p95_ms": 3513.893860000008
+          }
+        },
+        "same_candidate_pool_all_queries": true,
+        "top10_order_changed": 63,
+        "top10_members_changed": 28,
+        "bootstrap": {
+          "unit": "query",
+          "iterations": 10000,
+          "seed": 20260919,
+          "limitation": "Query-level uncertainty conditional on this fixed corpus; not cross-domain generalization or multiple-comparison correction."
+        }
+      },
+      "vector_audit": {
+        "scope": "godot",
+        "created": "2026-09-19T18:03:23.141Z",
+        "model": "qwen3.7-text-embedding",
+        "dimensions": 1024,
+        "fingerprint": "2e6e9f07b732465d9a61d6336eb9901ccb3f525d8c626e294c8554ccc00c36c0",
+        "active_inputs": 25069,
+        "successful_requests_referenced": 3140,
+        "known_tokens_for_referenced_requests": 31503894,
+        "unknown_usage_successes": 0,
+        "inputs_vectors_request_ids_sha256": "068ed50695583d588e5ed02b2a3f5b75ea985b0e71410c455ae4bfdb38aa4b4e",
+        "raw_response_chain_sha256": "5311fbea698536d2eb227e803a2524b8ff23ea537fa976b84d78c1d44bfeb96d",
+        "checks": [
+          "all inputs match fingerprint/purpose/text key",
+          "all raw success models and dimensions match",
+          "all cache vectors equal normalized raw API vectors",
+          "all raw response indexes and counts match request keys",
+          "all raw token usage and input character counts match ledger"
+        ],
+        "usage": [
+          {
+            "status": "http_429",
+            "attempts": 467,
+            "input_chars": 16390991,
+            "reported_tokens": null
+          },
+          {
+            "status": "inflight",
+            "attempts": 2,
+            "input_chars": 9104,
+            "reported_tokens": null
+          },
+          {
+            "status": "success",
+            "attempts": 10547,
+            "input_chars": 306490681,
+            "reported_tokens": 90632341
+          }
+        ],
+        "usage_note": "Global ledger snapshot; per-scope referenced request tokens may overlap other scopes; failed calls without reported tokens are unknown, not zero."
+      },
+      "run_receipt": {
+        "scope": "godot",
+        "queries": 99,
+        "conditions": [30, 10],
+        "config": {
+          "database": "E:\\幻\\Documents\\八股-Echo测试\\public-benchmarks-2026-09-19\\fixed\\godot.sqlite",
+          "collections": [],
+          "chunker": {
+            "version": "1",
+            "options": {
+              "max_chars": 1000
+            }
+          },
+          "embedding": {
+            "provider": "http",
+            "model": "qwen3.7-text-embedding",
+            "dimensions": 1024,
+            "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+            "api_key_env": "CHROMA_OPENAI_API_KEY",
+            "timeout_ms": 30000,
+            "batch_size": 8,
+            "document_prefix": "",
+            "query_prefix": "",
+            "send_dimensions": true
+          },
+          "lexical": {
+            "locale": "zh-CN",
+            "dictionary": []
+          },
+          "runtime": {
+            "search_timeout_ms": 120000,
+            "max_concurrent_searches": 2
+          },
+          "logging": {
+            "level": "warn",
+            "max_file_bytes": 1048576,
+            "retain": 3
+          },
+          "retrieval": {
+            "mode": "hybrid",
+            "topk": 10,
+            "max_chunks_per_source": 3,
+            "bm25_candidates": 60,
+            "dense_candidates": 60,
+            "rrf_k": 30,
+            "title_weight": 2,
+            "bm25_weight": 0.5,
+            "dense_weight": 1,
+            "max_context_chars": 16000,
+            "min_dense_similarity": 0.3
+          }
+        },
+        "index_sha256": "0a08c74a0bf91cb7213a688643a1ec611ee6680338c68316869daa16d5ffcca2",
+        "query_sha256": "3b047104b84d53a92524adc6c4b25fc13778013fe5bbde339478e4bd71fc97f5",
+        "archived_sources": [
+          {
+            "source": "run-public-fixed-parallel.mjs",
+            "file": "repro/sources/fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60-run-public-fixed-parallel.mjs",
+            "sha256": "fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60"
+          },
+          {
+            "source": "public-fixed-worker.mjs",
+            "file": "repro/sources/f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370-public-fixed-worker.mjs",
+            "sha256": "f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370"
+          },
+          {
+            "source": "public-eval-pool.mjs",
+            "file": "repro/sources/25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526-public-eval-pool.mjs",
+            "sha256": "25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526"
+          },
+          {
+            "source": "public-runtime.mjs",
+            "file": "repro/sources/70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c-public-runtime.mjs",
+            "sha256": "70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c"
+          },
+          {
+            "source": "public-provenance.mjs",
+            "file": "repro/sources/47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382-public-provenance.mjs",
+            "sha256": "47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382"
+          }
+        ],
+        "unchanged_index": true,
+        "execution": {
+          "workers": 4,
+          "mode": "readonly independent production retrieveQuery calls; no lane reuse",
+          "latency": "Concurrent offline timing includes contention; not standalone latency"
+        }
+      },
+      "parallel_conformance": {
+        "scope": "godot",
+        "workers": 1,
+        "compared": 16,
+        "reference_receipt_sha256": "60b6f13099ce64842fd7922b2d77fe5810c6bcb522d9f83ebbb2fd2824ec4ae8",
+        "reference_run_sha256": {
+          "10": "10304e6d9c7b50e635519c6aed47c21700e6b5682f55c83aeb5f06715557f22f",
+          "30": "7370fb64574c1ffdcc954031023b429a5b7f11dba00bb44af5a4e43d6d42fee5"
+        },
+        "equal_all_fields_except_timing": true,
+        "index_sha256": "0a08c74a0bf91cb7213a688643a1ec611ee6680338c68316869daa16d5ffcca2",
+        "archived_sources": [
+          {
+            "source": "run-public-fixed-parallel.mjs",
+            "file": "repro/sources/fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60-run-public-fixed-parallel.mjs",
+            "sha256": "fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60"
+          },
+          {
+            "source": "public-fixed-worker.mjs",
+            "file": "repro/sources/f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370-public-fixed-worker.mjs",
+            "sha256": "f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370"
+          },
+          {
+            "source": "public-eval-pool.mjs",
+            "file": "repro/sources/25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526-public-eval-pool.mjs",
+            "sha256": "25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526"
+          },
+          {
+            "source": "public-runtime.mjs",
+            "file": "repro/sources/70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c-public-runtime.mjs",
+            "sha256": "70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c"
+          },
+          {
+            "source": "public-provenance.mjs",
+            "file": "repro/sources/47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382-public-provenance.mjs",
+            "sha256": "47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382"
+          }
+        ]
+      },
+      "candidate_pool": {
+        "scope": "godot",
+        "questions": 99,
+        "results": {
+          "rrf30": {
+            "coverage_macro": {
+              "top10": 0.4444444444444444,
+              "top20": 0.552020202020202,
+              "top50": 0.6902356902356902,
+              "pool": 0.7747474747474747,
+              "dense_pool": 0.6904040404040404,
+              "bm25_pool": 0.4090909090909091
+            },
+            "no_relevant_support_queries": {
+              "top10": 31,
+              "top20": 23,
+              "top50": 14,
+              "pool": 11,
+              "dense_pool": 13,
+              "bm25_pool": 42
+            },
+            "all_nuggets_supported_queries": {
+              "top10": 24,
+              "top20": 36,
+              "top50": 53,
+              "pool": 63,
+              "dense_pool": 53,
+              "bm25_pool": 26
+            }
+          },
+          "rrf10": {
+            "coverage_macro": {
+              "top10": 0.4348484848484849,
+              "top20": 0.5483164983164983,
+              "top50": 0.6968013468013468,
+              "pool": 0.7747474747474747,
+              "dense_pool": 0.6904040404040404,
+              "bm25_pool": 0.4090909090909091
+            },
+            "no_relevant_support_queries": {
+              "top10": 32,
+              "top20": 25,
+              "top50": 13,
+              "pool": 11,
+              "dense_pool": 13,
+              "bm25_pool": 42
+            },
+            "all_nuggets_supported_queries": {
+              "top10": 24,
+              "top20": 36,
+              "top50": 53,
+              "pool": 63,
+              "dense_pool": 53,
+              "bm25_pool": 26
+            }
+          }
+        },
+        "meaning": "FreshStack nugget coverage; Du relevant-document recall (all qrels are not a required evidence set). Lane values describe support in the recorded top60 lane pools, not a new pure-mode top10 evaluation. All-pool support is diagnostic, not achievable packing accuracy or an official leaderboard metric."
+      }
+    },
+    "du": {
+      "official": {
+        "scope": "du",
+        "versions": {
+          "pyndeval": "0.0.6",
+          "pytrec-eval-terrier": "0.5.10",
+          "numpy": "2.5.3",
+          "scipy": "1.18.1"
+        },
+        "rank_export": "Unique descending rank_score preserves Echo candidate order; original RRF scores retained in runfile.",
+        "bindings": {
+          "data/du-corpus.jsonl": "832b9af76e04815651963deed1d167870f0aa466c3079c40c71d2989974d612a",
+          "embedding-plan.json": "49f12deeca2bf81233cf2d5ad117c5b4f7abdee675407a1053162a54a12a29e1",
+          "conversion-manifest.json": "37be4ffb1d384450c7cd3cca49ff1136d9d79b2b3954af415bac059fadb78b1b",
+          "fixed/du-index.json": "94d7a43b6433a267d7ab0623f47d16a7df789d0d86c3aa820c9f4f25184b97ff",
+          "fixed/du-run-receipt.json": "db13791a97a4c633cc50469175a4e55822bc1194e7eb5377bf986580f5b4a367",
+          "fixed/du.sqlite": "4ec07f8b6075f6e1428bee16420fdb5c8aae1f744ebf90ebc9f68654f5780816",
+          "data/du-queries.jsonl": "20722074d3dab144c07c8ffc1b374cfa0603fb0ce0ccdf842bd95cf524d78272",
+          "fixed/du-rrf30.jsonl": "5089f0a469720a774f28fb16f84f5062e1185d44baa2d31dbe456077af1753e0",
+          "fixed/du-rrf10.jsonl": "ed1df824fa3d68e00a7757b9073d60e4f54a6d7007d5a7753001a8479b4cdeb5",
+          "data/du-qrels.jsonl": "78e54bfdcc726c3bbb27fe4023b8d03a436de53f4d7bbc6d991209083d685238",
+          "reference/c-mteb-retrieval-task-receipt.json": "5babe9a368be3bef814661d2344f9533aca85340c0c803c907940f4cc1e8cdcf",
+          "reference/c-mteb-retrieval-task.py": "bfe759fb76802c6816c0531a74237c8778eb5d96a49700c6fd75935d7a6f9ace"
+        },
+        "results": {
+          "rrf30": {
+            "questions": 2000,
+            "metrics": {
+              "ndcg_cut_10": 0.8176774755144044,
+              "recall_10": 0.8546232293942971,
+              "recall_50": 0.9684799946791034,
+              "recip_rank": 0.8907127906427255,
+              "MRR@10": 0.8897380952380952,
+              "Hit@10": 0.976
+            }
+          },
+          "rrf10": {
+            "questions": 2000,
+            "metrics": {
+              "ndcg_cut_10": 0.8416477116115186,
+              "recall_10": 0.8785190520753468,
+              "recall_50": 0.9657468164145693,
+              "recip_rank": 0.9012954667170151,
+              "MRR@10": 0.9006549603174603,
+              "Hit@10": 0.98
+            }
+          }
+        },
+        "official_protocol": {
+          "repository": "FlagOpen/FlagEmbedding",
+          "commit": "fd1a2bdf69488ffebe0327999d4400d8c8058a0b",
+          "path": "research/C_MTEB/C_MTEB/tasks/Retrieval.py",
+          "url": "https://raw.githubusercontent.com/FlagOpen/FlagEmbedding/fd1a2bdf69488ffebe0327999d4400d8c8058a0b/research/C_MTEB/C_MTEB/tasks/Retrieval.py",
+          "sha256": "bfe759fb76802c6816c0531a74237c8778eb5d96a49700c6fd75935d7a6f9ace",
+          "accessed": "2026-09-20T03:39:04.275Z",
+          "purpose": "Read-only protocol reference; not executed",
+          "executed": false
+        },
+        "metric_implementation": {
+          "package": "pytrec-eval-terrier",
+          "version": "0.5.10",
+          "metric": "ndcg_cut.10",
+          "meaning": "pytrec_eval implements C-MTEB dev nDCG@10 on unchanged binary qrels; not the complete MTEB pipeline",
+          "file_bindings": {
+            "scoring-tools/pytrec_eval/__init__.py": "6733afda3ea7409d3a96560dbb4e095917cb94f29bb16279ef52994402257e76",
+            "scoring-tools/pytrec_eval_ext.cp312-win_amd64.pyd": "f209f5818632eb2a22653d1029d59114baed3e2a366127dee94b67811fe8cd0e"
+          }
+        },
+        "implementation": {
+          "adapter_sha256": "e3cf946bf576a8cbae538d7bfc67e074e8afb3d166dc83e37c1fb7612a1b816c",
+          "validator_sha256": "7d39b991e4dde37c09b43e8a17ca34bab1eeaa0d232b225f80becdf25d6c5af4",
+          "python": "3.12.13 (main, Jun  2 2026, 22:47:20) [MSC v.1944 64 bit (AMD64)]"
+        },
+        "per_question_bindings": {
+          "analysis/du-rrf30-per-question.json": "9afd78e900b3ef0bbbb7850c3ce1a0b139b5054d022fb3fd1ec6c379cd717e9b",
+          "analysis/du-rrf10-per-question.json": "f8b16967ef6101c460a0ae0f149d7d66b420cdd8f08bee83874a78d5a2e8b89a"
+        }
+      },
+      "paired": {
+        "scope": "du",
+        "questions": 2000,
+        "paired": {
+          "ndcg_cut_10": {
+            "rrf10_minus_rrf30": 0.023970236097114326,
+            "query_bootstrap_ci95": [0.02124000039020413, 0.02673820551215751],
+            "wins": 693,
+            "losses": 133,
+            "ties": 1174
+          },
+          "recall_10": {
+            "rrf10_minus_rrf30": 0.023895822681049544,
+            "query_bootstrap_ci95": [
+              0.019381308250033775, 0.028302703373246953
+            ],
+            "wins": 227,
+            "losses": 28,
+            "ties": 1745
+          },
+          "recall_50": {
+            "rrf10_minus_rrf30": -0.002733178264534157,
+            "query_bootstrap_ci95": [
+              -0.004592406311445938, -0.0012503621604995064
+            ],
+            "wins": 6,
+            "losses": 28,
+            "ties": 1966
+          }
+        },
+        "diagnostics": {
+          "10": {
+            "empty": 0,
+            "mean_candidates": 104.5675,
+            "mean_bm25_candidates": 59.9715,
+            "mean_dense_candidates": 60,
+            "offline_p50_ms": 1163.2631500000134,
+            "offline_p95_ms": 1470.9367649999906
+          },
+          "30": {
+            "empty": 0,
+            "mean_candidates": 104.5675,
+            "mean_bm25_candidates": 59.9715,
+            "mean_dense_candidates": 60,
+            "offline_p50_ms": 1159.96940000006,
+            "offline_p95_ms": 1463.4463149999967
+          }
+        },
+        "same_candidate_pool_all_queries": true,
+        "top10_order_changed": 1652,
+        "top10_members_changed": 1126,
+        "bootstrap": {
+          "unit": "query",
+          "iterations": 10000,
+          "seed": 20260919,
+          "limitation": "Query-level uncertainty conditional on this fixed corpus; not cross-domain generalization or multiple-comparison correction."
+        },
+        "bindings": {
+          "analysis/du-official-score.json": "17bad1a78521a850c7586e6ece06369da0c7f9e3a46e63ac7ee26ff0943bd768",
+          "fixed/du-rrf30.jsonl": "5089f0a469720a774f28fb16f84f5062e1185d44baa2d31dbe456077af1753e0",
+          "analysis/du-rrf30-per-question.json": "9afd78e900b3ef0bbbb7850c3ce1a0b139b5054d022fb3fd1ec6c379cd717e9b",
+          "fixed/du-rrf10.jsonl": "ed1df824fa3d68e00a7757b9073d60e4f54a6d7007d5a7753001a8479b4cdeb5",
+          "analysis/du-rrf10-per-question.json": "f8b16967ef6101c460a0ae0f149d7d66b420cdd8f08bee83874a78d5a2e8b89a"
+        },
+        "implementation": {
+          "analyzer_sha256": "fdf735c2c93bcb0c88f0353dbd7628074c246a134ad747d807d3ad98cce7ab8d",
+          "validator_sha256": "7d39b991e4dde37c09b43e8a17ca34bab1eeaa0d232b225f80becdf25d6c5af4"
+        }
+      },
+      "vector_audit": {
+        "scope": "du",
+        "created": "2026-09-20T03:58:39.190Z",
+        "model": "qwen3.7-text-embedding",
+        "dimensions": 1024,
+        "fingerprint": "2e6e9f07b732465d9a61d6336eb9901ccb3f525d8c626e294c8554ccc00c36c0",
+        "active_inputs": 102001,
+        "successful_requests_referenced": 12751,
+        "known_tokens_for_referenced_requests": 21402405,
+        "unknown_usage_successes": 0,
+        "inputs_vectors_request_ids_sha256": "7635740095c42f95a835ce2beacab3a96c437d89257d4351b4fd469ef44726a7",
+        "raw_response_chain_sha256": "0d329d9f796b45924ba5a4ee42de3d688056d22cad3728e34ee33c4c7431ffba",
+        "checks": [
+          "all inputs match fingerprint/purpose/text key",
+          "all raw success models and dimensions match",
+          "all cache vectors equal normalized raw API vectors",
+          "all raw response indexes and counts match request keys",
+          "all raw token usage and input character counts match ledger"
+        ],
+        "usage": [
+          {
+            "status": "failed",
+            "attempts": 4,
+            "input_chars": 8122,
+            "reported_tokens": null
+          },
+          {
+            "status": "http_429",
+            "attempts": 467,
+            "input_chars": 16390991,
+            "reported_tokens": null
+          },
+          {
+            "status": "success",
+            "attempts": 23278,
+            "input_chars": 339567735,
+            "reported_tokens": 111974895
+          }
+        ],
+        "usage_note": "Global ledger snapshot; per-scope referenced request tokens may overlap other scopes; failed calls without reported tokens are unknown, not zero."
+      },
+      "run_receipt": {
+        "scope": "du",
+        "queries": 2000,
+        "conditions": [30, 10],
+        "config": {
+          "database": "E:\\幻\\Documents\\八股-Echo测试\\public-benchmarks-2026-09-19\\fixed\\du.sqlite",
+          "collections": [],
+          "chunker": {
+            "version": "1",
+            "options": {
+              "max_chars": 1000
+            }
+          },
+          "embedding": {
+            "provider": "http",
+            "model": "qwen3.7-text-embedding",
+            "dimensions": 1024,
+            "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+            "api_key_env": "CHROMA_OPENAI_API_KEY",
+            "timeout_ms": 30000,
+            "batch_size": 8,
+            "document_prefix": "",
+            "query_prefix": "",
+            "send_dimensions": true
+          },
+          "lexical": {
+            "locale": "zh-CN",
+            "dictionary": []
+          },
+          "runtime": {
+            "search_timeout_ms": 120000,
+            "max_concurrent_searches": 2
+          },
+          "logging": {
+            "level": "warn",
+            "max_file_bytes": 1048576,
+            "retain": 3
+          },
+          "retrieval": {
+            "mode": "hybrid",
+            "topk": 10,
+            "max_chunks_per_source": 3,
+            "bm25_candidates": 60,
+            "dense_candidates": 60,
+            "rrf_k": 30,
+            "title_weight": 2,
+            "bm25_weight": 0.5,
+            "dense_weight": 1,
+            "max_context_chars": 16000,
+            "min_dense_similarity": 0.3
+          }
+        },
+        "index_sha256": "4ec07f8b6075f6e1428bee16420fdb5c8aae1f744ebf90ebc9f68654f5780816",
+        "query_sha256": "20722074d3dab144c07c8ffc1b374cfa0603fb0ce0ccdf842bd95cf524d78272",
+        "archived_sources": [
+          {
+            "source": "run-public-fixed-parallel.mjs",
+            "file": "repro/sources/fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60-run-public-fixed-parallel.mjs",
+            "sha256": "fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60"
+          },
+          {
+            "source": "public-fixed-worker.mjs",
+            "file": "repro/sources/f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370-public-fixed-worker.mjs",
+            "sha256": "f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370"
+          },
+          {
+            "source": "public-eval-pool.mjs",
+            "file": "repro/sources/25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526-public-eval-pool.mjs",
+            "sha256": "25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526"
+          },
+          {
+            "source": "public-runtime.mjs",
+            "file": "repro/sources/70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c-public-runtime.mjs",
+            "sha256": "70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c"
+          },
+          {
+            "source": "public-provenance.mjs",
+            "file": "repro/sources/47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382-public-provenance.mjs",
+            "sha256": "47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382"
+          }
+        ],
+        "unchanged_index": true,
+        "execution": {
+          "workers": 4,
+          "mode": "readonly independent production retrieveQuery calls; no lane reuse",
+          "latency": "Concurrent offline timing includes contention; not standalone latency"
+        }
+      },
+      "parallel_conformance": {
+        "scope": "du",
+        "workers": 1,
+        "compared": 16,
+        "reference_receipt_sha256": "db13791a97a4c633cc50469175a4e55822bc1194e7eb5377bf986580f5b4a367",
+        "reference_run_sha256": {
+          "10": "ed1df824fa3d68e00a7757b9073d60e4f54a6d7007d5a7753001a8479b4cdeb5",
+          "30": "5089f0a469720a774f28fb16f84f5062e1185d44baa2d31dbe456077af1753e0"
+        },
+        "equal_all_fields_except_timing": true,
+        "index_sha256": "4ec07f8b6075f6e1428bee16420fdb5c8aae1f744ebf90ebc9f68654f5780816",
+        "archived_sources": [
+          {
+            "source": "run-public-fixed-parallel.mjs",
+            "file": "repro/sources/fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60-run-public-fixed-parallel.mjs",
+            "sha256": "fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60"
+          },
+          {
+            "source": "public-fixed-worker.mjs",
+            "file": "repro/sources/f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370-public-fixed-worker.mjs",
+            "sha256": "f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370"
+          },
+          {
+            "source": "public-eval-pool.mjs",
+            "file": "repro/sources/25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526-public-eval-pool.mjs",
+            "sha256": "25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526"
+          },
+          {
+            "source": "public-runtime.mjs",
+            "file": "repro/sources/70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c-public-runtime.mjs",
+            "sha256": "70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c"
+          },
+          {
+            "source": "public-provenance.mjs",
+            "file": "repro/sources/47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382-public-provenance.mjs",
+            "sha256": "47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382"
+          }
+        ]
+      },
+      "candidate_pool": {
+        "scope": "du",
+        "questions": 2000,
+        "results": {
+          "rrf30": {
+            "coverage_macro": {
+              "top10": 0.8546232293942971,
+              "top20": 0.9339951567683139,
+              "top50": 0.9684799946791034,
+              "pool": 0.9739485084880679,
+              "dense_pool": 0.9709628847651484,
+              "bm25_pool": 0.777301755532269
+            },
+            "no_relevant_support_queries": {
+              "top10": 48,
+              "top20": 30,
+              "top50": 18,
+              "pool": 15,
+              "dense_pool": 16,
+              "bm25_pool": 126
+            },
+            "all_nuggets_supported_queries": null
+          },
+          "rrf10": {
+            "coverage_macro": {
+              "top10": 0.8785190520753468,
+              "top20": 0.9383626129738758,
+              "top50": 0.9657468164145692,
+              "pool": 0.9739485084880679,
+              "dense_pool": 0.9709628847651484,
+              "bm25_pool": 0.777301755532269
+            },
+            "no_relevant_support_queries": {
+              "top10": 40,
+              "top20": 29,
+              "top50": 20,
+              "pool": 15,
+              "dense_pool": 16,
+              "bm25_pool": 126
+            },
+            "all_nuggets_supported_queries": null
+          }
+        },
+        "meaning": "FreshStack nugget coverage; Du relevant-document recall (all qrels are not a required evidence set). Lane values describe support in the recorded top60 lane pools, not a new pure-mode top10 evaluation. All-pool support is diagnostic, not achievable packing accuracy or an official leaderboard metric."
+      }
+    }
+  },
+  "pending": [],
+  "artifacts": {
+    "analysis/langchain-official-score.json": "f2c961f8cad27d4fe2484ffc1e5729852b28a7945c8388aebaaa66eee4573dc9",
+    "analysis/langchain-paired-analysis.json": "95b79e249e6d643a12b17abfd4404169bedd606810831e614c26d42942d9e692",
+    "analysis/langchain-vector-audit.json": "aaafc69600e9210d19a7e577a7794a2487ceaf92f1d4dc2d34ee0fd6dae07c7b",
+    "fixed/langchain-run-receipt.json": "b4c43161e5a51385d4bb7706dfcb0a3a78490382d1c4ad2cade10e9c918d300a",
+    "analysis/langchain-parallel-conformance.json": "44c456a9dfa4442e84df44025428dae8a029e95267f20192d04b958aeece268e",
+    "analysis/langchain-candidate-pool.json": "e727b2c27528ef8599239ded2b42d034a5ab3fc6db3c58e5baf5ddccd6c0b9f4",
+    "analysis/godot-official-score.json": "98d3f8878ffc2cf475c0bf14dbe099db634ed58eb6a3384da897a43367dbf851",
+    "analysis/godot-paired-analysis.json": "450540a30da032194088266f593aa4dc6958e4a88ce9b38609d3681c00773249",
+    "analysis/godot-vector-audit.json": "368ad21180b4a8f5467386b5b186b463dac009b0c2c1a0e49abd04b86556b26d",
+    "fixed/godot-run-receipt.json": "60b6f13099ce64842fd7922b2d77fe5810c6bcb522d9f83ebbb2fd2824ec4ae8",
+    "analysis/godot-parallel-conformance.json": "fe8637a2a99314863ed7d21bed67ffd0cbeafaa39882cbfc42d41429f0f03531",
+    "analysis/godot-candidate-pool.json": "8a5d27ea3b988a88ccf79d8c56730437363980147b749ae3aeedc6d2794f133f",
+    "analysis/du-official-score.json": "17bad1a78521a850c7586e6ece06369da0c7f9e3a46e63ac7ee26ff0943bd768",
+    "analysis/du-paired-analysis.json": "18b1d68d02a1c8541a04937a7018e15a85cccbc9decbfaffce8458762625d2f5",
+    "analysis/du-vector-audit.json": "3537892847a3c3b8e00fe0adabbd208f67a38d51eff85ee82fb09f7c738c1d33",
+    "fixed/du-run-receipt.json": "db13791a97a4c633cc50469175a4e55822bc1194e7eb5377bf986580f5b4a367",
+    "analysis/du-parallel-conformance.json": "dd5e0a3160d9bd74cc11be4d3093979daf4db50d7c4e19b7859ab956cb97ee17",
+    "analysis/du-candidate-pool.json": "7f92fb771d3df4931d5862434339c20fa2511bd94e02e2b0024741f667a3fbeb",
+    "analysis/scoring-replay/verification.json": "944a1011d9300e5b4c8825d9de8795ab10fc5c150a3caf55203c3049a912c6c5"
+  },
+  "reference": {
+    "commit": "72f48c7560f1694796b0b4af6cf96b49e083d9bd",
+    "url": "https://raw.githubusercontent.com/fresh-stack/fresh-stack.github.io/72f48c7560f1694796b0b4af6cf96b49e083d9bd/leaderboard_data.json",
+    "sha256": "39eb0fc14b23de29cbbdb21c4756129e42f644dc6c42203466633164885976fa",
+    "accessed": "2026-09-19"
+  },
+  "implementation_snapshot": {
+    "score-public-benchmarks.py": "e3cf946bf576a8cbae538d7bfc67e074e8afb3d166dc83e37c1fb7612a1b816c",
+    "analyze-public-fixed.py": "fdf735c2c93bcb0c88f0353dbd7628074c246a134ad747d807d3ad98cce7ab8d",
+    "diagnose-public-fixed-pool.py": "14383f307e28814340cff6ac3f7aeba0141df082d572bd1e15f6592b541f029f",
+    "lib/public_score_validation.py": "7d39b991e4dde37c09b43e8a17ca34bab1eeaa0d232b225f80becdf25d6c5af4"
+  },
+  "implementation_note": "Current reporting code snapshot. Original scoring receipts remain historical; separately archived replay code is identified by each replay receipt.",
+  "usage_note": "Per-scope referenced tokens can overlap; final global attempts ledger is authoritative. Registration plan usage is historical.",
+  "parallel_conformance": {
+    "scope": "langchain",
+    "workers": 4,
+    "compared": 16,
+    "reference_receipt_sha256": "b4c43161e5a51385d4bb7706dfcb0a3a78490382d1c4ad2cade10e9c918d300a",
+    "reference_run_sha256": {
+      "10": "38faf1c47be2cae90401fb7cd20a0ca0b3426bb0a446612fee9ff93976e30bcc",
+      "30": "9df72e56cd2b71ed6d4199458873e2a4e20272b8aed57f1d3eed609e9bfeaf0d"
+    },
+    "equal_all_fields_except_timing": true,
+    "index_sha256": "6379f1adeaad95c8f8b65074a6d8d7206c03ecd2c419636865dba5d224abf5be",
+    "archived_sources": [
+      {
+        "source": "run-public-fixed-parallel.mjs",
+        "file": "repro/sources/fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60-run-public-fixed-parallel.mjs",
+        "sha256": "fd3ec43f425a7005b2e2847c62f4b58eccaa92a54287fbc1cb585bc95f83db60"
+      },
+      {
+        "source": "public-fixed-worker.mjs",
+        "file": "repro/sources/f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370-public-fixed-worker.mjs",
+        "sha256": "f14d147ba41632e19ecea8c8f8feec386fb1efb628387622ab28642189cc3370"
+      },
+      {
+        "source": "public-eval-pool.mjs",
+        "file": "repro/sources/25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526-public-eval-pool.mjs",
+        "sha256": "25dc5959c8f0d91ed5e205f6903a2f3270a47899d75bb69d187e4fa13cf9f526"
+      },
+      {
+        "source": "public-runtime.mjs",
+        "file": "repro/sources/70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c-public-runtime.mjs",
+        "sha256": "70a14e94b4a0006e9bbea21b84514fa71ea282ff7ed2f73b7eb02c4c619ffb4c"
+      },
+      {
+        "source": "public-provenance.mjs",
+        "file": "repro/sources/47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382-public-provenance.mjs",
+        "sha256": "47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382"
+      }
+    ]
+  },
+  "scoring_replay": {
+    "created": "2026-09-20T03:34:40.896Z",
+    "status": "replay_equal_to_preserved_original_scores",
+    "scopes": {
+      "qasper": {
+        "per_question_rows": 3015,
+        "all_scores_equal": true,
+        "paired_equal": null,
+        "current_implementation": {
+          "adapter_sha256": "587937b95888000fdd1bf9acfb18f3ed117d9e37ea98364754e0ecbd29796c57",
+          "validator_sha256": "7d39b991e4dde37c09b43e8a17ca34bab1eeaa0d232b225f80becdf25d6c5af4",
+          "python": "3.12.13 (main, Jun  2 2026, 22:47:20) [MSC v.1944 64 bit (AMD64)]"
+        }
+      },
+      "langchain": {
+        "per_question_rows": 406,
+        "all_scores_equal": true,
+        "paired_equal": true,
+        "current_implementation": {
+          "adapter_sha256": "587937b95888000fdd1bf9acfb18f3ed117d9e37ea98364754e0ecbd29796c57",
+          "validator_sha256": "7d39b991e4dde37c09b43e8a17ca34bab1eeaa0d232b225f80becdf25d6c5af4",
+          "python": "3.12.13 (main, Jun  2 2026, 22:47:20) [MSC v.1944 64 bit (AMD64)]"
+        }
+      },
+      "godot": {
+        "per_question_rows": 198,
+        "all_scores_equal": true,
+        "paired_equal": true,
+        "current_implementation": {
+          "adapter_sha256": "587937b95888000fdd1bf9acfb18f3ed117d9e37ea98364754e0ecbd29796c57",
+          "validator_sha256": "7d39b991e4dde37c09b43e8a17ca34bab1eeaa0d232b225f80becdf25d6c5af4",
+          "python": "3.12.13 (main, Jun  2 2026, 22:47:20) [MSC v.1944 64 bit (AMD64)]"
+        }
+      }
+    },
+    "bindings": {
+      "analysis/qasper-official-score.json": "6de95cb8ad5d562b1473d42cf87d08631a7456b76e04dcdd699577d7d3cba3ad",
+      "analysis/scoring-replay/qasper-official-score.json": "60bfff22aa25e479fbba1e9b95c6ca2d3ab8b2a7dd12f2fb831101bb1ea10096",
+      "analysis/qasper-official-per-question.jsonl": "3afde737649533c65d31311c9596f2293c0fc83e64b0ffac4a5331072aecc90d",
+      "analysis/scoring-replay/qasper-official-per-question.jsonl": "3afde737649533c65d31311c9596f2293c0fc83e64b0ffac4a5331072aecc90d",
+      "analysis/langchain-official-score.json": "f2c961f8cad27d4fe2484ffc1e5729852b28a7945c8388aebaaa66eee4573dc9",
+      "analysis/scoring-replay/langchain-official-score.json": "13cb2f9b6eb3086be44ac6230f65553995de885410f8a0b9b5d864d250a469f6",
+      "analysis/langchain-rrf30-per-question.json": "4d2916a290236eabe9c6a05c1094d3cf6a9d0a4e64092120247edadae1536248",
+      "analysis/scoring-replay/langchain-rrf30-per-question.json": "c8224ffedc1ef03b472756d5986a2ce9ea9b228a1d58037c56e8d4a7a5535dc0",
+      "analysis/langchain-rrf10-per-question.json": "054aca58ee0d9cef5aa64705b6d0a97ff8b1ba08ffefc676eb595efa4c24bfb7",
+      "analysis/scoring-replay/langchain-rrf10-per-question.json": "a8dffea02bb4c6ed0c9995f53eaf0862b55567b9450d3c0cae07ce7fa1bf32bf",
+      "analysis/langchain-paired-analysis.json": "95b79e249e6d643a12b17abfd4404169bedd606810831e614c26d42942d9e692",
+      "analysis/scoring-replay/langchain-paired-analysis.json": "1e2c583c762de1c0db27eea413974183e52f7f30d958f91792a0cf5d54294881",
+      "analysis/godot-official-score.json": "98d3f8878ffc2cf475c0bf14dbe099db634ed58eb6a3384da897a43367dbf851",
+      "analysis/scoring-replay/godot-official-score.json": "5bfad0dd007eb2a623c11b66317347ef202f8a8a60ce346fb6ec8f9ac19165d5",
+      "analysis/godot-rrf30-per-question.json": "a024c75e924b5e4cd629c6be02f816a019a6193c3a728f98bb50e44682b21bd6",
+      "analysis/scoring-replay/godot-rrf30-per-question.json": "7332b8add997283be733bbbf5f284a7769d7214803f34b20435bb08d6a7a8363",
+      "analysis/godot-rrf10-per-question.json": "488c399e0dc111f5ffd4e150e30db62986920b0163bc8dc00e3d5f60cf8cfc3f",
+      "analysis/scoring-replay/godot-rrf10-per-question.json": "6ab4368572a3a65dd9affbb9b807775419039aa6071a30b2d1b848e1c5b03aa2",
+      "analysis/godot-paired-analysis.json": "450540a30da032194088266f593aa4dc6958e4a88ce9b38609d3681c00773249",
+      "analysis/scoring-replay/godot-paired-analysis.json": "abe8718ba361abc761874a789e66ccfd8138296237558a93577ff0667f4400f2"
+    }
+  }
+}

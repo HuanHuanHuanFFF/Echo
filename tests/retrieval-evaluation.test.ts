@@ -103,7 +103,7 @@ it('scores actual indexed evidence from a frozen corpus without an Agent or sour
       await readFile(join(defaultOutput, 'manifest.json'), 'utf8'),
     );
     expect(defaultManifest.budget_chars).toBe(16000);
-    expect(defaultManifest.retrieval.rrf_k).toBe(30);
+    expect(defaultManifest.retrieval.rrf_k).toBe(10);
     expect(defaultRun.report.status).toBe('complete');
     for (const row of report.rows) {
       expect(row.request_chars + row.response_chars).toBe(row.context_chars);

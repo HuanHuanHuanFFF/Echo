@@ -5,10 +5,14 @@
   "max_chunks_per_source": 3,
   "bm25_candidates": 60,
   "dense_candidates": 60,
-  "rrf_k": 30,
+  "rrf_k": 10,
   "title_weight": 2,
   "bm25_weight": 0.5,
   "dense_weight": 1,
   "min_dense_similarity": 0.3,
-  "max_context_chars": 16000
+  "max_context_chars": 16000,
+  "lexical_engine": "minisearch",
+  "minisearch_k": 1.2,
+  "minisearch_b": 0.7,
+  "minisearch_d": 0.5
 }

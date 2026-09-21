@@ -16,6 +16,9 @@ const {
 } = await import(
   pathToFileURL(resolve('evals/run-source-limit-comparison.mjs')).href
 );
+const { checkCurrentSingleVariable } = await import(
+  pathToFileURL(resolve('evals/lib/joint-comparison.mjs')).href
+);
 const endpoint = 'https://example.invalid/embeddings';
 const options = (text = 'fixed', signal?: AbortSignal) => ({
   method: 'POST',
@@ -42,6 +45,99 @@ const setup = (fetchFn: () => Promise<Response>) =>
       expect(body.data[0]?.embedding).toHaveLength(2),
   });
 describe('single source-limit experiment', () => {
+  it.each([
+    ['bm25-03-rrf10', 0.3],
+    ['bm25-04-rrf10', 0.4],
+  ] as const)(
+    'binds %s to the frozen RRF10 reference without changing defaults',
+    (name, weight) => {
+      const defaults = retrievalSchema.parse({});
+      const historical = retrievalSchema.parse({
+        rrf_k: 60,
+        max_context_chars: 12000,
+      });
+      const reference = { ...defaults, rrf_k: 10 };
+      const candidate = experimentRetrieval(historical, name, weight);
+      expect(candidate).toEqual({ ...reference, bm25_weight: weight });
+      expect(experimentMetadata(name).values).toEqual([weight]);
+      expect(experimentMetadata(name).authorization).toContain(
+        'combined with RRF10',
+      );
+      expect(experimentBudget(historical, name, weight)).toBe(16000);
+      expect(() =>
+        checkCurrentSingleVariable(reference, candidate, name),
+      ).not.toThrow();
+      expect(() =>
+        checkCurrentSingleVariable({ ...defaults, rrf_k: 30 }, candidate, name),
+      ).toThrow();
+      expect(() =>
+        checkCurrentSingleVariable(
+          reference,
+          { ...candidate, max_context_chars: 20000 },
+          name,
+        ),
+      ).toThrow();
+      expect(() =>
+        checkCurrentSingleVariable(
+          reference,
+          { ...candidate, rrf_k: 30 },
+          name,
+        ),
+      ).toThrow();
+      expect(() => experimentRetrieval(historical, name, 0.2)).toThrow();
+      expect(defaults.rrf_k).toBe(10);
+      expect(defaults.bm25_weight).toBe(0.5);
+    },
+  );
+  it.each([
+    ['bm25-02-current', 'bm25_weight', 0.2],
+    ['bm25-025-current', 'bm25_weight', 0.25],
+    ['rrf10-current', 'rrf_k', 10],
+  ] as const)(
+    'compares only %s with the adopted baseline and rejects a combined change',
+    (name, field, value) => {
+      const historical = retrievalSchema.parse({
+        rrf_k: 60,
+        max_context_chars: 12000,
+      });
+      const baseline = retrievalSchema.parse({ rrf_k: 30 });
+      const candidate = experimentRetrieval(historical, name, value);
+      expect(candidate).toEqual({ ...baseline, [field]: value });
+      expect(experimentMetadata(name).values).toEqual([value]);
+      expect(experimentMetadata(name).authorization).toContain(
+        'single-variable',
+      );
+      expect(experimentBudget(historical, name, value)).toBe(16000);
+      expect(() =>
+        checkCurrentSingleVariable(baseline, candidate, name),
+      ).not.toThrow();
+      expect(() =>
+        checkCurrentSingleVariable(
+          baseline,
+          {
+            ...candidate,
+            [field === 'rrf_k' ? 'bm25_weight' : 'rrf_k']:
+              field === 'rrf_k' ? 0.2 : 10,
+          },
+          name,
+        ),
+      ).toThrow();
+      expect(() =>
+        checkCurrentSingleVariable(baseline, { ...candidate, topk: 12 }, name),
+      ).toThrow();
+      expect(() =>
+        checkCurrentSingleVariable(
+          { ...baseline, max_context_chars: 12000 },
+          candidate,
+          name,
+        ),
+      ).toThrow();
+      expect(() => experimentRetrieval(historical, name, 999)).toThrow();
+      expect(historical.rrf_k).toBe(60);
+      expect(baseline.bm25_weight).toBe(0.5);
+      expect(baseline.rrf_k).toBe(30);
+    },
+  );
   it('runs only RRF40 at the adopted16000 budget and leaves product defaults unchanged', () => {
     const frozenBase = retrievalSchema.parse({
       rrf_k: 60,
@@ -57,7 +153,7 @@ describe('single source-limit experiment', () => {
       'No default change',
     );
     expect(experimentBudget(frozenBase, 'rrf40-budget16000', 40)).toBe(16000);
-    expect(current.rrf_k).toBe(30);
+    expect(current.rrf_k).toBe(10);
     expect(frozenBase.rrf_k).toBe(60);
     expect(() =>
       experimentRetrieval(frozenBase, 'rrf40-budget16000', 30),

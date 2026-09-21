@@ -1,0 +1,1014 @@
+{
+  "created": "2026-09-20T13:56:48.631Z",
+  "status": "lexical_pilot_reviewed",
+  "external_root": "E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19",
+  "summary": {
+    "created": "2026-09-20T13:43:09.583315+00:00",
+    "plan": {
+      "created": "2026-09-20T13:40:36.490Z",
+      "scope": "DuRetrieval 200 frozen queries, full 100001 official units",
+      "ids": [
+        "6582f048ad224ea7a2ce53254606ec0d",
+        "b8727af8ca4038f6e0cb0013bf635e00",
+        "341d86e18ab6a68fdefb02c35a45875d",
+        "e043a94041c66f30fc72a85327f888b4",
+        "31083ad4da9c513c092ef32b77b7267d",
+        "a9149117fc97ca745e2099eadd437795",
+        "1e912d29e915f6ad37daeae975536d01",
+        "40f7a9f1aeb7a232b43bce572319f320",
+        "ac010546bc93e7f0e81330eed845ddb2",
+        "014a55bfce60800ddcb6800942c9a533",
+        "e926696c6b305b668137ca0a9c05cd1f",
+        "c06753f1c3c134dde0b1908970422a2b",
+        "bc0ce308ce4912b5840418bc4156d43e",
+        "3d399630d542e914902cde00f7b1d843",
+        "9aa25d76d88c0a7c98afac30d04d4deb",
+        "d29d84d18282ef8ca85a2e65525a2964",
+        "a451acd1e9836b04b16664e9f0c290e5",
+        "38b41db07f089d5e53a283a0a2df4035",
+        "6ce23b32335e4b9310bf2605e771e5d6",
+        "4cf0319c9e3ca850d91ca484279867fe",
+        "cd0e618510603bd5c55e58af5afa7f00",
+        "692a3f7bf5fdc9d914028bf98f470363",
+        "9ea8ea2ff586af51520e0721681909c9",
+        "2f0453f2a7447ebf2e6b1583ab35278b",
+        "7eb3b62f06f5d135fc933855b4eb82db",
+        "0215eabd32cf8108d35adb4dd94b0bc4",
+        "929b967d99426311b71b743606e790a9",
+        "0b237fb521c54d0e4fc21ad7edcebc8a",
+        "2211652aba7fba37ff762a005f0df4eb",
+        "2b44aff3539262caefff76d21ea13f61",
+        "5732275694c3cfba1640dd8c38219909",
+        "d423c29bd248690fdc646b2306767084",
+        "992a03f2ace31176af522ffe27a9e05b",
+        "d180616aa06d2c087e6236bb17009930",
+        "2c998012382eff1583697f8724d82b40",
+        "369b7fe0c12257c1c0b1e3890e2789c5",
+        "ceea931ad8f03544292292e61c67326d",
+        "5aeb652f4f9c8cd24bab688ce3401532",
+        "0ee6857a1356d30bc2c9bc215a8e4123",
+        "e3bdbfed070955c91f0f53ecd09369cb",
+        "fdf99f8389153c3f286d67abde245dce",
+        "a4be675abc6ce9b0208508ae73e7fc87",
+        "0e40c040bbe6473be4cb964f31964b52",
+        "c952511e826d0869058389f9de90eef4",
+        "b1c0ee2bfada122d07c02d4e89b34cb9",
+        "6904be546fd2646b4d6cad0007be3bb5",
+        "e0257272d36d6bc68657e6551cbfbf30",
+        "8f8b0c40092baa6a409c6a3d2a5c5673",
+        "5a44c776c799f39f3e47c07c14a12c0a",
+        "0d23101f5c0df04626b9c8edb8cd4f6b",
+        "f1d4d7a9c08c8ded477398a78aa71024",
+        "0fd7de161a7aed16562a67b04379fc3e",
+        "d1668e391ebfa266671fe83ca95377a5",
+        "b42faeae3cb95303842421c86eebe0fd",
+        "e5def1eb1284aab9007292613fb6882d",
+        "d032ea384fca5c09587204d3bb67a1c7",
+        "724e1ddc1025b015f1c5a92776e78f11",
+        "a35f3b1bbabcbd6adabb72d93d9f7eb7",
+        "182e456f20e8c0dae270b7546b7e6b4a",
+        "ad7522c774699caedee871d7089fa990",
+        "d7589f1f747557361655aabc21111e1a",
+        "2b9fe2d6198c66b22a7825544f8e6cc1",
+        "bcea5098c14d5530a3ffcaeccae0563f",
+        "d801efd2232f9723921aeae1954a0600",
+        "9e403f899adfcfbf2d6b3e702f937616",
+        "4b52791fd0b7772f766a02c1e6dd1c94",
+        "0b8cc5b56e6bdfb9476606c79f04ea9d",
+        "146caa2825ffc0585d5394692726d94d",
+        "e58987cdf49449f0bbf3d7faf9aaf43d",
+        "76fb3fcdeb761e03c030c23cc9f18a94",
+        "3b03b443579de379be311ac752a3fb73",
+        "f76888256ade6d86ff637864cba842f2",
+        "9fbb46e0b1f64eb99fb683e501b20f43",
+        "f3ff3ecc5082903af8a8d7ea090cdad0",
+        "a6921c13a716ded1d92d6784fedc87e4",
+        "2b0fc0b13e9e7567209c9b7f72ac09c9",
+        "0f2da468ecd42f800ad7ba0be8c48cb6",
+        "1d48af519b749c75853b569a91410107",
+        "62eaf08450f030d5e6651983ee0303a0",
+        "5b840798e55e881062b608cc96950386",
+        "d9207557b3d4f5c7669d43749c9f967e",
+        "24cd3b419ab923c4af76b5b75748b5f9",
+        "2028cb42104859035cd1f963b6992a9d",
+        "d0593d10fab4ffd431b56d6af91089c3",
+        "2d230ec6902199ae182a55d0e6d9a97a",
+        "4d7fcf97d97e30555f785fd153b2ef4d",
+        "0d093108cd6c949423d3ac5856951814",
+        "29d1fd8299f115320195b3941a2c5360",
+        "352b8af46893a4900022f6285de1996f",
+        "7a6f7e5ff945dbcbe6b127d9d31c3f2b",
+        "7753b5ecd5d762cf571a220dc984e36c",
+        "1094ace504535e204d096d16ce222708",
+        "04f581b6ddb51f959087992f76e40075",
+        "7a6432a30ae382b09da302e5e0e323ef",
+        "48aca00d9bc50b56ff51b3efa56e950e",
+        "06e462478c3f7780d2beb65ecd19314b",
+        "9ad3758e233c0687ddf5acbfe2b66bcf",
+        "aa6e5b33f573ed507289670a4ad2ad90",
+        "f83ab97a13fef3c62f82b9b46280e62f",
+        "6c9da51f2ec4be8426842d16971d56c8",
+        "6cb44109b9c8e856a1def16e03e1e08c",
+        "b5f8fff8a49022141dbda1f015d70c6a",
+        "476f11f844bd4978344746a0e8e914cf",
+        "eda231b92d5f0cdde29f21fdc5b3ee26",
+        "3b3f92312db9b5349e58430e8f46c52d",
+        "d22c8f32ab83cc6c5790574b7727305f",
+        "6d6536faeb9efec2be7ef0ce5666d2a7",
+        "a5ed28e133110f88c2f34f7fce21dd80",
+        "06ea4b584d285914aef3ffe5cb56c8a4",
+        "478b0db690846783acf3e2d2ae2d11ca",
+        "a4126de1fdc262cc118a7f3c95c89e23",
+        "83257e48ab54dc2aa8f6e855745a6399",
+        "0a427cb6c8f3d4596620ae8aa788f521",
+        "aa7b6d1e48f172152077b42c9551c89a",
+        "a3f75cb3916184fdaf028d7b98ee787a",
+        "f0d3b8ca065bdf5aa6f09d28984eadda",
+        "6ca92755ac9297319d907bccb701bd60",
+        "ca4c733b80f1b63c049bcfd28414b0c0",
+        "58125667063116449aedff9c4d128bb0",
+        "a0d3e12ae84383f9e18189a2b1cc2fb3",
+        "ca4054fe97f4f781b6760f9e3f10192a",
+        "2afc54e99c6f44a3446d82cc01a9ef4f",
+        "7efe4eb4000f1d5718f99fb70c531945",
+        "d03c78f5093c6ac538898309837fa669",
+        "832f5d5103984aaef2178df40f7fd624",
+        "ff345f273c461d318302ec5648b143ce",
+        "0ba41952beb2fefd07090c84367efd8c",
+        "ca8d7507aad1501f8db8da92c756b348",
+        "7a752940708e47c44b966574607ff4ec",
+        "53d6b2c2cd7768744673c6ee339d50f8",
+        "00e704e0313fa227ab121272edfebe9a",
+        "69192d41a9d9001e2dbcd4b88ff7b8aa",
+        "6ca7b29034be1c758837611cf04ef712",
+        "47ba08c0905cafaae7af88cb38e3614c",
+        "c01c7cd7e054e0ec0e263ddcacd60d78",
+        "14ed975fd5c05962bf50dd8bdbbc731e",
+        "e2052353d048b9260d70ac81bbb16b73",
+        "123895a10a259f1c1c60bea802261a6e",
+        "71e07eb37bc2fbde78de39cc21f93367",
+        "84e0c8e592ecd17828a2ee889bd8683e",
+        "91bb6db94bf067c3a39ca7b35221e242",
+        "d0d8511a15f138b2b679472b06efc285",
+        "93bdfbd6a851d14ba6cb234bba2b503c",
+        "47b26977a352b3c35a9dee0ee747addb",
+        "22e5c0750122a8bcd55e536ed557e270",
+        "8f4c06f4f1ddf23bfa2727449b44fadb",
+        "c26369dbda63f41629f2b9e5b112bb24",
+        "3c394f1857306f1e008163eb0dd9d505",
+        "a83605cbdd18407094bd159dc73c4dc7",
+        "8d1307b0d8dbb86ad290668c3a5112cc",
+        "80c7f8aa1bddf1dacd1fc3e4028feabd",
+        "4df6a21c4749dc980c15b321d8ae7e86",
+        "548e77f090ca7c5a49b8ee1d134acac8",
+        "a285d3bc11688e68f8f08f2306ea2604",
+        "919100df9fc70a047b46936cc85ca083",
+        "3a48b38f9b1c645d1d577ac594571226",
+        "49fc4dc2457624016e67382ccd9d9973",
+        "d693322b167d9af00f4faa3cfa655afb",
+        "f92b2323c7ad5d9af30c5c4539778a2c",
+        "9b8fc4c3e696c44a59310a66db39cd39",
+        "d4b150d69c4bca7b1f875f075bfd6c1a",
+        "f056af72df52cb9a54ea072af239bb67",
+        "4e3dc361d23de1c66a3ce5004e21bf61",
+        "1389623fdcc6c520d719f3326fb89e0c",
+        "86e38e1caf0b464f15e90b0a1b0aefe3",
+        "b0df5de3cf6f7dc43188540aa740ae1f",
+        "7f7ff6dc3308320a4fab97f49f1449ae",
+        "ef4f91fbe925448458458d830ea61249",
+        "269cc5f7225310c4dc123684e20ef962",
+        "f977a42295d29a96267142d4692f35d0",
+        "d1a32797041a0950b944c3ef7b45754e",
+        "b67dbf2cfe0911257585a9722e42e03d",
+        "49a2072ab4f7ff17495352c7c4cc557e",
+        "8f41bd30540a420a7fabe135bd55d864",
+        "5eae02b64dfe3c7bb605dfb1e68463c7",
+        "c80e390f170ff2096048ebd1dad1087a",
+        "99f115316e1f9042b6c0e3504b8ca052",
+        "26a9c312e8d928626e7f4c025ad35981",
+        "8c5558b5dd55bd87a59d9aa9cc648e60",
+        "760d68db52f3545ef9e46f0a077cd7ce",
+        "cd12c7558b1d64a5f1ec8402307e6ff4",
+        "619483c039431503bd4efae6e064a555",
+        "475a6c04068f6bcd7b49a69af100c5a7",
+        "2fc2684d1ea9b5062646fd6bd44e0822",
+        "bea11e98125aad5e9211053ed129eb13",
+        "cafd2e05277b74041aeaf87e6f925174",
+        "5f8d4ad2e9b027c2791650ebcef51ca7",
+        "ceb01fa38dc4e21f304f1898ce574f60",
+        "727ab9cdcdff7d2c6a04be8fde7c756a",
+        "830a590eacfe9494283700c6359581b0",
+        "b63b4e3ae037e9f27cee28c912a94bef",
+        "dc4c19c05902f6eeae75b30c069abc5f",
+        "481f8925af8716a26658885a8c447bea",
+        "4f0d3c9f4239791a5c8bbbcd87f4241e",
+        "20fb5fede45cf4596a6aa7e1662ca8cb",
+        "ef6ef4237a5431a33532c1878721dbee",
+        "9a143b054bb54a8e9905f75e532ca6dc",
+        "605564a9cafc50175ace048ad5047cb2",
+        "cdb018b8e6c2cb7383fddbeda6c60c20",
+        "655cdc614b7d63cd6fc0eb6ea6b2fe17"
+      ],
+      "sampling": {
+        "population": 2000,
+        "sample": 200,
+        "ids": [
+          "6582f048ad224ea7a2ce53254606ec0d",
+          "b8727af8ca4038f6e0cb0013bf635e00",
+          "341d86e18ab6a68fdefb02c35a45875d",
+          "e043a94041c66f30fc72a85327f888b4",
+          "31083ad4da9c513c092ef32b77b7267d",
+          "a9149117fc97ca745e2099eadd437795",
+          "1e912d29e915f6ad37daeae975536d01",
+          "40f7a9f1aeb7a232b43bce572319f320",
+          "ac010546bc93e7f0e81330eed845ddb2",
+          "014a55bfce60800ddcb6800942c9a533",
+          "e926696c6b305b668137ca0a9c05cd1f",
+          "c06753f1c3c134dde0b1908970422a2b",
+          "bc0ce308ce4912b5840418bc4156d43e",
+          "3d399630d542e914902cde00f7b1d843",
+          "9aa25d76d88c0a7c98afac30d04d4deb",
+          "d29d84d18282ef8ca85a2e65525a2964",
+          "a451acd1e9836b04b16664e9f0c290e5",
+          "38b41db07f089d5e53a283a0a2df4035",
+          "6ce23b32335e4b9310bf2605e771e5d6",
+          "4cf0319c9e3ca850d91ca484279867fe",
+          "cd0e618510603bd5c55e58af5afa7f00",
+          "692a3f7bf5fdc9d914028bf98f470363",
+          "9ea8ea2ff586af51520e0721681909c9",
+          "2f0453f2a7447ebf2e6b1583ab35278b",
+          "7eb3b62f06f5d135fc933855b4eb82db",
+          "0215eabd32cf8108d35adb4dd94b0bc4",
+          "929b967d99426311b71b743606e790a9",
+          "0b237fb521c54d0e4fc21ad7edcebc8a",
+          "2211652aba7fba37ff762a005f0df4eb",
+          "2b44aff3539262caefff76d21ea13f61",
+          "5732275694c3cfba1640dd8c38219909",
+          "d423c29bd248690fdc646b2306767084",
+          "992a03f2ace31176af522ffe27a9e05b",
+          "d180616aa06d2c087e6236bb17009930",
+          "2c998012382eff1583697f8724d82b40",
+          "369b7fe0c12257c1c0b1e3890e2789c5",
+          "ceea931ad8f03544292292e61c67326d",
+          "5aeb652f4f9c8cd24bab688ce3401532",
+          "0ee6857a1356d30bc2c9bc215a8e4123",
+          "e3bdbfed070955c91f0f53ecd09369cb",
+          "fdf99f8389153c3f286d67abde245dce",
+          "a4be675abc6ce9b0208508ae73e7fc87",
+          "0e40c040bbe6473be4cb964f31964b52",
+          "c952511e826d0869058389f9de90eef4",
+          "b1c0ee2bfada122d07c02d4e89b34cb9",
+          "6904be546fd2646b4d6cad0007be3bb5",
+          "e0257272d36d6bc68657e6551cbfbf30",
+          "8f8b0c40092baa6a409c6a3d2a5c5673",
+          "5a44c776c799f39f3e47c07c14a12c0a",
+          "0d23101f5c0df04626b9c8edb8cd4f6b",
+          "f1d4d7a9c08c8ded477398a78aa71024",
+          "0fd7de161a7aed16562a67b04379fc3e",
+          "d1668e391ebfa266671fe83ca95377a5",
+          "b42faeae3cb95303842421c86eebe0fd",
+          "e5def1eb1284aab9007292613fb6882d",
+          "d032ea384fca5c09587204d3bb67a1c7",
+          "724e1ddc1025b015f1c5a92776e78f11",
+          "a35f3b1bbabcbd6adabb72d93d9f7eb7",
+          "182e456f20e8c0dae270b7546b7e6b4a",
+          "ad7522c774699caedee871d7089fa990",
+          "d7589f1f747557361655aabc21111e1a",
+          "2b9fe2d6198c66b22a7825544f8e6cc1",
+          "bcea5098c14d5530a3ffcaeccae0563f",
+          "d801efd2232f9723921aeae1954a0600",
+          "9e403f899adfcfbf2d6b3e702f937616",
+          "4b52791fd0b7772f766a02c1e6dd1c94",
+          "0b8cc5b56e6bdfb9476606c79f04ea9d",
+          "146caa2825ffc0585d5394692726d94d",
+          "e58987cdf49449f0bbf3d7faf9aaf43d",
+          "76fb3fcdeb761e03c030c23cc9f18a94",
+          "3b03b443579de379be311ac752a3fb73",
+          "f76888256ade6d86ff637864cba842f2",
+          "9fbb46e0b1f64eb99fb683e501b20f43",
+          "f3ff3ecc5082903af8a8d7ea090cdad0",
+          "a6921c13a716ded1d92d6784fedc87e4",
+          "2b0fc0b13e9e7567209c9b7f72ac09c9",
+          "0f2da468ecd42f800ad7ba0be8c48cb6",
+          "1d48af519b749c75853b569a91410107",
+          "62eaf08450f030d5e6651983ee0303a0",
+          "5b840798e55e881062b608cc96950386",
+          "d9207557b3d4f5c7669d43749c9f967e",
+          "24cd3b419ab923c4af76b5b75748b5f9",
+          "2028cb42104859035cd1f963b6992a9d",
+          "d0593d10fab4ffd431b56d6af91089c3",
+          "2d230ec6902199ae182a55d0e6d9a97a",
+          "4d7fcf97d97e30555f785fd153b2ef4d",
+          "0d093108cd6c949423d3ac5856951814",
+          "29d1fd8299f115320195b3941a2c5360",
+          "352b8af46893a4900022f6285de1996f",
+          "7a6f7e5ff945dbcbe6b127d9d31c3f2b",
+          "7753b5ecd5d762cf571a220dc984e36c",
+          "1094ace504535e204d096d16ce222708",
+          "04f581b6ddb51f959087992f76e40075",
+          "7a6432a30ae382b09da302e5e0e323ef",
+          "48aca00d9bc50b56ff51b3efa56e950e",
+          "06e462478c3f7780d2beb65ecd19314b",
+          "9ad3758e233c0687ddf5acbfe2b66bcf",
+          "aa6e5b33f573ed507289670a4ad2ad90",
+          "f83ab97a13fef3c62f82b9b46280e62f",
+          "6c9da51f2ec4be8426842d16971d56c8",
+          "6cb44109b9c8e856a1def16e03e1e08c",
+          "b5f8fff8a49022141dbda1f015d70c6a",
+          "476f11f844bd4978344746a0e8e914cf",
+          "eda231b92d5f0cdde29f21fdc5b3ee26",
+          "3b3f92312db9b5349e58430e8f46c52d",
+          "d22c8f32ab83cc6c5790574b7727305f",
+          "6d6536faeb9efec2be7ef0ce5666d2a7",
+          "a5ed28e133110f88c2f34f7fce21dd80",
+          "06ea4b584d285914aef3ffe5cb56c8a4",
+          "478b0db690846783acf3e2d2ae2d11ca",
+          "a4126de1fdc262cc118a7f3c95c89e23",
+          "83257e48ab54dc2aa8f6e855745a6399",
+          "0a427cb6c8f3d4596620ae8aa788f521",
+          "aa7b6d1e48f172152077b42c9551c89a",
+          "a3f75cb3916184fdaf028d7b98ee787a",
+          "f0d3b8ca065bdf5aa6f09d28984eadda",
+          "6ca92755ac9297319d907bccb701bd60",
+          "ca4c733b80f1b63c049bcfd28414b0c0",
+          "58125667063116449aedff9c4d128bb0",
+          "a0d3e12ae84383f9e18189a2b1cc2fb3",
+          "ca4054fe97f4f781b6760f9e3f10192a",
+          "2afc54e99c6f44a3446d82cc01a9ef4f",
+          "7efe4eb4000f1d5718f99fb70c531945",
+          "d03c78f5093c6ac538898309837fa669",
+          "832f5d5103984aaef2178df40f7fd624",
+          "ff345f273c461d318302ec5648b143ce",
+          "0ba41952beb2fefd07090c84367efd8c",
+          "ca8d7507aad1501f8db8da92c756b348",
+          "7a752940708e47c44b966574607ff4ec",
+          "53d6b2c2cd7768744673c6ee339d50f8",
+          "00e704e0313fa227ab121272edfebe9a",
+          "69192d41a9d9001e2dbcd4b88ff7b8aa",
+          "6ca7b29034be1c758837611cf04ef712",
+          "47ba08c0905cafaae7af88cb38e3614c",
+          "c01c7cd7e054e0ec0e263ddcacd60d78",
+          "14ed975fd5c05962bf50dd8bdbbc731e",
+          "e2052353d048b9260d70ac81bbb16b73",
+          "123895a10a259f1c1c60bea802261a6e",
+          "71e07eb37bc2fbde78de39cc21f93367",
+          "84e0c8e592ecd17828a2ee889bd8683e",
+          "91bb6db94bf067c3a39ca7b35221e242",
+          "d0d8511a15f138b2b679472b06efc285",
+          "93bdfbd6a851d14ba6cb234bba2b503c",
+          "47b26977a352b3c35a9dee0ee747addb",
+          "22e5c0750122a8bcd55e536ed557e270",
+          "8f4c06f4f1ddf23bfa2727449b44fadb",
+          "c26369dbda63f41629f2b9e5b112bb24",
+          "3c394f1857306f1e008163eb0dd9d505",
+          "a83605cbdd18407094bd159dc73c4dc7",
+          "8d1307b0d8dbb86ad290668c3a5112cc",
+          "80c7f8aa1bddf1dacd1fc3e4028feabd",
+          "4df6a21c4749dc980c15b321d8ae7e86",
+          "548e77f090ca7c5a49b8ee1d134acac8",
+          "a285d3bc11688e68f8f08f2306ea2604",
+          "919100df9fc70a047b46936cc85ca083",
+          "3a48b38f9b1c645d1d577ac594571226",
+          "49fc4dc2457624016e67382ccd9d9973",
+          "d693322b167d9af00f4faa3cfa655afb",
+          "f92b2323c7ad5d9af30c5c4539778a2c",
+          "9b8fc4c3e696c44a59310a66db39cd39",
+          "d4b150d69c4bca7b1f875f075bfd6c1a",
+          "f056af72df52cb9a54ea072af239bb67",
+          "4e3dc361d23de1c66a3ce5004e21bf61",
+          "1389623fdcc6c520d719f3326fb89e0c",
+          "86e38e1caf0b464f15e90b0a1b0aefe3",
+          "b0df5de3cf6f7dc43188540aa740ae1f",
+          "7f7ff6dc3308320a4fab97f49f1449ae",
+          "ef4f91fbe925448458458d830ea61249",
+          "269cc5f7225310c4dc123684e20ef962",
+          "f977a42295d29a96267142d4692f35d0",
+          "d1a32797041a0950b944c3ef7b45754e",
+          "b67dbf2cfe0911257585a9722e42e03d",
+          "49a2072ab4f7ff17495352c7c4cc557e",
+          "8f41bd30540a420a7fabe135bd55d864",
+          "5eae02b64dfe3c7bb605dfb1e68463c7",
+          "c80e390f170ff2096048ebd1dad1087a",
+          "99f115316e1f9042b6c0e3504b8ca052",
+          "26a9c312e8d928626e7f4c025ad35981",
+          "8c5558b5dd55bd87a59d9aa9cc648e60",
+          "760d68db52f3545ef9e46f0a077cd7ce",
+          "cd12c7558b1d64a5f1ec8402307e6ff4",
+          "619483c039431503bd4efae6e064a555",
+          "475a6c04068f6bcd7b49a69af100c5a7",
+          "2fc2684d1ea9b5062646fd6bd44e0822",
+          "bea11e98125aad5e9211053ed129eb13",
+          "cafd2e05277b74041aeaf87e6f925174",
+          "5f8d4ad2e9b027c2791650ebcef51ca7",
+          "ceb01fa38dc4e21f304f1898ce574f60",
+          "727ab9cdcdff7d2c6a04be8fde7c756a",
+          "830a590eacfe9494283700c6359581b0",
+          "b63b4e3ae037e9f27cee28c912a94bef",
+          "dc4c19c05902f6eeae75b30c069abc5f",
+          "481f8925af8716a26658885a8c447bea",
+          "4f0d3c9f4239791a5c8bbbcd87f4241e",
+          "20fb5fede45cf4596a6aa7e1662ca8cb",
+          "ef6ef4237a5431a33532c1878721dbee",
+          "9a143b054bb54a8e9905f75e532ca6dc",
+          "605564a9cafc50175ace048ad5047cb2",
+          "cdb018b8e6c2cb7383fddbeda6c60c20",
+          "655cdc614b7d63cd6fc0eb6ea6b2fe17"
+        ]
+      },
+      "documents": 100001,
+      "arms": ["icu_sqlite", "jieba_search", "lucene_idf"],
+      "modes": ["bm25", "hybrid"],
+      "dense_control": true,
+      "changes": {
+        "icu_sqlite": "Exact existing ICU + expansions, native SQLite FTS5 BM25",
+        "jieba_search": "Only first word pass replaced by jieba-wasm 2.4.0 cut_for_search HMM=true; same common expansions, stopwords, no custom dictionary",
+        "lucene_idf": "Same ICU tokens and exact length/TF normalization; only IDF log(1+ratio) replacing SQLite clipped log(ratio); not a full Lucene engine"
+      },
+      "k1": 1.2,
+      "b": 0.75,
+      "rrf_k": 10,
+      "bm25_weight": 0.5,
+      "dense_weight": 1,
+      "candidates_per_lane": 60,
+      "query_term_limit": 128,
+      "title_weight": 2,
+      "title_field": "empty",
+      "min_dense_similarity": 0.3,
+      "model": "qwen3.7-text-embedding",
+      "dimensions": 1024,
+      "source_cap": null,
+      "context_budget": null,
+      "retrieval_unit": "Original official fixed units; no Echo rechunking or MCP packing",
+      "dictionary": "Jieba bundled dictionary pinned by package lock and WASM SHA; no user dictionary",
+      "corpus_duplicate_policy": "Existing frozen index: last input row wins",
+      "baseline_required": "All 100001 ICU document terms identical; all 200 old BM25 and hybrid10 orders identical",
+      "formula_control": "Manual SQLite formula must match native FTS5 scores/order before IDF variant accepted",
+      "new_embedding_calls": 0,
+      "network_forbidden": true,
+      "reference_manifests": {
+        "docs/evals/2026-09-20-public-full-results.manifest.json": "6d24ca2b477b06b4bca0528f512c8927a727c599ad4da322a86cdcf60b13794a",
+        "docs/evals/2026-09-20-public-mode-contrast.manifest.json": "f447b760b6164a1ea94099d1f770ea47ecd38c923fa5d3fa8c0eb62ec2ca3b57",
+        "docs/evals/2026-09-20-bm25-weight-pilot.manifest.json": "c442c1df9c8752e4107707b5ad54fde96a9dbb08e420235a5ce0a448ede479a8"
+      },
+      "bindings": {
+        "data/du-corpus.jsonl": "832b9af76e04815651963deed1d167870f0aa466c3079c40c71d2989974d612a",
+        "data/du-queries.jsonl": "20722074d3dab144c07c8ffc1b374cfa0603fb0ce0ccdf842bd95cf524d78272",
+        "data/du-qrels.jsonl": "78e54bfdcc726c3bbb27fe4023b8d03a436de53f4d7bbc6d991209083d685238",
+        "fixed/du.sqlite": "4ec07f8b6075f6e1428bee16420fdb5c8aae1f744ebf90ebc9f68654f5780816",
+        "fixed/du-index.json": "94d7a43b6433a267d7ab0623f47d16a7df789d0d86c3aa820c9f4f25184b97ff",
+        "fixed/du-rrf10.jsonl": "ed1df824fa3d68e00a7757b9073d60e4f54a6d7007d5a7753001a8479b4cdeb5",
+        "runtime/dist/lexical.js": "58588607613bd8f5b2af75216098042e5e878d99b3faf731531f39442dd47943",
+        "runtime/dist/identity.js": "e4aee0debfbb3cd781fabc228a213887490d5ba100d9e518f01c58e7325f7b9b",
+        "runtime/package-lock.json": "a76624a04889b3298091597533603516eaffed87b3d916931e691d881fe6e688",
+        "analysis/weight-pilot-10pct-2026-09-20-v1/freeze.json": "9edbe03226cf80ad0d3309a5b6b84221fac9feb108cb6f73477fd82d629c8149",
+        "analysis/mode-contrast-2026-09-20-v1/du-bm25-per-question.json": "d07a06cbf761a57c1f78e6a8f19274538bb32db489cdd64877b01ac6a261ca4c",
+        "analysis/mode-contrast-2026-09-20-v1/du-dense-per-question.json": "6804154cf720f3f901ffa54e9bd28eaf81d9b7b837f04692d66c08d4930d61c8",
+        "analysis/mode-contrast-2026-09-20-v1/du-rrf10-per-question.json": "457a5bfe25348a21c5ce0ef1beefe8a1ccccf81a3dad96cf253f95f901e37702",
+        "tooling/jieba-wasm-2.4.0/package.json": "9ebbfbec33ff6d5560d7811fd64b66baa95a1a098b7ffe675e1d495a22a5aaef",
+        "tooling/jieba-wasm-2.4.0/package-lock.json": "49142fc94f5a2e56d592823b2f596bf44f7d347c522ec352619e38474eb0a977",
+        "tooling/jieba-wasm-2.4.0/node_modules/jieba-wasm/package.json": "c2324a8cc4d96e2388c42b46d3a96a5f35c36f652d8a54d5d78d7df161f7d2c2",
+        "tooling/jieba-wasm-2.4.0/node_modules/jieba-wasm/pkg/nodejs/jieba_rs_wasm.js": "3f7ed59b2d1745a14567a212eeeba7e5c82dad29cea1402d908b317b5a7a24a4",
+        "tooling/jieba-wasm-2.4.0/node_modules/jieba-wasm/pkg/nodejs/jieba_rs_wasm_bg.wasm": "06593dfa9234d927385aa98a0be294366a5d52f2148113ba0aa782b550728146"
+      },
+      "environment": {
+        "node": "v24.15.0",
+        "icu": "78.2",
+        "sqlite": "3.53.4"
+      },
+      "implementation_sha256": "3ae2bd8fff56169df55d6db387aae5c08decea9c6d328195be6cbbb3cc4ae180",
+      "limitations": [
+        "Already-opened exploratory subset, not blind evaluation",
+        "No whole-document term deduplication or simultaneous dictionary/weight changes",
+        "Only Chinese Du; not a general claim about English or personal notes"
+      ]
+    },
+    "conditions": {
+      "dense": {
+        "questions": 200,
+        "metrics": {
+          "ndcg_cut_10": 0.8599435462620789,
+          "recall_10": 0.8930670163170163,
+          "recall_50": 0.9724299866799867,
+          "MRR@10": 0.9221309523809523,
+          "Hit@10": 0.985
+        },
+        "hit10_count": 197,
+        "empty_queries": 0
+      },
+      "icu_sqlite-bm25": {
+        "questions": 200,
+        "metrics": {
+          "ndcg_cut_10": 0.5952377256241661,
+          "recall_10": 0.6139165001665001,
+          "recall_50": 0.7685846445221445,
+          "MRR@10": 0.7390952380952381,
+          "Hit@10": 0.905
+        },
+        "hit10_count": 181,
+        "empty_queries": 0
+      },
+      "icu_sqlite-hybrid": {
+        "questions": 200,
+        "metrics": {
+          "ndcg_cut_10": 0.8391138289211627,
+          "recall_10": 0.8820731213231213,
+          "recall_50": 0.9723210123210123,
+          "MRR@10": 0.9060892857142857,
+          "Hit@10": 0.985
+        },
+        "hit10_count": 197,
+        "empty_queries": 0
+      },
+      "jieba_search-bm25": {
+        "questions": 200,
+        "metrics": {
+          "ndcg_cut_10": 0.5737932260064553,
+          "recall_10": 0.5918748334998335,
+          "recall_50": 0.7581089119214119,
+          "MRR@10": 0.7311448412698413,
+          "Hit@10": 0.89
+        },
+        "hit10_count": 178,
+        "empty_queries": 0
+      },
+      "jieba_search-hybrid": {
+        "questions": 200,
+        "metrics": {
+          "ndcg_cut_10": 0.8387550327044155,
+          "recall_10": 0.8815838813963814,
+          "recall_50": 0.970987678987679,
+          "MRR@10": 0.9085892857142858,
+          "Hit@10": 0.985
+        },
+        "hit10_count": 197,
+        "empty_queries": 0
+      },
+      "lucene_idf-bm25": {
+        "questions": 200,
+        "metrics": {
+          "ndcg_cut_10": 0.5954299437803328,
+          "recall_10": 0.6139165001665001,
+          "recall_50": 0.7685846445221445,
+          "MRR@10": 0.738845238095238,
+          "Hit@10": 0.905
+        },
+        "hit10_count": 181,
+        "empty_queries": 0
+      },
+      "lucene_idf-hybrid": {
+        "questions": 200,
+        "metrics": {
+          "ndcg_cut_10": 0.838872737044385,
+          "recall_10": 0.8817606213231213,
+          "recall_50": 0.9723210123210123,
+          "MRR@10": 0.9060892857142857,
+          "Hit@10": 0.985
+        },
+        "hit10_count": 197,
+        "empty_queries": 0
+      }
+    },
+    "paired_vs_same_mode_icu": {
+      "jieba_search-bm25": {
+        "ndcg_cut_10": {
+          "difference": -0.02144449961771076,
+          "ci95": [-0.03857416371600951, -0.004309510668753058],
+          "wins": 39,
+          "losses": 65,
+          "ties": 96
+        },
+        "recall_10": {
+          "difference": -0.022041666666666668,
+          "ci95": [-0.041839434523809525, -0.0031242559523809656],
+          "wins": 12,
+          "losses": 25,
+          "ties": 163
+        },
+        "recall_50": {
+          "difference": -0.0104757326007326,
+          "ci95": [-0.025184363553113546, 0.0044763507326007305],
+          "wins": 8,
+          "losses": 20,
+          "ties": 172
+        }
+      },
+      "jieba_search-hybrid": {
+        "ndcg_cut_10": {
+          "difference": -0.0003587962167471398,
+          "ci95": [-0.0066140923227620595, 0.005869043257162098],
+          "wins": 31,
+          "losses": 37,
+          "ties": 132
+        },
+        "recall_10": {
+          "difference": -0.0004892399267399253,
+          "ci95": [-0.006973214285714284, 0.005900669642857142],
+          "wins": 7,
+          "losses": 8,
+          "ties": 185
+        },
+        "recall_50": {
+          "difference": -0.0013333333333333335,
+          "ci95": [-0.005, 0.0009999999999999998],
+          "wins": 1,
+          "losses": 1,
+          "ties": 198
+        }
+      },
+      "lucene_idf-bm25": {
+        "ndcg_cut_10": {
+          "difference": 0.00019221815616663195,
+          "ci95": [-0.0004084581351877012, 0.001146064268140379],
+          "wins": 1,
+          "losses": 4,
+          "ties": 195
+        },
+        "recall_10": {
+          "difference": 0,
+          "ci95": [0, 0],
+          "wins": 0,
+          "losses": 0,
+          "ties": 200
+        },
+        "recall_50": {
+          "difference": 0,
+          "ci95": [0, 0],
+          "wins": 0,
+          "losses": 0,
+          "ties": 200
+        }
+      },
+      "lucene_idf-hybrid": {
+        "ndcg_cut_10": {
+          "difference": -0.00024109187677762156,
+          "ci95": [-0.001013652387759834, 0.0002445152390984057],
+          "wins": 2,
+          "losses": 2,
+          "ties": 196
+        },
+        "recall_10": {
+          "difference": -0.0003125,
+          "ci95": [-0.0009375, 0],
+          "wins": 0,
+          "losses": 1,
+          "ties": 199
+        },
+        "recall_50": {
+          "difference": 0,
+          "ci95": [0, 0],
+          "wins": 0,
+          "losses": 0,
+          "ties": 200
+        }
+      }
+    },
+    "hybrid_vs_dense": {
+      "icu_sqlite": {
+        "ndcg_cut_10": {
+          "difference": -0.02082971734091628,
+          "ci95": [-0.03519370969880162, -0.007143302048607894],
+          "wins": 51,
+          "losses": 75,
+          "ties": 74
+        }
+      },
+      "jieba_search": {
+        "ndcg_cut_10": {
+          "difference": -0.02118851355766342,
+          "ci95": [-0.03504210864058388, -0.007655579281446919],
+          "wins": 45,
+          "losses": 78,
+          "ties": 77
+        }
+      },
+      "lucene_idf": {
+        "ndcg_cut_10": {
+          "difference": -0.021070809217693904,
+          "ci95": [-0.035356309432287805, -0.007384340424418086],
+          "wins": 49,
+          "losses": 76,
+          "ties": 75
+        }
+      }
+    },
+    "old_baseline_per_question_scores_equal": true,
+    "ranking_formulas_checked": true,
+    "bootstrap": {
+      "iterations": 10000,
+      "seed": 20260920,
+      "unit": "query",
+      "limitation": "Exploratory existing 200-query subset; no multiplicity or held-out claim"
+    },
+    "bindings": {
+      "freeze.json": "071c660b52dbc205eb0eb5ba26019dc54f73d426a54f1751b9bac596e5f53a36",
+      "run-receipt.json": "07b49d28e050ffd43f57654f1e4d73c118655b2f5ee70b40e2c8e5bb4cce310e",
+      "candidates.jsonl": "2e52f7073f2400c6d71218191526a612c972e2fe19215a95afd48f507d9bf429",
+      "dense.jsonl": "839a3aea092628f170d4f9f53b5510f08c801ef0315e3e98e56b13784e1bfe3b",
+      "dense-per-question.json": "4392f61ba9c83beb3043d44863b536f53197b6f597615f105c7e047b7b9f9948",
+      "icu_sqlite-bm25.jsonl": "b0a1dd7416c88b19da9f9cf453b798dbe59faf5c26cd5977ef9c440c9e79299c",
+      "icu_sqlite-bm25-per-question.json": "ae0207d8635d52e578bcef720230f7a62883728137a05741f667742d10f6b87c",
+      "icu_sqlite-hybrid.jsonl": "0eae4551171f607bb76c169eef96a62664ad069f59f493643426c9192b354b9e",
+      "icu_sqlite-hybrid-per-question.json": "5dad5050c7b69252dfd6e532993e6f187708e891144af603c9c8f39d708ba75f",
+      "jieba_search-bm25.jsonl": "6e0af4f30a3f0debfbbccbf191957fd439fabd648e7abf2e0cedb86b5cd161af",
+      "jieba_search-bm25-per-question.json": "3fb9041aa1b5d688ea3fde17c75b52516525562194a288e9f085141069b73cb1",
+      "jieba_search-hybrid.jsonl": "fd6dc26b3b23828bacdbd44a1458342e910c3a363b16704a3e7a202ac2ea6160",
+      "jieba_search-hybrid-per-question.json": "e093a9c8dcecba84078b5d25144044b3e53f00f9c22dd291f53549f21c3482b9",
+      "lucene_idf-bm25.jsonl": "1dc23e156ba8d173bb45f3c361f6bd64b0b8e19e76bbcf4b866c7af83b477397",
+      "lucene_idf-bm25-per-question.json": "1cf63c19eea41aa44042453525f516a39ea212b5cc870f44333eda594435d889",
+      "lucene_idf-hybrid.jsonl": "54bc92f60a0111ac0602bfd660f4407be1fbeae699223ce21cbbe4b16b8ff42a",
+      "lucene_idf-hybrid-per-question.json": "ae7466225958a610b3020057e3ed52f91ae1f179d82f722fdb12b1fea42ab4eb"
+    },
+    "implementation": {
+      "scorer_sha256": "07debe922eba6f04d700dcf71299fa16b811e6f70a11683011b6006145333eda",
+      "validator_sha256": "7d39b991e4dde37c09b43e8a17ca34bab1eeaa0d232b225f80becdf25d6c5af4",
+      "python": "3.12.13 (main, Jun  2 2026, 22:47:20) [MSC v.1944 64 bit (AMD64)]",
+      "numpy": "2.5.3",
+      "pytrec_eval": "0.5.10"
+    }
+  },
+  "run_receipt": {
+    "created": "2026-09-20T13:42:34.567Z",
+    "scope": "DuRetrieval 200 frozen queries, full 100001 official units",
+    "documents": 100001,
+    "queries": 200,
+    "native_bm25_query_calls": 400,
+    "manual_formula_controls": 200,
+    "idf_variant_rankings": 200,
+    "baseline_document_terms_equal": true,
+    "baseline_200_bm25_and_hybrid_orders_equal": true,
+    "manual_sqlite_control_equal": true,
+    "original_index_sha256_before": "4ec07f8b6075f6e1428bee16420fdb5c8aae1f744ebf90ebc9f68654f5780816",
+    "original_index_sha256_after": "4ec07f8b6075f6e1428bee16420fdb5c8aae1f744ebf90ebc9f68654f5780816",
+    "new_lexical_index_sha256": "dc31304f56371620c4784f2cd5ed8eacbce92c1951fb60dbb62bfa5efaaef508",
+    "new_lexical_index_bytes": 375177216,
+    "new_embedding_calls": 0,
+    "network_forbidden": true,
+    "bindings": {
+      "data/du-corpus.jsonl": "832b9af76e04815651963deed1d167870f0aa466c3079c40c71d2989974d612a",
+      "data/du-queries.jsonl": "20722074d3dab144c07c8ffc1b374cfa0603fb0ce0ccdf842bd95cf524d78272",
+      "data/du-qrels.jsonl": "78e54bfdcc726c3bbb27fe4023b8d03a436de53f4d7bbc6d991209083d685238",
+      "fixed/du.sqlite": "4ec07f8b6075f6e1428bee16420fdb5c8aae1f744ebf90ebc9f68654f5780816",
+      "fixed/du-index.json": "94d7a43b6433a267d7ab0623f47d16a7df789d0d86c3aa820c9f4f25184b97ff",
+      "fixed/du-rrf10.jsonl": "ed1df824fa3d68e00a7757b9073d60e4f54a6d7007d5a7753001a8479b4cdeb5",
+      "runtime/dist/lexical.js": "58588607613bd8f5b2af75216098042e5e878d99b3faf731531f39442dd47943",
+      "runtime/dist/identity.js": "e4aee0debfbb3cd781fabc228a213887490d5ba100d9e518f01c58e7325f7b9b",
+      "runtime/package-lock.json": "a76624a04889b3298091597533603516eaffed87b3d916931e691d881fe6e688",
+      "analysis/weight-pilot-10pct-2026-09-20-v1/freeze.json": "9edbe03226cf80ad0d3309a5b6b84221fac9feb108cb6f73477fd82d629c8149",
+      "analysis/mode-contrast-2026-09-20-v1/du-bm25-per-question.json": "d07a06cbf761a57c1f78e6a8f19274538bb32db489cdd64877b01ac6a261ca4c",
+      "analysis/mode-contrast-2026-09-20-v1/du-dense-per-question.json": "6804154cf720f3f901ffa54e9bd28eaf81d9b7b837f04692d66c08d4930d61c8",
+      "analysis/mode-contrast-2026-09-20-v1/du-rrf10-per-question.json": "457a5bfe25348a21c5ce0ef1beefe8a1ccccf81a3dad96cf253f95f901e37702",
+      "tooling/jieba-wasm-2.4.0/package.json": "9ebbfbec33ff6d5560d7811fd64b66baa95a1a098b7ffe675e1d495a22a5aaef",
+      "tooling/jieba-wasm-2.4.0/package-lock.json": "49142fc94f5a2e56d592823b2f596bf44f7d347c522ec352619e38474eb0a977",
+      "tooling/jieba-wasm-2.4.0/node_modules/jieba-wasm/package.json": "c2324a8cc4d96e2388c42b46d3a96a5f35c36f652d8a54d5d78d7df161f7d2c2",
+      "tooling/jieba-wasm-2.4.0/node_modules/jieba-wasm/pkg/nodejs/jieba_rs_wasm.js": "3f7ed59b2d1745a14567a212eeeba7e5c82dad29cea1402d908b317b5a7a24a4",
+      "tooling/jieba-wasm-2.4.0/node_modules/jieba-wasm/pkg/nodejs/jieba_rs_wasm_bg.wasm": "06593dfa9234d927385aa98a0be294366a5d52f2148113ba0aa782b550728146"
+    },
+    "sources": [
+      {
+        "source": "run-lexical-pilot.mjs",
+        "file": "repro/sources/3ae2bd8fff56169df55d6db387aae5c08decea9c6d328195be6cbbb3cc4ae180-run-lexical-pilot.mjs",
+        "sha256": "3ae2bd8fff56169df55d6db387aae5c08decea9c6d328195be6cbbb3cc4ae180"
+      },
+      {
+        "source": "lexical-pilot.mjs",
+        "file": "repro/sources/7273db3d7b921b73cee65946841470ad17f7e4a0468084941bdd8822a1020766-lexical-pilot.mjs",
+        "sha256": "7273db3d7b921b73cee65946841470ad17f7e4a0468084941bdd8822a1020766"
+      },
+      {
+        "source": "score-lexical-pilot.py",
+        "file": "repro/sources/07debe922eba6f04d700dcf71299fa16b811e6f70a11683011b6006145333eda-score-lexical-pilot.py",
+        "sha256": "07debe922eba6f04d700dcf71299fa16b811e6f70a11683011b6006145333eda"
+      },
+      {
+        "source": "public_score_validation.py",
+        "file": "repro/sources/7d39b991e4dde37c09b43e8a17ca34bab1eeaa0d232b225f80becdf25d6c5af4-public_score_validation.py",
+        "sha256": "7d39b991e4dde37c09b43e8a17ca34bab1eeaa0d232b225f80becdf25d6c5af4"
+      }
+    ],
+    "reference_manifests": {
+      "docs/evals/2026-09-20-public-full-results.manifest.json": "6d24ca2b477b06b4bca0528f512c8927a727c599ad4da322a86cdcf60b13794a",
+      "docs/evals/2026-09-20-public-mode-contrast.manifest.json": "f447b760b6164a1ea94099d1f770ea47ecd38c923fa5d3fa8c0eb62ec2ca3b57",
+      "docs/evals/2026-09-20-bm25-weight-pilot.manifest.json": "c442c1df9c8752e4107707b5ad54fde96a9dbb08e420235a5ce0a448ede479a8"
+    }
+  },
+  "reviews": {
+    "created": "2026-09-20T13:56:48.630Z",
+    "recorded_by": "primary agent from independent final responses",
+    "reviewers": [
+      {
+        "agent": "qasper_cap_review_a",
+        "model": "gpt-5.6-luna",
+        "reasoning": "max",
+        "status": "passed",
+        "checks": "Independently rescored 1400 rows, IDs, qrels, condition isolation, old orders, token and formula controls, source bindings and statistical boundaries.",
+        "notes": "Preserve readonly-WAL shared-memory sidecar caveat and single-lane diagnostic score definition."
+      },
+      {
+        "agent": "qasper_cap_review_b",
+        "model": "gpt-5.6-luna",
+        "reasoning": "max",
+        "status": "passed",
+        "checks": "TEMP-isolated scorer rerun, all metrics/bootstrap, baseline reuse, source hashes and four source archives, pinned Jieba API and absence of label-fed dictionaries."
+      }
+    ],
+    "blocking_findings": [],
+    "resolution": "Report explains source-SHM may refresh; WAL is zero bytes and main database SHA unchanged. Pure BM25 rrf_score is single-lane diagnostic; native score is separate. Defaults unchanged."
+  },
+  "diagnostics": {
+    "queries": 200,
+    "unique_icu_query_terms": 1562,
+    "query_terms_found": 1533,
+    "idf_floor_terms": 0,
+    "max_document_frequency": 41438,
+    "median_matched_document_frequency": 181,
+    "changed_query_term_lists": 141,
+    "identical_top60_order": {
+      "jieba": 0,
+      "lucene_idf": 14
+    },
+    "max_query_terms": {
+      "icu": 44,
+      "jieba": 35
+    },
+    "term_total_change_percent": -1.299374015988164,
+    "index_bytes": 375177216,
+    "notes": "Diagnostic corpus frequencies only; no new ranking condition, source corpus/defaults untouched"
+  },
+  "source_sidecar_audit": {
+    "created": "2026-09-20T13:52:14.175Z",
+    "source_connection": "better-sqlite3 readonly:true,fileMustExist:true",
+    "sidecars": {
+      "-wal": {
+        "exists": true,
+        "bytes": 0,
+        "mtime": "2026-09-20T04:01:28.117Z"
+      },
+      "-shm": {
+        "exists": true,
+        "bytes": 32768,
+        "mtime": "2026-09-20T13:40:36.481Z"
+      }
+    },
+    "main_database_unchanged": true,
+    "main_database_proof": "run-receipt.json contains equal SHA256 before and after",
+    "boundary": "SQLite may update the shared-memory lock sidecar while opening a readonly WAL database; no claim of unchanged sidecar timestamps. No logical index rebuild or source-record writes."
+  },
+  "checks": {
+    "vitest_passed": 177,
+    "existing_skipped": 1,
+    "python_input_regressions": 6,
+    "default_runtime_smoke": "passed",
+    "format": "passed",
+    "type": "passed",
+    "build": "passed"
+  },
+  "counts": {
+    "unique_queries": 200,
+    "corpus_documents": 100001,
+    "conditions": 7,
+    "scored_rows": 1400,
+    "new_embedding_calls": 0
+  },
+  "artifacts": [
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/candidates.jsonl",
+      "bytes": 5336672,
+      "sha256": "2e52f7073f2400c6d71218191526a612c972e2fe19215a95afd48f507d9bf429"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/dense-per-question.json",
+      "bytes": 33483,
+      "sha256": "4392f61ba9c83beb3043d44863b536f53197b6f597615f105c7e047b7b9f9948"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/dense.jsonl",
+      "bytes": 1979584,
+      "sha256": "839a3aea092628f170d4f9f53b5510f08c801ef0315e3e98e56b13784e1bfe3b"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/diagnostics.json",
+      "bytes": 540,
+      "sha256": "0d826b199e3cd738fe3f43ee78b5690686356d14c14c572f53464feae2871bc2"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/freeze.json",
+      "bytes": 21021,
+      "sha256": "071c660b52dbc205eb0eb5ba26019dc54f73d426a54f1751b9bac596e5f53a36"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/icu_sqlite-bm25-per-question.json",
+      "bytes": 35137,
+      "sha256": "ae0207d8635d52e578bcef720230f7a62883728137a05741f667742d10f6b87c"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/icu_sqlite-bm25.jsonl",
+      "bytes": 2191595,
+      "sha256": "b0a1dd7416c88b19da9f9cf453b798dbe59faf5c26cd5977ef9c440c9e79299c"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/icu_sqlite-hybrid-per-question.json",
+      "bytes": 33802,
+      "sha256": "5dad5050c7b69252dfd6e532993e6f187708e891144af603c9c8f39d708ba75f"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/icu_sqlite-hybrid.jsonl",
+      "bytes": 3310415,
+      "sha256": "0eae4551171f607bb76c169eef96a62664ad069f59f493643426c9192b354b9e"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/independent-reviews.json",
+      "bytes": 1094,
+      "sha256": "4f40af9ebd8df387460654e8454717151a93dff9089149251852c60cad63cf7f"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/jieba_search-bm25-per-question.json",
+      "bytes": 35103,
+      "sha256": "3fb9041aa1b5d688ea3fde17c75b52516525562194a288e9f085141069b73cb1"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/jieba_search-bm25.jsonl",
+      "bytes": 2192299,
+      "sha256": "6e0af4f30a3f0debfbbccbf191957fd439fabd648e7abf2e0cedb86b5cd161af"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/jieba_search-hybrid-per-question.json",
+      "bytes": 33744,
+      "sha256": "e093a9c8dcecba84078b5d25144044b3e53f00f9c22dd291f53549f21c3482b9"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/jieba_search-hybrid.jsonl",
+      "bytes": 3341900,
+      "sha256": "fd6dc26b3b23828bacdbd44a1458342e910c3a363b16704a3e7a202ac2ea6160"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/lexical.sqlite",
+      "bytes": 375177216,
+      "sha256": "dc31304f56371620c4784f2cd5ed8eacbce92c1951fb60dbb62bfa5efaaef508"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/lucene_idf-bm25-per-question.json",
+      "bytes": 35120,
+      "sha256": "1cf63c19eea41aa44042453525f516a39ea212b5cc870f44333eda594435d889"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/lucene_idf-bm25.jsonl",
+      "bytes": 2191510,
+      "sha256": "1dc23e156ba8d173bb45f3c361f6bd64b0b8e19e76bbcf4b866c7af83b477397"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/lucene_idf-hybrid-per-question.json",
+      "bytes": 33803,
+      "sha256": "ae7466225958a610b3020057e3ed52f91ae1f179d82f722fdb12b1fea42ab4eb"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/lucene_idf-hybrid.jsonl",
+      "bytes": 3310991,
+      "sha256": "54bc92f60a0111ac0602bfd660f4407be1fbeae699223ce21cbbe4b16b8ff42a"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/repro/source-history.jsonl",
+      "bytes": 994,
+      "sha256": "ac1349d420e9277a7b957bcbb9455821c88dce7dc1809173a9d09ba11af6b8cb"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/repro/sources/07debe922eba6f04d700dcf71299fa16b811e6f70a11683011b6006145333eda-score-lexical-pilot.py",
+      "bytes": 5887,
+      "sha256": "07debe922eba6f04d700dcf71299fa16b811e6f70a11683011b6006145333eda"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/repro/sources/3ae2bd8fff56169df55d6db387aae5c08decea9c6d328195be6cbbb3cc4ae180-run-lexical-pilot.mjs",
+      "bytes": 15031,
+      "sha256": "3ae2bd8fff56169df55d6db387aae5c08decea9c6d328195be6cbbb3cc4ae180"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/repro/sources/7273db3d7b921b73cee65946841470ad17f7e4a0468084941bdd8822a1020766-lexical-pilot.mjs",
+      "bytes": 3792,
+      "sha256": "7273db3d7b921b73cee65946841470ad17f7e4a0468084941bdd8822a1020766"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/repro/sources/7d39b991e4dde37c09b43e8a17ca34bab1eeaa0d232b225f80becdf25d6c5af4-public_score_validation.py",
+      "bytes": 1674,
+      "sha256": "7d39b991e4dde37c09b43e8a17ca34bab1eeaa0d232b225f80becdf25d6c5af4"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/run-receipt.json",
+      "bytes": 4366,
+      "sha256": "07b49d28e050ffd43f57654f1e4d73c118655b2f5ee70b40e2c8e5bb4cce310e"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/source-sidecar-audit.json",
+      "bytes": 664,
+      "sha256": "07441bfa742926d0ffb76a777edca4f069fba47ae7d945286fb024371d50a857"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/summary.json",
+      "bytes": 30956,
+      "sha256": "4e73a1b86ad00223391ee1833f33da795cefe86afec3419a625d8058c8d18b6f"
+    },
+    {
+      "file": "analysis/lexical-pilot-2026-09-20-v1/timings.json",
+      "bytes": 42390,
+      "sha256": "3637d751287f4a39dcdd71bb21604602f5bf160fb1adc3874276c515cfed56f1"
+    }
+  ]
+}

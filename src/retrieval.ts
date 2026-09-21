@@ -18,7 +18,12 @@ import type { EmbeddingProvider } from './contracts.js';
 import { createEmbeddingProvider, validateVectors } from './embedding.js';
 import { openDatabase } from './database.js';
 import { initializeStore } from './store.js';
-import { lexicalFingerprint, matchExpression } from './lexical.js';
+import { lexicalFingerprint, tokenize } from './lexical.js';
+import {
+  prepareMiniIndex,
+  clearMiniCache,
+  type MiniLexicalIndex,
+} from './minisearch.js';
 
 export const filtersSchema = z
   .object({
@@ -123,6 +128,7 @@ export function getMeta(
   )?.value;
 }
 interface RetrievalIndex {
+  mini?: MiniLexicalIndex;
   sources: string;
   chunks: string;
   fts: string;
@@ -187,31 +193,81 @@ export async function retrieveQuery(
     });
   };
   if (options.mode !== 'dense') {
-    const expression = index
-      ? [...new Set(await index.tokenize(query))]
-          .slice(0, 128)
-          .map((t) => JSON.stringify(t))
-          .join(' OR ')
-      : matchExpression(query, config.lexical);
-    const rows = expression
-      ? (db
-          .prepare(
-            indexSql(
-              'SELECT ' +
-                columns +
-                ' FROM chunk_fts JOIN chunks c ON c.rowid=chunk_fts.rowid JOIN sources s USING(source_id) WHERE chunk_fts MATCH ?' +
-                filter.sql +
-                ' ORDER BY bm25(chunk_fts,?,1),c.chunk_id LIMIT ?',
-              index,
-            ),
+    const terms = [
+      ...new Set(
+        index ? await index.tokenize(query) : tokenize(query, config.lexical),
+      ),
+    ].slice(0, 128);
+    let rows: Row[] = [];
+    if (terms.length && options.lexical_engine === 'minisearch') {
+      const tables = index ?? {
+        chunks: 'chunks',
+        fts: 'chunk_fts',
+        sources: 'sources',
+      };
+      const allowed = filter.sql
+        ? new Set(
+            (
+              db
+                .prepare(
+                  indexSql(
+                    'SELECT c.chunk_id FROM chunks c JOIN sources s USING(source_id) WHERE 1' +
+                      filter.sql,
+                    index,
+                  ),
+                )
+                .all(...filter.values) as { chunk_id: string }[]
+            ).map((r) => r.chunk_id),
           )
-          .all(
-            expression,
-            ...filter.values,
-            options.title_weight,
-            options.bm25_candidates,
-          ) as Row[])
-      : [];
+        : undefined;
+      if (allowed?.size !== 0) {
+        const lexical =
+          index?.mini ?? (await prepareMiniIndex(db, tables, signal));
+        if (index) index.mini = lexical;
+        const ranked = lexical.rank(terms, options, allowed);
+        signal?.throwIfAborted();
+        const get = db.prepare(
+          indexSql(
+            'SELECT ' +
+              columns +
+              ' FROM chunks c JOIN sources s USING(source_id) WHERE c.chunk_id=?' +
+              filter.sql,
+            index,
+          ),
+        );
+        rows = ranked.map((hit) => {
+          const row = get.get(hit.id, ...filter.values) as Row | undefined;
+          if (!row) {
+            clearMiniCache();
+            throw new EchoError(
+              'INDEX_STALE',
+              'Lexical candidate is missing from the current snapshot',
+              'Run echo-mcp sync',
+            );
+          }
+          return row;
+        });
+      }
+    } else if (terms.length) {
+      const expression = terms.map((t) => JSON.stringify(t)).join(' OR ');
+      rows = db
+        .prepare(
+          indexSql(
+            'SELECT ' +
+              columns +
+              ' FROM chunk_fts JOIN chunks c ON c.rowid=chunk_fts.rowid JOIN sources s USING(source_id) WHERE chunk_fts MATCH ?' +
+              filter.sql +
+              ' ORDER BY bm25(chunk_fts,?,1),c.chunk_id LIMIT ?',
+            index,
+          ),
+        )
+        .all(
+          expression,
+          ...filter.values,
+          options.title_weight,
+          options.bm25_candidates,
+        ) as Row[];
+    }
     result.counts.bm25 = rows.length;
     add(rows, 'bm25', options.mode === 'bm25' ? 1 : options.bm25_weight);
   }
@@ -406,6 +462,8 @@ export async function searchIndex(
 ) {
   const input = searchSchema.parse(rawInput);
   const options = retrievalOptions(config.retrieval, input.overrides);
+  if (options.mode === 'dense' || options.lexical_engine === 'sqlite')
+    clearMiniCache();
   let provider = customProvider ?? null,
     providerError: string | undefined;
   if (customProvider === undefined && options.mode !== 'bm25') {
@@ -457,6 +515,13 @@ export async function searchIndex(
       )
         throw new Error('Lexical configuration differs from index; run sync');
     }
+    index ??= {
+      sources: 'sources',
+      chunks: 'chunks',
+      fts: 'chunk_fts',
+      vectors: 'embeddings',
+      tokenize: async (text) => tokenize(text, config.lexical),
+    };
     const specs = input.queries ?? [
       { query_id: 'q0', text: input.query!, variants: [] },
     ];

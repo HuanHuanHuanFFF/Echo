@@ -1,0 +1,59 @@
+{
+  "status": "measured_proposal_not_implemented",
+  "date": "2026-09-19",
+  "rows": 200,
+  "encoding": "o200k_base",
+  "tiktoken_version": "0.13.0",
+  "total_tokens": {
+    "original": 1033561,
+    "no_rankings": 928386,
+    "source_table_no_rankings": 830927
+  },
+  "mean_tokens": {
+    "original": 5167.805,
+    "no_rankings": 4641.93,
+    "source_table_no_rankings": 4154.635
+  },
+  "reductions_percent": {
+    "no_rankings": 10.17598380743856,
+    "source_table_no_rankings": 19.60542241822205
+  },
+  "source_delivery_sha256": "51d4416b136308070235040a1b0193eb85baeed635fb93b4ee3a76cff8515dc2",
+  "script_sha256": "0341de1bea9f6f623f4484b98778a4482d01cf06c6c669670b46d1e1b00f3d89",
+  "inputs": [
+    {
+      "scope": "A",
+      "file": "queries/A-test-structure-hybrid/report.json",
+      "sha256": "8262e3bd3656e4dbbb95c9736e239f2b45aa3796f55e192ded4d19828498ad87"
+    },
+    {
+      "scope": "B",
+      "file": "queries/B-test-structure-hybrid/report.json",
+      "sha256": "55ad62b8fdfe1623de05df82e021dbfebec6b3b9790de27319123c02f42ea732"
+    },
+    {
+      "scope": "C",
+      "file": "queries/C-test-structure-hybrid/report.json",
+      "sha256": "2e5e542851030c43b4f1d0de33eee95dc1fbb48021d4d7a6479d90a71a58e53f"
+    },
+    {
+      "scope": "D",
+      "file": "queries/D-test-structure-hybrid/report.json",
+      "sha256": "63a41f2b39ff1cf3cef0ddc05d4c5c117953820d84e6b4ac1dbf8d5a9bec817c"
+    },
+    {
+      "scope": "mixed",
+      "file": "queries/mixed-test-structure-hybrid/report.json",
+      "sha256": "a00b05f1309725908436f3301b26d510c42f58b4d490361970c41c43603a8e5d"
+    }
+  ],
+  "method": "Canonical compact result JSON only. Remove detailed rankings; optionally factor repeated source metadata into a shared sources table. Reconstruct each evidence item and assert all original non-ranking fields deep-equal. No evidence body, heading, range or source identity removed.",
+  "limits": [
+    "Not an Agent accuracy experiment",
+    "Not a new retrieval run",
+    "Not total conversation tokens or API billing",
+    "Changes serialization contract if implemented",
+    "No product/default/index/label changes"
+  ],
+  "new_model_api_calls": 0
+}

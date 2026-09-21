@@ -1,0 +1,125 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+const root = path.resolve(process.argv[2] ?? '');
+assert.ok(process.argv[2]);
+const read = (file) =>
+  JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
+const hash = (file) => {
+  const h = createHash('sha256'),
+    fd = fs.openSync(path.join(root, file), 'r'),
+    b = Buffer.alloc(1024 * 1024);
+  try {
+    let n;
+    while ((n = fs.readSync(fd, b, 0, b.length, null)) > 0)
+      h.update(b.subarray(0, n));
+  } finally {
+    fs.closeSync(fd);
+  }
+  return h.digest('hex');
+};
+const receipt = {
+  created: new Date().toISOString(),
+  status: 'partial_execution',
+  results: {},
+  pending: [],
+  artifacts: {},
+  reference: read('reference/freshstack-leaderboard-receipt.json'),
+  implementation_snapshot: Object.fromEntries(
+    [
+      'score-public-benchmarks.py',
+      'analyze-public-fixed.py',
+      'diagnose-public-fixed-pool.py',
+      'lib/public_score_validation.py',
+    ].map((file) => [
+      file,
+      createHash('sha256')
+        .update(fs.readFileSync(path.join('evals', file)))
+        .digest('hex'),
+    ]),
+  ),
+  implementation_note:
+    'Current reporting code snapshot. Original scoring receipts remain historical; separately archived replay code is identified by each replay receipt.',
+  usage_note:
+    'Per-scope referenced tokens can overlap; final global attempts ledger is authoritative. Registration plan usage is historical.',
+};
+for (const scope of ['langchain', 'godot', 'du']) {
+  const scoreFile = 'analysis/' + scope + '-official-score.json',
+    pairedFile = 'analysis/' + scope + '-paired-analysis.json',
+    vectorFile = 'analysis/' + scope + '-vector-audit.json',
+    runFile = 'fixed/' + scope + '-run-receipt.json',
+    probeFile = 'analysis/' + scope + '-parallel-conformance.json',
+    diagnosticFile = 'analysis/' + scope + '-candidate-pool.json';
+  if (
+    ![scoreFile, pairedFile, vectorFile, runFile, probeFile].every((p) =>
+      fs.existsSync(path.join(root, p)),
+    )
+  ) {
+    receipt.pending.push(scope);
+    continue;
+  }
+  const score = read(scoreFile);
+  for (const [file, expected] of Object.entries(score.bindings))
+    assert.equal(hash(file), expected, 'Score binding mismatch: ' + file);
+  assert.equal(
+    score.results.rrf30.questions,
+    { langchain: 203, godot: 99, du: 2000 }[scope],
+  );
+  assert.equal(score.results.rrf10.questions, score.results.rrf30.questions);
+  const runReceipt = read(runFile);
+  const probe = read(probeFile);
+  assert.equal(probe.scope, scope);
+  assert.equal(probe.compared, 16);
+  assert.equal(probe.equal_all_fields_except_timing, true);
+  assert.equal(probe.index_sha256, runReceipt.index_sha256);
+  assert.equal(probe.reference_receipt_sha256, hash(runFile));
+  for (const k of [30, 10])
+    assert.equal(
+      probe.reference_run_sha256[k],
+      hash('fixed/' + scope + '-rrf' + k + '.jsonl'),
+    );
+  receipt.results[scope] = {
+    official: score,
+    paired: read(pairedFile),
+    vector_audit: read(vectorFile),
+    run_receipt: runReceipt,
+    parallel_conformance: probe,
+  };
+  for (const file of [scoreFile, pairedFile, vectorFile, runFile, probeFile])
+    receipt.artifacts[file] = hash(file);
+  if (fs.existsSync(path.join(root, diagnosticFile))) {
+    const { per_query_rrf30: _rows, ...summary } = read(diagnosticFile);
+    receipt.results[scope].candidate_pool = summary;
+    receipt.artifacts[diagnosticFile] = hash(diagnosticFile);
+  }
+}
+const probe = 'analysis/langchain-parallel-conformance.json';
+if (fs.existsSync(path.join(root, probe))) {
+  receipt.parallel_conformance = read(probe);
+  receipt.artifacts[probe] = hash(probe);
+}
+const replay = 'analysis/scoring-replay/verification.json';
+if (fs.existsSync(path.join(root, replay))) {
+  receipt.scoring_replay = read(replay);
+  receipt.artifacts[replay] = hash(replay);
+  for (const [file, expected] of Object.entries(
+    receipt.scoring_replay.bindings,
+  ))
+    assert.equal(hash(file), expected, 'Replay binding mismatch');
+}
+if (!receipt.pending.length) receipt.status = 'all_executed_review_pending';
+fs.writeFileSync(
+  'docs/evals/2026-09-20-public-fixed.manifest.json',
+  JSON.stringify(
+    receipt,
+    (k, v) => (['win_ids', 'loss_ids'].includes(k) ? undefined : v),
+    2,
+  ) + '\n',
+);
+console.log(
+  JSON.stringify({
+    completed: Object.keys(receipt.results),
+    pending: receipt.pending,
+  }),
+);

@@ -1,0 +1,302 @@
+{
+  "created": "2026-09-20T11:07:25.794Z",
+  "scope": "QASPER v0.3 dev original paragraph objects; titles/Markdown separators excluded; abstracts and list entries retained as original paragraph units",
+  "unit": "JavaScript UTF-16 code units including spaces and punctuation; not tokens or Chinese-character-only counts",
+  "percentile_method": "Linear interpolation at (n-1)*p",
+  "gold_scope": "Distinct (paper_id,paragraph_id) mapped by any valid complete text annotation; all alternatives retained, no repetition by query/annotator; not visual or unmapped evidence",
+  "cohorts": {
+    "full_paragraphs": {
+      "count": 13547,
+      "papers": 281,
+      "min": 1,
+      "p10": 91,
+      "p25": 211,
+      "median": 421,
+      "mean": 486.08496346054477,
+      "p75": 680,
+      "p90": 949,
+      "p95": 1145.699999999999,
+      "p99": 1587.1599999999962,
+      "max": 4721,
+      "median_whitespace_words": 64,
+      "empty": 0,
+      "bins": [
+        {
+          "range": "1-100",
+          "count": 1500,
+          "percent": 11.072562190890972
+        },
+        {
+          "range": "101-200",
+          "count": 1723,
+          "percent": 12.718683103270097
+        },
+        {
+          "range": "201-500",
+          "count": 4695,
+          "percent": 34.65711965748874
+        },
+        {
+          "range": "501-1000",
+          "count": 4509,
+          "percent": 33.284121945818264
+        },
+        {
+          "range": "1001-1500",
+          "count": 937,
+          "percent": 6.916660515243227
+        },
+        {
+          "range": "1501-2000",
+          "count": 144,
+          "percent": 1.0629659703255334
+        },
+        {
+          "range": "2001-3000",
+          "count": 31,
+          "percent": 0.2288329519450801
+        },
+        {
+          "range": ">3000",
+          "count": 8,
+          "percent": 0.059053665018085184
+        }
+      ],
+      "longest": [
+        {
+          "key": "2002.04095#53",
+          "paper": "2002.04095",
+          "id": 53,
+          "length": 4721,
+          "words": 1132
+        }
+      ]
+    },
+    "full_valid_gold": {
+      "count": 1373,
+      "papers": 272,
+      "min": 9,
+      "p10": 138,
+      "p25": 277,
+      "median": 515,
+      "mean": 575.5965040058267,
+      "p75": 766,
+      "p90": 1044,
+      "p95": 1288.9999999999993,
+      "p99": 1931.9599999999978,
+      "max": 4633,
+      "median_whitespace_words": 80,
+      "empty": 0,
+      "bins": [
+        {
+          "range": "1-100",
+          "count": 85,
+          "percent": 6.190823015294974
+        },
+        {
+          "range": "101-200",
+          "count": 141,
+          "percent": 10.269482884195194
+        },
+        {
+          "range": "201-500",
+          "count": 436,
+          "percent": 31.755280407865985
+        },
+        {
+          "range": "501-1000",
+          "count": 552,
+          "percent": 40.20393299344501
+        },
+        {
+          "range": "1001-1500",
+          "count": 124,
+          "percent": 9.031318281136198
+        },
+        {
+          "range": "1501-2000",
+          "count": 22,
+          "percent": 1.6023306627822287
+        },
+        {
+          "range": "2001-3000",
+          "count": 10,
+          "percent": 0.7283321194464676
+        },
+        {
+          "range": ">3000",
+          "count": 3,
+          "percent": 0.21849963583394028
+        }
+      ],
+      "longest": [
+        {
+          "key": "2002.01207#1",
+          "paper": "2002.01207",
+          "id": 1,
+          "length": 4633,
+          "words": 722
+        }
+      ]
+    },
+    "sample_papers_paragraphs": {
+      "count": 3771,
+      "papers": 82,
+      "min": 1,
+      "p10": 105,
+      "p25": 231,
+      "median": 439,
+      "mean": 516.8361177406523,
+      "p75": 726,
+      "p90": 994,
+      "p95": 1216.5,
+      "p99": 1687.2000000000007,
+      "max": 3793,
+      "median_whitespace_words": 67,
+      "empty": 0,
+      "bins": [
+        {
+          "range": "1-100",
+          "count": 359,
+          "percent": 9.520021214531955
+        },
+        {
+          "range": "101-200",
+          "count": 446,
+          "percent": 11.827101564571732
+        },
+        {
+          "range": "201-500",
+          "count": 1302,
+          "percent": 34.5266507557677
+        },
+        {
+          "range": "501-1000",
+          "count": 1291,
+          "percent": 34.23495094139486
+        },
+        {
+          "range": "1001-1500",
+          "count": 305,
+          "percent": 8.088040307610713
+        },
+        {
+          "range": "1501-2000",
+          "count": 53,
+          "percent": 1.405462741978255
+        },
+        {
+          "range": "2001-3000",
+          "count": 11,
+          "percent": 0.2916998143728454
+        },
+        {
+          "range": ">3000",
+          "count": 4,
+          "percent": 0.10607265977194379
+        }
+      ],
+      "longest": [
+        {
+          "key": "1807.07279#24",
+          "paper": "1807.07279",
+          "id": 24,
+          "length": 3793,
+          "words": 592
+        }
+      ]
+    },
+    "sample_valid_gold": {
+      "count": 129,
+      "papers": 67,
+      "min": 64,
+      "p10": 229.4,
+      "p25": 416,
+      "median": 649,
+      "mean": 694.8372093023256,
+      "p75": 911,
+      "p90": 1098.0000000000002,
+      "p95": 1328.6,
+      "p99": 1957.4799999999996,
+      "max": 3063,
+      "median_whitespace_words": 96,
+      "empty": 0,
+      "bins": [
+        {
+          "range": "1-100",
+          "count": 1,
+          "percent": 0.7751937984496124
+        },
+        {
+          "range": "101-200",
+          "count": 8,
+          "percent": 6.2015503875969
+        },
+        {
+          "range": "201-500",
+          "count": 33,
+          "percent": 25.58139534883721
+        },
+        {
+          "range": "501-1000",
+          "count": 67,
+          "percent": 51.93798449612403
+        },
+        {
+          "range": "1001-1500",
+          "count": 15,
+          "percent": 11.627906976744185
+        },
+        {
+          "range": "1501-2000",
+          "count": 3,
+          "percent": 2.3255813953488373
+        },
+        {
+          "range": "2001-3000",
+          "count": 1,
+          "percent": 0.7751937984496124
+        },
+        {
+          "range": ">3000",
+          "count": 1,
+          "percent": 0.7751937984496124
+        }
+      ],
+      "longest": [
+        {
+          "key": "1909.02304#21",
+          "paper": "1909.02304",
+          "id": 21,
+          "length": 3063,
+          "words": 486
+        }
+      ]
+    }
+  },
+  "questions": {
+    "full": 1005,
+    "full_valid": 800,
+    "sample": 101,
+    "sample_valid": 78
+  },
+  "bindings": {
+    "full_manifest": "6d24ca2b477b06b4bca0528f512c8927a727c599ad4da322a86cdcf60b13794a",
+    "prepared_docs": "8447053cbfaefddbac001d7ad8c5dbc2640c805301380db8000d9a9a181aaccf",
+    "prepared_queries": "555967e39c30c3153fc6526834f5df9afa5976da86e0e77cd117dd47764410d3",
+    "sample_freeze": "c1cad9e5815ecd12eb82c96205f96bd5337c36ef4bd69cb5e7d43051409ea129"
+  },
+  "verification": "Independent Python recomputation passed for all four cohort lengths, means and quantiles",
+  "artifacts": [
+    {
+      "file": "analysis/qasper-paragraph-lengths-2026-09-20-v1/analyze.mjs",
+      "bytes": 4034,
+      "sha256": "61f429ba13e67a792bda5184fff52a103e51f2d5eeeb4765101327f51e94d7a3"
+    },
+    {
+      "file": "analysis/qasper-paragraph-lengths-2026-09-20-v1/summary.json",
+      "bytes": 6990,
+      "sha256": "dd72a95d7ae068bf772380b2558ae3581caef781f5fba9b5fd41740203f6d691"
+    }
+  ]
+}

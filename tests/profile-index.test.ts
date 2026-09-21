@@ -148,7 +148,10 @@ it('keeps multiple model dimensions and fixed chunk strategies independently reu
     smallModel = model(smaller);
   await syncIndex(smaller, undefined, smallModel.provider);
   expect(profileTables(smaller).chunks).not.toBe(old.chunks);
-  await useProfiles(path, { chunker: 'heading-1000', embedding: 'default' });
+  await useProfiles(path, {
+    chunker: config.profile!.active.chunker,
+    embedding: 'default',
+  });
   const back = await loadConfig(path);
   expect(await syncIndex(back)).toMatchObject({ unchanged: 1 });
   expect(rows(back, old.vectors!)).toEqual(vectors);
@@ -209,6 +212,9 @@ it('rolls back a failed model update and publishes it only after a successful re
     undefined,
     good.provider,
   );
+  const revision = rows(config, 'meta').find(
+    (r) => (r as { key: string }).key === 'index_revision',
+  );
   const original = await readFile(join(notes, 'a.md'), 'utf8');
   await writeFile(join(notes, 'a.md'), original.replace('apple', 'banana'));
   const failing = {
@@ -221,9 +227,19 @@ it('rolls back a failed model update and publishes it only after a successful re
     'injected',
   );
   expect(
+    rows(config, 'meta').find(
+      (r) => (r as { key: string }).key === 'index_revision',
+    ),
+  ).toEqual(revision);
+  expect(
     await searchIndex(config, { query: 'apple' }, undefined, good.provider),
   ).toEqual(before);
   await syncIndex(config, undefined, good.provider);
+  expect(
+    rows(config, 'meta').find(
+      (r) => (r as { key: string }).key === 'index_revision',
+    ),
+  ).not.toEqual(revision);
   expect(
     (await searchIndex(config, { query: 'banana' }, undefined, good.provider))
       .results[0]!.text,
@@ -258,38 +274,54 @@ it('honors scan patterns and size limits without writing excluded notes', async 
     1,
   );
 });
-it('reuses verified legacy chunks and vectors during profile adoption', async () => {
-  const { config } = await fixture(),
-    provider = model(config);
-  const legacy = parseConfig({
-    database: config.database,
-    collections: config.collections,
-    embedding: config.embedding,
-    retrieval: config.retrieval,
-  });
-  await syncIndex(legacy, undefined, provider.provider);
-  expect(provider.calls.length).toBeGreaterThan(0);
-  provider.calls.length = 0;
-  const original = await searchIndex(
-    legacy,
-    { query: 'apple' },
-    undefined,
-    provider.provider,
-  );
-  provider.calls.length = 0;
-  await syncIndex(config, undefined, provider.provider);
-  expect(provider.calls).toEqual([]);
-  const migrated = await searchIndex(
-    config,
-    { query: 'apple' },
-    undefined,
-    provider.provider,
-  );
-  expect(migrated.results).toEqual(original.results);
-  await expect(
-    syncIndex(legacy, undefined, provider.provider),
-  ).rejects.toMatchObject({ code: 'LEGACY_CONFIG' });
-});
+it.each(['heading-1000', 'markdown-structure-v1'] as const)(
+  'reuses legacy vectors only for the equivalent heading strategy: %s',
+  async (chunker) => {
+    const { path } = await fixture();
+    await useProfiles(path, { chunker });
+    const config = await loadConfig(path),
+      provider = model(config);
+    const legacy = parseConfig({
+      database: config.database,
+      collections: config.collections,
+      embedding: config.embedding,
+      retrieval: config.retrieval,
+    });
+    await syncIndex(legacy, undefined, provider.provider);
+    expect(provider.calls.length).toBeGreaterThan(0);
+    provider.calls.length = 0;
+    const original = await searchIndex(
+      legacy,
+      { query: 'apple' },
+      undefined,
+      provider.provider,
+    );
+    provider.calls.length = 0;
+    await syncIndex(config, undefined, provider.provider);
+    if (chunker === 'heading-1000') expect(provider.calls).toEqual([]);
+    else
+      expect(
+        provider.calls.filter((call) => call.purpose === 'document'),
+      ).toHaveLength(1);
+    const migrated = await searchIndex(
+      config,
+      { query: 'apple' },
+      undefined,
+      provider.provider,
+    );
+    if (chunker === 'heading-1000')
+      expect(migrated.results).toEqual(original.results);
+    else {
+      expect(migrated.results[0]!.text).toBe(original.results[0]!.text);
+      expect(migrated.results[0]!.source_id).toBe(
+        original.results[0]!.source_id,
+      );
+    }
+    await expect(
+      syncIndex(legacy, undefined, provider.provider),
+    ).rejects.toMatchObject({ code: 'LEGACY_CONFIG' });
+  },
+);
 
 it.each(['edit', 'delete', 'exclude'])(
   'does not revive incomplete inactive FTS/vectors when source state returns: %s',

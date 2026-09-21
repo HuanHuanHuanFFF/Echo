@@ -14,8 +14,109 @@ const scopes = [
 ];
 const expectedDelivery =
   'de55af401f736ac892677ad2e75b4b7800521e08286a66cdebe950b307ab5558';
+// Explicitly authorized candidates, each bound to its stated frozen baseline.
+export const currentParameterConditions = {
+  'bm25-03-rrf10': {
+    id: 'bm25_03_rrf10',
+    key: 'bm25_weight',
+    value: 0.3,
+    rrf_k: 10,
+    bm25_weight: 0.3,
+    budget: 16000,
+    reference_rrf_k: 10,
+  },
+  'bm25-04-rrf10': {
+    id: 'bm25_04_rrf10',
+    key: 'bm25_weight',
+    value: 0.4,
+    rrf_k: 10,
+    bm25_weight: 0.4,
+    budget: 16000,
+    reference_rrf_k: 10,
+  },
+  'bm25-02-current': {
+    id: 'bm25_02',
+    key: 'bm25_weight',
+    value: 0.2,
+    rrf_k: 30,
+    bm25_weight: 0.2,
+    budget: 16000,
+  },
+  'bm25-025-current': {
+    id: 'bm25_025',
+    key: 'bm25_weight',
+    value: 0.25,
+    rrf_k: 30,
+    bm25_weight: 0.25,
+    budget: 16000,
+  },
+  'rrf10-current': {
+    id: 'rrf10',
+    key: 'rrf_k',
+    value: 10,
+    rrf_k: 10,
+    bm25_weight: 0.5,
+    budget: 16000,
+  },
+};
+export function checkCurrentSingleVariable(reference, candidate, experiment) {
+  const condition = currentParameterConditions[experiment];
+  assert.ok(condition, 'Unknown current-baseline experiment');
+  assert.equal(reference.rrf_k, condition.reference_rrf_k ?? 30);
+  assert.equal(reference.bm25_weight, 0.5);
+  assert.equal(reference.max_context_chars, 16000);
+  assert.deepEqual(candidate, {
+    ...reference,
+    [condition.key]: condition.value,
+  });
+}
 export async function jointReferences(lab, experiment = 'rrf-budget-combined') {
-  if (experiment === 'rrf40-budget16000') {
+  const current = currentParameterConditions[experiment];
+  if (current?.reference_rrf_k === 10) {
+    const expected =
+      'a80265d390a787bfd41c93ff930519116088751f7f77f3dfeb02315d18fd2c19';
+    const file = path.join(
+      lab,
+      'evidence/current-parameter-single-variable-2026-09-18-v1/delivery.public.json',
+    );
+    assert.equal(await digest(file), expected);
+    const study = await get(file);
+    const origin = study.conditions.find((c) => c.id === 'rrf10');
+    assert.ok(origin);
+    assert.equal(origin.k, 10);
+    assert.equal(origin.weight, 0.5);
+    const files = study.artifact_hashes
+      .filter(
+        (f) =>
+          f.run === origin.run &&
+          (scopes.some((scope) =>
+            f.file.startsWith('queries/' + scope + '-10/'),
+          ) ||
+            f.file === 'queries/vector-uses.jsonl'),
+      )
+      .map(({ file, sha256 }) => ({ file, sha256 }));
+    assert.equal(files.length, 17);
+    for (const item of files)
+      assert.equal(
+        await digest(path.join(lab, 'evidence', origin.run, item.file)),
+        item.sha256,
+      );
+    return {
+      delivery_sha256: expected,
+      conditions: [
+        {
+          id: 'rrf10',
+          run: origin.run,
+          value: 10,
+          rrf_k: 10,
+          bm25_weight: 0.5,
+          budget: 16000,
+          files,
+        },
+      ],
+    };
+  }
+  if (current || experiment === 'rrf40-budget16000') {
     const file = path.join(
       lab,
       'evidence/structure-rrf-budget-combined-2026-09-18-v1/delivery.public.json',
@@ -40,7 +141,7 @@ export async function jointReferences(lab, experiment = 'rrf-budget-combined') {
           ),
         ],
       },
-      { ...budget, id: 'rrf60' },
+      ...(current ? [] : [{ ...budget, id: 'rrf60' }]),
     ];
     for (const c of conditions) {
       assert.equal(c.files.length, 17);
@@ -127,11 +228,14 @@ const indexPart = (m) => {
 export async function compareJoint(lab, root, plan) {
   const refs = await jointReferences(lab, plan.experiment);
   const testing40 = plan.experiment === 'rrf40-budget16000';
+  const currentCondition = currentParameterConditions[plan.experiment];
+  const genericCandidate = testing40 || Boolean(currentCondition);
   const candidate = {
-    id: testing40 ? 'rrf40' : 'joint',
+    id: currentCondition?.id ?? (testing40 ? 'rrf40' : 'joint'),
     run: path.basename(root),
-    value: testing40 ? 40 : 'joint',
-    rrf_k: testing40 ? 40 : 30,
+    value: currentCondition?.value ?? (testing40 ? 40 : 'joint'),
+    rrf_k: currentCondition?.rrf_k ?? (testing40 ? 40 : 30),
+    ...(currentCondition ? { bm25_weight: currentCondition.bm25_weight } : {}),
     budget: 16000,
   };
   assert.deepEqual(refs, plan.comparison_references);
@@ -173,6 +277,15 @@ export async function compareJoint(lab, root, plan) {
         assert.deepEqual(manifest[field], current[field]);
       assert.deepEqual(indexPart(manifest), indexPart(current));
       assert.equal(manifest.retrieval.rrf_k, c.rrf_k);
+      if (currentCondition) {
+        assert.equal(manifest.retrieval.bm25_weight, c.bm25_weight ?? 0.5);
+        if (c.id !== candidate.id)
+          checkCurrentSingleVariable(
+            manifest.retrieval,
+            current.retrieval,
+            plan.experiment,
+          );
+      }
       assert.equal(manifest.retrieval.max_context_chars, c.budget);
       assert.equal(manifest.budget_chars, c.budget);
       assert.deepEqual(
@@ -180,6 +293,7 @@ export async function compareJoint(lab, root, plan) {
           ...manifest.retrieval,
           rrf_k: candidate.rrf_k,
           max_context_chars: candidate.budget,
+          ...(currentCondition ? { bm25_weight: candidate.bm25_weight } : {}),
         },
         current.retrieval,
       );
@@ -199,7 +313,7 @@ export async function compareJoint(lab, root, plan) {
         newRows.map((r) => r.query_id),
       );
       assert.deepEqual(rs.map(queryPart), newRows.map(queryPart));
-      if (testing40)
+      if (genericCandidate)
         assert.deepEqual(
           rs.map((r) => r.request),
           newRows.map((r) => r.request),
@@ -211,6 +325,7 @@ export async function compareJoint(lab, root, plan) {
         assert.equal(r.response_chars, JSON.stringify(r.result).length);
         assert.equal(r.context_chars, r.request_chars + r.response_chars);
         assert.ok(r.context_chars <= c.budget);
+        assert.ok(r.response_chars <= r.request.overrides.max_context_chars);
         assert.ok(
           r.request_chars + r.request.overrides.max_context_chars <= c.budget,
         );
@@ -236,6 +351,7 @@ export async function compareJoint(lab, root, plan) {
       id: c.id,
       run: c.run,
       rrf_k: c.rrf_k,
+      ...(currentCondition ? { bm25_weight: c.bm25_weight ?? 0.5 } : {}),
       budget: c.budget,
       execution: c.id === candidate.id ? 'new' : 'reused',
       all: summarize(all),
@@ -265,14 +381,14 @@ export async function compareJoint(lab, root, plan) {
             id: a.query_id,
             expected: a.expected_facts.length,
             reference_facts: a.covered_facts.length,
-            [testing40 ? 'candidate_facts' : 'joint_facts']:
+            [genericCandidate ? 'candidate_facts' : 'joint_facts']:
               b.covered_facts.length,
             gained,
             lost,
             reference_complete:
               !a.no_answer &&
               a.covered_facts.length === a.expected_facts.length,
-            [testing40 ? 'candidate_complete' : 'joint_complete']:
+            [genericCandidate ? 'candidate_complete' : 'joint_complete']:
               !b.no_answer &&
               b.covered_facts.length === b.expected_facts.length,
           });

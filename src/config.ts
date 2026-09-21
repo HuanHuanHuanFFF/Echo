@@ -7,11 +7,15 @@ const positive = (max: number) => z.number().int().min(1).max(max);
 export const retrievalSchema = z
   .object({
     mode: z.enum(['hybrid', 'bm25', 'dense']).default('hybrid'),
+    lexical_engine: z.enum(['minisearch', 'sqlite']).default('minisearch'),
+    minisearch_k: z.number().positive().max(100).default(1.2),
+    minisearch_b: z.number().min(0).max(1).default(0.7),
+    minisearch_d: z.number().min(0).max(100).default(0.5),
     topk: positive(100).default(10),
     max_chunks_per_source: positive(100).default(3),
     bm25_candidates: positive(1000).default(60),
     dense_candidates: positive(1000).default(60),
-    rrf_k: positive(1000).default(30),
+    rrf_k: positive(1000).default(10),
     title_weight: z.number().min(0).max(20).default(2),
     bm25_weight: z.number().min(0).max(10).default(0.5),
     dense_weight: z.number().min(0).max(10).default(1),
