@@ -1,5 +1,7 @@
 # MiniSearch 参数统一对比
 
+> 2026-09-21更正：批量缓存遗漏部分有效参数，涉及候选数、标题权重、阈值和部分单路RRF的旧对照不能直接用于决策；声明的66配置不等于66组均正确生效。数值原样保留，详见[缓存更正与范围](2026-09-21-parameter-cache-correction.md)。
+
 截至 2026-09-21：共 10 个实验批次、75 次 arm 运行，去重后 66 个唯一参数配置。表中公开指标均为 hybrid；纯 BM25 另见主报告。所有批次均使用冻结数据/向量，未新增 embedding/API 调用。
 
 | 配置                         | BM25/dense | cap/topk | RRF |        k/b/d |    候选 | 其它         | 私有完整/事实/MRR          | LC α-nDCG | Godot α-nDCG | Du nDCG |      QASPER F1 |

@@ -6,6 +6,8 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 当前默认与下一步
 
+- [批量参数评测缓存更正](evals/2026-09-21-parameter-cache-correction.md)：缓存遗漏候选/评分参数，旧候选数、标题与阈值对照的无收益结论暂停采用；新两组按修复后的v2重跑，保留无效首批。
+
 - [MiniSearch默认采用与参数基线](project/2026-09-21-minisearch-default.md)：当前产品默认MiniSearch 7.2.0、取消匹配查询词乘数；k/b/d=1.2/0.7/0.5，其余新综合＋权重0.5/1＋RRF10保持；同日用户确认默认结果JSON预算上调至20000，每篇上限仍3。后续参数实验以此为起点。
 
 - [MiniSearch 六组参数探索](evals/2026-09-21-minisearch-parameter-exploration.md)：当前默认＋5组候选覆盖私有200主集、paired40单列和公开331题；结果为已开卷探索，不改产品默认，E盘保留逐题收据与官方评分。
@@ -15,6 +17,8 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 - [BM25现状与分词候选](research/2026-09-20-bm25-tokenizer-options.md)：公开全量显示词法信号有互补也有排序损失；ICU扩展词项、Jieba搜索模式与词典的适用边界已核对，未更换分词或宣称效果提升。
 
 ## 历史评测（各自条件保持冻结）
+
+- [20k补测cap5与高召回组合](evals/2026-09-21-budget20-cap5-recall-comparison.md)：新增当前默认cap5和0.31/0.8＋RRF5＋cap6两组，沿用200＋331题；执行前条件已冻结。
 
 - [当前默认20000预算：cap3/cap6](evals/2026-09-21-default-budget20-cap-comparison.md)：同一200主集与331公开题，固定0.5/1权重、RRF10；cap3→6完整176/196→190/196、平均上下文基本不变，QASPER完整48/78→60/78但F1下降；不改产品cap默认。
 
