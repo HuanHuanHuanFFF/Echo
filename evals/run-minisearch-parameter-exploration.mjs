@@ -23,15 +23,15 @@ const json = (value) => JSON.stringify(value, null, 2) + '\n';
 const compact = (value) => JSON.stringify(value);
 const shaText = (value) => createHash('sha256').update(value).digest('hex');
 
-function makeOtherParamArm(id, retrieval, reason) {
+function makeOtherParamArm(id, retrieval, reason, tuning = {}) {
   return Object.freeze({
     id,
-    minisearch_k: 1.2,
-    minisearch_b: 0.7,
-    minisearch_d: 0.5,
-    bm25_weight: 0.31,
-    dense_weight: 1,
-    rrf_k: 10,
+    minisearch_k: tuning.minisearch_k ?? 1.2,
+    minisearch_b: tuning.minisearch_b ?? 0.7,
+    minisearch_d: tuning.minisearch_d ?? 0.5,
+    bm25_weight: tuning.bm25_weight ?? 0.31,
+    dense_weight: tuning.dense_weight ?? 1,
+    rrf_k: tuning.rrf_k ?? 10,
     retrieval: Object.freeze(retrieval),
     reason,
   });
@@ -294,6 +294,74 @@ const arms = Object.freeze({
     { max_chunks_per_source: 5, topk: 15 },
     '固定 BM25=0.31、RRF=10，把每篇上限调到5、topk调到15。',
   ),
+  'bm25w031-cap4-bm100': makeOtherParamArm(
+    'bm25w031-cap4-bm100',
+    { max_chunks_per_source: 4, bm25_candidates: 100 },
+    '固定 BM25=0.31、RRF=10，把 cap 调到4、BM25候选调到100。',
+  ),
+  'bm25w031-cap4-dense100': makeOtherParamArm(
+    'bm25w031-cap4-dense100',
+    { max_chunks_per_source: 4, dense_candidates: 100 },
+    '固定 BM25=0.31、RRF=10，把 cap 调到4、dense候选调到100。',
+  ),
+  'bm25w031-cap4-both100': makeOtherParamArm(
+    'bm25w031-cap4-both100',
+    { max_chunks_per_source: 4, bm25_candidates: 100, dense_candidates: 100 },
+    '固定 BM25=0.31、RRF=10，把 cap 调到4、两路候选都调到100。',
+  ),
+  'bm25w031-cap5-both100': makeOtherParamArm(
+    'bm25w031-cap5-both100',
+    { max_chunks_per_source: 5, bm25_candidates: 100, dense_candidates: 100 },
+    '固定 BM25=0.31、RRF=10，把 cap 调到5、两路候选都调到100。',
+  ),
+  'bm25w031-cap4-k084': makeOtherParamArm(
+    'bm25w031-cap4-k084',
+    { max_chunks_per_source: 4 },
+    '固定 BM25=0.31、RRF=10，把 cap 调到4、MiniSearch k 调到0.84。',
+    { minisearch_k: 0.84 },
+  ),
+  'bm25w031-cap4-k16': makeOtherParamArm(
+    'bm25w031-cap4-k16',
+    { max_chunks_per_source: 4 },
+    '固定 BM25=0.31、RRF=10，把 cap 调到4、MiniSearch k 调到1.6。',
+    { minisearch_k: 1.6 },
+  ),
+  'bm25w031-cap4-b04': makeOtherParamArm(
+    'bm25w031-cap4-b04',
+    { max_chunks_per_source: 4 },
+    '固定 BM25=0.31、RRF=10，把 cap 调到4、MiniSearch b 调到0.4。',
+    { minisearch_b: 0.4 },
+  ),
+  'bm25w031-cap4-b10': makeOtherParamArm(
+    'bm25w031-cap4-b10',
+    { max_chunks_per_source: 4 },
+    '固定 BM25=0.31、RRF=10，把 cap 调到4、MiniSearch b 调到1.0。',
+    { minisearch_b: 1 },
+  ),
+  'bm25w031-cap4-d025': makeOtherParamArm(
+    'bm25w031-cap4-d025',
+    { max_chunks_per_source: 4 },
+    '固定 BM25=0.31、RRF=10，把 cap 调到4、MiniSearch d 调到0.25。',
+    { minisearch_d: 0.25 },
+  ),
+  'bm25w031-cap4-d10': makeOtherParamArm(
+    'bm25w031-cap4-d10',
+    { max_chunks_per_source: 4 },
+    '固定 BM25=0.31、RRF=10，把 cap 调到4、MiniSearch d 调到1.0。',
+    { minisearch_d: 1 },
+  ),
+  'bm25w031-cap4-dw08': makeOtherParamArm(
+    'bm25w031-cap4-dw08',
+    { max_chunks_per_source: 4 },
+    '固定 BM25=0.31、RRF=10，把 cap 调到4、dense权重调到0.8。',
+    { dense_weight: 0.8 },
+  ),
+  'bm25w031-cap4-dw12': makeOtherParamArm(
+    'bm25w031-cap4-dw12',
+    { max_chunks_per_source: 4 },
+    '固定 BM25=0.31、RRF=10，把 cap 调到4、dense权重调到1.2。',
+    { dense_weight: 1.2 },
+  ),
 });
 const extensionArmIds = ['bm25w023', 'bm25w017', 'bm25w029'];
 const extension2ArmIds = ['bm25w031', 'bm25w037', 'bm25w043'];
@@ -319,6 +387,20 @@ const combinationArmIds = [
   'bm25w031-cap4-topk15',
   'bm25w031-cap5-topk12',
   'bm25w031-cap5-topk15',
+];
+const deepArmIds = [
+  'bm25w031-cap4-bm100',
+  'bm25w031-cap4-dense100',
+  'bm25w031-cap4-both100',
+  'bm25w031-cap5-both100',
+  'bm25w031-cap4-k084',
+  'bm25w031-cap4-k16',
+  'bm25w031-cap4-b04',
+  'bm25w031-cap4-b10',
+  'bm25w031-cap4-d025',
+  'bm25w031-cap4-d10',
+  'bm25w031-cap4-dw08',
+  'bm25w031-cap4-dw12',
 ];
 let armIds = Object.keys(arms);
 const defaultArm = arms.default;
@@ -1734,7 +1816,8 @@ async function execute(privateRoot, publicRoot, out, mode) {
     mode === 'extension' ||
     mode === 'extension2' ||
     mode === 'other-params' ||
-    mode === 'combinations'
+    mode === 'combinations' ||
+    mode === 'deep'
       ? await shaFile(freeze.public.vector_cache)
       : null;
   const scopes =
@@ -1922,7 +2005,8 @@ async function main() {
     mode === 'freeze-extension' ||
     mode === 'freeze-extension2' ||
     mode === 'freeze-other-params' ||
-    mode === 'freeze-combinations'
+    mode === 'freeze-combinations' ||
+    mode === 'freeze-deep'
   ) {
     armIds =
       mode === 'freeze-extension'
@@ -1933,7 +2017,9 @@ async function main() {
             ? otherParamsArmIds
             : mode === 'freeze-combinations'
               ? combinationArmIds
-              : Object.keys(arms);
+              : mode === 'freeze-deep'
+                ? deepArmIds
+                : Object.keys(arms);
     assert.ok(
       !(await fs.stat(out).catch(() => null)),
       'Output directory already exists',
@@ -1950,7 +2036,9 @@ async function main() {
             ? 'other-params-v1'
             : mode === 'freeze-combinations'
               ? 'combinations-v1'
-              : 'v1',
+              : mode === 'freeze-deep'
+                ? 'deep-v1'
+                : 'v1',
     );
     console.log(
       JSON.stringify({ status: 'frozen', output: out, arms: armIds }),
@@ -1969,6 +2057,7 @@ async function main() {
     armIds = otherParamsArmIds;
   if (mode === 'combinations' || mode === 'finalize-combinations')
     armIds = combinationArmIds;
+  if (mode === 'deep' || mode === 'finalize-deep') armIds = deepArmIds;
   if (scopeArg) {
     const result = await executeScope(
       path.resolve(privateRoot),
@@ -1987,7 +2076,8 @@ async function main() {
     mode === 'finalize-extension' ||
     mode === 'finalize-extension2' ||
     mode === 'finalize-other-params' ||
-    mode === 'finalize-combinations'
+    mode === 'finalize-combinations' ||
+    mode === 'finalize-deep'
   ) {
     const receipt = await finalizeFull(
       path.resolve(privateRoot),
@@ -2001,7 +2091,9 @@ async function main() {
             ? 'other-params'
             : mode === 'finalize-combinations'
               ? 'combinations'
-              : 'full',
+              : mode === 'finalize-deep'
+                ? 'deep'
+                : 'full',
     );
     console.log(
       JSON.stringify({
