@@ -56,7 +56,7 @@ describe('single source-limit experiment', () => {
         rrf_k: 60,
         max_context_chars: 12000,
       });
-      const reference = { ...defaults, rrf_k: 10 };
+      const reference = { ...defaults, rrf_k: 10, max_context_chars: 16000 };
       const candidate = experimentRetrieval(historical, name, weight);
       expect(candidate).toEqual({ ...reference, bm25_weight: weight });
       expect(experimentMetadata(name).values).toEqual([weight]);
@@ -100,7 +100,10 @@ describe('single source-limit experiment', () => {
         rrf_k: 60,
         max_context_chars: 12000,
       });
-      const baseline = retrievalSchema.parse({ rrf_k: 30 });
+      const baseline = retrievalSchema.parse({
+        rrf_k: 30,
+        max_context_chars: 16000,
+      });
       const candidate = experimentRetrieval(historical, name, value);
       expect(candidate).toEqual({ ...baseline, [field]: value });
       expect(experimentMetadata(name).values).toEqual([value]);
@@ -147,6 +150,7 @@ describe('single source-limit experiment', () => {
     expect(experimentRetrieval(frozenBase, 'rrf40-budget16000', 40)).toEqual({
       ...current,
       rrf_k: 40,
+      max_context_chars: 16000,
     });
     expect(experimentMetadata('rrf40-budget16000').values).toEqual([40]);
     expect(experimentMetadata('rrf40-budget16000').authorization).toContain(
@@ -188,9 +192,9 @@ describe('single source-limit experiment', () => {
   });
   it('permits per-request response-budget overrides without mutating defaults', () => {
     const base = retrievalSchema.parse({});
-    const result = retrievalOptions(base, { max_context_chars: 20000 });
-    expect(result.max_context_chars).toBe(20000);
-    expect(base.max_context_chars).toBe(16000);
+    const result = retrievalOptions(base, { max_context_chars: 24000 });
+    expect(result.max_context_chars).toBe(24000);
+    expect(base.max_context_chars).toBe(20000);
     expect(result.topk).toBe(10);
     expect(result.max_chunks_per_source).toBe(3);
   });

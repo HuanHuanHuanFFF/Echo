@@ -67,7 +67,7 @@ try {
     title_weight: 2,
     bm25_weight: 0.5,
     dense_weight: 1,
-    max_context_chars: 16000,
+    max_context_chars: 20000,
     min_dense_similarity: 0.3,
   });
   const hash = (bytes) => createHash('sha256').update(bytes).digest('hex');
@@ -85,10 +85,15 @@ try {
       ),
     ),
   );
-  // Existing explicit RRF and chunk selection must survive repeated init.
+  // Existing explicit retrieval settings and chunk selection survive repeated init.
   await writeFile(
     retrievalPath,
-    JSON.stringify({ ...retrieval, rrf_k: 30, lexical_engine: 'sqlite' }),
+    JSON.stringify({
+      ...retrieval,
+      rrf_k: 30,
+      lexical_engine: 'sqlite',
+      max_context_chars: 16000,
+    }),
   );
   await writeFile(
     configPath,
@@ -99,6 +104,10 @@ try {
   );
   assert.deepEqual((await invoke('init')).created, []);
   assert.equal(JSON.parse(await readFile(retrievalPath, 'utf8')).rrf_k, 30);
+  assert.equal(
+    JSON.parse(await readFile(retrievalPath, 'utf8')).max_context_chars,
+    16000,
+  );
   assert.equal(
     JSON.parse(await readFile(retrievalPath, 'utf8')).lexical_engine,
     'sqlite',
@@ -125,6 +134,7 @@ try {
   assert.equal(found.selection.chunker, 'markdown-structure-v1');
   assert.equal(found.applied.rrf_k, 10);
   assert.equal(found.applied.lexical_engine, 'minisearch');
+  assert.equal(found.applied.max_context_chars, 20000);
   assert.ok(found.results.length > 0);
   for (const piece of found.results)
     assert.equal(

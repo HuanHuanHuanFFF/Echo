@@ -19,7 +19,7 @@ export const retrievalSchema = z
     title_weight: z.number().min(0).max(20).default(2),
     bm25_weight: z.number().min(0).max(10).default(0.5),
     dense_weight: z.number().min(0).max(10).default(1),
-    max_context_chars: positive(100000).min(256).default(16000),
+    max_context_chars: positive(100000).min(256).default(20000),
     min_dense_similarity: z.number().min(-1).max(1).default(0.3),
   })
   .strict()

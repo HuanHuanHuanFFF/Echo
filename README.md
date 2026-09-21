@@ -80,7 +80,7 @@ node /absolute/path/to/echo/dist/cli.js serve --config /absolute/path/to/echo/ec
 ## 默认与自定义方案
 
 默认：新综合 markdown-structure-v1@1.0.1（目标1000/常规最大1500字符），hybrid，每路候选60，RRF k=10、BM25/向量权重0.5/1，
-topk=10、每篇最多 3、最低余弦相似度 0.3、完整结果 JSON 预算 16000 字符。
+topk=10、每篇最多 3、最低余弦相似度 0.3、完整结果 JSON 预算 20000 字符。
 2026-09-21已按用户决定采用MiniSearch（k=1.2、b=0.7、d=0.5，取消匹配查询词数量乘数）并冻结，完整规则见[默认冻结记录](docs/project/2026-09-21-minisearch-default.md)。新init完整写出召回参数并安装对应策略；已有显式配置不自动覆盖，省略字段仍继承内置默认。历史评测保持各自冻结条件。
 
 召回配置支持部分覆盖；单次搜索可传 overrides 和 filters。切块策略的规则固定，改变数字应另建策略 ID。
