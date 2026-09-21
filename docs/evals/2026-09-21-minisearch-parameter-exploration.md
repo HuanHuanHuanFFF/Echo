@@ -183,6 +183,20 @@ cap6 的预算20k/24k和 topk12/15 与 cap6 本身没有新增私有收益。cap
 
 公开排名口径下，纯 BM25 的结果基本固定为：LangChain α-nDCG/Recall50/MRR 为20.81%/31.30%/24.53%，Godot 为10.10%/23.11%/12.50%，Du nDCG/Recall50/MRR 为59.61%/76.77%/74.29%。QASPER 的纯 BM25 从 cap3 的28/78、Evidence F1 14.29%，提高到 cap4 的35/78、14.29%，cap5 的41/78、13.66%，cap6 的46/78、12.99%；仍然是覆盖增加而标注段落 F1 下降的取舍。
 
+## 跨数据集优选组合对 default 的最终比较
+
+把各数据集的局部优选参数组合后，代表性结果如下。default 是产品当前 `BM25=0.5、dense=1、RRF10、cap3`；其余均固定 BM25=0.31：
+
+| 条件                      |       私有完整 / 事实 |   私有 MRR | LangChain α-nDCG |    Du nDCG |  QASPER F1 |
+| ------------------------- | --------------------: | ---------: | ---------------: | ---------: | ---------: |
+| default                   |     176/196 / 378/403 |     85.24% |           42.62% |     84.25% |     22.21% |
+| 0.31、cap3、RRF10、dense1 |     178/196 / 380/403 |     85.62% |           40.60% |     85.31% |     22.32% |
+| cap3、RRF15、dense0.8     |     175/196 / 377/403 |     84.97% |       **43.09%** |     84.28% |     22.30% |
+| cap3、RRF5、dense1.2      |     178/196 / 379/403 |     86.24% |           38.79% | **85.84%** | **22.34%** |
+| cap6、RRF5、dense0.8      | **191/196 / 394/403** | **86.75%** |           39.43% |     85.64% |     15.59% |
+
+结论：`cap3 + RRF15 + dense0.8` 主要赢 LangChain/Godot，但私有主集退化；`cap3 + RRF5 + dense1.2` 在私有 MRR、Du、QASPER 有优势，但 LangChain 明显退化；`cap6 + RRF5 + dense0.8` 私有覆盖最强，却以 QASPER F1 和上下文成本为代价。没有配置在所有数据集上同时超过 default，因此不修改产品默认。最终组合收据在 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-final-combos-v1`。
+
 ## 证据与边界
 
 - 运行器：[run-minisearch-parameter-exploration.mjs](../../evals/run-minisearch-parameter-exploration.mjs)；官方评分器：[score-minisearch-parameter-exploration.py](../../evals/score-minisearch-parameter-exploration.py)。二者只放公开脚本，不包含私有题干、正文、向量或 key。
