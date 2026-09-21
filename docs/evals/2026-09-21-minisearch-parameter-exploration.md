@@ -168,6 +168,21 @@ QASPER 保持产品打包口径，严格文本分母为 78，官方 Evidence F1 
 
 cap6 的预算20k/24k和 topk12/15 与 cap6 本身没有新增私有收益。cap6 及 dense0.8/RRF5 确实继续提高私有证据覆盖，但 QASPER F1 继续下降、平均上下文约10800字符；它们应被视为高召回、高成本的显式扩展档，不是默认配置。RRF 和 cap6 收据分别在 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-rrf-v1`、`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-cap6-v1` 和 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-cap6plus-v1`。
 
+## 纯 BM25 mode
+
+纯 BM25 不使用 hybrid 的 BM25/dense 融合权重，因此 `bm25_weight=0.25/0.31/0.37/0.43` 在其他参数相同的情况下不会改变纯 BM25 排名。主要变化来自 cap 和 MiniSearch 参数：
+
+| 条件                    |  完整题 | 事实覆盖 | 单块 Hit@10 | 单块 MRR@10 |
+| ----------------------- | ------: | -------: | ----------: | ----------: |
+| 纯 BM25、cap3           | 139/196 |  305/403 |     159/196 |      63.39% |
+| 纯 BM25、cap4           | 144/196 |  310/403 |     159/196 |      63.36% |
+| 纯 BM25、cap5           | 144/196 |  311/403 |     159/196 |      63.37% |
+| 纯 BM25、cap6           | 146/196 |  318/403 |     162/196 |      63.56% |
+| cap4、MiniSearch k=1.6  | 143/196 |  312/403 |     160/196 |      64.44% |
+| cap4、MiniSearch d=0.25 | 143/196 |  311/403 |     159/196 |      64.21% |
+
+公开排名口径下，纯 BM25 的结果基本固定为：LangChain α-nDCG/Recall50/MRR 为20.81%/31.30%/24.53%，Godot 为10.10%/23.11%/12.50%，Du nDCG/Recall50/MRR 为59.61%/76.77%/74.29%。QASPER 的纯 BM25 从 cap3 的28/78、Evidence F1 14.29%，提高到 cap4 的35/78、14.29%，cap5 的41/78、13.66%，cap6 的46/78、12.99%；仍然是覆盖增加而标注段落 F1 下降的取舍。
+
 ## 证据与边界
 
 - 运行器：[run-minisearch-parameter-exploration.mjs](../../evals/run-minisearch-parameter-exploration.mjs)；官方评分器：[score-minisearch-parameter-exploration.py](../../evals/score-minisearch-parameter-exploration.py)。二者只放公开脚本，不包含私有题干、正文、向量或 key。
