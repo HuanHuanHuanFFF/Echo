@@ -18,7 +18,7 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 历史评测（各自条件保持冻结）
 
-- [20k补测cap5与高召回组合](evals/2026-09-21-budget20-cap5-recall-comparison.md)：新增当前默认cap5和0.31/0.8＋RRF5＋cap6两组，沿用200＋331题；执行前条件已冻结。
+- [20k补测cap5与高召回组合](evals/2026-09-21-budget20-cap5-recall-comparison.md)：缓存修复后沿用200＋331题重跑：当前cap5完整188/196，高召回20k为191/196；对照、精度/成本与无效首批均保留。
 
 - [当前默认20000预算：cap3/cap6](evals/2026-09-21-default-budget20-cap-comparison.md)：同一200主集与331公开题，固定0.5/1权重、RRF10；cap3→6完整176/196→190/196、平均上下文基本不变，QASPER完整48/78→60/78但F1下降；不改产品cap默认。
 

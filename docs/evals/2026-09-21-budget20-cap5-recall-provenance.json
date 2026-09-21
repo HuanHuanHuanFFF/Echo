@@ -1,0 +1,819 @@
+{
+  "status": "passed",
+  "created_at": "2026-09-21T16:02:02.710Z",
+  "inputs_after_match_freeze": {
+    "private:A-test:dataset": "98e76fae7af8250bb22fdc3f42b2a824f124d984138ebb4eded092c1df3abda2",
+    "private:B-test:dataset": "3d2eb4a7508a23b32564ea6dba3709018e896be1bd436b2f1a511a261dd9767c",
+    "private:C-test:dataset": "305dba4a957f7a07d956f2a282fd5a9db3872f48bc8d32e73ea4bc4e30da078e",
+    "private:D-test:dataset": "05ce0d698156279c6f144e771218e0704c1b8d796aedba36c2469786b5bbb31b",
+    "private:mixed-test:dataset": "32060ccaf3eddfa7040443394ba55bbcb247fa8d4743d60fe83073f667f2d9f4",
+    "private:paired-test:dataset": "6e4b87b6c4935441a9297631c1ff76eb6f602a040404f19738feb5c28efbdfee",
+    "public:langchain:query_file": "f211526a18c99e7d1e680bc9790505158baeb285f8b83479221d9c1287811761",
+    "public:langchain:corpus_file": "882f20823cb2b7ceb9ab9f895a25884e10a16e2977dfdbae2b89af455cc27852",
+    "public:godot:query_file": "3b047104b84d53a92524adc6c4b25fc13778013fe5bbde339478e4bd71fc97f5",
+    "public:godot:corpus_file": "61f0ae114476f7bbb225b1db54d69c350768a28a11854818d8e63a56feed7a48",
+    "public:du:query_file": "20722074d3dab144c07c8ffc1b374cfa0603fb0ce0ccdf842bd95cf524d78272",
+    "public:du:corpus_file": "832b9af76e04815651963deed1d167870f0aa466c3079c40c71d2989974d612a",
+    "public:qasper:query_file": "555967e39c30c3153fc6526834f5df9afa5976da86e0e77cd117dd47764410d3",
+    "public:qasper:docs_file": "8447053cbfaefddbac001d7ad8c5dbc2640c805301380db8000d9a9a181aaccf"
+  },
+  "source_archive": [
+    {
+      "file": "provenance/repository/package.json",
+      "sha256": "c4b3572220fc8e97340e670e1b9a98727aa57c6d11c501b7b602c9a87847b871"
+    },
+    {
+      "file": "provenance/repository/package-lock.json",
+      "sha256": "1cb4b27b3d401d39542282c7f93d45fe5bd661e6f9080684030ded63b4168dfe"
+    },
+    {
+      "file": "provenance/repository/.prettierrc.json",
+      "sha256": "1b6317b202b6c7945adb0e779622137efd8904184fffb320adfb0bd6057e9d6b"
+    },
+    {
+      "file": "provenance/repository/vitest.config.ts",
+      "sha256": "bbf1f49db8ad9f3803179fe9d6b2467ccbc585e522158a9df67dab94a5b188c7"
+    },
+    {
+      "file": "provenance/repository/tests/parameter-exploration-cache.test.ts",
+      "sha256": "88d510629b5b88d838c12d1c8d45fad3e6c3d6cca3dfc69ddb96dde3ef3a2015"
+    },
+    {
+      "file": "provenance/repository/evals/run-minisearch-parameter-exploration.mjs",
+      "sha256": "3ed770e8788f7eff9cdd9328caca7dac9cf565bdb2f116999e3e8085ba95cd9e"
+    },
+    {
+      "file": "provenance/repository/evals/audit-budget20-followup.mjs",
+      "sha256": "982bd97d02d3a023fdbf78bf021fdaae6c1ed50ad74816d9595e04c2d1fdc4cf"
+    },
+    {
+      "file": "provenance/repository/evals/summarize-minisearch-parameter-metrics.mjs",
+      "sha256": "68e7a6ef906e06062f43c263f85607a8a3ca3ab4df5d94e897a85e81445f8835"
+    },
+    {
+      "file": "provenance/repository/evals/score-minisearch-parameter-exploration.py",
+      "sha256": "f3a489f708eff984c820d99809524efcfc265decce0cd5111f153bd3acc49e42"
+    },
+    {
+      "file": "provenance/repository/evals/lib/public-runtime.mjs",
+      "sha256": "eb58e135b85825380b604f8f7b132072696a92db32ab2efb3766ccf9f141e003"
+    },
+    {
+      "file": "provenance/repository/evals/lib/public_score_validation.py",
+      "sha256": "7d39b991e4dde37c09b43e8a17ca34bab1eeaa0d232b225f80becdf25d6c5af4"
+    },
+    {
+      "file": "provenance/repository/dist/chunker.d.ts",
+      "sha256": "1c2d8065a94677ae6fb27775234fac2b2ebebfe37414dfe709ddbbc4d26394d4"
+    },
+    {
+      "file": "provenance/repository/dist/chunker.js",
+      "sha256": "4928713ee4ade811dc7e6517239633c6500e952c87579c1dced6298dc4b78f34"
+    },
+    {
+      "file": "provenance/repository/dist/chunker.js.map",
+      "sha256": "d9b2c32154b9cbb9aa7e740b7d5db21406f8d357446c7039f9aba5df989e886f"
+    },
+    {
+      "file": "provenance/repository/dist/cli.d.ts",
+      "sha256": "43e818adf60173644896298637f47b01d5819b17eda46eaa32d0c7d64724d012"
+    },
+    {
+      "file": "provenance/repository/dist/cli.js",
+      "sha256": "06ccefda42d884984045dbc33fdba5285b5a588e2f029609186679cc9e02f4a1"
+    },
+    {
+      "file": "provenance/repository/dist/cli.js.map",
+      "sha256": "56940adc4f72440d744060b61b76714839011ee712e97e9c70adf8a3d539ebba"
+    },
+    {
+      "file": "provenance/repository/dist/config-runtime.d.ts",
+      "sha256": "bae1430d214c769cb7272a26f933f0dc1cd520b9ec7cbf81f5e77186b828dd19"
+    },
+    {
+      "file": "provenance/repository/dist/config-runtime.js",
+      "sha256": "da3ad5d70defb820aee95fd2698e3c488f7e71262b6217a1b89d0184048bac02"
+    },
+    {
+      "file": "provenance/repository/dist/config-runtime.js.map",
+      "sha256": "12d1770709a3db7a097f5980469d36e943c73be077a6feb9b48ce577ae3e3642"
+    },
+    {
+      "file": "provenance/repository/dist/config.d.ts",
+      "sha256": "bdee9378fa51064ed2261ecd9c994a0cc2e2a504ef6e9e9f22f41a0d5f7787f4"
+    },
+    {
+      "file": "provenance/repository/dist/config.js",
+      "sha256": "6e9611e775e82c7c2cce3df12464bdb0b721e4d85f59f14a301ad98340509828"
+    },
+    {
+      "file": "provenance/repository/dist/config.js.map",
+      "sha256": "6245c1f3cab30f4e867b6b5fdfbe09ef7f48bfbfceff0769e38b26a2934ff651"
+    },
+    {
+      "file": "provenance/repository/dist/contracts.d.ts",
+      "sha256": "5945298cce0b4d1da39ee3bb435a72aa588ed21c069079cecd22ea9148364c35"
+    },
+    {
+      "file": "provenance/repository/dist/contracts.js",
+      "sha256": "427a6852d1b4fbc59c12b396120836e73895fb11bee3ec3841f58f9c9f32499d"
+    },
+    {
+      "file": "provenance/repository/dist/contracts.js.map",
+      "sha256": "4fcc757fb487479db32d5b2e7264542757309c43b177791ecfe6dd761150de26"
+    },
+    {
+      "file": "provenance/repository/dist/database.d.ts",
+      "sha256": "133805925351c6a3c70af0ece5415077fe49f38686af0e94a9bfe135173754a8"
+    },
+    {
+      "file": "provenance/repository/dist/database.js",
+      "sha256": "f221927d10790da8ee534598543b076e7c625bcf140f376a94e78f5825e17753"
+    },
+    {
+      "file": "provenance/repository/dist/database.js.map",
+      "sha256": "16f565f77a1d85c2efc02a10387df55831c335ad8ad0e0cc222bb1ee826c288f"
+    },
+    {
+      "file": "provenance/repository/dist/embedding.d.ts",
+      "sha256": "948391a00b52f84e1a4fae4cd26314d9a8b2b580cb812a62768a23f784c666f3"
+    },
+    {
+      "file": "provenance/repository/dist/embedding.js",
+      "sha256": "b977edab1bb54a88bf3693ad46845ed61e66d5b69179e5fe95e3961adbc9787d"
+    },
+    {
+      "file": "provenance/repository/dist/embedding.js.map",
+      "sha256": "9dc8fc90627ba81658a9779c00b6e6cd848221768219275f25c21e46e962b604"
+    },
+    {
+      "file": "provenance/repository/dist/errors.d.ts",
+      "sha256": "c8738315843cf719ef0d3071435fd4a63946f4f6419201dcd6662f5b090d751f"
+    },
+    {
+      "file": "provenance/repository/dist/errors.js",
+      "sha256": "956a706f699b4a2940620c35976a27baaadbe2893acd10396278790324385470"
+    },
+    {
+      "file": "provenance/repository/dist/errors.js.map",
+      "sha256": "9748256507b07b1ec20b96c60b62d9ec0d6e4af2807809c213417975717e552d"
+    },
+    {
+      "file": "provenance/repository/dist/eval-cli.d.ts",
+      "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+    },
+    {
+      "file": "provenance/repository/dist/eval-cli.js",
+      "sha256": "4635f9effcf70e8103ddac6a23887473005165701ae1f0bf19774f3ab5bf1557"
+    },
+    {
+      "file": "provenance/repository/dist/eval-cli.js.map",
+      "sha256": "9c8d33bde6abc59897d06d786d9dbe06070b9c03bdd35850bddc9b99420b643e"
+    },
+    {
+      "file": "provenance/repository/dist/evaluation.d.ts",
+      "sha256": "879bc025641aa11d1c88c1c2588265abba17f167ec3ee37b85cccdc7129e0da7"
+    },
+    {
+      "file": "provenance/repository/dist/evaluation.js",
+      "sha256": "549f542d9d36edb10fa5d655c6f72fbf9b8da5967d199902d9dad239b3624b2b"
+    },
+    {
+      "file": "provenance/repository/dist/evaluation.js.map",
+      "sha256": "229412f93b16e6e01843326a91ea59eaa842929c3f295fff009f2ac5ec5ac421"
+    },
+    {
+      "file": "provenance/repository/dist/executor.d.ts",
+      "sha256": "acec86e3b0fd4ba571f96b61c614afd688969bbc62177dc29e323570c7cbd4a3"
+    },
+    {
+      "file": "provenance/repository/dist/executor.js",
+      "sha256": "8acab39fcd0f248e57a21106cc2bb03546957bbcd23e30cfab4730a0dcb593ed"
+    },
+    {
+      "file": "provenance/repository/dist/executor.js.map",
+      "sha256": "ecc33a92fbdd91b260cfb050afb708e8ad4b605b0fb878c814ab451329fcbb5d"
+    },
+    {
+      "file": "provenance/repository/dist/identity.d.ts",
+      "sha256": "29abe47333361ac54d51347df5ab2c8ad201504e13c5ceda748c2f696c655019"
+    },
+    {
+      "file": "provenance/repository/dist/identity.js",
+      "sha256": "e4aee0debfbb3cd781fabc228a213887490d5ba100d9e518f01c58e7325f7b9b"
+    },
+    {
+      "file": "provenance/repository/dist/identity.js.map",
+      "sha256": "fd50225f3951efb10a01b631824d4bf60adb8e128826205287dd15f51ab0d0c1"
+    },
+    {
+      "file": "provenance/repository/dist/lexical.d.ts",
+      "sha256": "fdf70fd43d4f6b7059d7135ff3a4b4279bdaebef06b91dfdb779a143ca149dae"
+    },
+    {
+      "file": "provenance/repository/dist/lexical.js",
+      "sha256": "58588607613bd8f5b2af75216098042e5e878d99b3faf731531f39442dd47943"
+    },
+    {
+      "file": "provenance/repository/dist/lexical.js.map",
+      "sha256": "1b2ad06acd1d919526b52cd5fdb464d7ad5b959758805dd94b9a361fbed6d633"
+    },
+    {
+      "file": "provenance/repository/dist/logging.d.ts",
+      "sha256": "ef97d760a12e98c5bd1679791913012c48b78cfb5db9102722987e89c8ae3c81"
+    },
+    {
+      "file": "provenance/repository/dist/logging.js",
+      "sha256": "b0566932f3af0c3144a3a79caf2ccbc23e2e4dfcd12d91d0587c159d006cacee"
+    },
+    {
+      "file": "provenance/repository/dist/logging.js.map",
+      "sha256": "18ed86d04fc1a63b2ac528de59253a1196da126cf9692054f441c9322df34b19"
+    },
+    {
+      "file": "provenance/repository/dist/minisearch.d.ts",
+      "sha256": "fc9c2cd6649a1ab837d9cb24b1a1c01153466ba93b0cd126c947b4dda97beddc"
+    },
+    {
+      "file": "provenance/repository/dist/minisearch.js",
+      "sha256": "5f212188d3b4661eb6bff21f8d924ab829f1a1fa05c8f49d1914a964eb8f4e1c"
+    },
+    {
+      "file": "provenance/repository/dist/minisearch.js.map",
+      "sha256": "bcbf549b62650e01a9008d0f758ced525135658f666f628d35dc77ef99d2f709"
+    },
+    {
+      "file": "provenance/repository/dist/profile-manager.d.ts",
+      "sha256": "16f426d1e1ff3b4a254ccf73bf2933a946abfc8dcd4e502497ddeb60fce7a36c"
+    },
+    {
+      "file": "provenance/repository/dist/profile-manager.js",
+      "sha256": "be9566fadcd8b8b9b0729b023c4cb05d4471a9c585133e53e6170f1a4cf30acd"
+    },
+    {
+      "file": "provenance/repository/dist/profile-manager.js.map",
+      "sha256": "8a735c594b96f8ffa4e78783714c0bd6885f2d01aff52930d010f1884c59ab8c"
+    },
+    {
+      "file": "provenance/repository/dist/profile-store.d.ts",
+      "sha256": "7b6e8345997d99db9623096f6f5fd1e60a31dbb9883c0874fd1763e7d8bf8bbb"
+    },
+    {
+      "file": "provenance/repository/dist/profile-store.js",
+      "sha256": "146ffbad41efa71991bcc11fe422a3822fa36a0cce3882fe65ce103fefbaa6db"
+    },
+    {
+      "file": "provenance/repository/dist/profile-store.js.map",
+      "sha256": "75ccd565ec633dc095a74c8447b7f41603223e7afcd9c3a2c779086d38f95640"
+    },
+    {
+      "file": "provenance/repository/dist/profile-sync.d.ts",
+      "sha256": "74e27abd6e1591364e6c4a5ad171ae6e5367d997160d8673984d2793a1c021d0"
+    },
+    {
+      "file": "provenance/repository/dist/profile-sync.js",
+      "sha256": "6254c1723c3c13f161483c1a2ecb23850bb57fc93e85ff8c3a954bb79837cab2"
+    },
+    {
+      "file": "provenance/repository/dist/profile-sync.js.map",
+      "sha256": "4567dd277f0b0b197a64bd7f7cbda6ea3dc8a3c7c5d50c574dba69066fb06466"
+    },
+    {
+      "file": "provenance/repository/dist/profile-types.d.ts",
+      "sha256": "c620d1bf626a5a67a3fdf30c6c1cf145a17a3d69addd900bc6912d8726a37247"
+    },
+    {
+      "file": "provenance/repository/dist/profile-types.js",
+      "sha256": "04a102fe45ddf7f70b2730a5b6f9785eaeba1bbdc134f7ce4fade43297eda34d"
+    },
+    {
+      "file": "provenance/repository/dist/profile-types.js.map",
+      "sha256": "41c4cb8f81044faa58fbdbd5a765bbe927cb27562753f92a1abc8fdae1ecd167"
+    },
+    {
+      "file": "provenance/repository/dist/profiles.d.ts",
+      "sha256": "8bd5b1302fcfdff2adb5d0a0265f26ef16aef0ed57dda890280b1b0e4ffaf9a3"
+    },
+    {
+      "file": "provenance/repository/dist/profiles.js",
+      "sha256": "207a90532cd5952274774f71f99a7a00825670b7b51cd188792786bb1fa0b740"
+    },
+    {
+      "file": "provenance/repository/dist/profiles.js.map",
+      "sha256": "33ee927f84cb6c4993dc9494e0416d58c59d5737f443436dfa2fdbc64e08506f"
+    },
+    {
+      "file": "provenance/repository/dist/retrieval-compare-cli.d.ts",
+      "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+    },
+    {
+      "file": "provenance/repository/dist/retrieval-compare-cli.js",
+      "sha256": "7acb7d55d8ceea1b0fdf78ab655e0a5fe8e99c0189c202a9c604b9b936c5bde3"
+    },
+    {
+      "file": "provenance/repository/dist/retrieval-compare-cli.js.map",
+      "sha256": "4ce850ce274273912a7bc4f8fa484575fd6de7c7834cbf555d18c734b2fc7f36"
+    },
+    {
+      "file": "provenance/repository/dist/retrieval-comparison.d.ts",
+      "sha256": "c618910555e9eae8d9133d0c5bac9d81193e8e3077fdfc4edd79679dd2b76f72"
+    },
+    {
+      "file": "provenance/repository/dist/retrieval-comparison.js",
+      "sha256": "9569dfbe00847fc027ac524a03714405b473c1ac9db5496ed623c98d2742b83a"
+    },
+    {
+      "file": "provenance/repository/dist/retrieval-comparison.js.map",
+      "sha256": "97c635f0f7b724acac489aeb97883e0f106aea07532b23c407a2c0cf5c85475a"
+    },
+    {
+      "file": "provenance/repository/dist/retrieval-eval-cli.d.ts",
+      "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+    },
+    {
+      "file": "provenance/repository/dist/retrieval-eval-cli.js",
+      "sha256": "b78a1ae4628e60eefd9116b9b2952d97bd1f73db24ccf8bd1bc900574ce75670"
+    },
+    {
+      "file": "provenance/repository/dist/retrieval-eval-cli.js.map",
+      "sha256": "abfe71ab59e908a9f89eff7c070cb64e0fc38559eb155c3452fa0350932d442b"
+    },
+    {
+      "file": "provenance/repository/dist/retrieval-evaluation.d.ts",
+      "sha256": "57f8b3455dd5dfffd69bc1267739e2944440a5a05854e0382f2d617ae95c3f21"
+    },
+    {
+      "file": "provenance/repository/dist/retrieval-evaluation.js",
+      "sha256": "d97e527c1d8d0a2fa0fb1617ccbbf4b695e9f42d0f3becee7c62d05e306b652c"
+    },
+    {
+      "file": "provenance/repository/dist/retrieval-evaluation.js.map",
+      "sha256": "b66b226a92b71d0ac6d0be17585434c5bde1645456473a4e9f06a06ec3835373"
+    },
+    {
+      "file": "provenance/repository/dist/retrieval.d.ts",
+      "sha256": "8958d33f8d25c3900eb34e9c5108fdf45aac55b1d15e9b9ee674ce26aaa78c07"
+    },
+    {
+      "file": "provenance/repository/dist/retrieval.js",
+      "sha256": "120b9c5e06f8ac5d4c2290d58787de320d8153f1148812ecd7ad22bc6138554d"
+    },
+    {
+      "file": "provenance/repository/dist/retrieval.js.map",
+      "sha256": "bf19e1b130c0fe7267869c97613512437bef9c07eff16d9dcb3b1a44dc519760"
+    },
+    {
+      "file": "provenance/repository/dist/search-pool.d.ts",
+      "sha256": "f8bc36eb994af5e8711609b89566c2a1ecb0d0d32869f7aca93d80d1ae324431"
+    },
+    {
+      "file": "provenance/repository/dist/search-pool.js",
+      "sha256": "70ca9d974d6b9eacf72d815f44adc2232e3501c42b3d0155eef3e8739b6de1a2"
+    },
+    {
+      "file": "provenance/repository/dist/search-pool.js.map",
+      "sha256": "0c7f6ca09ce43dc77edc57a804a0b0383dbaddc46d92b5bd0fdad093407d979c"
+    },
+    {
+      "file": "provenance/repository/dist/search-session-worker.d.ts",
+      "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+    },
+    {
+      "file": "provenance/repository/dist/search-session-worker.js",
+      "sha256": "9d0c3ca9a703b3345e1e8ae7f9b1dd77802624a06d21be8cb157c654a5da2538"
+    },
+    {
+      "file": "provenance/repository/dist/search-session-worker.js.map",
+      "sha256": "5bac9002415eae79c842f3a9b153847ac8b87f33020552a48c18c5d42c78426e"
+    },
+    {
+      "file": "provenance/repository/dist/search-worker.d.ts",
+      "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+    },
+    {
+      "file": "provenance/repository/dist/search-worker.js",
+      "sha256": "b12aa7aa6e0174bcd8c9266f46c7c66f4a05da7d01194d0338715d0f8632b80f"
+    },
+    {
+      "file": "provenance/repository/dist/search-worker.js.map",
+      "sha256": "46893c83b8e5b42f9fcc59fa9360a866c881a52c25486e93b19693d50e81e8d0"
+    },
+    {
+      "file": "provenance/repository/dist/server.d.ts",
+      "sha256": "6606e9d5b77e3bf5a0a489ebff44aa73018db6b651a266be829f77aad07ba9db"
+    },
+    {
+      "file": "provenance/repository/dist/server.js",
+      "sha256": "bf87875b7f2000a3b1f00b3bbe63a1232de24246d1f8c5fa799d6644d6f4aec1"
+    },
+    {
+      "file": "provenance/repository/dist/server.js.map",
+      "sha256": "89805459a6f61fce99c79e4eb564e7e8211439e29f2443615e7a4d4a3a189e87"
+    },
+    {
+      "file": "provenance/repository/dist/store.d.ts",
+      "sha256": "c4df58cd3d2a0701a519a7013ef33b6bc77f34fd673e3e31d493cc3e0e50985c"
+    },
+    {
+      "file": "provenance/repository/dist/store.js",
+      "sha256": "3b12765d8b52327cf03c9788530356b2bb0a69f8e172dba806ae13fa324c8770"
+    },
+    {
+      "file": "provenance/repository/dist/store.js.map",
+      "sha256": "69be17e09c76f557759d5a03430a057bbb674edaf9a090e20cc3621d516297c5"
+    },
+    {
+      "file": "provenance/repository/dist/strategies/markdown-structure-v1.mjs",
+      "sha256": "ac3e1686394fed2da44e1eb395a5b428407c760c3fe13686d26d8ff9b9120c24"
+    },
+    {
+      "file": "provenance/repository/dist/sync.d.ts",
+      "sha256": "7263bc7f834bc7b86a39b227ebfd1727ac8f2671b8aef937e7fdb23ab2973496"
+    },
+    {
+      "file": "provenance/repository/dist/sync.js",
+      "sha256": "26d39ceeeb0827ab60d5d41cf66f00cce78316cb8b7d4e3f114aac52b56db1a3"
+    },
+    {
+      "file": "provenance/repository/dist/sync.js.map",
+      "sha256": "4c43b9a8a413886e3e44cbe291f17b2d045b69bfe26ca11314d64765e4214db7"
+    },
+    {
+      "file": "provenance/repository/dist/transport.d.ts",
+      "sha256": "299aa3a490c746ae63ae5a84db8b0f0cc627b730ab90c49e406840b8e5cb9dc6"
+    },
+    {
+      "file": "provenance/repository/dist/transport.js",
+      "sha256": "1d922931fe1f59e2c91e72edbbc25129c9ebb5936403f72643cbbf4854793338"
+    },
+    {
+      "file": "provenance/repository/dist/transport.js.map",
+      "sha256": "004d655f2b8cd398d87b66ed8b29d82860db7716ffb99864931c7988d7bccd51"
+    },
+    {
+      "file": "provenance/public/reference/qasper_evaluator.py",
+      "sha256": "781aba7cd8e524bef4f0a1b4bf3504e5b02cb1d8d5bf32a8f0a89dfa83e86bfe"
+    },
+    {
+      "file": "provenance/public/reference/freshstack_metrics.py",
+      "sha256": "0f3316491bb6adfcf06c6fbc91bd2734cba0f19575602cd99c0b652c0fb3e0b9"
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "budget20-followup-scope-private-A-test.json",
+      "sha256": "6c49ffc3f98864ba232e832c8cb84e39b7147d688fb3bcb7a27db625d534a9b6",
+      "bytes": 2652
+    },
+    {
+      "file": "budget20-followup-scope-private-B-test.json",
+      "sha256": "1a608d1dd9a753b9915ed2182b46a34928b90041c5164c55bdc49e962f96e3a4",
+      "bytes": 2675
+    },
+    {
+      "file": "budget20-followup-scope-private-C-test.json",
+      "sha256": "0f30d0d0370c7dda5115a14b621719ab2c4e1fc68499e9bd720147808375bee1",
+      "bytes": 2618
+    },
+    {
+      "file": "budget20-followup-scope-private-D-test.json",
+      "sha256": "ba58b93067926212430069d97e0d293cb356affcdd65557833e951d64bd8dc29",
+      "bytes": 2666
+    },
+    {
+      "file": "budget20-followup-scope-private-mixed-test.json",
+      "sha256": "ca13ea6c1de21d19406551dbeaa8605f430efb383b3b897a69fd50bc2f7866e2",
+      "bytes": 2684
+    },
+    {
+      "file": "budget20-followup-scope-private-paired-test.json",
+      "sha256": "ee5c8a761d78e575ad577a13c8643ce45ce75c05e1c8375c90aa0eb4c6a728ce",
+      "bytes": 2665
+    },
+    {
+      "file": "budget20-followup-scope-public-du.json",
+      "sha256": "7d3ef93779827a114ac6de20d7d2b93fab81e9e077ba8550290ceb738183bbd3",
+      "bytes": 104
+    },
+    {
+      "file": "budget20-followup-scope-public-godot.json",
+      "sha256": "cc224a8d622920d5be2e533b68ed6f80a084d63a8e6a52ccfe3f89b33e2611cc",
+      "bytes": 112
+    },
+    {
+      "file": "budget20-followup-scope-public-langchain.json",
+      "sha256": "c38f0a7805ac5aa5f9bfda134a616457221cdb5cef34870bc5e96a80aabdf1f0",
+      "bytes": 116
+    },
+    {
+      "file": "budget20-followup-scope-public-qasper.json",
+      "sha256": "7876a523bc2085fe877a92db672ee30366413af0ff7bcf97ad87f1e65893ec28",
+      "bytes": 1773
+    },
+    {
+      "file": "comparison.json",
+      "sha256": "56187e3acf370423a8529c8edb8d3d397da4db048c7897ac8c714d2bef11062b",
+      "bytes": 76076
+    },
+    {
+      "file": "freeze.json",
+      "sha256": "f754c8c29c54bc80f4d44d498a8a52e0495b034d69d8af7569bba615010f6769",
+      "bytes": 89087
+    },
+    {
+      "file": "private/A-test/default20-cap5-bm25.jsonl",
+      "sha256": "58c41880a1e4f60a1b770840ce9b3f5b7cb2082e679b3313cb13cfb586c2ccff",
+      "bytes": 807325
+    },
+    {
+      "file": "private/A-test/default20-cap5-hybrid.jsonl",
+      "sha256": "4333a68d23f16ec90bb647a776b48c1222b9e45b4463d716a7341b0fac08cc2f",
+      "bytes": 838603
+    },
+    {
+      "file": "private/A-test/dense-reference.jsonl",
+      "sha256": "5e5498342c8cb1280eec671a88392188d21f433a2cdec3b90d9f1811f5a6f714",
+      "bytes": 821768
+    },
+    {
+      "file": "private/A-test/recall20-cap6-bm25.jsonl",
+      "sha256": "ca029ab79da2c8150cc395ed077cbe68650caf525123724b7bd5c0f568a5236b",
+      "bytes": 805029
+    },
+    {
+      "file": "private/A-test/recall20-cap6-hybrid.jsonl",
+      "sha256": "dfb2be262010586b393603370f9ffc2094b730d451c422ffa9fff0682713df68",
+      "bytes": 830113
+    },
+    {
+      "file": "private/B-test/default20-cap5-bm25.jsonl",
+      "sha256": "d1dd08fa77f4e600476f957ca8f57dcf6cb135d70435cde84cd444d57f268570",
+      "bytes": 698621
+    },
+    {
+      "file": "private/B-test/default20-cap5-hybrid.jsonl",
+      "sha256": "d3ae5ee04f4cc168d0051f9f7bd21ac8f4344c2e2ae0f141586350bb2895b46b",
+      "bytes": 660253
+    },
+    {
+      "file": "private/B-test/dense-reference.jsonl",
+      "sha256": "26864bb5da02bf43868e2ca753e0791aa68906cdead5552f4ae6ec15fa77baff",
+      "bytes": 634647
+    },
+    {
+      "file": "private/B-test/recall20-cap6-bm25.jsonl",
+      "sha256": "214af6cd093aabe6abf6651c8dff3d1557d81ae4de5a536ebe7af71ad27a30bb",
+      "bytes": 696626
+    },
+    {
+      "file": "private/B-test/recall20-cap6-hybrid.jsonl",
+      "sha256": "82e80c7e90331d0b62658f852f8e65c4b4810645bcf05a48d2a789ed854de561",
+      "bytes": 646607
+    },
+    {
+      "file": "private/C-test/default20-cap5-bm25.jsonl",
+      "sha256": "0d0094ff4ea4026d46be1416fd27456916eec181542fa307091ba0d9e7230962",
+      "bytes": 410119
+    },
+    {
+      "file": "private/C-test/default20-cap5-hybrid.jsonl",
+      "sha256": "65f915467ae3ee7864a6922359b3ec0766efd4f8c7ae545fc4fc2bf1739d8b72",
+      "bytes": 465494
+    },
+    {
+      "file": "private/C-test/dense-reference.jsonl",
+      "sha256": "102c34610a56e5d78f0fa76d9956d4b49720739e47044ae092d706e89cf2163b",
+      "bytes": 415215
+    },
+    {
+      "file": "private/C-test/recall20-cap6-bm25.jsonl",
+      "sha256": "4ec6161d511c8d3c013663e78c2b99c910b0e98453bfc52cfd54c995d7691a39",
+      "bytes": 410435
+    },
+    {
+      "file": "private/C-test/recall20-cap6-hybrid.jsonl",
+      "sha256": "a629cbb47b7b7695a030b3b60681caf9e23b3467f5e8999053e5b9207fa88ab1",
+      "bytes": 466442
+    },
+    {
+      "file": "private/D-test/default20-cap5-bm25.jsonl",
+      "sha256": "0d904255b6df33d1c107a8bce109244c4401b076a360077ed82446f47324fb62",
+      "bytes": 501670
+    },
+    {
+      "file": "private/D-test/default20-cap5-hybrid.jsonl",
+      "sha256": "86818e8c9f1c648d6818d6f128587c0b363ad7707af05ecdd8d5ba41ba47f486",
+      "bytes": 521844
+    },
+    {
+      "file": "private/D-test/dense-reference.jsonl",
+      "sha256": "18ad787498024fb0d23f69d39089914a89863263d1fd9240bfc096855cb3e0cf",
+      "bytes": 488978
+    },
+    {
+      "file": "private/D-test/recall20-cap6-bm25.jsonl",
+      "sha256": "f1270cb68cd78604d8b3ad4ef5e9f4cb699c56d80b53de90b5beb38aaab3ccb2",
+      "bytes": 501926
+    },
+    {
+      "file": "private/D-test/recall20-cap6-hybrid.jsonl",
+      "sha256": "0c088b9268f1689fa784d37601589cab5885ed1b330d162ec201ba46b4b84833",
+      "bytes": 523394
+    },
+    {
+      "file": "private/mixed-test/default20-cap5-bm25.jsonl",
+      "sha256": "fdf285cadce1d7cf11213ddef4b9158a7bd290287892087ed384f42b5f884c8f",
+      "bytes": 1002148
+    },
+    {
+      "file": "private/mixed-test/default20-cap5-hybrid.jsonl",
+      "sha256": "181c0335edb1bf69a06cecb69c153481eff72d1b64613d23b70b0b8f75e9ca55",
+      "bytes": 1039177
+    },
+    {
+      "file": "private/mixed-test/dense-reference.jsonl",
+      "sha256": "b54609c0a04fb830e0cc16fde2eafcf7940c54d1d5bed1ab2acfde286102fc2c",
+      "bytes": 993199
+    },
+    {
+      "file": "private/mixed-test/recall20-cap6-bm25.jsonl",
+      "sha256": "b1443f4864b2624183da363922c9db56218652758bc1622c038a0caa635b91eb",
+      "bytes": 996503
+    },
+    {
+      "file": "private/mixed-test/recall20-cap6-hybrid.jsonl",
+      "sha256": "ef608cdf76aa9230c41badb0fa737bc3ad8c68a4cc82af06d9de24283d8b1686",
+      "bytes": 1028195
+    },
+    {
+      "file": "private/paired-test/default20-cap5-bm25.jsonl",
+      "sha256": "c46575926184c843a5a4f6f44aac98d26095ecad2e276a5595ec4e16c6a8bc57",
+      "bytes": 684846
+    },
+    {
+      "file": "private/paired-test/default20-cap5-hybrid.jsonl",
+      "sha256": "c9eaace23c88e6d9e173f4872100d327d4f3a7478c9e630660d1b5071f701b24",
+      "bytes": 694351
+    },
+    {
+      "file": "private/paired-test/dense-reference.jsonl",
+      "sha256": "fe182cb3fb5532f4152808259e2b3e2c53a18f573b673053d8d86f60781c9334",
+      "bytes": 671918
+    },
+    {
+      "file": "private/paired-test/recall20-cap6-bm25.jsonl",
+      "sha256": "f61398cf3a760aba874c7f171ee26397268b70ae72afce097464392634fbe0dc",
+      "bytes": 683158
+    },
+    {
+      "file": "private/paired-test/recall20-cap6-hybrid.jsonl",
+      "sha256": "69c796926fedd08fcac9cc0084237dd0b2fd22253ee89a387eb6c9a82137d24c",
+      "bytes": 696176
+    },
+    {
+      "file": "private-score.json",
+      "sha256": "d036b3ce0a8975cb03d2aedab42cd41144db3f1ee002cf21637cfae52c9127f6",
+      "bytes": 62435
+    },
+    {
+      "file": "public/du-candidates.jsonl",
+      "sha256": "233a655ffabd59f677c0a800f788f51638b994c6a4d2ead5ba961176d2d1b174",
+      "bytes": 16131122
+    },
+    {
+      "file": "public/du-default20-cap5-bm25.jsonl",
+      "sha256": "b43a03cd4fbed3d17cc1958c22fb9a80697989756f0a28bb6f567a5b9b39d834",
+      "bytes": 1814000
+    },
+    {
+      "file": "public/du-default20-cap5-hybrid.jsonl",
+      "sha256": "b7de475edeeb2c2011cf0022e3576b811f820ef777efdc55fbfc5b3e168fcb82",
+      "bytes": 3327398
+    },
+    {
+      "file": "public/du-dense.jsonl",
+      "sha256": "839a3aea092628f170d4f9f53b5510f08c801ef0315e3e98e56b13784e1bfe3b",
+      "bytes": 1979584
+    },
+    {
+      "file": "public/du-recall20-cap6-bm25.jsonl",
+      "sha256": "bf53e74016cdb8907681f753fa1fb2e2e22dd1d77f55c7bbab32c8c9e8bc284d",
+      "bytes": 1806400
+    },
+    {
+      "file": "public/du-recall20-cap6-hybrid.jsonl",
+      "sha256": "4abcb656c0030867f81f0c451c083b6a23b98ca33415d02a5485cc95300d7997",
+      "bytes": 3315444
+    },
+    {
+      "file": "public/godot-candidates.jsonl",
+      "sha256": "df34358b0f2a56b8d8d7e38f38df64b21a1fafaf1beaa1f948b954879056b61d",
+      "bytes": 1105207
+    },
+    {
+      "file": "public/godot-default20-cap5-bm25.jsonl",
+      "sha256": "542fbdb0b13908fb29b01f168abadcad26e83cc805404d39668aebdcc0a0fd60",
+      "bytes": 111228
+    },
+    {
+      "file": "public/godot-default20-cap5-hybrid.jsonl",
+      "sha256": "7c165c97982c532c6e1ed3b7f72a9f69046c3387ca1c4fcd0679fe7fa1d7bbd0",
+      "bytes": 223913
+    },
+    {
+      "file": "public/godot-dense.jsonl",
+      "sha256": "700d5deedac9cbec500446f2518a360865f71341b2d9d7828f5fe98d480a142e",
+      "bytes": 119603
+    },
+    {
+      "file": "public/godot-recall20-cap6-bm25.jsonl",
+      "sha256": "3971c2c2149e1343ccaf0c61510cdd4f06fe4ba5e508d496371db46495b88a83",
+      "bytes": 110848
+    },
+    {
+      "file": "public/godot-recall20-cap6-hybrid.jsonl",
+      "sha256": "477cdb7b2d21a963b4f9a621512411433dfa1be3419f6d2050841a33494f6f23",
+      "bytes": 223181
+    },
+    {
+      "file": "public/langchain-candidates.jsonl",
+      "sha256": "e0ef2ff40c20bfca2cca37c2272d0a7b16cecb0566668e3db7f120bc87523cbf",
+      "bytes": 2328030
+    },
+    {
+      "file": "public/langchain-default20-cap5-bm25.jsonl",
+      "sha256": "bceb8f56abbd4c54c863c3a2c85a4697e1f12f8d72b1cfc50c9025313bcbaf22",
+      "bytes": 228513
+    },
+    {
+      "file": "public/langchain-default20-cap5-hybrid.jsonl",
+      "sha256": "37834b5dddce6ad551828d44fedd6178d2aae651ae20f5de22300a21479e887e",
+      "bytes": 453317
+    },
+    {
+      "file": "public/langchain-dense.jsonl",
+      "sha256": "da6d1b69d3ff29f537a3fa07a939958b2cf58f8db67b1908f1fe1d3dda290cc5",
+      "bytes": 247897
+    },
+    {
+      "file": "public/langchain-recall20-cap6-bm25.jsonl",
+      "sha256": "28da3961a06f6788bdcae24092161fe47a1dc92c7080260b15d56a50561deb96",
+      "bytes": 227753
+    },
+    {
+      "file": "public/langchain-recall20-cap6-hybrid.jsonl",
+      "sha256": "cc4ceb47bc50ebf4463094089cdb924b3aeb906768d14c8b634b40198ce33809",
+      "bytes": 451796
+    },
+    {
+      "file": "public/qasper-default20-cap5-bm25.jsonl",
+      "sha256": "05b02a56d3cded83c7b216296b7d381e38797e6f6ad7b32aba8fb475afa54802",
+      "bytes": 1004872
+    },
+    {
+      "file": "public/qasper-default20-cap5-hybrid.jsonl",
+      "sha256": "182e61fc514e734a37d300c81e6f13744cf8c1d4f9fbb6a498d9b2ea25d0e9fe",
+      "bytes": 1002767
+    },
+    {
+      "file": "public/qasper-dense-reference.jsonl",
+      "sha256": "36db791306616cfdab8b058eacf4a77da3d9f73867c582b5584f9140289af9e8",
+      "bytes": 630848
+    },
+    {
+      "file": "public/qasper-recall20-cap6-bm25.jsonl",
+      "sha256": "6fe634bfca288223b41f059cc5b49fcb6b1a1203c172bd2711b4d8f18d8f50e1",
+      "bytes": 1175886
+    },
+    {
+      "file": "public/qasper-recall20-cap6-hybrid.jsonl",
+      "sha256": "6739bc37dc65960f12982ec712ad21246c4572270e34e759a5b26dc32deeded7",
+      "bytes": 1161353
+    },
+    {
+      "file": "public-score.json",
+      "sha256": "7b595fa347fc108bf2a7533dea74fff4df1410732c4b9dbf6cc5d616ab736149",
+      "bytes": 9751
+    },
+    {
+      "file": "run-receipt.json",
+      "sha256": "50056d930a42a9ceffcec6554bcbfc6d76743432897731435d3cd0f64b28cf02",
+      "bytes": 23593
+    }
+  ],
+  "invalid_attempt": [
+    {
+      "file": "freeze.json",
+      "sha256": "08afb0502d5ffbaf7a7ff6ef2c630a1fc07d12bc8009f446cc92d6daebe45991"
+    },
+    {
+      "file": "invalid-attempt.json",
+      "sha256": "5f84c3cfcf3cb0620c18f18d2aee9662f3c4d0da6e83902dc6e7892416b42242"
+    },
+    {
+      "file": "runner-original-reconstructed.mjs",
+      "sha256": "88c936430b7a419297a180316e51e5bcad6971641cf1d02a2a199719c377cd07"
+    }
+  ],
+  "new_embedding_calls": 0
+}
