@@ -92,10 +92,31 @@ QASPER 保持产品打包口径，严格文本分母为 78，官方 Evidence F1 
 
 `0.29` 是这三组里自设 200 题最好的候选，并补回一个事实和一个单块 Hit；`0.17` 的 MRR 较高且 Du 更接近 dense，但 LangChain/QASPER 不占优。它们仍没有全面超过当前 default，因此不改默认。扩展原始收据在 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-weight-extension-v1`。
 
+## BM25 权重 0.31 / 0.37 / 0.43
+
+继续沿用同一批冻结输入补测三个更靠近 default 的权重，没有新增 embedding/API 调用。自设 200 题结果如下，分母仍是 196 道可答题、403 个事实：
+
+| BM25 权重 |  完整题 | 事实覆盖 | 单块 Hit@10 | 单块 MRR@10 |
+| --------: | ------: | -------: | ----------: | ----------: |
+|      0.31 | 178/196 |  380/403 |     191/196 |      0.8562 |
+|      0.37 | 178/196 |  380/403 |     191/196 |      0.8518 |
+|      0.43 | 176/196 |  378/403 |     190/196 |      0.8544 |
+
+公开集 hybrid 主指标如下；百分数直接写出，避免和小数形式混淆：
+
+| BM25 权重 | LangChain α-nDCG / Recall50 / MRR@10 | Godot α-nDCG / Recall50 / MRR@10 | Du nDCG / Recall50 / MRR@10 | QASPER 严格完整 / 覆盖 / Evidence F1 |
+| --------: | -----------------------------------: | -------------------------------: | --------------------------: | -----------------------------------: |
+|      0.31 |             40.60% / 56.35% / 48.03% |         16.24% / 31.50% / 20.00% |    85.31% / 97.63% / 91.61% |              48/78 / 65.81% / 22.32% |
+|      0.37 |             41.19% / 56.35% / 48.93% |         16.25% / 31.50% / 20.00% |    84.85% / 97.53% / 91.03% |              48/78 / 65.81% / 22.34% |
+|      0.43 |             41.22% / 56.10% / 48.76% |         16.27% / 31.50% / 20.00% |    84.49% / 97.40% / 90.36% |              48/78 / 65.81% / 22.34% |
+
+结论：`0.31` 和 `0.37` 在自设 200 题上都比 default 多 2 道完整题、多覆盖 2 个事实、多 1 个单块 Hit；其中 `0.31` 的私有 MRR 更高，`0.37` 的公开 LangChain MRR 和 QASPER F1 略高。`0.43` 没有带来私有收益，Du 也随权重升高而下降。三组都没有在私有、LangChain、Godot、Du、QASPER 上全面胜过 default，因此暂不改默认；如果只看这批数据，优先保留 `0.31` 作为下一轮调参中心，细扫 `0.29–0.37`。本次收据在 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-weight-extension2-v1`。
+
 ## 证据与边界
 
 - 运行器：[run-minisearch-parameter-exploration.mjs](../../evals/run-minisearch-parameter-exploration.mjs)；官方评分器：[score-minisearch-parameter-exploration.py](../../evals/score-minisearch-parameter-exploration.py)。二者只放公开脚本，不包含私有题干、正文、向量或 key。
 - E 盘输出目录：`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-parameter-exploration-v1`；其中 `freeze.json`、`run-receipt.json`、`public-score.json` 和逐题 JSONL 是本批原始收据。
+- BM25 权重扩展输出目录：`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-weight-extension-v1` 和 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-weight-extension2-v1`；两次扩展均使用冻结向量和同一评分口径。
 - 私有 Hit/MRR/宏微 Recall 重算脚本：[summarize-minisearch-parameter-metrics.mjs](../../evals/summarize-minisearch-parameter-metrics.mjs)；摘要为 E 盘 `private-score.json`。
 - 最终收据记录 9 份 SQLite 输入前后 SHA 相同、向量缓存冻结 stat 未变、收尾 SHA `306b5eb6aa8acff83f1caa9026c5403bb5163d775cea0025e388500f437dec32`、新增 embedding/API 调用 0。
 - 执行中发现并修正了生产等价的 query trim 边界，只重跑 QASPER；参数、题目 ID、语料、向量和评分条件没有变化。收据保留初始/最终脚本 SHA，不把这次 correction 隐藏成同一代码哈希。

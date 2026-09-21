@@ -160,8 +160,39 @@ const arms = Object.freeze({
     rrf_k: 10,
     reason: '只降低 BM25 融合权重到 0.29，连接 0.25 与 0.4 两侧的候选。',
   }),
+  bm25w031: Object.freeze({
+    id: 'bm25w031',
+    minisearch_k: 1.2,
+    minisearch_b: 0.7,
+    minisearch_d: 0.5,
+    bm25_weight: 0.31,
+    dense_weight: 1,
+    rrf_k: 10,
+    reason: '只提高 BM25 融合权重到 0.31，细化 0.29 与 0.4 之间的区间。',
+  }),
+  bm25w037: Object.freeze({
+    id: 'bm25w037',
+    minisearch_k: 1.2,
+    minisearch_b: 0.7,
+    minisearch_d: 0.5,
+    bm25_weight: 0.37,
+    dense_weight: 1,
+    rrf_k: 10,
+    reason: '只提高 BM25 融合权重到 0.37，靠近 0.4 折中候选。',
+  }),
+  bm25w043: Object.freeze({
+    id: 'bm25w043',
+    minisearch_k: 1.2,
+    minisearch_b: 0.7,
+    minisearch_d: 0.5,
+    bm25_weight: 0.43,
+    dense_weight: 1,
+    rrf_k: 10,
+    reason: '只提高 BM25 融合权重到 0.43，观察接近当前0.5时的回升曲线。',
+  }),
 });
 const extensionArmIds = ['bm25w023', 'bm25w017', 'bm25w029'];
+const extension2ArmIds = ['bm25w031', 'bm25w037', 'bm25w043'];
 let armIds = Object.keys(arms);
 const defaultArm = arms.default;
 const fixedRetrieval = Object.freeze({
@@ -1570,7 +1601,9 @@ async function execute(privateRoot, publicRoot, out, mode) {
   const freeze = await readJson(path.join(out, 'freeze.json'));
   await verifyFreezeInputs(freeze, privateRoot, publicRoot, false);
   const vectorBeforeSha =
-    mode === 'full' ? await shaFile(freeze.public.vector_cache) : null;
+    mode === 'full' || mode === 'extension' || mode === 'extension2'
+      ? await shaFile(freeze.public.vector_cache)
+      : null;
   const scopes =
     mode === 'smoke'
       ? ['private:A-test', 'public:langchain', 'public:qasper']
@@ -1691,7 +1724,7 @@ async function finalizeFull(
     new_embedding_calls: 0,
     network: 'not configured; provider is frozen-cache-only',
     execution_correction:
-      scopePrefix === 'extension'
+      scopePrefix === 'extension2'
         ? {
             initial_frozen_script_sha256: freeze.code.script,
             final_script_sha256: await shaFile(
@@ -1701,11 +1734,11 @@ async function finalizeFull(
                 'run-minisearch-parameter-exploration.mjs',
               ),
             ),
-            scope: 'public scopes rerun after receipt-pool initialization fix',
+            scope: 'extension2 receipt finalized after vector hash binding fix',
             reason:
-              'The first extension attempt completed private scopes, then failed before writing public rows because the candidate receipt pool was initialized only for a default arm. Public scopes were rerun with the same weights, inputs, vectors and retrieval logic.',
+              'All extension2 scope receipts were written, but the parent run initially omitted extension2 from the vector-cache before-hash binding and failed only at final receipt assertion. The retrieval outputs, frozen inputs and vector cache were unchanged.',
           }
-        : scopePrefix === 'full'
+        : scopePrefix === 'extension'
           ? {
               initial_frozen_script_sha256: freeze.code.script,
               final_script_sha256: await shaFile(
@@ -1715,11 +1748,26 @@ async function finalizeFull(
                   'run-minisearch-parameter-exploration.mjs',
                 ),
               ),
-              scope: 'QASPER rerun only',
+              scope:
+                'public scopes rerun after receipt-pool initialization fix',
               reason:
-                'The adapter was corrected to apply the production searchSchema trim boundary before frozen-vector lookup, then formatted without semantic changes; no arm, question ID, corpus, vector, or scoring parameter changed.',
+                'The first extension attempt completed private scopes, then failed before writing public rows because the candidate receipt pool was initialized only for a default arm. Public scopes were rerun with the same weights, inputs, vectors and retrieval logic.',
             }
-          : null,
+          : scopePrefix === 'full'
+            ? {
+                initial_frozen_script_sha256: freeze.code.script,
+                final_script_sha256: await shaFile(
+                  path.join(
+                    repoRoot,
+                    'evals',
+                    'run-minisearch-parameter-exploration.mjs',
+                  ),
+                ),
+                scope: 'QASPER rerun only',
+                reason:
+                  'The adapter was corrected to apply the production searchSchema trim boundary before frozen-vector lookup, then formatted without semantic changes; no arm, question ID, corpus, vector, or scoring parameter changed.',
+              }
+            : null,
   };
   assert.equal(unchangedDatabases, true);
   assert.equal(vectorStat.size, freeze.public.vector_cache_stat.size);
@@ -1736,8 +1784,17 @@ async function main() {
     'Usage: node evals/run-minisearch-parameter-exploration.mjs PRIVATE_ROOT PUBLIC_ROOT OUT [freeze|smoke|full]',
   );
   const out = path.resolve(outArg);
-  if (mode === 'freeze' || mode === 'freeze-extension') {
-    armIds = mode === 'freeze-extension' ? extensionArmIds : Object.keys(arms);
+  if (
+    mode === 'freeze' ||
+    mode === 'freeze-extension' ||
+    mode === 'freeze-extension2'
+  ) {
+    armIds =
+      mode === 'freeze-extension'
+        ? extensionArmIds
+        : mode === 'freeze-extension2'
+          ? extension2ArmIds
+          : Object.keys(arms);
     assert.ok(
       !(await fs.stat(out).catch(() => null)),
       'Output directory already exists',
@@ -1746,7 +1803,11 @@ async function main() {
       path.resolve(privateRoot),
       path.resolve(publicRoot),
       out,
-      mode === 'freeze-extension' ? 'weight-extension-v1' : 'v1',
+      mode === 'freeze-extension'
+        ? 'weight-extension-v1'
+        : mode === 'freeze-extension2'
+          ? 'weight-extension2-v1'
+          : 'v1',
     );
     console.log(
       JSON.stringify({ status: 'frozen', output: out, arms: armIds }),
@@ -1759,6 +1820,8 @@ async function main() {
   );
   if (mode === 'extension' || mode === 'finalize-extension')
     armIds = extensionArmIds;
+  if (mode === 'extension2' || mode === 'finalize-extension2')
+    armIds = extension2ArmIds;
   if (scopeArg) {
     const result = await executeScope(
       path.resolve(privateRoot),
@@ -1772,12 +1835,20 @@ async function main() {
     );
     return;
   }
-  if (mode === 'finalize' || mode === 'finalize-extension') {
+  if (
+    mode === 'finalize' ||
+    mode === 'finalize-extension' ||
+    mode === 'finalize-extension2'
+  ) {
     const receipt = await finalizeFull(
       path.resolve(privateRoot),
       path.resolve(publicRoot),
       out,
-      mode === 'finalize-extension' ? 'extension' : 'full',
+      mode === 'finalize-extension'
+        ? 'extension'
+        : mode === 'finalize-extension2'
+          ? 'extension2'
+          : 'full',
     );
     console.log(
       JSON.stringify({
