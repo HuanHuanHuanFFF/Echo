@@ -445,6 +445,26 @@ const arms = Object.freeze({
     '固定 BM25=0.31，把 cap 调到6、RRF k 调到15、dense权重调到1.2。',
     { rrf_k: 15, dense_weight: 1.2 },
   ),
+  'bm25w031-cap6-budget20': makeOtherParamArm(
+    'bm25w031-cap6-budget20',
+    { max_chunks_per_source: 6, max_context_chars: 20000 },
+    '固定 BM25=0.31，把 cap 调到6、预算调到20000。',
+  ),
+  'bm25w031-cap6-budget24': makeOtherParamArm(
+    'bm25w031-cap6-budget24',
+    { max_chunks_per_source: 6, max_context_chars: 24000 },
+    '固定 BM25=0.31，把 cap 调到6、预算调到24000。',
+  ),
+  'bm25w031-cap6-topk12': makeOtherParamArm(
+    'bm25w031-cap6-topk12',
+    { max_chunks_per_source: 6, topk: 12 },
+    '固定 BM25=0.31，把 cap 调到6、topk调到12。',
+  ),
+  'bm25w031-cap6-topk15': makeOtherParamArm(
+    'bm25w031-cap6-topk15',
+    { max_chunks_per_source: 6, topk: 15 },
+    '固定 BM25=0.31，把 cap 调到6、topk调到15。',
+  ),
 });
 const extensionArmIds = ['bm25w023', 'bm25w017', 'bm25w029'];
 const extension2ArmIds = ['bm25w031', 'bm25w037', 'bm25w043'];
@@ -502,6 +522,12 @@ const cap6ArmIds = [
   'bm25w031-cap6-rrf05-dw08',
   'bm25w031-cap6-rrf15-dw08',
   'bm25w031-cap6-rrf15-dw12',
+];
+const cap6PlusArmIds = [
+  'bm25w031-cap6-budget20',
+  'bm25w031-cap6-budget24',
+  'bm25w031-cap6-topk12',
+  'bm25w031-cap6-topk15',
 ];
 let armIds = Object.keys(arms);
 const defaultArm = arms.default;
@@ -1920,7 +1946,8 @@ async function execute(privateRoot, publicRoot, out, mode) {
     mode === 'combinations' ||
     mode === 'deep' ||
     mode === 'rrf' ||
-    mode === 'cap6'
+    mode === 'cap6' ||
+    mode === 'cap6plus'
       ? await shaFile(freeze.public.vector_cache)
       : null;
   const scopes =
@@ -2111,7 +2138,8 @@ async function main() {
     mode === 'freeze-combinations' ||
     mode === 'freeze-deep' ||
     mode === 'freeze-rrf' ||
-    mode === 'freeze-cap6'
+    mode === 'freeze-cap6' ||
+    mode === 'freeze-cap6plus'
   ) {
     armIds =
       mode === 'freeze-extension'
@@ -2128,7 +2156,9 @@ async function main() {
                   ? rrfArmIds
                   : mode === 'freeze-cap6'
                     ? cap6ArmIds
-                    : Object.keys(arms);
+                    : mode === 'freeze-cap6plus'
+                      ? cap6PlusArmIds
+                      : Object.keys(arms);
     assert.ok(
       !(await fs.stat(out).catch(() => null)),
       'Output directory already exists',
@@ -2151,7 +2181,9 @@ async function main() {
                   ? 'rrf-v1'
                   : mode === 'freeze-cap6'
                     ? 'cap6-v1'
-                    : 'v1',
+                    : mode === 'freeze-cap6plus'
+                      ? 'cap6plus-v1'
+                      : 'v1',
     );
     console.log(
       JSON.stringify({ status: 'frozen', output: out, arms: armIds }),
@@ -2173,6 +2205,8 @@ async function main() {
   if (mode === 'deep' || mode === 'finalize-deep') armIds = deepArmIds;
   if (mode === 'rrf' || mode === 'finalize-rrf') armIds = rrfArmIds;
   if (mode === 'cap6' || mode === 'finalize-cap6') armIds = cap6ArmIds;
+  if (mode === 'cap6plus' || mode === 'finalize-cap6plus')
+    armIds = cap6PlusArmIds;
   if (scopeArg) {
     const result = await executeScope(
       path.resolve(privateRoot),
@@ -2194,7 +2228,8 @@ async function main() {
     mode === 'finalize-combinations' ||
     mode === 'finalize-deep' ||
     mode === 'finalize-rrf' ||
-    mode === 'finalize-cap6'
+    mode === 'finalize-cap6' ||
+    mode === 'finalize-cap6plus'
   ) {
     const receipt = await finalizeFull(
       path.resolve(privateRoot),
@@ -2214,7 +2249,9 @@ async function main() {
                   ? 'rrf'
                   : mode === 'finalize-cap6'
                     ? 'cap6'
-                    : 'full',
+                    : mode === 'finalize-cap6plus'
+                      ? 'cap6plus'
+                      : 'full',
     );
     console.log(
       JSON.stringify({
