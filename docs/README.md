@@ -8,6 +8,8 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 - [MiniSearch默认采用与参数基线](project/2026-09-21-minisearch-default.md)：当前产品默认MiniSearch 7.2.0、取消匹配查询词乘数；k/b/d=1.2/0.7/0.5，其余新综合＋权重0.5/1＋RRF10保持。后续参数实验以此为起点。
 
+- [MiniSearch 六组参数探索](evals/2026-09-21-minisearch-parameter-exploration.md)：当前默认＋5组候选覆盖私有200主集、paired40单列和公开331题；结果为已开卷探索，不改产品默认，E盘保留逐题收据与官方评分。
+
 - [前版默认冻结](project/2026-09-20-default-freeze.md)：用户已确认新综合1.0.1＋权重0.5/1＋RRF10；topk10、每篇3、结果JSON预算16000。新初始化固定完整参数；旧显式配置与历史评测不覆盖。
 
 - [BM25现状与分词候选](research/2026-09-20-bm25-tokenizer-options.md)：公开全量显示词法信号有互补也有排序损失；ICU扩展词项、Jieba搜索模式与词典的适用边界已核对，未更换分词或宣称效果提升。
