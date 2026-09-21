@@ -140,12 +140,27 @@ QASPER 保持产品打包口径，严格文本分母为 78，官方 Evidence F1 
 
 结论：真正有效的轴是 `max_chunks_per_source`。`cap4` 是较温和的私有覆盖提升，`cap5` 是更强的证据扩展；但 QASPER 的官方 F1 因未标注上下文增加而下降，不能把它们直接改成全局默认。预算从 16000 增到 20000/24000、topk 从 10 增到 12/15 在本批没有额外收益；余弦阈值和标题权重也可暂时排后。第一轮与组合收据分别在 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-other-params-v1` 和 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-combinations-v1`。
 
+## BM25=0.31 的深组合扩展
+
+继续固定 `RRF k=10` 和 cap4/cap5，补测两路候选数100、MiniSearch `k/b/d`、dense 权重0.8/1.2。候选数100在私有主集和公开排名上均没有改变 cap4/cap5 的结果。MiniSearch 轴也没有形成稳定收益：`k=0.84/1.6`、`b=0.4/1.0`、`d=0.25/1.0` 的私有主集完整题均不超过 cap4 的183/196；部分 paired40 或公开分库有局部变化，但方向不一致。
+
+两组 dense 权重有局部取舍：
+
+| 条件            |   私有完整 / 事实 | 私有 MRR | LangChain α-nDCG / MRR |   Du nDCG / MRR | QASPER F1 |
+| --------------- | ----------------: | -------: | ---------------------: | --------------: | --------: |
+| cap4、dense=1   | 183/196 / 385/403 |   85.75% |        40.60% / 48.03% | 85.31% / 91.61% |    18.91% |
+| cap4、dense=0.8 | 184/196 / 386/403 |   85.37% |        41.22% / 48.93% | 84.92% / 91.27% |    18.40% |
+| cap4、dense=1.2 | 182/196 / 384/403 |   85.80% |        39.36% / 47.14% | 85.57% / 91.88% |    18.90% |
+
+因此 dense 权重也不直接改默认：0.8 偏向私有完整题和 LangChain，1.2 偏向 Du，但两者都有明显的其他资料代价。深组合收据在 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-deep-v1`。
+
 ## 证据与边界
 
 - 运行器：[run-minisearch-parameter-exploration.mjs](../../evals/run-minisearch-parameter-exploration.mjs)；官方评分器：[score-minisearch-parameter-exploration.py](../../evals/score-minisearch-parameter-exploration.py)。二者只放公开脚本，不包含私有题干、正文、向量或 key。
 - E 盘输出目录：`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-parameter-exploration-v1`；其中 `freeze.json`、`run-receipt.json`、`public-score.json` 和逐题 JSONL 是本批原始收据。
 - BM25 权重扩展输出目录：`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-weight-extension-v1` 和 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-weight-extension2-v1`；两次扩展均使用冻结向量和同一评分口径。
 - BM25=0.31 其他参数输出目录：`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-other-params-v1` 和 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-combinations-v1`；RRF=10 全程固定。
+- BM25=0.31 深组合输出目录：`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-deep-v1`；候选数、MiniSearch k/b/d 和 dense 权重均使用冻结向量离线测试。
 - 私有 Hit/MRR/宏微 Recall 重算脚本：[summarize-minisearch-parameter-metrics.mjs](../../evals/summarize-minisearch-parameter-metrics.mjs)；摘要为 E 盘 `private-score.json`。
 - 最终收据记录 9 份 SQLite 输入前后 SHA 相同、向量缓存冻结 stat 未变、收尾 SHA `306b5eb6aa8acff83f1caa9026c5403bb5163d775cea0025e388500f437dec32`、新增 embedding/API 调用 0。
 - 执行中发现并修正了生产等价的 query trim 边界，只重跑 QASPER；参数、题目 ID、语料、向量和评分条件没有变化。收据保留初始/最终脚本 SHA，不把这次 correction 隐藏成同一代码哈希。
