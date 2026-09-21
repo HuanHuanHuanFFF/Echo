@@ -205,6 +205,7 @@ cap6 的预算20k/24k和 topk12/15 与 cap6 本身没有新增私有收益。cap
 - BM25=0.31 其他参数输出目录：`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-other-params-v1` 和 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-combinations-v1`；RRF=10 全程固定。
 - BM25=0.31 深组合输出目录：`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-deep-v1`；候选数、MiniSearch k/b/d 和 dense 权重均使用冻结向量离线测试。
 - BM25=0.31 的 RRF/cap6 输出目录：`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-rrf-v1`、`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-cap6-v1` 和 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-cap6plus-v1`。
+- 统一对比表：[2026-09-21-minisearch-unified-comparison.md](2026-09-21-minisearch-unified-comparison.md)，包含75次 arm 运行去重后的66个唯一参数配置；表中公开指标统一采用 hybrid 条件，纯 BM25 结果保留在本报告的独立小节。
 - 私有 Hit/MRR/宏微 Recall 重算脚本：[summarize-minisearch-parameter-metrics.mjs](../../evals/summarize-minisearch-parameter-metrics.mjs)；摘要为 E 盘 `private-score.json`。
 - 最终收据记录 9 份 SQLite 输入前后 SHA 相同、向量缓存冻结 stat 未变、收尾 SHA `306b5eb6aa8acff83f1caa9026c5403bb5163d775cea0025e388500f437dec32`、新增 embedding/API 调用 0。
 - 执行中发现并修正了生产等价的 query trim 边界，只重跑 QASPER；参数、题目 ID、语料、向量和评分条件没有变化。收据保留初始/最终脚本 SHA，不把这次 correction 隐藏成同一代码哈希。
