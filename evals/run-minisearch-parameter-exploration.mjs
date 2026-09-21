@@ -362,6 +362,54 @@ const arms = Object.freeze({
     '固定 BM25=0.31、RRF=10，把 cap 调到4、dense权重调到1.2。',
     { dense_weight: 1.2 },
   ),
+  'bm25w031-cap4-rrf05': makeOtherParamArm(
+    'bm25w031-cap4-rrf05',
+    { max_chunks_per_source: 4 },
+    '固定 BM25=0.31，把 cap 调到4、RRF k 调到5。',
+    { rrf_k: 5 },
+  ),
+  'bm25w031-cap4-rrf15': makeOtherParamArm(
+    'bm25w031-cap4-rrf15',
+    { max_chunks_per_source: 4 },
+    '固定 BM25=0.31，把 cap 调到4、RRF k 调到15。',
+    { rrf_k: 15 },
+  ),
+  'bm25w031-cap5-rrf05': makeOtherParamArm(
+    'bm25w031-cap5-rrf05',
+    { max_chunks_per_source: 5 },
+    '固定 BM25=0.31，把 cap 调到5、RRF k 调到5。',
+    { rrf_k: 5 },
+  ),
+  'bm25w031-cap5-rrf15': makeOtherParamArm(
+    'bm25w031-cap5-rrf15',
+    { max_chunks_per_source: 5 },
+    '固定 BM25=0.31，把 cap 调到5、RRF k 调到15。',
+    { rrf_k: 15 },
+  ),
+  'bm25w031-cap4-rrf05-dw08': makeOtherParamArm(
+    'bm25w031-cap4-rrf05-dw08',
+    { max_chunks_per_source: 4 },
+    '固定 BM25=0.31，把 cap 调到4、RRF k 调到5、dense权重调到0.8。',
+    { rrf_k: 5, dense_weight: 0.8 },
+  ),
+  'bm25w031-cap4-rrf15-dw08': makeOtherParamArm(
+    'bm25w031-cap4-rrf15-dw08',
+    { max_chunks_per_source: 4 },
+    '固定 BM25=0.31，把 cap 调到4、RRF k 调到15、dense权重调到0.8。',
+    { rrf_k: 15, dense_weight: 0.8 },
+  ),
+  'bm25w031-cap4-rrf05-dw12': makeOtherParamArm(
+    'bm25w031-cap4-rrf05-dw12',
+    { max_chunks_per_source: 4 },
+    '固定 BM25=0.31，把 cap 调到4、RRF k 调到5、dense权重调到1.2。',
+    { rrf_k: 5, dense_weight: 1.2 },
+  ),
+  'bm25w031-cap4-rrf15-dw12': makeOtherParamArm(
+    'bm25w031-cap4-rrf15-dw12',
+    { max_chunks_per_source: 4 },
+    '固定 BM25=0.31，把 cap 调到4、RRF k 调到15、dense权重调到1.2。',
+    { rrf_k: 15, dense_weight: 1.2 },
+  ),
 });
 const extensionArmIds = ['bm25w023', 'bm25w017', 'bm25w029'];
 const extension2ArmIds = ['bm25w031', 'bm25w037', 'bm25w043'];
@@ -401,6 +449,16 @@ const deepArmIds = [
   'bm25w031-cap4-d10',
   'bm25w031-cap4-dw08',
   'bm25w031-cap4-dw12',
+];
+const rrfArmIds = [
+  'bm25w031-cap4-rrf05',
+  'bm25w031-cap4-rrf15',
+  'bm25w031-cap5-rrf05',
+  'bm25w031-cap5-rrf15',
+  'bm25w031-cap4-rrf05-dw08',
+  'bm25w031-cap4-rrf15-dw08',
+  'bm25w031-cap4-rrf05-dw12',
+  'bm25w031-cap4-rrf15-dw12',
 ];
 let armIds = Object.keys(arms);
 const defaultArm = arms.default;
@@ -1817,7 +1875,8 @@ async function execute(privateRoot, publicRoot, out, mode) {
     mode === 'extension2' ||
     mode === 'other-params' ||
     mode === 'combinations' ||
-    mode === 'deep'
+    mode === 'deep' ||
+    mode === 'rrf'
       ? await shaFile(freeze.public.vector_cache)
       : null;
   const scopes =
@@ -2006,7 +2065,8 @@ async function main() {
     mode === 'freeze-extension2' ||
     mode === 'freeze-other-params' ||
     mode === 'freeze-combinations' ||
-    mode === 'freeze-deep'
+    mode === 'freeze-deep' ||
+    mode === 'freeze-rrf'
   ) {
     armIds =
       mode === 'freeze-extension'
@@ -2019,7 +2079,9 @@ async function main() {
               ? combinationArmIds
               : mode === 'freeze-deep'
                 ? deepArmIds
-                : Object.keys(arms);
+                : mode === 'freeze-rrf'
+                  ? rrfArmIds
+                  : Object.keys(arms);
     assert.ok(
       !(await fs.stat(out).catch(() => null)),
       'Output directory already exists',
@@ -2038,7 +2100,9 @@ async function main() {
               ? 'combinations-v1'
               : mode === 'freeze-deep'
                 ? 'deep-v1'
-                : 'v1',
+                : mode === 'freeze-rrf'
+                  ? 'rrf-v1'
+                  : 'v1',
     );
     console.log(
       JSON.stringify({ status: 'frozen', output: out, arms: armIds }),
@@ -2058,6 +2122,7 @@ async function main() {
   if (mode === 'combinations' || mode === 'finalize-combinations')
     armIds = combinationArmIds;
   if (mode === 'deep' || mode === 'finalize-deep') armIds = deepArmIds;
+  if (mode === 'rrf' || mode === 'finalize-rrf') armIds = rrfArmIds;
   if (scopeArg) {
     const result = await executeScope(
       path.resolve(privateRoot),
@@ -2077,7 +2142,8 @@ async function main() {
     mode === 'finalize-extension2' ||
     mode === 'finalize-other-params' ||
     mode === 'finalize-combinations' ||
-    mode === 'finalize-deep'
+    mode === 'finalize-deep' ||
+    mode === 'finalize-rrf'
   ) {
     const receipt = await finalizeFull(
       path.resolve(privateRoot),
@@ -2093,7 +2159,9 @@ async function main() {
               ? 'combinations'
               : mode === 'finalize-deep'
                 ? 'deep'
-                : 'full',
+                : mode === 'finalize-rrf'
+                  ? 'rrf'
+                  : 'full',
     );
     console.log(
       JSON.stringify({
