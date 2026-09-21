@@ -465,6 +465,42 @@ const arms = Object.freeze({
     { max_chunks_per_source: 6, topk: 15 },
     '固定 BM25=0.31，把 cap 调到6、topk调到15。',
   ),
+  'bm25w031-cap3-rrf15-dw08': makeOtherParamArm(
+    'bm25w031-cap3-rrf15-dw08',
+    { max_chunks_per_source: 3 },
+    '固定 BM25=0.31，组合 cap3、RRF k=15、dense权重0.8。',
+    { rrf_k: 15, dense_weight: 0.8 },
+  ),
+  'bm25w031-cap3-rrf05-dw12': makeOtherParamArm(
+    'bm25w031-cap3-rrf05-dw12',
+    { max_chunks_per_source: 3 },
+    '固定 BM25=0.31，组合 cap3、RRF k=5、dense权重1.2。',
+    { rrf_k: 5, dense_weight: 1.2 },
+  ),
+  'bm25w031-cap5-rrf05-dw08': makeOtherParamArm(
+    'bm25w031-cap5-rrf05-dw08',
+    { max_chunks_per_source: 5 },
+    '固定 BM25=0.31，组合 cap5、RRF k=5、dense权重0.8。',
+    { rrf_k: 5, dense_weight: 0.8 },
+  ),
+  'bm25w031-cap5-rrf15-dw08': makeOtherParamArm(
+    'bm25w031-cap5-rrf15-dw08',
+    { max_chunks_per_source: 5 },
+    '固定 BM25=0.31，组合 cap5、RRF k=15、dense权重0.8。',
+    { rrf_k: 15, dense_weight: 0.8 },
+  ),
+  'bm25w031-cap5-rrf15-dw12': makeOtherParamArm(
+    'bm25w031-cap5-rrf15-dw12',
+    { max_chunks_per_source: 5 },
+    '固定 BM25=0.31，组合 cap5、RRF k=15、dense权重1.2。',
+    { rrf_k: 15, dense_weight: 1.2 },
+  ),
+  'bm25w031-cap4-k16-rrf05-dw08': makeOtherParamArm(
+    'bm25w031-cap4-k16-rrf05-dw08',
+    { max_chunks_per_source: 4 },
+    '固定 BM25=0.31，组合 cap4、k=1.6、RRF k=5、dense权重0.8。',
+    { minisearch_k: 1.6, rrf_k: 5, dense_weight: 0.8 },
+  ),
 });
 const extensionArmIds = ['bm25w023', 'bm25w017', 'bm25w029'];
 const extension2ArmIds = ['bm25w031', 'bm25w037', 'bm25w043'];
@@ -528,6 +564,22 @@ const cap6PlusArmIds = [
   'bm25w031-cap6-budget24',
   'bm25w031-cap6-topk12',
   'bm25w031-cap6-topk15',
+];
+const finalCombinationArmIds = [
+  'bm25w031',
+  'bm25w031-cap3-rrf15-dw08',
+  'bm25w031-cap3-rrf05-dw12',
+  'bm25w031-cap4-rrf05',
+  'bm25w031-cap4-rrf15-dw08',
+  'bm25w031-cap4-rrf05-dw12',
+  'bm25w031-cap5-rrf05',
+  'bm25w031-cap5-rrf05-dw08',
+  'bm25w031-cap5-rrf15-dw08',
+  'bm25w031-cap5-rrf15-dw12',
+  'bm25w031-cap6-rrf05',
+  'bm25w031-cap6-rrf05-dw08',
+  'bm25w031-cap6-rrf10',
+  'bm25w031-cap4-k16-rrf05-dw08',
 ];
 let armIds = Object.keys(arms);
 const defaultArm = arms.default;
@@ -1947,7 +1999,8 @@ async function execute(privateRoot, publicRoot, out, mode) {
     mode === 'deep' ||
     mode === 'rrf' ||
     mode === 'cap6' ||
-    mode === 'cap6plus'
+    mode === 'cap6plus' ||
+    mode === 'final-combos'
       ? await shaFile(freeze.public.vector_cache)
       : null;
   const scopes =
@@ -2139,7 +2192,8 @@ async function main() {
     mode === 'freeze-deep' ||
     mode === 'freeze-rrf' ||
     mode === 'freeze-cap6' ||
-    mode === 'freeze-cap6plus'
+    mode === 'freeze-cap6plus' ||
+    mode === 'freeze-final-combos'
   ) {
     armIds =
       mode === 'freeze-extension'
@@ -2158,7 +2212,9 @@ async function main() {
                     ? cap6ArmIds
                     : mode === 'freeze-cap6plus'
                       ? cap6PlusArmIds
-                      : Object.keys(arms);
+                      : mode === 'freeze-final-combos'
+                        ? finalCombinationArmIds
+                        : Object.keys(arms);
     assert.ok(
       !(await fs.stat(out).catch(() => null)),
       'Output directory already exists',
@@ -2183,7 +2239,9 @@ async function main() {
                     ? 'cap6-v1'
                     : mode === 'freeze-cap6plus'
                       ? 'cap6plus-v1'
-                      : 'v1',
+                      : mode === 'freeze-final-combos'
+                        ? 'final-combinations-v1'
+                        : 'v1',
     );
     console.log(
       JSON.stringify({ status: 'frozen', output: out, arms: armIds }),
@@ -2207,6 +2265,8 @@ async function main() {
   if (mode === 'cap6' || mode === 'finalize-cap6') armIds = cap6ArmIds;
   if (mode === 'cap6plus' || mode === 'finalize-cap6plus')
     armIds = cap6PlusArmIds;
+  if (mode === 'final-combos' || mode === 'finalize-final-combos')
+    armIds = finalCombinationArmIds;
   if (scopeArg) {
     const result = await executeScope(
       path.resolve(privateRoot),
@@ -2229,7 +2289,8 @@ async function main() {
     mode === 'finalize-deep' ||
     mode === 'finalize-rrf' ||
     mode === 'finalize-cap6' ||
-    mode === 'finalize-cap6plus'
+    mode === 'finalize-cap6plus' ||
+    mode === 'finalize-final-combos'
   ) {
     const receipt = await finalizeFull(
       path.resolve(privateRoot),
@@ -2251,7 +2312,9 @@ async function main() {
                     ? 'cap6'
                     : mode === 'finalize-cap6plus'
                       ? 'cap6plus'
-                      : 'full',
+                      : mode === 'finalize-final-combos'
+                        ? 'final-combos'
+                        : 'full',
     );
     console.log(
       JSON.stringify({
