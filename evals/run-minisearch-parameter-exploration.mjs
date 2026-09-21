@@ -81,6 +81,18 @@ async function writeJsonLines(file, rows) {
 }
 
 const arms = Object.freeze({
+  'default20-cap3': makeOtherParamArm(
+    'default20-cap3',
+    { max_chunks_per_source: 3, max_context_chars: 20000 },
+    '当前产品默认：BM25=0.5、dense=1、RRF10、预算20000、cap3。',
+    { bm25_weight: 0.5 },
+  ),
+  'default20-cap6': makeOtherParamArm(
+    'default20-cap6',
+    { max_chunks_per_source: 6, max_context_chars: 20000 },
+    '固定当前产品其他默认，只将cap3提高到cap6。',
+    { bm25_weight: 0.5 },
+  ),
   default: Object.freeze({
     id: 'default',
     minisearch_k: 1.2,
@@ -581,7 +593,11 @@ const finalCombinationArmIds = [
   'bm25w031-cap6-rrf10',
   'bm25w031-cap4-k16-rrf05-dw08',
 ];
-let armIds = Object.keys(arms);
+const budget20CapArmIds = ['default20-cap3', 'default20-cap6'];
+const historicalArmIds = Object.keys(arms).filter(
+  (id) => !budget20CapArmIds.includes(id),
+);
+let armIds = historicalArmIds;
 const defaultArm = arms.default;
 const fixedRetrieval = Object.freeze({
   lexical_engine: 'minisearch',
@@ -1798,6 +1814,17 @@ async function buildFreeze(privateRoot, publicRoot, out, variant = 'v1') {
       'Do not change product defaults from this experiment.',
     ],
   };
+  if (variant === 'budget20-cap-v1') {
+    freeze.fixed.max_context_chars_utf16 = 20000;
+    delete freeze.fixed.max_chunks_per_source;
+    freeze.varied = { max_chunks_per_source: [3, 6] };
+    freeze.reference = {
+      label: 'dense-reference',
+      max_chunks_per_source: 3,
+      max_context_chars_utf16: 16000,
+      role: 'Historical diagnostic only; not a same-budget comparison',
+    };
+  }
   const distHashes = {};
   for (const name of [
     'config.js',
@@ -1991,6 +2018,7 @@ async function execute(privateRoot, publicRoot, out, mode) {
   const freeze = await readJson(path.join(out, 'freeze.json'));
   await verifyFreezeInputs(freeze, privateRoot, publicRoot, false);
   const vectorBeforeSha =
+    mode === 'budget20-cap' ||
     mode === 'full' ||
     mode === 'extension' ||
     mode === 'extension2' ||
@@ -2183,6 +2211,33 @@ async function main() {
     'Usage: node evals/run-minisearch-parameter-exploration.mjs PRIVATE_ROOT PUBLIC_ROOT OUT [freeze|smoke|full]',
   );
   const out = path.resolve(outArg);
+  if (mode === 'freeze-budget20-cap' || mode === 'budget20-cap') {
+    armIds = budget20CapArmIds;
+    globalThis.fetch = async () => {
+      throw new Error('Network forbidden in budget20-cap replay');
+    };
+    if (mode === 'freeze-budget20-cap') {
+      assert.ok(
+        !(await fs.stat(out).catch(() => null)),
+        'Output directory already exists',
+      );
+      await buildFreeze(
+        path.resolve(privateRoot),
+        path.resolve(publicRoot),
+        out,
+        'budget20-cap-v1',
+      );
+      console.log(
+        JSON.stringify({ status: 'frozen', output: out, arms: armIds }),
+      );
+      return;
+    }
+    const frozen = await readJson(path.join(out, 'freeze.json'));
+    assert.deepEqual(
+      frozen.arms,
+      Object.fromEntries(armIds.map((id) => [id, arms[id]])),
+    );
+  }
   if (
     mode === 'freeze' ||
     mode === 'freeze-extension' ||
@@ -2214,7 +2269,7 @@ async function main() {
                       ? cap6PlusArmIds
                       : mode === 'freeze-final-combos'
                         ? finalCombinationArmIds
-                        : Object.keys(arms);
+                        : historicalArmIds;
     assert.ok(
       !(await fs.stat(out).catch(() => null)),
       'Output directory already exists',
