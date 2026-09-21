@@ -1,6 +1,6 @@
 # 当前默认20000预算：cap3与cap6同题对照
 
-日期：2026-09-21。状态：检索、官方核分和完整性审计完成，独立复核进行中。用户要求按当前参数重跑同样题数；本批测试cap6候选，以同预算cap3作单变量对照，不自动修改产品cap默认。
+日期：2026-09-21。状态：检索、官方核分、完整性审计及两位Luna/max独立复核完成。用户要求按当前参数重跑同样题数；本批测试cap6候选，以同预算cap3作单变量对照，不自动修改产品cap默认。
 
 ## 结论
 
@@ -80,7 +80,9 @@ QASPER完整文本证据48/78→60/78，但官方Evidence F1从22.21%降至15.81
 - [运行器](../../evals/run-minisearch-parameter-exploration.mjs)新增freeze-budget20-cap/budget20-cap，旧模式条件保持；使用当前dist的MiniSearch和packResults。网络明确禁用，冻结真实向量缺失即报错。
 - [私有评分器](../../evals/summarize-minisearch-parameter-metrics.mjs)按已返回原文范围重算K前缀；[公开评分器](../../evals/score-minisearch-parameter-exploration.py)使用pytrec、pyndeval和官方QASPER evaluator逐题核分。
 - [本轮审计器](../../evals/audit-default-budget20-cap.mjs)检查有效参数、同题ID、返回数/来源上限、请求和响应实际长度、200/196分母、同K10完整率、配对得失，以及固定片段两臂与旧default全排名相等。[汇总及哈希收据](2026-09-21-default-budget20-cap-comparison.manifest.json)不含私有题干或正文。
-- 本地npm run check：188项通过、1项既有跳过；格式、类型、构建、默认CLI/MCP烟测通过。Python评分验证6/6通过。
+- 本地npm run check：188项通过、1项既有跳过；格式、类型、构建、默认CLI/MCP烟测通过。Python评分验证6/6通过。 实现提交eac2331的[Windows/Linux CI](https://github.com/HuanHuanHuanFFF/Echo/actions/runs/35612284626)通过。
+- 两位Luna/max独立核对同K10私有原始JSONL、实际参数/预算与QASPER结果，无功能阻断。其中一位从原始source/line/text重算QASPER五条件的段落覆盖和官方F1，并核对公开排名的RRF公式；另一位独立重算两臂200行的完整/事实/成本及QASPER均值。
+- 根据复核补齐[全量归档收据](2026-09-21-default-budget20-cap-provenance.json)：E盘保存107个运行/评分源码快照，70个产物哈希包含全部53个逐题JSONL；14项数据集、查询、语料与段落映射文件的运行后SHA匹配freeze。仓库只存清单，不存私有逐题内容。 归档完成后已由审查者独立校验107/107源码、70/70产物及14项输入，全部SHA匹配，归档缺口关闭。
 - 旧9份唯一SQLite索引和公共真实向量缓存运行前后SHA相同，新增embedding/API调用0。所有历史输入与结果只读，新产物拒绝覆盖。
 - 输入预检与原批次ID/文件/数据库相同；QASPER最初freeze曾保存1题未trim文本哈希，其实际重跑已记录trim修正。本轮同时重算raw和trim哈希，匹配旧freeze和最新cap6freeze；不是换题，详情在E盘input-identity-check.json。
 - 仍为已开卷探索，不声明新的盲测、通用最优或Agent答案准确率。4道无答案题不足以评价稳健的证据不足处理。cap产品默认本轮未改。
