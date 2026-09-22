@@ -6,6 +6,8 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 当前默认与下一步
 
+- [Echo、Dify、Khoj 原生流程对照](evals/2026-09-22-product-comparison-protocol.md)：已确认三方案，3507题输入清单已独立核验；部署和适配进行中，尚无正式比较成绩，不改产品默认。
+
 - [两组cap6公开全量评测协议](evals/2026-09-22-cap6-public-full-freeze.md)：固定现有评分与高召回组合，两组均每篇6、topk10、20k预算；公开331题扩展到3307题，结果已完成，见[全量结果](evals/2026-09-22-cap6-public-full-results.md)；产品默认保持。
 
 - [两组cap6公开全量评测结果](evals/2026-09-22-cap6-public-full-results.md)：3307题/6614次离线检索完成；按官方 FreshStack/QASPER/Du 评分与独立 audit 核验，旧331样本与其余2976题分列，产品默认保持。
