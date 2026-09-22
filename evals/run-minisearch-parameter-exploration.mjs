@@ -93,6 +93,18 @@ const arms = Object.freeze({
     '复测此前BM25=0.31、dense=0.8、RRF5、cap6高召回组合，仅提高累计预算至20000。',
     { bm25_weight: 0.31, dense_weight: 0.8, rrf_k: 5 },
   ),
+  'public-A': makeOtherParamArm(
+    'public-A',
+    { max_chunks_per_source: 6, max_context_chars: 20000 },
+    '公开全量主臂A：新综合1.0.1、MiniSearch无匹配词乘数、BM25=0.5、dense=1、RRF10、cap6、预算20000。',
+    { bm25_weight: 0.5, dense_weight: 1, rrf_k: 10 },
+  ),
+  'public-B': makeOtherParamArm(
+    'public-B',
+    { max_chunks_per_source: 6, max_context_chars: 20000 },
+    '公开全量主臂B：除BM25=0.31、dense=0.8、RRF5外与公开全量主臂A相同。',
+    { bm25_weight: 0.31, dense_weight: 0.8, rrf_k: 5 },
+  ),
   'default20-cap3': makeOtherParamArm(
     'default20-cap3',
     { max_chunks_per_source: 3, max_context_chars: 20000 },
@@ -607,8 +619,14 @@ const finalCombinationArmIds = [
 ];
 const budget20CapArmIds = ['default20-cap3', 'default20-cap6'];
 const budget20FollowupArmIds = ['default20-cap5', 'recall20-cap6'];
+const publicFullArmIds = ['public-A', 'public-B'];
 const historicalArmIds = Object.keys(arms).filter(
-  (id) => ![...budget20CapArmIds, ...budget20FollowupArmIds].includes(id),
+  (id) =>
+    ![
+      ...budget20CapArmIds,
+      ...budget20FollowupArmIds,
+      ...publicFullArmIds,
+    ].includes(id),
 );
 let armIds = historicalArmIds;
 const defaultArm = arms.default;
@@ -2443,4 +2461,23 @@ if (
 )
   await main();
 
-export { arms, discoverTables, fuse, requestFor, lane };
+function setArmIdsForExternal(ids) {
+  armIds = [...ids];
+}
+
+export {
+  arms,
+  discoverTables,
+  fuse,
+  requestFor,
+  lane,
+  publicPaths,
+  publicQueryText,
+  publicQueryId,
+  loadPublicQueries,
+  runPublicRankingScope,
+  runQasper,
+  makeEmbeddingConfig,
+  createPublicProvider,
+  setArmIdsForExternal,
+};
