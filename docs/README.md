@@ -6,7 +6,9 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 当前默认与下一步
 
-- [两组cap6公开全量评测协议](evals/2026-09-22-cap6-public-full-freeze.md)：固定现有评分与高召回组合，两组均每篇6、topk10、20k预算；公开331题扩展到3307题，结果待验收，产品默认保持。
+- [两组cap6公开全量评测协议](evals/2026-09-22-cap6-public-full-freeze.md)：固定现有评分与高召回组合，两组均每篇6、topk10、20k预算；公开331题扩展到3307题，结果已完成，见[全量结果](evals/2026-09-22-cap6-public-full-results.md)；产品默认保持。
+
+- [两组cap6公开全量评测结果](evals/2026-09-22-cap6-public-full-results.md)：3307题/6614次离线检索完成；按官方 FreshStack/QASPER/Du 评分与独立 audit 核验，旧331样本与其余2976题分列，产品默认保持。
 
 - [批量参数评测缓存更正](evals/2026-09-21-parameter-cache-correction.md)：缓存遗漏候选/评分参数，旧候选数、标题与阈值对照的无收益结论暂停采用；新两组按修复后的v2重跑，保留无效首批。
 
