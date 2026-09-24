@@ -6,7 +6,8 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 当前默认与下一步
 
-- [Echo 与 Dify 对照范围修订](evals/2026-09-24-echo-dify-scope-revision.md)：用户取消 Khoj 后续测试；Echo/Dify 各3507题原始检索已验真，质量评分待完成，不改产品默认。原[三产品协议](evals/2026-09-22-product-comparison-protocol.md)保留为输入与历史执行依据。
+- [Echo 与 Dify 全量对照结果](evals/2026-09-24-echo-dify-results.md)：两条件各3507题已核分，私有证据、QASPER和固定公开库分列；两位独立复查完成，不改产品默认。
+- [Echo 与 Dify 对照范围修订](evals/2026-09-24-echo-dify-scope-revision.md)：用户取消 Khoj 后续测试；原[三产品协议](evals/2026-09-22-product-comparison-protocol.md)保留为输入与历史执行依据。
 
 - [两组cap6公开全量评测协议](evals/2026-09-22-cap6-public-full-freeze.md)：固定现有评分与高召回组合，两组均每篇6、topk10、20k预算；公开331题扩展到3307题，结果已完成，见[全量结果](evals/2026-09-22-cap6-public-full-results.md)；产品默认保持。
 
