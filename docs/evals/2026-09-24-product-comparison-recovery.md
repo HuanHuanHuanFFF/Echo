@@ -33,25 +33,23 @@ FreshStack 固定语料按官方固定版本 loader 的 ID 字典采用 last-row
 
 ## 当前验证与未完成项
 
-- `npm run check`：232项测试通过、1项既有跳过；格式、类型、构建及默认运行 smoke 通过。覆盖最终模型来源门禁、实际运行镜像校验及不可覆盖冻结。
+- `npm run check`：修复 JSONL 后234项测试通过、1项既有跳过；固定状态和汇总门禁回归纳入后，最新 `npm run check` 为238项通过、1项既有跳过。覆盖最终模型来源门禁、实际运行镜像校验及不可覆盖冻结。
 - Khoj 六个完整文档范围：207/214/232/280/933/6788，共8654条 compiled 全部完成原文映射和真实向量核对；六份 v2 回执验证通过。QASPER 的 Python 与 JS 原生递归重放均生成4072个原始候选，序列 SHA 一致。
 - Dify 五个私有完整文档库及 LangChain/Godot/Du 固定库、Khoj 全部九个范围已通过实际审计；18个产品/语料范围中17个就绪，剩余 Dify QASPER 仍在导入。这些是数据准备证据，不是质量得分。
 - 模型来源额外由 [全缓存回溯](../../evals/audit-product-model-provenance.mjs)逐条核验：当前快照198765条全部通过，其中真实上游29002条、冻结公共169496条、私有267条；11,951份成功上游响应被绑定，新增API调用为0。索引仍在追加，正式核分前必须对最终快照重新核验，当前数字不冒充最终用量。两个评分入口强制验证 `model-provenance/final.json`、来源文件 SHA 和当前缓存记录摘要；缺失回执、缓存新增或内容变化均在写分数前拒绝。私有捕获器 driver/replay/guard 与旧计划代码 SHA 全部一致，旧响应不补写伪造的 endpoint 字段。
 - 隔离回归见 [Dify](../../tests/dify-evidence.test.ts)、[Khoj](../../tests/khoj-evidence.test.ts)、[共同证据](../../tests/product-evidence.test.ts)、[写入恢复](../../tests/product-index-intent.test.ts)、[真实缓存](../../tests/product-private-vectors.test.ts)、[评分门禁](../../tests/product-run-integrity.test.ts)。
 
-## 首次执行的实际回归问题
+## 执行修复与证据边界
 
-首个冻结执行已完成 Echo 3507题输入，但评分前的完整性复核发现公开固定题使用 `{id, text}`，核验器误要求 `queries`。修复仅将单条题按对应产品的内部查询 ID 规范化，并将 Echo/Dify/Khoj 固定题回归样本改为真实形状；不改变题干或检索参数。
+首次实际运行发现固定官方题是 `{id, text}`，核验器误要求子问题数组；现按 Dify 的 `q0` 和 Khoj 的父题 ID 映射，原生排名、正文和身份校验不放宽。Windows/Linux CI 发现 `dist` 未生成即测试；`npm test` 现先构建，两个无 `dist` 的隔离副本分别通过 `npm test` 和完整 `check`，随后远程跨平台 CI 通过。
 
-同时，推送后的 Windows/Linux CI 暴露测试依赖 `dist`、而原 `check` 在构建前跑测试的问题，本地已有产物曾掩盖它。修复测试入口先构建，完整 `check` 复用该入口且只构建一次；不跳过失败测试。两个不含 `dist` 的隔离副本分别运行 `npm run check` 与 `npm test`，均为232项通过、1项既有跳过；主工作区产物未被移动或删除。
+Dify 新建 workflow 应用没有草稿。独立[草稿初始化工具](../../evals/bootstrap-product-dify-drafts.mjs)只为九个本实验应用准备未发布草稿；正式查询器再写入已冻结的检索图、发布并验证远端图一致。源码已保留原生 `draft_workflow_not_exist` 错误码供后续初始化。没有通过草稿执行题目或模型调用。
 
-第一次冻结 SHA `23cb18b400eb99a9090a0f299056005ab076f3e340de8012fea7f82e92fcee1d`、源代码归档及原始运行结果完整保留在实验目录 `attempts/v1-adapter-validation-failed`，状态为评分前终止，没有发布成绩。修复后建立新的执行冻结，仍使用同一语料、模型、切块、检索及预算。
+Node 24 的 `readline` 将 JSON 字符串内合法的 U+2028/U+2029 也视为行结束，导致公开代码片段误报非法 JSONL。当前[记录读取器](../../evals/lib/product-jsonl.mjs)仅按文件的 LF 记录边界解析，三个固定语料 49,505 / 25,477 / 100,001 条原文和输入 SHA 完全不变；跨平台 CI run 35992280786 已通过。
 
-## 第二次执行
+Dify 固定单元 API 将一个官方语料放在**一个容器文档的多个片段**，全文索引则为每篇文档一条原生文档。[固定状态核验](../../evals/lib/product-dify-fixed-state.mjs)分别核对总单元、容器身份、片段、向量和完成检查点；真实 49,505 / 25,477 / 100,001 三库只读预检均通过。三库各用一条隔离合成查询验证 60/60 个原生返回的片段 ID 与正文精确匹配；该探针不计入评测题量。
 
-修复提交 `2b838c24fb5dec43d70984631fdddd244e3773f1` 的 Windows/Linux CI 已通过（run 35989865359）。新冻结 SHA `7ab64226bffe57f1a0942d6057c202b4f56ac3149a336b8c728ea8f5c535d5d2` 与第一次的语料指纹、模型、全部条件和打包参数逐项相等。Echo 的3507题已经完成并通过逐库原始回执核验，尚未发布评分。
-
-Dify 新建 workflow 应用初始没有 draft，查询入口的错误消息不保留原生错误码，导致其预期的“草稿不存在”分支未生效。使用独立 [初始化工具](../../evals/bootstrap-product-dify-drafts.mjs)为九个隔离应用创建未发布的 Start→End 空白草稿；没有执行题目或模型调用。正式运行器随后覆盖为原冻结检索图，发布并验证远端图完全相等，再执行查询。该准备步骤未修改冻结的检索代码和参数；后续复现实验需先运行初始化工具。Dify 的私有200题完成并通过原始回执核验。进入固定语料时发现 Node 24 `readline` 会将 JSON 字符串中合法的 U+2028/U+2029 视为记录边界，导致 LangChain 第3200条误报无效JSON。已改为只按 LF/CRLF 划分 JSONL，三库49505/25477/100001条全部解析通过，并增加Unicode分隔符回归；原始语料字节没有改动。第二次冻结、Echo3507题和Dify200题原始结果保存在 `attempts/v2-jsonl-framing-failed`，没有评分，修复后使用同参数第三次执行。修复后完整 `npm run check` 为234项通过、1项既有跳过，三个官方固定语料解析计数与冻结完全一致。新版本也直接保留并判断Dify原生错误码，因此初始化草稿工具仅为兼容准备工具。
+前三次执行在评分前终止。每次冻结、当时的源代码和已发出的原始运行结果，分别保存在 E 盘 `attempts/v1-adapter-validation-failed`、`v2-jsonl-framing-failed`、`v3-fixed-index-state-failed`；旧数据未覆盖，也没有发布质量分数。每次修复均保持语料 SHA、模型指纹、四条件检索参数与共同打包预算不变。最终只核分通过全部来源门禁的新执行版本，重复运行的父题不增加独立题数。
 
 事后汇总器单独绑定自身代码和评分文件 SHA，不纳入生成查询、排序、证据映射和主指标的执行冻结，避免事后报告编辑影响已经固定的检索。
 

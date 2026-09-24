@@ -39,6 +39,10 @@ const { loadDifySession } = await import(pathToFileURL(authFile).href);
 const { verifyRuntimeImages } = await import(
   pathToFileURL(path.join(echoRoot, 'evals/lib/product-freeze.mjs')).href
 );
+const { inspectFixedIndexState } = await import(
+  pathToFileURL(path.join(echoRoot, 'evals/lib/product-dify-fixed-state.mjs'))
+    .href
+);
 const { readJsonl } = await import(
   pathToFileURL(path.join(echoRoot, 'evals/lib/product-jsonl.mjs')).href
 );
@@ -79,6 +83,7 @@ function parseArgs(argv) {
   const result = {
     scope: null,
     live: false,
+    preflight: false,
     probe: false,
     selfTest: false,
     freezeFile: defaultFreezeFile,
@@ -89,6 +94,7 @@ function parseArgs(argv) {
     if (item === '--root') result.root = argv[++index] || null;
     else if (item === '--scope') result.scope = argv[++index] || null;
     else if (item === '--live') result.live = true;
+    else if (item === '--preflight') result.preflight = true;
     else if (item === '--probe') result.probe = true;
     else if (item === '--self-test') result.selfTest = true;
     else if (item === '--freeze-file')
@@ -96,6 +102,11 @@ function parseArgs(argv) {
     else if (item === '--help' || item === '-h') result.help = true;
     else throw new Error('unknown argument: ' + item);
   }
+  if (
+    result.preflight &&
+    (!result.scope || result.live || result.probe || result.selfTest)
+  )
+    throw new Error('--preflight requires one --scope without other modes');
   if (result.probe && (result.live || result.scope)) {
     throw new Error('--probe uses the existing isolated workflow only');
   }
@@ -318,30 +329,32 @@ async function loadIndexState(scope, info, corpusMap) {
     throw new Error('Dify index state scope mismatch');
   if (raw.corpus_sha256 !== info.corpus.sha256)
     throw new Error('Dify index state corpus hash mismatch');
-  if (
-    ![
-      'indexed-awaiting-final-audit',
-      'indexed',
-      'complete',
-      'completed',
-      'frozen',
-    ].includes(raw.status)
-  ) {
-    throw new Error('Dify index state is not complete for querying');
-  }
-  const documents = normalizeDocuments(raw);
-  if (documents.bySource.size !== corpusMap.size) {
-    throw new Error('Dify state does not cover every corpus source');
-  }
-  for (const [sourceId, source] of corpusMap) {
-    const entry = documents.bySource.get(sourceId);
-    if (!entry || entry.status !== 'verified')
-      throw new Error('Dify state lacks a verified source mapping');
-    if (entry.text_sha256 && entry.text_sha256 !== source.text_sha256) {
-      throw new Error('Dify source text hash differs from corpus');
-    }
-    if (entry.path && source.path && entry.path !== source.path) {
-      throw new Error('Dify source path differs from corpus');
+  const fixed = isFixedScope(info);
+  let documents;
+  if (fixed) {
+    documents = inspectFixedIndexState(raw, corpusMap.size);
+  } else {
+    if (
+      ![
+        'indexed-awaiting-final-audit',
+        'indexed',
+        'complete',
+        'completed',
+        'frozen',
+      ].includes(raw.status)
+    )
+      throw new Error('Dify index state is not complete for querying');
+    documents = normalizeDocuments(raw);
+    if (documents.bySource.size !== corpusMap.size)
+      throw new Error('Dify state does not cover every corpus source');
+    for (const [sourceId, source] of corpusMap) {
+      const entry = documents.bySource.get(sourceId);
+      if (!entry || entry.status !== 'verified')
+        throw new Error('Dify state lacks a verified source mapping');
+      if (entry.text_sha256 && entry.text_sha256 !== source.text_sha256)
+        throw new Error('Dify source text hash differs from corpus');
+      if (entry.path && source.path && entry.path !== source.path)
+        throw new Error('Dify source path differs from corpus');
     }
   }
   if (!raw.dataset_id) throw new Error('Dify index state has no dataset_id');
@@ -373,7 +386,7 @@ async function loadFixedSegmentMap(scope, corpusMap, indexState) {
       throw new Error('fixed-unit segment map must be one-to-one');
     }
     const source = corpusMap.get(unitId);
-    if (!source || !indexState.documents.bySource.has(unitId)) {
+    if (!source || !indexState.documents.containerDocumentId) {
       throw new Error('fixed-unit map references an unknown official id');
     }
     if (textSha256 !== source.text_sha256) {
@@ -1058,6 +1071,11 @@ function normalizeFullResult(result, indexState) {
   if (text === null) throw new Error('Dify result content is not text');
   const nativeId = String(metadata.segment_id ?? '');
   if (!nativeId) throw new Error('Dify result has no native segment_id');
+  if (
+    typeof result.content !== 'string' ||
+    hash(result.content) !== mapped.text_sha256
+  )
+    throw new Error('Dify fixed-unit result text differs from frozen source');
   const score = Number(metadata.score ?? result.score);
   if (!Number.isFinite(score))
     throw new Error('Dify result score is not finite');
@@ -1072,10 +1090,16 @@ function normalizeFullResult(result, indexState) {
   };
 }
 
-function normalizeFixedResult(result, segmentMap) {
+function normalizeFixedResult(result, segmentMap, indexState) {
   const metadata = result?.metadata ?? {};
   const nativeId = String(metadata.segment_id ?? '');
   const mapped = segmentMap.bySegment.get(nativeId);
+  const documentId = metadata.document_id;
+  if (
+    documentId != null &&
+    documentId !== indexState.documents.containerDocumentId
+  )
+    throw new Error('Dify fixed-unit result belongs to a different container');
   if (!mapped)
     throw new Error('Dify fixed-unit segment_id has no official unit mapping');
   const score = Number(metadata.score ?? result.score);
@@ -1302,7 +1326,9 @@ async function performSubquery(
 function serializeRanking(query, response, indexState, fixedMap) {
   const results = resultList(response);
   if (fixedMap) {
-    const mapped = results.map((item) => normalizeFixedResult(item, fixedMap));
+    const mapped = results.map((item) =>
+      normalizeFixedResult(item, fixedMap, indexState),
+    );
     const unitIds = new Set();
     const ranked = mapped.map((item, index) => {
       if (unitIds.has(item.unit_id))
@@ -1864,6 +1890,37 @@ async function selfTest() {
   );
 }
 
+async function preflight(scope) {
+  safeScope(scope);
+  const manifest = await loadManifest();
+  const info = scopeInfo(manifest.value, scope);
+  const corpusMap = await loadCorpusMap(info);
+  const questions = await loadQueryRows(info.queryFile);
+  assert.equal(questions.length, info.questions);
+  const indexState = await loadIndexState(scope, info, corpusMap);
+  const fixedMap = isFixedScope(info)
+    ? await loadFixedSegmentMap(scope, corpusMap, indexState)
+    : null;
+  const receipt = await loadScopeIndexReceipt(
+    scope,
+    info,
+    indexState,
+    fixedMap,
+    corpusMap,
+  );
+  console.log(
+    JSON.stringify({
+      status: 'index-inputs-verified',
+      scope,
+      documents: corpusMap.size,
+      questions: questions.length,
+      fixed_segments: fixedMap?.bySegment.size ?? null,
+      receipt_sha256: receipt.sha256,
+      new_model_calls: 0,
+    }),
+  );
+}
+
 async function plan() {
   const manifest = await loadManifest();
   const scopes = options.scope
@@ -1921,6 +1978,7 @@ async function main() {
     return;
   }
   if (options.selfTest) return selfTest();
+  if (options.preflight) return preflight(options.scope);
   if (options.probe) return isolatedProbe();
   if (options.live) {
     if (!options.scope) throw new Error('--live requires exactly one --scope');
