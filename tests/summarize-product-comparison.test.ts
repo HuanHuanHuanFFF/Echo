@@ -13,6 +13,7 @@ const {
   PRODUCT_RUN_SCOPES,
   privateEvidenceSummaryFromRows,
   resolveFrozenPublicRoot,
+  renderMarkdown,
   scoreNames,
   summarizeProductComparison,
   validatePostRunScoreReceipt,
@@ -465,5 +466,63 @@ describe('product comparison summary readiness', () => {
         scoreHashes: swappedScoreHashes,
       }),
     ).toThrow('score_provenance_receipt_mismatch');
+  });
+});
+
+describe('product comparison Markdown rendering', () => {
+  it('uses the per-condition private pair shape when rendering a complete report', () => {
+    const qasper = {
+      strict: {
+        complete: 0,
+        denominator: 800,
+        coverage_mean: 0,
+        context_mean_chars: 0,
+        context_budget_max_chars: 20000,
+      },
+      official_evidence_f1: { mean: 0, denominator: 1005 },
+    };
+    const pair = { wins: 0, losses: 0, ties: 0, mean_delta: 0 };
+    const summary = {
+      provenance: {
+        freeze_sha256: 'a',
+        index_freeze_sha256: 'b',
+        manifest_sha256: 'c',
+        summarizer_sha256: 'd',
+      },
+      private: { scopes: {} },
+      qasper: { conditions: { echo: qasper, dify: qasper } },
+      fixed: {},
+      paired: {
+        private: {
+          dify: {
+            overall: {
+              complete_at_10: {
+                ...pair,
+                complete_2x2: {
+                  cells: [
+                    [0, 0],
+                    [0, 0],
+                  ],
+                },
+              },
+              fact_coverage_at_10: pair,
+              context_mean_chars: pair,
+            },
+          },
+        },
+        qasper: {
+          dify: {
+            official_evidence_f1: pair,
+            strict_coverage: pair,
+            context_mean_chars: pair,
+          },
+        },
+        fixed: {},
+      },
+    };
+
+    const markdown = renderMarkdown(summary);
+    expect(markdown).toContain('本报告仅包含 Echo 与 Dify');
+    expect(markdown).toContain('| dify | 0 | 0 | 0 | 0 | 0/0/0 |');
   });
 });

@@ -808,7 +808,7 @@ function percent(value) {
     : (100 * value).toFixed(2) + '%';
 }
 
-function renderMarkdown(summary) {
+export function renderMarkdown(summary) {
   const lines = [
     '# 产品检索对比成绩汇总',
     '',
@@ -964,7 +964,7 @@ function renderMarkdown(summary) {
     '| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |',
   );
   for (const condition of CONDITIONS.filter((name) => name !== 'echo')) {
-    const pair = summary.paired.private.overall[condition];
+    const pair = summary.paired.private[condition].overall;
     const cells = pair.complete_at_10.complete_2x2.cells;
     lines.push(
       '| ' +
@@ -1777,6 +1777,8 @@ async function summarizeProductComparison(root, options = {}) {
   const markdownPath = path.join(outputDir, 'summary.zh.md');
   if ((await exists(summaryPath)) || (await exists(markdownPath)))
     return pending([{ code: 'summary_output_exists' }]);
+  const summaryText = JSON.stringify(summary, null, 2) + '\n';
+  const markdownText = renderMarkdown(summary);
   if (options.dryRun) {
     return {
       status: 'ready',
@@ -1788,8 +1790,6 @@ async function summarizeProductComparison(root, options = {}) {
     };
   }
 
-  const summaryText = JSON.stringify(summary, null, 2) + '\n';
-  const markdownText = renderMarkdown(summary);
   const written = [];
   try {
     await fs.mkdir(outputDir, { recursive: true });
