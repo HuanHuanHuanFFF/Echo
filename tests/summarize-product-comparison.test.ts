@@ -6,12 +6,17 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { pathToFileURL } from 'node:url';
 
 const {
+  CONDITIONS,
+  FROZEN_CONDITIONS,
+  INVOCATION_RECEIPT_NAME,
   POST_RUN_RECEIPT_NAME,
   PRODUCT_RUN_SCOPES,
   privateEvidenceSummaryFromRows,
+  resolveFrozenPublicRoot,
   scoreNames,
   summarizeProductComparison,
   validatePostRunScoreReceipt,
+  validateProductScoringInvocationReceipt,
   validatePrivateEvidenceSummary,
   validateQasperEvidenceSummary,
 } = await import(
@@ -20,6 +25,9 @@ const {
 
 const roots: string[] = [];
 const conditions = ['echo', 'dify', 'khoj-dense', 'khoj-rerank'];
+const { assertEmptyScoreDirectory } = await import(
+  pathToFileURL(path.resolve('evals/run-product-scoring.mjs')).href
+);
 const scoreFiles = [
   'A-test.jsonl',
   'B-test.jsonl',
@@ -78,13 +86,19 @@ async function makeIncompleteRoot(root: string): Promise<string> {
     }),
   );
 
-  for (const condition of conditions.filter((name) => name !== 'dify')) {
+  const echoDirectory = path.join(root, 'scores', 'echo');
+  await fs.mkdir(echoDirectory, { recursive: true });
+  await Promise.all([
+    ...scoreFiles.map((name) =>
+      fs.writeFile(path.join(echoDirectory, name), ''),
+    ),
+    fs.writeFile(path.join(echoDirectory, POST_RUN_RECEIPT_NAME), '{}\n'),
+    fs.writeFile(path.join(echoDirectory, INVOCATION_RECEIPT_NAME), '{}\n'),
+  ]);
+  for (const condition of ['khoj-dense', 'khoj-rerank']) {
     const directory = path.join(root, 'scores', condition);
     await fs.mkdir(directory, { recursive: true });
-    await Promise.all([
-      ...scoreFiles.map((name) => fs.writeFile(path.join(directory, name), '')),
-      fs.writeFile(path.join(directory, POST_RUN_RECEIPT_NAME), '{}\n'),
-    ]);
+    await fs.writeFile(path.join(directory, 'A-test.jsonl'), 'partial-khoj');
   }
   return scoringInputPath;
 }
@@ -95,6 +109,201 @@ afterEach(async () => {
       .splice(0)
       .map((root) => fs.rm(root, { recursive: true, force: true })),
   );
+});
+
+describe('product comparison condition scope', () => {
+  it('reports Echo and Dify while retaining all four frozen condition inputs', () => {
+    expect(CONDITIONS).toEqual(['echo', 'dify']);
+    expect(FROZEN_CONDITIONS).toEqual([
+      'echo',
+      'dify',
+      'khoj-dense',
+      'khoj-rerank',
+    ]);
+  });
+
+  it('derives the public scorer root from frozen input paths', () => {
+    const publicRoot = path.resolve(os.tmpdir(), 'frozen-public-root');
+    const scoringInputs = {
+      'data/du-qrels.jsonl': {
+        path: path.join(publicRoot, 'data', 'du-qrels.jsonl'),
+        sha256: 'a'.repeat(64),
+      },
+      'reference/qasper_evaluator.py': {
+        path: path.join(publicRoot, 'reference', 'qasper_evaluator.py'),
+        sha256: 'b'.repeat(64),
+      },
+    };
+    expect(resolveFrozenPublicRoot(scoringInputs)).toBe(publicRoot);
+    expect(() =>
+      resolveFrozenPublicRoot({
+        ...scoringInputs,
+        'reference/qasper_evaluator.py': {
+          path: path.join(
+            os.tmpdir(),
+            'wrong-root',
+            'reference',
+            'qasper_evaluator.py',
+          ),
+          sha256: 'b'.repeat(64),
+        },
+      }),
+    ).toThrow('scoring_input_public_root_mismatch');
+  });
+});
+
+describe('product score invocation receipt', () => {
+  function fixture() {
+    const scoreHashes = Object.fromEntries(
+      scoreNames().map((name: string) => [name, hash(Buffer.from(name))]),
+    );
+    const runArtifacts = Object.fromEntries(
+      PRODUCT_RUN_SCOPES.map((scope: string) => [
+        scope,
+        {
+          receipt_path: 'runs/echo/' + scope + '-receipt.json',
+          receipt_sha256: 'c'.repeat(64),
+          result_path: 'runs/echo/' + scope + '.jsonl',
+          result_sha256: 'b'.repeat(64),
+        },
+      ]),
+    );
+    const scoringCode = {
+      'evals/score-product-evidence.mjs': 'd'.repeat(64),
+      'evals/score-product-public.py': 'e'.repeat(64),
+    };
+    const root = path.resolve(os.tmpdir(), 'product-score-root');
+    const repoRoot = path.resolve('.');
+    const publicRoot = path.resolve(os.tmpdir(), 'product-score-public');
+    const pythonExecutable = path.resolve(os.tmpdir(), 'python.exe');
+    const expected = {
+      condition: 'echo',
+      freezeSha: 'a'.repeat(64),
+      manifestSha: 'b'.repeat(64),
+      executorSha: '1'.repeat(64),
+      receiptWriterSha: '2'.repeat(64),
+      postRunReceiptSha: '3'.repeat(64),
+      scoreHashes,
+      runArtifacts,
+      scoringCode,
+      root,
+      publicRoot,
+      repoRoot,
+    };
+    const nodeExecutable = process.execPath;
+    const commands = {
+      evidence: {
+        executable: nodeExecutable,
+        args: ['evals/score-product-evidence.mjs', root, 'echo', publicRoot],
+        cwd: repoRoot,
+        exit_code: 0,
+        signal: null,
+      },
+      official_public: {
+        executable: pythonExecutable,
+        args: ['evals/score-product-public.py', root, publicRoot, 'echo'],
+        cwd: repoRoot,
+        exit_code: 0,
+        signal: null,
+      },
+      post_run_receipt: {
+        executable: nodeExecutable,
+        args: ['evals/receipt-product-comparison-scores.mjs', root, 'echo'],
+        cwd: repoRoot,
+        exit_code: 0,
+        signal: null,
+      },
+    };
+    const receipt = {
+      version: 1,
+      status: 'scoring-invocation-complete',
+      condition: 'echo',
+      freeze_sha256: expected.freezeSha,
+      manifest_sha256: expected.manifestSha,
+      executor_sha256: expected.executorSha,
+      receipt_writer_sha256: expected.receiptWriterSha,
+      node_executable: nodeExecutable,
+      python_executable: pythonExecutable,
+      public_root: publicRoot,
+      commands,
+      scoring_code_sha256: scoringCode,
+      run_artifacts: runArtifacts,
+      score_files_sha256: scoreHashes,
+      post_run_receipt_sha256: expected.postRunReceiptSha,
+      created_at: '2026-09-24T00:00:00.000Z',
+    };
+    return { expected, receipt };
+  }
+
+  it('rejects pre-existing score output instead of overwriting it', async () => {
+    const directory = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'product-score-dir-'),
+    );
+    roots.push(directory);
+    await expect(assertEmptyScoreDirectory(directory)).resolves.toBe(true);
+    await fs.writeFile(path.join(directory, 'A-test.jsonl'), 'stale');
+    await expect(assertEmptyScoreDirectory(directory)).rejects.toThrow(
+      'score directory is not empty',
+    );
+  });
+
+  it('rejects cross-condition and changed raw-result bindings', () => {
+    const { expected, receipt } = fixture();
+    expect(validateProductScoringInvocationReceipt(receipt, expected)).toBe(
+      true,
+    );
+    expect(() =>
+      validateProductScoringInvocationReceipt(
+        { ...receipt, condition: 'dify' },
+        expected,
+      ),
+    ).toThrow('scoring_invocation_receipt_mismatch');
+    const altered = {
+      ...receipt,
+      run_artifacts: {
+        ...receipt.run_artifacts,
+        'A-test': {
+          ...receipt.run_artifacts['A-test'],
+          result_sha256: 'f'.repeat(64),
+        },
+      },
+    };
+    expect(() =>
+      validateProductScoringInvocationReceipt(altered, expected),
+    ).toThrow('scoring_invocation_receipt_mismatch');
+  });
+
+  it('requires the exact command arguments and score hashes', () => {
+    const { expected, receipt } = fixture();
+    const changedCommand = {
+      ...receipt,
+      commands: {
+        ...receipt.commands,
+        official_public: {
+          ...receipt.commands.official_public,
+          args: [
+            'evals/score-product-public.py',
+            expected.root,
+            path.join(expected.publicRoot, 'other'),
+            'echo',
+          ],
+        },
+      },
+    };
+    expect(() =>
+      validateProductScoringInvocationReceipt(changedCommand, expected),
+    ).toThrow('scoring_invocation_receipt_mismatch');
+    const changedScore = {
+      ...receipt,
+      score_files_sha256: {
+        ...receipt.score_files_sha256,
+        'A-test.jsonl': 'f'.repeat(64),
+      },
+    };
+    expect(() =>
+      validateProductScoringInvocationReceipt(changedScore, expected),
+    ).toThrow('scoring_invocation_receipt_mismatch');
+  });
 });
 
 describe('product comparison summary readiness', () => {
@@ -112,7 +321,7 @@ describe('product comparison summary readiness', () => {
       reasons: [
         {
           code: 'score_files_missing',
-          missing_count: scoreFiles.length + 1,
+          missing_count: scoreFiles.length + 2,
         },
       ],
     });

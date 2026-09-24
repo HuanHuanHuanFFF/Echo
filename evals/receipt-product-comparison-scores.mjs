@@ -4,7 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { verifyProductRuns } from './lib/product-run-integrity.mjs';
 import {
-  CONDITIONS,
+  FROZEN_CONDITIONS,
   POST_RUN_RECEIPT_NAME,
   PRODUCT_RUN_SCOPES,
   pinnedScoringCode,
@@ -23,7 +23,7 @@ async function readJson(file) {
 }
 
 async function writeReceipt(root, condition) {
-  requireThat(CONDITIONS.includes(condition), 'unsupported condition');
+  requireThat(FROZEN_CONDITIONS.includes(condition), 'unsupported condition');
   const freezeFile = path.join(root, 'freeze.json');
   const manifestFile = path.join(root, 'corpus-v1', 'manifest.json');
   const freezeBytes = await fs.readFile(freezeFile);

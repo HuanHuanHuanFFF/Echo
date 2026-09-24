@@ -4,7 +4,8 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-export const CONDITIONS = ['echo', 'dify', 'khoj-dense', 'khoj-rerank'];
+export const CONDITIONS = ['echo', 'dify'];
+export const FROZEN_CONDITIONS = ['echo', 'dify', 'khoj-dense', 'khoj-rerank'];
 const PRIVATE_LAYOUT = [
   { scope: 'A-test', questions: 50, answerable: 48, facts: 125 },
   { scope: 'B-test', questions: 35, answerable: 35, facts: 65 },
@@ -27,6 +28,7 @@ export const PRODUCT_RUN_SCOPES = [
   ...FIXED_LAYOUT.map((item) => item.scope),
 ];
 export const POST_RUN_RECEIPT_NAME = 'post-run-receipt.json';
+export const INVOCATION_RECEIPT_NAME = 'invocation-receipt.json';
 const KS = [1, 3, 5, 10];
 const FIXED_METRICS = ['nDCG@10', 'Recall@10', 'MRR@10', 'Hit@10'];
 const TOTAL_QUESTIONS = 3507;
@@ -164,6 +166,182 @@ export async function readProductRunReceiptBindings(root, condition) {
     };
   }
   return bindings;
+}
+
+export async function readProductRunArtifactBindings(root, condition) {
+  const bindings = {};
+  for (const scope of PRODUCT_RUN_SCOPES) {
+    const receiptFile = productRunReceiptPath(root, condition, scope);
+    const receiptBytes = await fs.readFile(receiptFile);
+    const receipt = json(receiptBytes, scope + '-run-receipt');
+    const resultValue =
+      condition === 'dify' ? receipt.output_file : receipt.result?.path;
+    const recordedSha =
+      condition === 'dify' ? receipt.output_sha256 : receipt.result?.sha256;
+    if (typeof resultValue !== 'string' || typeof recordedSha !== 'string')
+      throw new Error('product_run_result_binding_missing:' + scope);
+    const resultFile = path.isAbsolute(resultValue)
+      ? path.resolve(resultValue)
+      : path.resolve(root, resultValue);
+    const expectedResult = path.resolve(
+      root,
+      'runs',
+      condition,
+      scope + '.jsonl',
+    );
+    const comparable = (value) =>
+      process.platform === 'win32' ? value.toLowerCase() : value;
+    if (comparable(resultFile) !== comparable(expectedResult))
+      throw new Error('product_run_result_path_mismatch:' + scope);
+    const resultSha = await fileHash(resultFile);
+    if (resultSha.toLowerCase() !== recordedSha.toLowerCase())
+      throw new Error('product_run_result_sha_mismatch:' + scope);
+    bindings[scope] = {
+      receipt_path: path.relative(root, receiptFile).replaceAll('\\', '/'),
+      receipt_sha256: hash(receiptBytes),
+      result_path: path.relative(root, resultFile).replaceAll('\\', '/'),
+      result_sha256: resultSha,
+    };
+  }
+  return bindings;
+}
+
+export function resolveFrozenPublicRoot(scoringInputs) {
+  if (!isRecord(scoringInputs) || Object.keys(scoringInputs).length === 0)
+    throw new Error('scoring_inputs_missing');
+  const candidates = [];
+  for (const [name, binding] of Object.entries(scoringInputs)) {
+    const segments = name.split(/[\\/]/).filter(Boolean);
+    if (
+      !segments.length ||
+      !isRecord(binding) ||
+      typeof binding.path !== 'string' ||
+      !path.isAbsolute(binding.path)
+    )
+      throw new Error('scoring_input_public_root_invalid');
+    const inputPath = path.resolve(binding.path);
+    const candidate = path.resolve(inputPath, ...segments.map(() => '..'));
+    const derivedInput = path.resolve(candidate, ...segments);
+    const comparable = (value) =>
+      process.platform === 'win32' ? value.toLowerCase() : value;
+    if (comparable(derivedInput) !== comparable(inputPath))
+      throw new Error('scoring_input_public_root_invalid');
+    candidates.push(candidate);
+  }
+  const first = candidates[0];
+  const comparable = (value) =>
+    process.platform === 'win32' ? value.toLowerCase() : value;
+  if (
+    candidates.some((candidate) => comparable(candidate) !== comparable(first))
+  )
+    throw new Error('scoring_input_public_root_mismatch');
+  return first;
+}
+
+export function validateProductScoringInvocationReceipt(receipt, expected) {
+  const sameKeys = (record, keys) =>
+    isRecord(record) &&
+    Object.keys(record).length === keys.length &&
+    keys.every((key) => Object.hasOwn(record, key));
+  const validSha = (value) =>
+    typeof value === 'string' && /^[a-f0-9]{64}$/i.test(value);
+  const scorerNames = [
+    'evals/score-product-evidence.mjs',
+    'evals/score-product-public.py',
+  ];
+  const commandNames = ['evidence', 'official_public', 'post_run_receipt'];
+  const commands = receipt?.commands;
+  const nodeExecutable = receipt?.node_executable;
+  const pythonExecutable = receipt?.python_executable;
+  const validCommand = (command, executable, args) =>
+    isRecord(command) &&
+    command.executable === executable &&
+    JSON.stringify(command.args) === JSON.stringify(args) &&
+    command.cwd === expected.repoRoot &&
+    command.exit_code === 0 &&
+    command.signal === null;
+  if (
+    !isRecord(receipt) ||
+    receipt.version !== 1 ||
+    receipt.status !== 'scoring-invocation-complete' ||
+    receipt.condition !== expected.condition ||
+    receipt.freeze_sha256 !== expected.freezeSha ||
+    receipt.manifest_sha256 !== expected.manifestSha ||
+    !validSha(receipt.executor_sha256) ||
+    receipt.executor_sha256 !== expected.executorSha ||
+    !validSha(receipt.receipt_writer_sha256) ||
+    receipt.receipt_writer_sha256 !== expected.receiptWriterSha ||
+    !validSha(receipt.post_run_receipt_sha256) ||
+    receipt.post_run_receipt_sha256 !== expected.postRunReceiptSha ||
+    receipt.public_root !== expected.publicRoot ||
+    !path.isAbsolute(nodeExecutable ?? '') ||
+    !path.isAbsolute(pythonExecutable ?? '') ||
+    !sameKeys(receipt.score_files_sha256, scoreNames()) ||
+    !sameKeys(receipt.run_artifacts, PRODUCT_RUN_SCOPES) ||
+    !sameKeys(receipt.scoring_code_sha256, scorerNames) ||
+    !sameKeys(commands, commandNames)
+  )
+    throw new Error('scoring_invocation_receipt_mismatch');
+
+  for (const name of scoreNames()) {
+    if (
+      !validSha(receipt.score_files_sha256[name]) ||
+      receipt.score_files_sha256[name] !== expected.scoreHashes[name]
+    )
+      throw new Error('scoring_invocation_receipt_mismatch');
+  }
+  for (const scope of PRODUCT_RUN_SCOPES) {
+    const actual = receipt.run_artifacts[scope];
+    const frozen = expected.runArtifacts[scope];
+    if (
+      !isRecord(actual) ||
+      actual.receipt_path !== frozen?.receipt_path ||
+      actual.receipt_sha256 !== frozen?.receipt_sha256 ||
+      actual.result_path !== frozen?.result_path ||
+      actual.result_sha256 !== frozen?.result_sha256 ||
+      !validSha(actual.receipt_sha256) ||
+      !validSha(actual.result_sha256)
+    )
+      throw new Error('scoring_invocation_receipt_mismatch');
+  }
+  for (const name of scorerNames) {
+    if (
+      !validSha(receipt.scoring_code_sha256[name]) ||
+      receipt.scoring_code_sha256[name] !== expected.scoringCode[name]
+    )
+      throw new Error('scoring_invocation_receipt_mismatch');
+  }
+  const root = expected.root;
+  const publicRoot = expected.publicRoot;
+  const expectedCommands = {
+    evidence: [
+      nodeExecutable,
+      [
+        'evals/score-product-evidence.mjs',
+        root,
+        expected.condition,
+        publicRoot,
+      ],
+    ],
+    official_public: [
+      pythonExecutable,
+      ['evals/score-product-public.py', root, publicRoot, expected.condition],
+    ],
+    post_run_receipt: [
+      nodeExecutable,
+      ['evals/receipt-product-comparison-scores.mjs', root, expected.condition],
+    ],
+  };
+  if (
+    Object.entries(expectedCommands).some(
+      ([name, [executable, args]]) =>
+        !validCommand(commands[name], executable, args),
+    )
+  )
+    throw new Error('scoring_invocation_receipt_mismatch');
+  if (!receipt.created_at || !Number.isFinite(Date.parse(receipt.created_at)))
+    throw new Error('scoring_invocation_receipt_mismatch');
+  return true;
 }
 
 export function validatePostRunScoreReceipt(receipt, expected) {
@@ -634,7 +812,8 @@ function renderMarkdown(summary) {
   const lines = [
     '# 产品检索对比成绩汇总',
     '',
-    '本草案只汇总冻结后的逐题评分，不把不同库合成一个总分，也不据此选择最优条件。',
+    '\u672c\u62a5\u544a\u4ec5\u5305\u542b Echo \u4e0e Dify\u3002Khoj \u6d4b\u8bd5\u7531\u7528\u6237\u53d6\u6d88\uff0c\u5176\u90e8\u5206\u6570\u636e\u4e0d\u8ba1\u5165\u6210\u7ee9\uff1b\u56e0\u6b64\u672c\u62a5\u544a\u4e0d\u662f\u56db\u6761\u4ef6\u5168\u91cf\u7ed3\u679c\u3002',
+    '本报告只汇总冻结后的逐题评分，不把两产品合成一个总分，也不据此选择最优条件。',
     '',
     '## 来源与覆盖',
     '',
@@ -939,8 +1118,10 @@ async function summarizeProductComparison(root, options = {}) {
   const frozenConditions = freeze.conditions;
   if (
     !isRecord(frozenConditions) ||
-    Object.keys(frozenConditions).length !== CONDITIONS.length ||
-    CONDITIONS.some((condition) => !Object.hasOwn(frozenConditions, condition))
+    Object.keys(frozenConditions).length !== FROZEN_CONDITIONS.length ||
+    FROZEN_CONDITIONS.some(
+      (condition) => !Object.hasOwn(frozenConditions, condition),
+    )
   )
     return pending([{ code: 'frozen_condition_set_mismatch' }]);
 
@@ -969,6 +1150,16 @@ async function summarizeProductComparison(root, options = {}) {
       name: POST_RUN_RECEIPT_NAME,
       path: path.join(absoluteRoot, 'scores', condition, POST_RUN_RECEIPT_NAME),
     });
+    required.push({
+      condition,
+      name: INVOCATION_RECEIPT_NAME,
+      path: path.join(
+        absoluteRoot,
+        'scores',
+        condition,
+        INVOCATION_RECEIPT_NAME,
+      ),
+    });
   }
   const missing = [];
   for (const file of required) {
@@ -989,6 +1180,8 @@ async function summarizeProductComparison(root, options = {}) {
   const scoreHashes = {};
   const postRunReceipts = {};
   const postRunReceiptHashes = {};
+  const invocationReceipts = {};
+  const invocationReceiptHashes = {};
   try {
     for (const condition of CONDITIONS) {
       data[condition] = {};
@@ -1009,6 +1202,14 @@ async function summarizeProductComparison(root, options = {}) {
       postRunReceipts[condition] = json(
         receiptBytes,
         condition + '/' + POST_RUN_RECEIPT_NAME,
+      );
+      const invocationBytes = await fs.readFile(
+        path.join(absoluteRoot, 'scores', condition, INVOCATION_RECEIPT_NAME),
+      );
+      invocationReceiptHashes[condition] = hash(invocationBytes);
+      invocationReceipts[condition] = json(
+        invocationBytes,
+        condition + '/' + INVOCATION_RECEIPT_NAME,
       );
     }
   } catch (error) {
@@ -1036,20 +1237,44 @@ async function summarizeProductComparison(root, options = {}) {
   }
 
   let receiptWriterSha;
+  let scoringOrchestratorSha;
   let runReceiptBindings;
+  let runArtifactBindings;
+  let frozenPublicRoot;
   try {
+    const repositoryRoot = path.resolve(
+      path.dirname(fileURLToPath(import.meta.url)),
+      '..',
+    );
     const receiptWriterPath = path.join(
       path.dirname(fileURLToPath(import.meta.url)),
       'receipt-product-comparison-scores.mjs',
     );
+    const orchestratorPath = path.join(
+      path.dirname(fileURLToPath(import.meta.url)),
+      'run-product-scoring.mjs',
+    );
     receiptWriterSha = hash(await fs.readFile(receiptWriterPath));
+    scoringOrchestratorSha = hash(await fs.readFile(orchestratorPath));
+    frozenPublicRoot = resolveFrozenPublicRoot(freeze.scoring_inputs);
     runReceiptBindings = {};
-    for (const condition of CONDITIONS)
-      runReceiptBindings[condition] = await readProductRunReceiptBindings(
+    runArtifactBindings = {};
+    for (const condition of CONDITIONS) {
+      runArtifactBindings[condition] = await readProductRunArtifactBindings(
         absoluteRoot,
         condition,
       );
-    for (const condition of CONDITIONS)
+      runReceiptBindings[condition] = Object.fromEntries(
+        PRODUCT_RUN_SCOPES.map((scope) => {
+          const binding = runArtifactBindings[condition][scope];
+          return [
+            scope,
+            { path: binding.receipt_path, sha256: binding.receipt_sha256 },
+          ];
+        }),
+      );
+    }
+    for (const condition of CONDITIONS) {
       validatePostRunScoreReceipt(postRunReceipts[condition], {
         condition,
         freezeSha: hash(freezeBytes),
@@ -1059,6 +1284,21 @@ async function summarizeProductComparison(root, options = {}) {
         scoringCode,
         writerSha: receiptWriterSha,
       });
+      validateProductScoringInvocationReceipt(invocationReceipts[condition], {
+        condition,
+        freezeSha: hash(freezeBytes),
+        manifestSha: hash(manifestBytes),
+        executorSha: scoringOrchestratorSha,
+        receiptWriterSha,
+        postRunReceiptSha: postRunReceiptHashes[condition],
+        scoreHashes: scoreHashes[condition],
+        runArtifacts: runArtifactBindings[condition],
+        scoringCode,
+        root: absoluteRoot,
+        publicRoot: frozenPublicRoot,
+        repoRoot: repositoryRoot,
+      });
+    }
   } catch (error) {
     return pending([
       {
@@ -1466,6 +1706,11 @@ async function summarizeProductComparison(root, options = {}) {
       distinct_questions: TOTAL_QUESTIONS,
       per_condition: TOTAL_QUESTIONS,
       conditions: CONDITIONS,
+      excluded_conditions: {
+        conditions: ['khoj-dense', 'khoj-rerank'],
+        reason: 'user_cancelled',
+        included_in_metrics: false,
+      },
       private: { questions: 200, answerable: 196, facts: 403, no_answer: 4 },
       qasper: { questions: QASPER_QUESTIONS, strict_eligible: QASPER_ELIGIBLE },
       fixed: { langchain: 203, godot: 99, du: 2000 },
@@ -1479,6 +1724,7 @@ async function summarizeProductComparison(root, options = {}) {
       frozen_scoring_code_sha256: scoringCode,
       scoring_inputs_count: scoringInputsCount,
       score_receipts_sha256: postRunReceiptHashes,
+      scoring_invocation_receipts_sha256: invocationReceiptHashes,
       score_files_sha256: scoreHashes,
     },
     packing: freeze.packing,
@@ -1537,6 +1783,7 @@ async function summarizeProductComparison(root, options = {}) {
       would_write: ['analysis/summary.json', 'analysis/summary.zh.md'],
       score_file_count: CONDITIONS.length * scoreNames().length,
       score_receipt_count: CONDITIONS.length,
+      invocation_receipt_count: CONDITIONS.length,
       mapping_gaps: 0,
     };
   }
@@ -1563,6 +1810,7 @@ async function summarizeProductComparison(root, options = {}) {
     freeze_sha256: summary.provenance.freeze_sha256,
     score_file_count: CONDITIONS.length * scoreNames().length,
     score_receipt_count: CONDITIONS.length,
+    invocation_receipt_count: CONDITIONS.length,
   };
 }
 
@@ -1589,6 +1837,9 @@ if (invoked === fileURLToPath(import.meta.url)) {
           ...(result.files ? { files: result.files } : {}),
           ...(result.score_file_count !== undefined
             ? { score_file_count: result.score_file_count }
+            : {}),
+          ...(result.invocation_receipt_count !== undefined
+            ? { invocation_receipt_count: result.invocation_receipt_count }
             : {}),
           ...(result.freeze_sha256
             ? { freeze_sha256: result.freeze_sha256 }
