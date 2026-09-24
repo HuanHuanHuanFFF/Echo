@@ -2466,6 +2466,12 @@ function setArmIdsForExternal(ids) {
 }
 
 export {
+  armOptions,
+  makeContext,
+  closeContext,
+  queryCandidates,
+  loadPrivateVectorCache,
+  createPrivateProvider,
   arms,
   discoverTables,
   fuse,

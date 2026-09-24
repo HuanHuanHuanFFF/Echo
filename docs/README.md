@@ -170,4 +170,6 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 - [真实向量准备与开发集语义对照](evals/2026-09-17-real-model-development.md)：真实索引与首轮开发语义对照已完成，结果复核及默认方案选择仍在进行；[用量与指纹](evals/2026-09-17-real-vector-preparation.manifest.json)。
 
+- [三产品对照恢复与执行边界](evals/2026-09-24-product-comparison-recovery.md)：运行恢复、实际证据映射与逐库冻结；正式比较尚未完成。
+
 - [产品对照运行恢复与模型批处理](evals/2026-09-24-product-runtime-recovery.md)：隔离运行修复、合并模型小批请求及真实探针验证。
