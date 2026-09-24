@@ -140,6 +140,11 @@ async function executionPaths(
     blockers,
     'evals-code',
   );
+  // The post-run report binds its own code and score artifacts independently.
+  // It does not generate queries, rankings, evidence mappings, or primary scores.
+  const executionEvalFiles = evalFiles.filter(
+    (file) => path.basename(file) !== 'summarize-product-comparison.mjs',
+  );
   const distFiles = await collectTree(
     path.join(repository, 'dist'),
     new Set(['.js', '.mjs', '.cjs', '.json', '.node']),
@@ -180,7 +185,7 @@ async function executionPaths(
   ];
   const unique = new Map();
   for (const file of [
-    ...evalFiles,
+    ...executionEvalFiles,
     ...distFiles,
     ...khojScripts,
     ...fixedRuntimeFiles,

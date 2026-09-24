@@ -1,9 +1,8 @@
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
-import { existsSync, createReadStream } from 'node:fs';
+import { existsSync } from 'node:fs';
 import path from 'node:path';
-import readline from 'node:readline';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const moduleRoot = path.dirname(fileURLToPath(import.meta.url));
@@ -39,6 +38,9 @@ if (!authFile)
 const { loadDifySession } = await import(pathToFileURL(authFile).href);
 const { verifyRuntimeImages } = await import(
   pathToFileURL(path.join(echoRoot, 'evals/lib/product-freeze.mjs')).href
+);
+const { readJsonl } = await import(
+  pathToFileURL(path.join(echoRoot, 'evals/lib/product-jsonl.mjs')).href
 );
 const { validateIndexReceipt } = await import(
   pathToFileURL(path.join(echoRoot, 'evals/lib/product-index-receipt.mjs')).href
@@ -159,29 +161,6 @@ async function appendJsonLineDurable(file, value) {
     await handle.sync();
   } finally {
     await handle.close();
-  }
-}
-
-async function* readJsonl(file) {
-  const stream = createReadStream(file, { encoding: 'utf8' });
-  const lines = readline.createInterface({
-    input: stream,
-    crlfDelay: Infinity,
-  });
-  let lineNumber = 0;
-  try {
-    for await (const line of lines) {
-      lineNumber += 1;
-      if (!line.trim()) continue;
-      try {
-        yield JSON.parse(line);
-      } catch {
-        throw new Error('invalid JSONL at ' + file + ':' + lineNumber);
-      }
-    }
-  } finally {
-    lines.close();
-    stream.destroy();
   }
 }
 
@@ -821,8 +800,13 @@ async function consoleRequest(session, route, method = 'GET', body) {
   } catch {
     value = null;
   }
-  if (!response.ok)
-    throw new Error('Dify console HTTP ' + response.status + ' at ' + route);
+  if (!response.ok) {
+    const error = new Error(
+      'Dify console HTTP ' + response.status + ' at ' + route,
+    );
+    error.code = value?.code;
+    throw error;
+  }
   return value;
 }
 
@@ -971,8 +955,7 @@ async function syncWorkflow(session, appId, graph) {
       await consoleRequest(session, '/apps/' + appId + '/workflows/draft'),
     );
   } catch (error) {
-    if (!String(error.message || error).includes('draft_workflow_not_exist'))
-      throw error;
+    if (error.code !== 'draft_workflow_not_exist') throw error;
   }
   await consoleRequest(session, '/apps/' + appId + '/workflows/draft', 'POST', {
     graph,

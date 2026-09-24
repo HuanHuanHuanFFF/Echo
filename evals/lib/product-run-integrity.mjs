@@ -68,6 +68,7 @@ export function requiredProductRunExecutionFiles(condition) {
     dify: [
       'product-dify-query.mjs',
       'lib/dify-auth.mjs',
+      'lib/product-jsonl.mjs',
       'lib/product-index-intent.mjs',
     ],
     'khoj-dense': [
