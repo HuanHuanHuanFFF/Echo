@@ -33,9 +33,9 @@ FreshStack 固定语料按官方固定版本 loader 的 ID 字典采用 last-row
 
 ## 当前验证与未完成项
 
-- `npm run check`：修复 JSONL 后234项测试通过、1项既有跳过；固定状态和汇总门禁回归纳入后，最新 `npm run check` 为238项通过、1项既有跳过。覆盖最终模型来源门禁、实际运行镜像校验及不可覆盖冻结。
+- `npm run check`：修复 JSONL 后234项测试通过、1项既有跳过；固定状态和汇总门禁回归纳入后，最新 `npm run check` 为238项通过、1项既有跳过；新增原生适配器自检另已通过，最新完整检查见后续提交。覆盖最终模型来源门禁、实际运行镜像校验及不可覆盖冻结。
 - Khoj 六个完整文档范围：207/214/232/280/933/6788，共8654条 compiled 全部完成原文映射和真实向量核对；六份 v2 回执验证通过。QASPER 的 Python 与 JS 原生递归重放均生成4072个原始候选，序列 SHA 一致。
-- Dify 五个私有完整文档库及 LangChain/Godot/Du 固定库、Khoj 全部九个范围已通过实际审计；18个产品/语料范围中17个就绪，剩余 Dify QASPER 仍在导入。这些是数据准备证据，不是质量得分。
+- Dify 五个私有完整文档库及 LangChain/Godot/Du 固定库、Khoj 全部九个范围已通过实际审计；18个产品/语料范围均已通过最终审计；Dify QASPER 的281篇、18,986个父片段、26,092条真实模型向量均完成核对，原文映射缺口0、向量缺口0。这些是数据准备证据，不是质量得分。
 - 模型来源额外由 [全缓存回溯](../../evals/audit-product-model-provenance.mjs)逐条核验：当前快照198765条全部通过，其中真实上游29002条、冻结公共169496条、私有267条；11,951份成功上游响应被绑定，新增API调用为0。索引仍在追加，正式核分前必须对最终快照重新核验，当前数字不冒充最终用量。两个评分入口强制验证 `model-provenance/final.json`、来源文件 SHA 和当前缓存记录摘要；缺失回执、缓存新增或内容变化均在写分数前拒绝。私有捕获器 driver/replay/guard 与旧计划代码 SHA 全部一致，旧响应不补写伪造的 endpoint 字段。
 - 隔离回归见 [Dify](../../tests/dify-evidence.test.ts)、[Khoj](../../tests/khoj-evidence.test.ts)、[共同证据](../../tests/product-evidence.test.ts)、[写入恢复](../../tests/product-index-intent.test.ts)、[真实缓存](../../tests/product-private-vectors.test.ts)、[评分门禁](../../tests/product-run-integrity.test.ts)。
 
@@ -49,7 +49,7 @@ Node 24 的 `readline` 将 JSON 字符串内合法的 U+2028/U+2029 也视为行
 
 Dify 固定单元 API 将一个官方语料放在**一个容器文档的多个片段**，全文索引则为每篇文档一条原生文档。[固定状态核验](../../evals/lib/product-dify-fixed-state.mjs)分别核对总单元、容器身份、片段、向量和完成检查点；真实 49,505 / 25,477 / 100,001 三库只读预检均通过。三库各用一条隔离合成查询验证 60/60 个原生返回的片段 ID 与正文精确匹配；该探针不计入评测题量。
 
-前三次执行在评分前终止。每次冻结、当时的源代码和已发出的原始运行结果，分别保存在 E 盘 `attempts/v1-adapter-validation-failed`、`v2-jsonl-framing-failed`、`v3-fixed-index-state-failed`；旧数据未覆盖，也没有发布质量分数。每次修复均保持语料 SHA、模型指纹、四条件检索参数与共同打包预算不变。最终只核分通过全部来源门禁的新执行版本，重复运行的父题不增加独立题数。
+前四次执行在评分前终止。每次冻结、当时的源代码和已发出的原始运行结果，分别保存在 E 盘 `attempts/v1-adapter-validation-failed`、`v2-jsonl-framing-failed`、`v3-fixed-index-state-failed` 和 `v4-full-result-scope-error`；旧数据未覆盖，也没有发布质量分数。每次修复均保持语料 SHA、模型指纹、四条件检索参数与共同打包预算不变。第四次运行的 QASPER 首题原生 HTTP 返回46个片段，46个均来自指定论文、具有正确的片段 ID、scope 元数据和与索引完全相同的正文。全文结果转换中误引用固定单元局部变量，已移回固定分支并新增原生适配器自检。最终只核分通过全部来源门禁的新执行版本，重复运行的父题不增加独立题数。
 
 事后汇总器单独绑定自身代码和评分文件 SHA，不纳入生成查询、排序、证据映射和主指标的执行冻结，避免事后报告编辑影响已经固定的检索。
 

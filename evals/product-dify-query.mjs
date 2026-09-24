@@ -1071,11 +1071,6 @@ function normalizeFullResult(result, indexState) {
   if (text === null) throw new Error('Dify result content is not text');
   const nativeId = String(metadata.segment_id ?? '');
   if (!nativeId) throw new Error('Dify result has no native segment_id');
-  if (
-    typeof result.content !== 'string' ||
-    hash(result.content) !== mapped.text_sha256
-  )
-    throw new Error('Dify fixed-unit result text differs from frozen source');
   const score = Number(metadata.score ?? result.score);
   if (!Number.isFinite(score))
     throw new Error('Dify result score is not finite');
@@ -1102,6 +1097,11 @@ function normalizeFixedResult(result, segmentMap, indexState) {
     throw new Error('Dify fixed-unit result belongs to a different container');
   if (!mapped)
     throw new Error('Dify fixed-unit segment_id has no official unit mapping');
+  if (
+    typeof result.content !== 'string' ||
+    hash(result.content) !== mapped.text_sha256
+  )
+    throw new Error('Dify fixed-unit result text differs from frozen source');
   const score = Number(metadata.score ?? result.score);
   if (!Number.isFinite(score))
     throw new Error('Dify fixed-unit score is not finite');
@@ -1868,6 +1868,51 @@ async function selfTest() {
   );
   assert.equal(result.native_id, 'synthetic-segment');
   assert.equal(result.document_id, 'synthetic-document');
+  const fixedText = 'synthetic complete official unit';
+  const fixed = normalizeFixedResult(
+    {
+      content: fixedText,
+      metadata: {
+        segment_id: 'fixed-segment',
+        document_id: 'fixed-container',
+        score: 0.75,
+      },
+    },
+    {
+      bySegment: new Map([
+        [
+          'fixed-segment',
+          { unit_id: 'fixed-unit', text_sha256: hash(fixedText) },
+        ],
+      ]),
+    },
+    { documents: { containerDocumentId: 'fixed-container' } },
+  );
+  assert.deepEqual(fixed, { unit_id: 'fixed-unit', score: 0.75 });
+  assert.throws(
+    () =>
+      normalizeFixedResult(
+        {
+          content: 'truncated',
+          metadata: {
+            segment_id: 'fixed-segment',
+            document_id: 'fixed-container',
+            score: 0.75,
+          },
+        },
+        {
+          bySegment: new Map([
+            [
+              'fixed-segment',
+              { unit_id: 'fixed-unit', text_sha256: hash(fixedText) },
+            ],
+          ]),
+        },
+        { documents: { containerDocumentId: 'fixed-container' } },
+      ),
+    /text differs/,
+  );
+
   const question = {
     id: 'synthetic-question',
     text: 'synthetic question',
