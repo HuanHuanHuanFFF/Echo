@@ -12,8 +12,10 @@ const {
   POST_RUN_RECEIPT_NAME,
   PRODUCT_RUN_SCOPES,
   privateEvidenceSummaryFromRows,
+  qasperReport,
   resolveFrozenPublicRoot,
   renderMarkdown,
+  sameModelProvenanceBinding,
   scoreNames,
   summarizeProductComparison,
   validatePostRunScoreReceipt,
@@ -488,6 +490,10 @@ describe('product comparison Markdown rendering', () => {
         index_freeze_sha256: 'b',
         manifest_sha256: 'c',
         summarizer_sha256: 'd',
+        model_provenance: {
+          final_pointer_sha256: 'e',
+          report_sha256: 'f',
+        },
       },
       private: { scopes: {} },
       qasper: { conditions: { echo: qasper, dify: qasper } },
@@ -523,6 +529,68 @@ describe('product comparison Markdown rendering', () => {
 
     const markdown = renderMarkdown(summary);
     expect(markdown).toContain('本报告仅包含 Echo 与 Dify');
+    expect(markdown).toContain('| model final.json | e |');
     expect(markdown).toContain('| dify | 0 | 0 | 0 | 0 | 0/0/0 |');
+  });
+});
+
+describe('model provenance binding', () => {
+  it('detects a changed final pointer, report, cache digest or row count', () => {
+    const bound = {
+      final_pointer_sha256: 'a'.repeat(64),
+      report_sha256: 'b'.repeat(64),
+      cache_records_sha256: 'c'.repeat(64),
+      cache_record_count: 221360,
+    };
+    expect(sameModelProvenanceBinding(bound, bound)).toBe(true);
+    for (const [key, value] of [
+      ['final_pointer_sha256', 'd'.repeat(64)],
+      ['report_sha256', 'e'.repeat(64)],
+      ['cache_records_sha256', 'f'.repeat(64)],
+      ['cache_record_count', 221361],
+    ] as const) {
+      expect(
+        sameModelProvenanceBinding({ ...bound, [key]: value }, bound),
+      ).toBe(false);
+    }
+    expect(sameModelProvenanceBinding({ ...bound, extra: true }, bound)).toBe(
+      false,
+    );
+  });
+});
+
+describe('QASPER report denominators', () => {
+  it('uses eligible questions for strict coverage and all questions for context/F1', () => {
+    const rows = [
+      {
+        eligible: true,
+        strict_complete: true,
+        strict_coverage: 1,
+        request_response_chars: 20,
+      },
+      {
+        eligible: false,
+        strict_complete: false,
+        strict_coverage: null,
+        request_response_chars: 40,
+      },
+    ];
+    const official = new Map([
+      ['a', { 'Evidence F1': 0.5 }],
+      ['b', { 'Evidence F1': 0.3 }],
+    ]);
+
+    const report = qasperReport(rows, official, 20000);
+    expect(report.strict).toMatchObject({
+      complete: 1,
+      denominator: 1,
+      coverage_mean: 1,
+      context_question_count: 2,
+      context_mean_chars: 30,
+    });
+    expect(report.official_evidence_f1).toMatchObject({
+      mean: 0.4,
+      denominator: 2,
+    });
   });
 });

@@ -3,6 +3,7 @@ import { createReadStream } from 'node:fs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { verifyFinalModelProvenance } from './lib/product-model-provenance.mjs';
 
 export const CONDITIONS = ['echo', 'dify'];
 export const FROZEN_CONDITIONS = ['echo', 'dify', 'khoj-dense', 'khoj-rerank'];
@@ -71,6 +72,20 @@ const within01 = (value) =>
   value >= 0 &&
   value <= 1;
 const pending = (reasons) => ({ status: 'pending', reasons });
+export function sameModelProvenanceBinding(record, expected) {
+  const keys = [
+    'final_pointer_sha256',
+    'report_sha256',
+    'cache_records_sha256',
+    'cache_record_count',
+  ];
+  return (
+    isRecord(record) &&
+    isRecord(expected) &&
+    Object.keys(record).length === keys.length &&
+    keys.every((key) => record[key] === expected[key])
+  );
+}
 
 async function fileHash(file) {
   const digest = createHash('sha256');
@@ -571,7 +586,7 @@ function privateReport(scope, rows, budgetMax) {
   };
 }
 
-function qasperReport(evidenceRows, officialMap, budgetMax) {
+export function qasperReport(evidenceRows, officialMap, budgetMax) {
   const eligible = evidenceRows.filter((row) => row.eligible);
   const officialRows = [...officialMap.values()];
   return {
@@ -580,6 +595,7 @@ function qasperReport(evidenceRows, officialMap, budgetMax) {
       complete: eligible.filter((row) => row.strict_complete).length,
       denominator: eligible.length,
       coverage_mean: round(mean(eligible.map((row) => row.strict_coverage))),
+      context_question_count: evidenceRows.length,
       context_mean_chars: round(
         mean(evidenceRows.map((row) => row.request_response_chars)),
       ),
@@ -823,6 +839,12 @@ export function renderMarkdown(summary) {
     '| index-freeze.json | ' + summary.provenance.index_freeze_sha256 + ' |',
     '| corpus manifest | ' + summary.provenance.manifest_sha256 + ' |',
     '| 汇总脚本 | ' + summary.provenance.summarizer_sha256 + ' |',
+    '| model final.json | ' +
+      summary.provenance.model_provenance.final_pointer_sha256 +
+      ' |',
+    '| model audit report | ' +
+      summary.provenance.model_provenance.report_sha256 +
+      ' |',
     '| 唯一题目覆盖 | 每个条件 3507 题；私有200、QASPER1005、固定库2302 |',
     '| 映射缺口 | 0 |',
     '',
@@ -884,7 +906,7 @@ export function renderMarkdown(summary) {
     '',
     '## QASPER',
     '',
-    '严格来源覆盖只在800道符合条件的题目上计算；官方 Evidence F1 在全部1005道题上计算，两者分母分开。',
+    '严格来源覆盖只在800道符合条件的题目上计算；官方 Evidence F1 和请求加响应字符均值在全部1005道题上计算，分母分开。',
     '',
     '| 条件 | 严格完整覆盖 | 严格覆盖均值 | 官方 Evidence F1 | 上下文均值/预算字符 |',
     '| --- | ---: | ---: | ---: | ---: |',
@@ -1686,6 +1708,30 @@ async function summarizeProductComparison(root, options = {}) {
     }
   }
 
+  let modelProvenance;
+  try {
+    const pointer = await verifyFinalModelProvenance(absoluteRoot);
+    const finalBytes = await fs.readFile(
+      path.join(absoluteRoot, 'model-provenance', 'final.json'),
+    );
+    const reportBytes = await fs.readFile(pointer.report.path);
+    const report = json(reportBytes, 'model-provenance/report.json');
+    if (
+      hash(reportBytes) !== pointer.report.sha256 ||
+      !/^[a-f0-9]{64}$/i.test(String(report.cache_records_sha256 ?? '')) ||
+      !Number.isInteger(report.counts?.total) ||
+      report.counts.total <= 0
+    )
+      throw new Error('final_model_provenance_invalid');
+    modelProvenance = {
+      final_pointer_sha256: hash(finalBytes),
+      report_sha256: pointer.report.sha256,
+      cache_records_sha256: report.cache_records_sha256,
+      cache_record_count: report.counts.total,
+    };
+  } catch {
+    return pending([{ code: 'final_model_provenance_invalid' }]);
+  }
   const moduleBytes = await fs.readFile(fileURLToPath(import.meta.url));
   const manifestHash = hash(manifestBytes);
   const indexHash = hash(indexBytes);
@@ -1723,6 +1769,7 @@ async function summarizeProductComparison(root, options = {}) {
       summarizer_sha256: hash(moduleBytes),
       frozen_scoring_code_sha256: scoringCode,
       scoring_inputs_count: scoringInputsCount,
+      model_provenance: modelProvenance,
       score_receipts_sha256: postRunReceiptHashes,
       scoring_invocation_receipts_sha256: invocationReceiptHashes,
       score_files_sha256: scoreHashes,
@@ -1775,8 +1822,26 @@ async function summarizeProductComparison(root, options = {}) {
   const outputDir = path.join(absoluteRoot, 'analysis');
   const summaryPath = path.join(outputDir, 'summary.json');
   const markdownPath = path.join(outputDir, 'summary.zh.md');
-  if ((await exists(summaryPath)) || (await exists(markdownPath)))
+  const summaryExists = await exists(summaryPath);
+  const markdownExists = await exists(markdownPath);
+  if (summaryExists || markdownExists) {
+    if (!summaryExists || !markdownExists)
+      return pending([{ code: 'summary_output_incomplete' }]);
+    let previous;
+    try {
+      previous = json(await fs.readFile(summaryPath), 'analysis/summary.json');
+    } catch {
+      return pending([{ code: 'summary_output_invalid' }]);
+    }
+    if (
+      !sameModelProvenanceBinding(
+        previous?.provenance?.model_provenance,
+        modelProvenance,
+      )
+    )
+      return pending([{ code: 'model_provenance_binding_changed' }]);
     return pending([{ code: 'summary_output_exists' }]);
+  }
   const summaryText = JSON.stringify(summary, null, 2) + '\n';
   const markdownText = renderMarkdown(summary);
   if (options.dryRun) {
