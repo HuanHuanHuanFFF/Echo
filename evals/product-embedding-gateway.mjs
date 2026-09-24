@@ -4,6 +4,7 @@ import { createServer } from 'node:http';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import Database from 'better-sqlite3';
+import { createEmbeddingQueue } from './lib/product-embedding-queue.mjs';
 import { decodeVerifiedVector } from './lib/product-vector-cache.mjs';
 import { embeddingFingerprint, validateVectors } from '../dist/embedding.js';
 
@@ -62,8 +63,6 @@ const put = db.prepare(
 );
 const encode = (vector) => Buffer.from(new Float32Array(vector).buffer);
 const inputKey = (text) => sha(JSON.stringify([fingerprint, text]));
-const pending = new Map();
-let serial = Promise.resolve();
 let nextCall = 0;
 let apiAttempts = 0;
 let reportedTokens = 0;
@@ -214,40 +213,14 @@ async function remote(batch) {
   }
 }
 
-async function embeddings(inputs) {
-  const missing = [];
-  for (const text of [...new Set(inputs)]) {
-    if (cached(text)) {
-      cacheHits++;
-      continue;
-    }
-    if (!pending.has(text)) missing.push(text);
-  }
-  if (missing.length) {
-    const work = serial.then(async () => {
-      for (let i = 0; i < missing.length; i += config.batch_size) {
-        const batch = missing
-          .slice(i, i + config.batch_size)
-          .filter((text) => !cached(text));
-        if (batch.length) await remote(batch);
-      }
-    });
-    serial = work.catch(() => {});
-    for (const text of missing) pending.set(text, work);
-    work
-      .finally(() => {
-        for (const text of missing)
-          if (pending.get(text) === work) pending.delete(text);
-      })
-      .catch(() => {});
-  }
-  await Promise.all(inputs.map((text) => pending.get(text)));
-  return inputs.map((text) => {
-    const vector = cached(text);
-    assert.ok(vector, 'Missing completed vector');
-    return vector;
-  });
-}
+const embeddings = createEmbeddingQueue({
+  cached,
+  remote,
+  batchSize: config.batch_size,
+  onHit: () => {
+    cacheHits++;
+  },
+});
 
 await fs.mkdir(path.join(out, 'responses'), { recursive: true });
 const server = createServer(async (req, res) => {

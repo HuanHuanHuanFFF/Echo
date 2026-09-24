@@ -169,3 +169,5 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 - [标签冻结与首轮开发集BM25对照](evals/2026-09-16-frozen-labels-and-development-bm25.md)：100/200标签冻结、两切块开发结果与同题干扰；[公开统计指纹](evals/2026-09-16-development-bm25.manifest.json)。真实语义与最终评测仍待完成。
 
 - [真实向量准备与开发集语义对照](evals/2026-09-17-real-model-development.md)：真实索引与首轮开发语义对照已完成，结果复核及默认方案选择仍在进行；[用量与指纹](evals/2026-09-17-real-vector-preparation.manifest.json)。
+
+- [产品对照运行恢复与模型批处理](evals/2026-09-24-product-runtime-recovery.md)：隔离运行修复、合并模型小批请求及真实探针验证。
