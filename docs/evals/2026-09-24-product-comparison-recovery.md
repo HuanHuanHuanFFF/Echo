@@ -39,4 +39,12 @@ FreshStack 固定语料按官方固定版本 loader 的 ID 字典采用 last-row
 - 模型来源额外由 [全缓存回溯](../../evals/audit-product-model-provenance.mjs)逐条核验：当前快照198765条全部通过，其中真实上游29002条、冻结公共169496条、私有267条；11,951份成功上游响应被绑定，新增API调用为0。索引仍在追加，正式核分前必须对最终快照重新核验，当前数字不冒充最终用量。两个评分入口强制验证 `model-provenance/final.json`、来源文件 SHA 和当前缓存记录摘要；缺失回执、缓存新增或内容变化均在写分数前拒绝。私有捕获器 driver/replay/guard 与旧计划代码 SHA 全部一致，旧响应不补写伪造的 endpoint 字段。
 - 隔离回归见 [Dify](../../tests/dify-evidence.test.ts)、[Khoj](../../tests/khoj-evidence.test.ts)、[共同证据](../../tests/product-evidence.test.ts)、[写入恢复](../../tests/product-index-intent.test.ts)、[真实缓存](../../tests/product-private-vectors.test.ts)、[评分门禁](../../tests/product-run-integrity.test.ts)。
 
-剩余：完成 Dify QASPER 索引收尾并冻结执行代码；运行四条件全量查询；个人证据核分与公开官方评分；逐题配对分析、上下文成本和资源限制；两位独立审查后交付。当前不改默认，不自动创建或合并 PR；代码和聚合记录按阶段提交推送，原始正文、题目、密钥、索引和模型回执均留在 E 盘。
+## 首次执行的实际回归问题
+
+首个冻结执行已完成 Echo 3507题输入，但评分前的完整性复核发现公开固定题使用 `{id, text}`，核验器误要求 `queries`。修复仅将单条题按对应产品的内部查询 ID 规范化，并将 Echo/Dify/Khoj 固定题回归样本改为真实形状；不改变题干或检索参数。
+
+同时，推送后的 Windows/Linux CI 暴露测试依赖 `dist`、而原 `check` 在构建前跑测试的问题，本地已有产物曾掩盖它。修复测试入口先构建，完整 `check` 复用该入口且只构建一次；不跳过失败测试。两个不含 `dist` 的隔离副本分别运行 `npm run check` 与 `npm test`，均为232项通过、1项既有跳过；主工作区产物未被移动或删除。
+
+第一次冻结 SHA `23cb18b400eb99a9090a0f299056005ab076f3e340de8012fea7f82e92fcee1d`、源代码归档及原始运行结果完整保留在实验目录 `attempts/v1-adapter-validation-failed`，状态为评分前终止，没有发布成绩。修复后建立新的执行冻结，仍使用同一语料、模型、切块、检索及预算。
+
+剩余：完成 Dify QASPER 索引收尾并冻结修复后的执行代码；运行四条件全量查询；个人证据核分与公开官方评分；逐题配对分析、上下文成本和资源限制；两位独立审查后交付。当前不改默认，不自动创建或合并 PR；代码和聚合记录按阶段提交推送，原始正文、题目、密钥、索引和模型回执均留在 E 盘。

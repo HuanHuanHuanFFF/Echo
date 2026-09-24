@@ -176,7 +176,7 @@ function corpusText(row) {
       : null;
 }
 
-async function loadFrozenScope(root, scope, info) {
+async function loadFrozenScope(root, scope, info, condition) {
   for (const key of ['corpus', 'queries']) {
     const binding = info?.[key];
     requireThat(
@@ -202,6 +202,22 @@ async function loadFrozenScope(root, scope, info) {
     expectedQuestionCount(info),
     scope + ' frozen question count changed',
   );
+  // Official fixed-unit datasets store one question as {id, text}; the
+  // product adapters assign their own bookkeeping ID to that single query.
+  if (info.kind === 'official-fixed-unit') {
+    for (const question of questions) {
+      if (question.queries === undefined && typeof question.text === 'string') {
+        question.queries = [
+          {
+            id: condition === 'dify' ? 'q0' : rowId(question),
+            text: condition?.startsWith('khoj-')
+              ? question.text.trim()
+              : question.text,
+          },
+        ];
+      }
+    }
+  }
   const ids = new Set();
   for (const question of questions) {
     const id = rowId(question);
@@ -1766,7 +1782,7 @@ async function verifyEcho(
 }
 
 async function verifyOneScope(root, condition, scope, info, freezeSha, freeze) {
-  const frozen = await loadFrozenScope(root, scope, info);
+  const frozen = await loadFrozenScope(root, scope, info, condition);
   const dify = condition === 'dify';
   const receiptFile = dify
     ? path.join(root, 'runs', 'dify', scope + '.receipt.json')

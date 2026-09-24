@@ -335,9 +335,7 @@ describe('product run integrity gate', () => {
 
   it('rejects a changed Echo fixed-unit ranking against its frozen old source', async () => {
     const scope = 'langchain';
-    const questions = [
-      { id: 'q1', queries: [{ id: 's1', text: 'find unit one' }] },
-    ];
+    const questions = [{ id: 'q1', text: 'find unit one' }];
     const corpusRows = [
       {
         id: 'unit1',
@@ -596,9 +594,7 @@ describe('product run integrity gate', () => {
     const scope = 'fixed-scope';
     const condition = 'khoj-dense';
     const unitText = 'Official unit.';
-    const questions = [
-      { id: 'q1', queries: [{ query_id: 's1', text: 'find unit' }] },
-    ];
+    const questions = [{ id: 'q1', text: 'find unit' }];
     const corpusRows = [
       {
         id: 'unit1',
@@ -667,7 +663,7 @@ describe('product run integrity gate', () => {
         native_http_return_limit: 10,
         ranked_queries: [
           {
-            query_id: 's1',
+            query_id: 'q1',
             query: 'find unit',
             native_query: 'find unit',
             native_request: {
@@ -731,9 +727,7 @@ describe('product run integrity gate', () => {
     const scope = 'dify-fixed';
     const condition = 'dify';
     const unitText = 'Official unit.';
-    const questions = [
-      { id: 'q1', queries: [{ id: 's1', text: 'find unit' }] },
-    ];
+    const questions = [{ id: 'q1', text: 'find unit' }];
     const corpusRows = [{ id: 'unit1', text: unitText }];
     const batch = await makeBatch(
       scope,
@@ -780,7 +774,7 @@ describe('product run integrity gate', () => {
     const nativeBytes = await writeJson(nativeFile, {
       run_fingerprint: 'dify-run-fingerprint',
       question_id: 'q1',
-      query_id: 's1',
+      query_id: 'q0',
       ok: true,
       raw_http: {
         response_status: 200,
@@ -816,7 +810,7 @@ describe('product run integrity gate', () => {
         scope,
         ranked_queries: [
           {
-            query_id: 's1',
+            query_id: 'q0',
             results: [{ unit_id: 'unit1', rank: 1, score: 0.8 }],
           },
         ],
@@ -843,7 +837,7 @@ describe('product run integrity gate', () => {
         native_files: [
           {
             question_id: 'q1',
-            query_id: 's1',
+            query_id: 'q0',
             path: nativeFile,
             sha256: sha(nativeBytes),
           },
