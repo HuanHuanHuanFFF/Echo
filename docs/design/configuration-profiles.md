@@ -118,6 +118,8 @@ export default {
 
 验证（2026-09-17）：npm run check 通过格式、类型、110项隔离测试（1项原有跳过）和构建；既有 [配置覆盖测试](../../tests/foundation.test.ts)、[MCP运行测试](../../tests/profile-runtime.test.ts)通过。直接检查构建产物确认10/3/0.5默认值、单次覆盖、已有显式配置优先级及三份使用样例。未运行真实模型评测。
 
+[PR #16的原始说明草稿](../development/2026-09-17-pr16-default-limits-description.md)保留该次默认值调整的实现、验证与当时的评测边界；其“尚未完成真实模型效果评测”仅描述2026-09-17的状态，不覆盖后续评测。
+
 ## 扫描、运行与日志
 
 sources JSON 形如：
