@@ -1,11 +1,12 @@
 # Echo 文档入口
 
-更新日期：2026-09-24。
+更新日期：2026-09-25。
 
 Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前四阶段已合并并通过双平台 CI；第五阶段已完成独立安装、真实向量、100题开发及最终200题四臂对照；默认已确认新综合＋BM25 0.5＋RRF10，旧安装升级与整体Agent验收另列。安装使用从[README](../README.md)开始，当前配置以[v2 配置契约](design/configuration-profiles.md)为准。
 
 ## 当前默认与下一步
 
+- [QMD 私有 200 题首轮对照](evals/2026-09-25-qmd-private-comparison.md)：QMD 2.8.3 原生 MCP 各 200 次无重排/本地重排调用；正确文件与首次预览证据分开计分，模型与补读边界明确。
 - [Echo 与 Dify 全量对照结果](evals/2026-09-24-echo-dify-results.md)：两条件各3507题已核分，私有证据、QASPER和固定公开库分列；两位独立复查完成，不改产品默认。
 - [Echo 与 Dify 对照范围修订](evals/2026-09-24-echo-dify-scope-revision.md)：用户取消 Khoj 后续测试；原[三产品协议](evals/2026-09-22-product-comparison-protocol.md)保留为输入与历史执行依据。
 
