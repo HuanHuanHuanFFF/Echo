@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Echo：本地索引与证据检索",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/HuanHuanHuanFFF/Echo",
+      "revision": "62df00fc934ae1e3342a74535729441a9d264b3b"
+    },
+    "viewBox": [1260, 580]
+  },
+  "components": [
+    {
+      "id": "config",
+      "type": "backend",
+      "label": "配置与策略",
+      "sublabel": "v2 profiles · 固定策略快照",
+      "pos": [60, 70],
+      "size": [180, 80],
+      "sources": [
+        { "path": "src/profiles.ts" },
+        { "path": "src/profile-manager.ts" }
+      ]
+    },
+    {
+      "id": "mini",
+      "type": "database",
+      "label": "MiniSearch",
+      "sublabel": "SQLite 词项派生的内存缓存",
+      "pos": [785, 70],
+      "size": [205, 80],
+      "sources": [{ "path": "src/minisearch.ts" }]
+    },
+    {
+      "id": "agent",
+      "type": "external",
+      "label": "Agent 与宿主",
+      "sublabel": "拆题 · 补读 · 作答",
+      "pos": [60, 250],
+      "size": [180, 80],
+      "sources": [{ "path": "src/server.ts" }]
+    },
+    {
+      "id": "mcp",
+      "type": "backend",
+      "label": "Echo MCP",
+      "sublabel": "echo_search · echo_status",
+      "pos": [295, 250],
+      "size": [180, 80],
+      "sources": [{ "path": "src/server.ts" }, { "path": "src/transport.ts" }]
+    },
+    {
+      "id": "worker",
+      "type": "backend",
+      "label": "搜索 Worker",
+      "sublabel": "并发 · 取消 · 请求快照",
+      "pos": [530, 250],
+      "size": [180, 80],
+      "sources": [
+        { "path": "src/search-pool.ts" },
+        { "path": "src/search-session-worker.ts" }
+      ]
+    },
+    {
+      "id": "retrieval",
+      "type": "backend",
+      "label": "检索与融合",
+      "sublabel": "过滤 · BM25/dense · RRF · 预算",
+      "pos": [765, 250],
+      "size": [205, 80],
+      "sources": [{ "path": "src/retrieval.ts" }]
+    },
+    {
+      "id": "evidence",
+      "type": "external",
+      "label": "证据 JSON",
+      "sublabel": "原文 · 路径 · 行范围 · 诊断",
+      "pos": [1025, 250],
+      "size": [195, 80],
+      "sources": [{ "path": "src/retrieval.ts" }]
+    },
+    {
+      "id": "notes",
+      "type": "external",
+      "label": "Markdown 笔记",
+      "sublabel": "本地文件 · echo_id",
+      "pos": [295, 430],
+      "size": [180, 80],
+      "sources": [{ "path": "src/identity.ts" }, { "path": "src/sync.ts" }]
+    },
+    {
+      "id": "sync",
+      "type": "backend",
+      "label": "显式同步",
+      "sublabel": "扫描 · 切块 · 词项 · 向量",
+      "pos": [530, 430],
+      "size": [180, 80],
+      "sources": [
+        { "path": "src/profile-sync.ts" },
+        { "path": "src/chunker.ts" }
+      ]
+    },
+    {
+      "id": "sqlite",
+      "type": "database",
+      "label": "嵌入式 SQLite",
+      "sublabel": "来源 · chunks · FTS · vectors",
+      "pos": [785, 430],
+      "size": [205, 80],
+      "sources": [
+        { "path": "src/profile-store.ts" },
+        { "path": "src/database.ts" }
+      ]
+    },
+    {
+      "id": "api",
+      "type": "external",
+      "label": "Embedding API",
+      "sublabel": "文档同步 / 查询向量",
+      "pos": [1025, 430],
+      "size": [195, 80],
+      "sources": [{ "path": "src/embedding.ts" }]
+    }
+  ],
+  "connections": [
+    {
+      "id": "agent-search",
+      "from": "agent",
+      "to": "mcp",
+      "label": "echo_search",
+      "variant": "emphasis",
+      "labelAt": [268, 344]
+    },
+    { "id": "mcp-worker", "from": "mcp", "to": "worker" },
+    { "id": "worker-retrieval", "from": "worker", "to": "retrieval" },
+    {
+      "id": "retrieval-evidence",
+      "from": "retrieval",
+      "to": "evidence",
+      "label": "证据 JSON",
+      "variant": "emphasis"
+    },
+    {
+      "id": "config-mcp",
+      "from": "config",
+      "to": "mcp",
+      "label": "请求时加载",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    { "id": "notes-sync", "from": "notes", "to": "sync", "label": "显式 sync" },
+    {
+      "id": "sync-sqlite",
+      "from": "sync",
+      "to": "sqlite",
+      "label": "事务发布"
+    },
+    {
+      "id": "sqlite-retrieval",
+      "from": "sqlite",
+      "to": "retrieval",
+      "label": "只读快照",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "labelDx": -80
+    },
+    {
+      "id": "retrieval-mini",
+      "from": "retrieval",
+      "to": "mini",
+      "label": "BM25 候选",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "retrieval-api",
+      "from": "retrieval",
+      "to": "api",
+      "label": "查询向量",
+      "fromSide": "bottom",
+      "toSide": "top"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "检索边界",
+      "items": [
+        "Echo 返回原文证据及定位，Agent 负责拆题、补读和作答。",
+        "召回与融合不能证明答案完整。"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "存储与模型",
+      "items": [
+        "SQLite 持久化；MiniSearch 是可重建的 Worker 内存缓存。",
+        "同步和查询的向量都由用户配置的 HTTP API 生成。",
+        "数据库回滚不撤销已写入原文的 echo_id。"
+      ]
+    }
+  ]
+}

@@ -135,6 +135,7 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 开发与当前契约
 
+- [架构概览与模块职责](architecture/README.md)：索引与检索路径、持久化和缓存、MCP 请求边界；含可浏览图及静态概览。
 - [阶段 1 工程基础验收](development/phase-01-foundation.md)
 - [配置与模块契约](design/configuration.md)
 - [安装开发入口](../README.md)
