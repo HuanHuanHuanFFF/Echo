@@ -20,7 +20,7 @@ import {
   searchIndex,
   querySpecSchema,
   searchSchema,
-  type Evidence,
+  type SearchEvidence,
 } from './retrieval.js';
 import { createEmbeddingProvider } from './embedding.js';
 import type { EmbeddingProvider } from './contracts.js';
@@ -274,9 +274,11 @@ function verifyIndex(config: EchoConfig, sources: Source[]) {
     db.close();
   }
 }
-function verifyPieces(pieces: Evidence[], sources: Map<string, Source>) {
+function verifyPieces(pieces: SearchEvidence[], sources: Map<string, Source>) {
   for (const e of pieces) {
-    const source = sources.get(key(e.collection_id, e.relative_path));
+    const source = [...sources.values()].find(
+      (s) => s.collection_id === e.collection_id && s.sourceId === e.source_id,
+    );
     if (
       !source ||
       e.source_id !== source.sourceId ||
@@ -293,7 +295,7 @@ function verifyPieces(pieces: Evidence[], sources: Map<string, Source>) {
 function covered(
   dataset: Dataset,
   expected: string[],
-  pieces: Evidence[],
+  pieces: SearchEvidence[],
   sources: Map<string, Source>,
 ) {
   return expected.filter((id) =>
@@ -303,7 +305,8 @@ function covered(
         const source = sources.get(key(a.collection_id, a.path))!;
         const matching = pieces.filter(
           (e) =>
-            e.collection_id === a.collection_id && e.relative_path === a.path,
+            e.collection_id === a.collection_id &&
+            e.source_id === source.sourceId,
         );
         for (let line = a.start_line; line <= a.end_line; line++) {
           // Empty source lines are formatting; a split may trim them from chunk edges.

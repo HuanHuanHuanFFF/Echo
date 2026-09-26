@@ -6,6 +6,8 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 当前默认与下一步
 
+- [Agent 接口收尾](development/2026-09-26-agent-interface-polish.md)：显式原文 hash 检查、完整参数与范围说明、默认精简响应和按需诊断；检索默认保持。
+
 - [最终默认与精简初始化](project/2026-09-26-final-default-profile.md)：新综合、BM25/dense 0.5/1、RRF10、topk10、每篇6、预算20000；新初始化只保留一个切块策略和一个召回配置。
 
 - [QMD 私有 200 题首轮对照](evals/2026-09-25-qmd-private-comparison.md)：QMD 2.8.3 原生 MCP 各 200 次无重排/本地重排调用；正确文件与首次预览证据分开计分，模型与补读边界明确。

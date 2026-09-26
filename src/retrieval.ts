@@ -13,7 +13,7 @@ import {
 import { profileTokenizer } from './profiles.js';
 import { uuidV4 } from './identity.js';
 import type { EchoConfig, RetrievalConfig } from './config.js';
-import { retrievalOptions } from './config.js';
+import { retrievalOptions, retrievalOverridesSchema } from './config.js';
 import type { EmbeddingProvider } from './contracts.js';
 import { createEmbeddingProvider, validateVectors } from './embedding.js';
 import { openDatabase } from './database.js';
@@ -27,7 +27,13 @@ import {
 
 export const filtersSchema = z
   .object({
-    collections: z.array(z.string().min(1).max(100)).max(32).optional(),
+    collections: z
+      .array(z.string().min(1).max(100))
+      .max(32)
+      .optional()
+      .describe(
+        'Collection IDs from echo_status. Unknown IDs are errors; [] selects nothing.',
+      ),
     source_ids: z
       .array(
         z
@@ -36,19 +42,29 @@ export const filtersSchema = z
           .transform((value) => value.toLowerCase()),
       )
       .max(100)
-      .optional(),
+      .optional()
+      .describe('Source UUIDs from returned evidence. [] selects nothing.'),
     path_prefix: z
       .string()
       .max(1000)
       .transform((v) => v.replaceAll(String.fromCharCode(92), '/'))
-      .optional(),
+      .optional()
+      .describe(
+        'Literal prefix of the path relative to each collection root, using /, e.g. topics/. Not an absolute path or glob; applies to all selected collections.',
+      ),
   })
   .strict();
 export const singleSearchSchema = z
   .object({
     query: z.string().trim().min(1).max(2000),
     filters: filtersSchema.optional(),
-    overrides: z.record(z.string(), z.unknown()).optional(),
+    overrides: retrievalOverridesSchema.optional(),
+    diagnostics: z
+      .boolean()
+      .optional()
+      .describe(
+        'Include full applied configuration, profile selection, candidate counts, relative paths, per-expression outcomes and ranking scores. Default false; included metadata consumes the response budget.',
+      ),
   })
   .strict();
 export type Filters = z.infer<typeof filtersSchema>;
@@ -74,6 +90,9 @@ export interface Evidence {
     similarity?: number;
   }[];
 }
+export type SearchEvidence = Omit<Evidence, 'relative_path'> & {
+  relative_path?: string;
+};
 export interface Candidate {
   evidence: Evidence;
   score: number;
@@ -328,18 +347,40 @@ export function packResults(
   queries: QueryCandidates[],
   options: RetrievalConfig,
   selection?: Record<string, unknown>,
+  diagnostics = true,
 ) {
   const results: Evidence[] = [];
   const selected = new Map<string, Evidence>(),
     perSource = new Map<string, number>();
   const counts = { source_limit: 0, duplicate: 0, budget: 0, topk: 0 };
+  const budgetRejected = new Set<string>();
   const reports = () =>
     queries.map((q) => ({
       query_id: q.query_id,
       status: q.status,
       ...(q.error ? { error: q.error, ...failureInfo(q.error) } : {}),
-      candidates: q.counts,
-      ...(q.variants ? { variants: q.variants } : {}),
+      ...(diagnostics ? { candidates: q.counts } : {}),
+      ...(q.variants && (diagnostics || q.variants.some((v) => v.error))
+        ? {
+            variants: diagnostics
+              ? q.variants
+              : q.variants.filter((v) => v.error),
+          }
+        : {}),
+      ...(!diagnostics &&
+      q.status !== 'error' &&
+      !results.some((e) => e.matched_query_ids.includes(q.query_id))
+        ? {
+            empty_reason:
+              q.candidates.length === 0
+                ? 'no_candidates'
+                : q.candidates.some((c) =>
+                      budgetRejected.has(c.evidence.chunk_id),
+                    )
+                  ? 'budget'
+                  : 'limits',
+          }
+        : {}),
       returned: results.filter((e) => e.matched_query_ids.includes(q.query_id))
         .length,
     }));
@@ -349,11 +390,26 @@ export function packResults(
       : queries.some((q) => q.error)
         ? 'partial_failure'
         : 'ok',
-    results,
+    results: results.map((e): SearchEvidence => {
+      if (diagnostics) return e;
+      const { relative_path: _relative, rankings: _rankings, ...essential } = e;
+      return essential;
+    }),
     queries: reports(),
-    applied: options,
-    excluded: counts,
-    ...(selection ? { selection } : {}),
+    ...(diagnostics
+      ? {
+          applied: options,
+          excluded: counts,
+          ...(selection ? { selection } : {}),
+        }
+      : {}),
+    ...(!diagnostics && (counts.budget || counts.source_limit || counts.topk)
+      ? {
+          limits: (['budget', 'source_limit', 'topk'] as const).filter(
+            (key) => counts[key] > 0,
+          ),
+        }
+      : {}),
   });
   const matching = new Map<string, string[]>();
   const rankingMap = new Map<string, NonNullable<Evidence['rankings']>>();
@@ -403,6 +459,7 @@ export function packResults(
       if (JSON.stringify(response()).length > options.max_context_chars) {
         results.pop();
         counts.budget++;
+        budgetRejected.add(evidence.chunk_id);
         continue;
       }
       selected.set(evidence.chunk_id, evidence);
@@ -415,7 +472,7 @@ export function packResults(
     results.length &&
     JSON.stringify(response()).length > options.max_context_chars
   ) {
-    results.pop();
+    budgetRejected.add(results.pop()!.chunk_id);
     counts.budget++;
   }
   if (JSON.stringify(response()).length > options.max_context_chars)
@@ -428,15 +485,42 @@ export const querySpecSchema = z
   .object({
     query_id: z.string().trim().min(1).max(64),
     text: z.string().trim().min(1).max(2000),
-    variants: z.array(z.string().trim().min(1).max(2000)).max(3).default([]),
+    variants: z
+      .array(z.string().trim().min(1).max(2000))
+      .max(3)
+      .default([])
+      .describe(
+        'Optional alternate wording of this same intent, not independent subquestions.',
+      ),
   })
   .strict();
 export const searchSchema = z
   .object({
-    query: z.string().trim().min(1).max(2000).optional(),
-    queries: z.array(querySpecSchema).min(1).max(8).optional(),
+    query: z
+      .string()
+      .trim()
+      .min(1)
+      .max(2000)
+      .optional()
+      .describe(
+        'One complete retrieval question. Supply exactly one of query or queries.',
+      ),
+    queries: z
+      .array(querySpecSchema)
+      .min(1)
+      .max(8)
+      .optional()
+      .describe(
+        'Independent subquestions supplied by the Agent, with unique IDs. All share topk, per-source cap and budget. Supply exactly one of query or queries.',
+      ),
     filters: filtersSchema.optional(),
-    overrides: z.record(z.string(), z.unknown()).optional(),
+    overrides: retrievalOverridesSchema.optional(),
+    diagnostics: z
+      .boolean()
+      .optional()
+      .describe(
+        'Include full applied configuration, profile selection, candidate counts, relative paths, per-expression outcomes and ranking scores. Default false; included metadata consumes the response budget.',
+      ),
   })
   .strict()
   .superRefine((v, ctx) => {
@@ -462,6 +546,25 @@ export async function searchIndex(
 ) {
   const input = searchSchema.parse(rawInput);
   const options = retrievalOptions(config.retrieval, input.overrides);
+  const unknownCollections = input.filters?.collections?.filter(
+    (id) => !config.collections.some((c) => c.id === id),
+  );
+  if (unknownCollections?.length)
+    throw new EchoError(
+      'INVALID_COLLECTION',
+      'Unknown collection ID: ' + unknownCollections.join(', '),
+      'Use collection IDs from echo_status.collections',
+    );
+  const prefix = input.filters?.path_prefix;
+  if (
+    prefix !== undefined &&
+    (/^(?:[a-z]:|\/)/i.test(prefix) || prefix.split('/').includes('..'))
+  )
+    throw new EchoError(
+      'INVALID_PATH_PREFIX',
+      'path_prefix must be relative to a collection root',
+      'Use a relative path such as topics/; see echo_status.collections',
+    );
   if (options.mode === 'dense' || options.lexical_engine === 'sqlite')
     clearMiniCache();
   let provider = customProvider ?? null,
@@ -605,7 +708,7 @@ export async function searchIndex(
           : {}),
       });
     }
-    return packResults(queries, options, selection);
+    return packResults(queries, options, selection, input.diagnostics ?? false);
   } finally {
     if (db.inTransaction) db.exec('ROLLBACK');
     db.close();

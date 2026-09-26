@@ -22,14 +22,18 @@ interface SourceRow {
 export async function listMarkdown(
   root: string,
   policy?: EchoConfig['collections'][number],
+  signal?: AbortSignal,
 ): Promise<string[]> {
+  signal?.throwIfAborted();
   const info = await lstat(root);
   if (!info.isDirectory() || info.isSymbolicLink())
     throw new Error('Collection root must be a real directory: ' + root);
   const files: string[] = [];
   async function walk(dir: string) {
+    signal?.throwIfAborted();
     const entries = await readdir(dir, { withFileTypes: true });
     for (const entry of entries) {
+      signal?.throwIfAborted();
       if (entry.isSymbolicLink()) continue;
       if (
         entry.isDirectory() &&

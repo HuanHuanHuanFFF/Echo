@@ -16,7 +16,7 @@ import { parseConfig, loadConfig, type EchoConfig } from './config.js';
 import type { EmbeddingProvider } from './contracts.js';
 import { createEmbeddingProvider } from './embedding.js';
 import { syncIndex, listMarkdown } from './sync.js';
-import { searchIndex, type Evidence } from './retrieval.js';
+import { searchIndex, type SearchEvidence } from './retrieval.js';
 import { hash, parseSource } from './identity.js';
 import { loadChunker } from './chunker.js';
 import { openDatabase } from './database.js';
@@ -125,7 +125,8 @@ export function aggregateRows(rows: Row[]) {
   };
 }
 async function supplement(
-  evidence: Evidence,
+  evidence: SearchEvidence,
+  sourcePath: string,
   budget: number,
 ): Promise<{ piece: Piece; cost: number } | null> {
   const start = evidence.section_start_line ?? evidence.start_line,
@@ -135,7 +136,7 @@ async function supplement(
     throw new Error('Corpus changed during contextual reading');
   const lines = parseSource(raw).lines;
   const request = {
-    path: evidence.relative_path,
+    path: evidence.path,
     start_line: start,
     end_line: end,
   };
@@ -143,7 +144,7 @@ async function supplement(
   let chosen: Piece | undefined;
   for (let n = start; n <= end; n++) {
     const piece = {
-      source: evidence.relative_path,
+      source: sourcePath,
       start_line: start,
       end_line: n,
       text: lines.slice(start - 1, n).join('\n'),
@@ -395,6 +396,11 @@ export async function runEvaluation(options: {
         const latency = performance.now() - start;
         if ((base?.usage?.().requests ?? 0) !== preparedRequests)
           throw new Error('Unexpected API call during warm retrieval timing');
+        const sourcePath = (e: SearchEvidence) =>
+          relative(
+            config.collections.find((c) => c.id === e.collection_id)!.root,
+            e.path,
+          ).replaceAll('\\', '/');
         const searchChars = JSON.stringify(result).length;
         const reads: Piece[] = [];
         let readChars = 0;
@@ -411,6 +417,7 @@ export async function runEvaluation(options: {
             seen.add(key);
             const extra = await supplement(
               evidence,
+              sourcePath(evidence),
               budget - requestChars - searchChars - readChars,
             );
             if (extra) {
@@ -421,7 +428,7 @@ export async function runEvaluation(options: {
         }
         const pieces = [
           ...result.results.map((e) => ({
-            source: e.relative_path,
+            source: sourcePath(e),
             text: e.text,
             start_line: e.start_line,
             end_line: e.end_line,

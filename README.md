@@ -71,11 +71,13 @@ node /absolute/path/to/echo/dist/cli.js serve --config /absolute/path/to/echo/ec
 ```
 
 - echo_search：单 query，或带 query_id 的多个独立问题及同意图 variants。
-- echo_status：索引、配置与在途状态；不会发起计费健康检查。
+- echo_status：索引、配置、可过滤的 collection ID 与在途状态；传 `check_sources: true` 只读核对原文 hash 和文件清单。`ready` 不代表原文未编辑；默认不扫描，不发起计费健康检查。
+- echo_search 默认返回精简证据；传 `diagnostics: true` 查看完整参数和排名。`filters.path_prefix` 使用相对 collection 根目录的路径前缀。预算不足导致零证据时见 `empty_reason`。
+- CLI 对应 `status --check-sources` 和 `search --query ... --diagnostics`。
 - 用返回的绝对 path 和 1-based 行范围，通过宿主文件工具补读；Echo 不提供专用读取或链接导航工具。
 - matched_query_ids 表示召回关联；有命中不代表答案完整。
 
-[完整 MCP 契约](docs/development/phase-04-agent-mcp.md)。
+[当前状态与响应契约](docs/development/2026-09-26-agent-interface-polish.md)，[MCP 查询组织与补读](docs/development/phase-04-agent-mcp.md)。
 
 ## 默认与自定义方案
 

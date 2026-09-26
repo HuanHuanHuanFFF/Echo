@@ -54,10 +54,12 @@ SQLite 是持久层：保存来源、原文 chunk、FTS 词项和向量。v2 登
 
 `config use` 在所有目标配置校验通过后原子更新主入口，不触发模型调用或索引重建。MCP 从下一请求加载新组合，在途请求保留已取得的配置和 SQLite 快照。读取过程中配置文件变化或损坏会使本次请求失败，不混用半份配置。数据库路径或运行参数改变会返回 `RESTART_REQUIRED`，需要重启服务；切到缺失/过期索引则提示显式同步。[配置管理](../../src/profile-manager.ts)、[请求重载](../../src/config-runtime.ts)、[服务](../../src/server.ts)。
 
-默认最多两个在途搜索，超额返回 busy；取消或超时后失败 Worker 被丢弃。`echo_status` 只检查配置和索引状态，`embedding_configured` 仅说明字段与 key 存在，不是付费 API 健康检查。embedding 调用不自动重试计费请求。[Worker 池](../../src/search-pool.ts)、[状态工具](../../src/server.ts)、[模型调用](../../src/embedding.ts)。
+默认最多两个在途搜索，超额返回 busy；取消或超时后失败 Worker 被丢弃。`echo_status` 默认检查配置和索引状态，显式 `check_sources:true` 时经 [status.ts](../../src/status.ts) 只读比较原文 SHA-256 与路径清单；`ready` 与原文新鲜度分开表达，`embedding_configured` 仅说明字段与 key 存在，不是付费 API 健康检查。embedding 调用不自动重试计费请求。[Worker 池](../../src/search-pool.ts)、[状态工具](../../src/server.ts)、[模型调用](../../src/embedding.ts)。
 
 ## 当前默认与未实现范围
 
 **新建 v2 工作区**默认 `markdown-structure-v1@1.0.1`、`icu-zh@1`、MiniSearch 7.2.0、`hybrid`；MiniSearch k/b/d 为 1.2/0.7/0.5，BM25/dense 权重 0.5/1、RRF k=10、两路候选各 60、topk=10、每篇最多 6、完整结果 JSON 预算 20000。初始化只生成这一套切块与召回配置；已有显式配置优先，重复初始化不覆盖或删除旧文件。[完整参数及升级边界](../project/2026-09-26-final-default-profile.md)。
 
 游标翻页、独立预算硬上限、rerank/MMR、索引预览后再由 Echo 补读、专用读取工具尚未实现。图中返回“证据 JSON”只表示检索结果；答案生成与证据充分性判断仍由 Agent 负责。[当前决定](../project/2026-09-21-minisearch-default.md#后续调参纪律与剩余边界)。
+
+2026-09-26：[Agent 接口收尾](../development/2026-09-26-agent-interface-polish.md)增加显式原文检查，并将诊断元数据改为按需输出；仍由既有状态 Worker 与检索装箱模块承担，不新增 MCP 工具或服务。

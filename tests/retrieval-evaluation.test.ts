@@ -133,7 +133,7 @@ it('honors the selected response cap even when the evaluation budget is larger',
       budgetChars: 4000,
     });
     expect(
-      report.rows.every((r) => r.result.applied.max_context_chars <= 1500),
+      report.rows.every((r) => JSON.stringify(r.result).length <= 1500),
     ).toBe(true);
   } finally {
     await rm(f.root, { recursive: true, force: true });

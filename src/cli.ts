@@ -4,10 +4,8 @@ import { parseArgs } from 'node:util';
 import { resolve } from 'node:path';
 import { EchoStdioTransport, boundedErrorText } from './transport.js';
 import { createServer } from './server.js';
-import { loadConfig, type EchoConfig } from './config.js';
+import { loadConfig } from './config.js';
 import { syncIndex } from './sync.js';
-import { openDatabase } from './database.js';
-import { indexStatus } from './store.js';
 import { searchIndex } from './retrieval.js';
 import {
   initializeWorkspace,
@@ -16,25 +14,9 @@ import {
   migrateConfiguration,
 } from './profile-manager.js';
 import { configurationRuntime } from './config-runtime.js';
-import { profileStatus } from './profile-store.js';
 import { createLogger } from './logging.js';
 import { failureInfo } from './errors.js';
-function status(config: EchoConfig) {
-  if (!existsSync(config.database))
-    return {
-      ready: false,
-      reason: { code: 'INDEX_REQUIRED', next: 'Run echo-mcp sync' },
-    };
-  const db = openDatabase(config.database, {
-    readOnly: true,
-    busyTimeout: config.runtime.sqlite_busy_timeout_ms,
-  });
-  try {
-    return config.profile ? profileStatus(db, config) : indexStatus(db);
-  } finally {
-    db.close();
-  }
-}
+import { readStatus } from './status.js';
 async function main() {
   const { values, positionals } = parseArgs({
     allowPositionals: true,
@@ -44,6 +26,8 @@ async function main() {
       query: { type: 'string' },
       overrides: { type: 'string' },
       filters: { type: 'string' },
+      diagnostics: { type: 'boolean' },
+      'check-sources': { type: 'boolean' },
       chunker: { type: 'string' },
       tokenizer: { type: 'string' },
       embedding: { type: 'string' },
@@ -52,7 +36,7 @@ async function main() {
   });
   if (values.help) {
     console.log(
-      'Echo Markdown evidence MCP\nUsage: echo-mcp init | serve | sync | status | search --query TEXT [--config echo.config.json]\n       echo-mcp config list | show | migrate\n       echo-mcp config use [--chunker ID] [--tokenizer ID] [--embedding ID] [--retrieval ID]\nSync writes missing UUID v4 IDs into configured Markdown. Configuration switches take effect on the next MCP request.',
+      'Echo Markdown evidence MCP\nUsage: echo-mcp init | serve | sync | status | search --query TEXT [--config echo.config.json]\n       echo-mcp config list | show | migrate\n       echo-mcp config use [--chunker ID] [--tokenizer ID] [--embedding ID] [--retrieval ID]\nstatus --check-sources reads source hashes without syncing. search --diagnostics includes ranking/configuration details.\nSync writes missing UUID v4 IDs into configured Markdown. Configuration switches take effect on the next MCP request.',
     );
     return;
   }
@@ -78,7 +62,10 @@ async function main() {
       if (!Object.keys(selection).length)
         throw new Error('config use requires at least one profile ID');
       const switched = await useProfiles(configPath, selection);
-      print({ ...switched, index: status(await loadConfig(configPath)) });
+      print({
+        ...switched,
+        index: await readStatus(await loadConfig(configPath)),
+      });
     } else if (operation === 'migrate')
       print(await migrateConfiguration(configPath));
     else if (operation === 'show') {
@@ -100,7 +87,7 @@ async function main() {
           config.embedding.base_url &&
           config.embedding.dimensions,
         ),
-        index: status(config),
+        index: await readStatus(config),
       });
     } else throw new Error('Use config list, show, use, or migrate');
     return;
@@ -151,6 +138,7 @@ async function main() {
       if (!values.query) throw new Error('search requires --query');
       const result = await searchIndex(config, {
         query: values.query,
+        diagnostics: values.diagnostics ?? false,
         ...(values.overrides
           ? { overrides: JSON.parse(values.overrides) }
           : {}),
@@ -161,7 +149,12 @@ async function main() {
         duration_ms: Math.round(performance.now() - started),
         results: result.results.length,
       });
-    } else if (command === 'status') print(status(config));
+    } else if (command === 'status')
+      print(
+        await readStatus(config, {
+          check_sources: values['check-sources'] ?? false,
+        }),
+      );
     else throw new Error('Unknown command: ' + command);
   } catch (error) {
     log('error', failureInfo(error).code);

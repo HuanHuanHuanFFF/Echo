@@ -163,7 +163,7 @@ logging 文件包含 level（off/error/warn/info/debug）、可选 file、max_fi
 
 ## Agent 调用
 
-就绪时直接调用 echo_search({query})，不要求先列配置或 status。selection 给出本请求四类 ID、配置 revision 和来源快照；返回原文、路径、行号、来源版本和子问题归属，补读仍由宿主文件工具完成。
+就绪时直接调用 echo_search({query})，不要求先列配置或 status。显式 diagnostics:true 时 selection 给出本请求四类 ID、配置 revision 和来源快照；返回原文、路径、行号、来源版本和子问题归属，补读仍由宿主文件工具完成。
 
 code/next 区分 CONFIG_RELOAD、RESTART_REQUIRED、SOURCE_LIMIT、INDEX_REQUIRED、INDEX_STALE、MODEL_CONFIG、MODEL_KEY_MISSING、MODEL_UNAVAILABLE、BUSY、TIMEOUT、CANCELLED 和 CONTEXT_BUDGET。正常无命中是 queries 中的 empty；模型部分失败保留仍可用证据。echo_status 展示活动组合、ready、原因与上次同步，不进行付费健康检查。
 
@@ -172,3 +172,7 @@ code/next 区分 CONFIG_RELOAD、RESTART_REQUIRED、SOURCE_LIMIT、INDEX_REQUIRE
 ## 实现依据
 
 Node 24.15 已提供稳定的 [path.matchesGlob](https://nodejs.org/api/path.html#pathmatchesglobpath-pattern)。策略快照使用 [data URL ESM](https://nodejs.org/download/release/latest-v24.x/docs/api/esm.html#data-imports)，避免在途请求重新解析已变更的入口文件；它不支持相对 import，因此策略须自包含（有第三方依赖时可预先打包成单文件），数据通过声明资源传入。数据库使用 [SQLite 显式表约束](https://sqlite.org/lang_createtable.html)和现有事务边界。以上资料核对日期 2026-09-16，实际跨平台行为以本轮 CI 为准。
+
+## Agent 接口补充（2026-09-26，用户已确认）
+
+状态支持显式 check_sources 只读 hash 检查，默认不扫描原文；ready 与原文新鲜度分开表达。搜索默认紧凑，完整 applied/selection/排名等仅在 diagnostics:true 返回，并在预算装箱前选择格式。overrides 在工具定义中公开类型和范围；未知 collection、绝对 path_prefix 明确报错。详细契约、兼容范围和验证见[本轮记录](../development/2026-09-26-agent-interface-polish.md)。
