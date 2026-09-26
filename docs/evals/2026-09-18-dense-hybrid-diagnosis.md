@@ -83,6 +83,6 @@ MRR衡量第一块有效证据有多早出现，完整覆盖要求最后缺失�
 
 当前优先关注的是同篇三个名额如何分配、短碎片/背景段落占位，以及固定子问是否保留实体限定。继续增加候选或预算并不直接针对已观察到的首个瓶颈。是否更换选择规则、上限或子问写法，需另行实验；本轮不改，也不拿最终集继续调参后宣称新的留出效果。
 
-依据：[检索/打包实现](../../src/retrieval.ts)、[事实计分](../../evals/lib/evidence-metrics.mjs)、[公开诊断清单](2026-09-18-dense-hybrid-diagnosis.manifest.json)。E盘诊断目录为E:/幻/Documents/八股-Echo测试/2026-09-16/evidence/final-dense-hybrid-diagnosis-2026-09-18-v1，包含完整原文、候选/排除轨迹和脚本。diagnose.mjs是取证快照，恢复到仓库.echo后相对导入才有效；改用新输出目录才能复跑，旧目录拒绝覆盖。
+依据：[检索/打包实现](../../src/retrieval.ts)、[事实计分](../../evals/lib/evidence-metrics.mjs)、[公开诊断清单](2026-09-18-dense-hybrid-diagnosis.manifest.json)。E盘诊断目录为${EVAL_ROOT}/2026-09-16/evidence/final-dense-hybrid-diagnosis-2026-09-18-v1，包含完整原文、候选/排除轨迹和脚本。diagnose.mjs是取证快照，恢复到仓库.echo后相对导入才有效；改用新输出目录才能复跑，旧目录拒绝覆盖。
 
 本轮只新增诊断文档与指纹，无产品代码改动或新参数结果；不以普通单测替代同条件响应相等核验。一位独立复核者再次重建50条响应且计分完全相等，另一位核对语义与门控并确认M-T23漏列等价片段；相关措辞已收紧。文档/JSON/链接/git diff --check验证通过，commit/push，不新建PR或合并。

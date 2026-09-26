@@ -32,7 +32,7 @@ afterEach(async () => {
 });
 const cli = resolve('src/cli.ts'),
   tsx = import.meta.resolve('tsx');
-async function fixture() {
+async function fixture(built = false) {
   const dir = await mkdtemp(join(tmpdir(), 'echo-profile-runtime-'));
   dirs.push(dir);
   const path = join(dir, 'echo.config.json');
@@ -48,19 +48,27 @@ async function fixture() {
     JSON.stringify({ collections: [{ id: 'notes', root: 'notes' }] }),
   );
   await useProfiles(path, { retrieval: 'bm25' });
-  await syncIndex(await loadConfig(path));
   const run = (...args: string[]) =>
     promisify(execFile)(
       process.execPath,
-      ['--import', tsx, cli, ...args, '--config', path],
+      [
+        ...(built ? [resolve('dist/cli.js')] : ['--import', tsx, cli]),
+        ...args,
+        '--config',
+        path,
+      ],
       { cwd: dir },
     );
+  if (built) await run('sync');
+  else await syncIndex(await loadConfig(path));
   return { dir, path, run };
 }
 const decode = (r: unknown) =>
   JSON.parse((r as { content: { text: string }[] }).content[0]!.text);
 it('CLI initializes, discovers, switches and shows profiles without exposing key values', async () => {
-  const { dir, path, run } = await fixture();
+  // Exercise the installed CLI without repeatedly starting a TypeScript loader.
+  const { dir, path, run } = await fixture(true);
+  expect(JSON.parse((await run('status')).stdout).ready).toBe(true);
   expect(JSON.parse((await run('init')).stdout).created).toEqual([]);
   expect(
     JSON.parse((await run('config', 'list')).stdout).active.retrieval,
@@ -95,7 +103,10 @@ it('real MCP uses profile changes on the next call and reports invalid/restart s
   try {
     await client.connect(transport);
     const search = () =>
-      client.callTool({ name: 'echo_search', arguments: { query: 'apple' } });
+      client.callTool({
+        name: 'echo_search',
+        arguments: { query: 'apple', diagnostics: true },
+      });
     const initial = decode(await search());
     expect(initial.selection.retrieval).toBe('bm25');
     expect(initial.applied.lexical_engine).toBe('minisearch');
@@ -327,7 +338,11 @@ it('keeps an in-flight MCP query on its original snapshot while later calls use 
     );
     const waiting = client.callTool({
       name: 'echo_search',
-      arguments: { query: 'WAIT', overrides: { mode: 'dense' } },
+      arguments: {
+        query: 'WAIT',
+        diagnostics: true,
+        overrides: { mode: 'dense' },
+      },
     });
     await Promise.race([
       reached,
@@ -348,7 +363,7 @@ it('keeps an in-flight MCP query on its original snapshot while later calls use 
     const next = decode(
       await client.callTool({
         name: 'echo_search',
-        arguments: { query: 'apple' },
+        arguments: { query: 'apple', diagnostics: true },
       }),
     );
     expect(next.selection.retrieval).toBe('tight');
@@ -467,7 +482,7 @@ it('reports malformed model JSON as a model failure while preserving hybrid evid
     const result = decode(
       await client.callTool({
         name: 'echo_search',
-        arguments: { query: 'apple' },
+        arguments: { query: 'apple', diagnostics: true },
       }),
     );
     expect(result.status).toBe('partial_failure');

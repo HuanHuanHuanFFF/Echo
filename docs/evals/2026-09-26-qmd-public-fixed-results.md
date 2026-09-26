@@ -8,7 +8,7 @@
 
 ## 固定条件
 
-- 数据为 FreshStack 官方 LangChain 203 题、Godot 99 题及其固定检索单元、nugget 标注；语料清单 SHA-256：`478ef81433e860a80b59d30fa2dc65c09b7216c811cce83c6b003f27e6d3ec4b`。公开数据位于本机 `E:\幻\Documents\八股-Echo测试\public-benchmarks-2026-09-19`，索引和原始排名位于 `E:\幻\Documents\八股-Echo测试\2026-09-25-qmd-comparison`，均未复制进 Git。
+- 数据为 FreshStack 官方 LangChain 203 题、Godot 99 题及其固定检索单元、nugget 标注；语料清单 SHA-256：`478ef81433e860a80b59d30fa2dc65c09b7216c811cce83c6b003f27e6d3ec4b`。公开数据位于本机 `${EVAL_ROOT}/public-benchmarks-2026-09-19`，索引和原始排名位于 `${EVAL_ROOT}/2026-09-25-qmd-comparison`，均未复制进 Git。
 - QMD 2.8.3；本地模型为 Qwen3-Embedding-0.6B-Q8_0、Qwen3-Reranker-0.6B-Q8_0、QMD query-expansion-1.7B-Q4_K_M；模型 SHA-256、配置、题目与结果 SHA-256 收录在[机器可读汇总](2026-09-26-qmd-public-fixed-summary.json)。本轮没有调用外部 embedding 或生成 API。
 - 两种 QMD 模式都使用 QMD 原生 query expansion、BM25、向量检索和 RRF。`no-rerank` 只关闭最终 reranker，并非 BM25-only 或 vector-only。默认模式增加本地 Qwen3 reranker。
 - 每个官方检索单元保存为一个 Markdown 文件，映射回原始 FreshStack ID；QMD 向量侧按默认 900-token、15% overlap 分块。每次查询最多重排 120 个候选、返回前 50 个单元。Echo 的公开基线配置最多返回 120 个；这里的 Recall@50、Coverage@20 及更浅指标都按相同排名截断计算。

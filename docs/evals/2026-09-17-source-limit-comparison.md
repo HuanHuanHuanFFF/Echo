@@ -163,9 +163,9 @@ SQLite边界：未重建测试索引，索引表/块/向量身份及内容状态
 
 ```powershell
 # 使用新的run-id；run阶段会调用用户配置的真实模型
-node evals/run-source-limit-comparison.mjs --lab "E:/幻/Documents/八股-Echo测试/2026-09-16" --run-id <新的run-id> --phase prepare
-node evals/run-source-limit-comparison.mjs --lab "E:/幻/Documents/八股-Echo测试/2026-09-16" --run-id <新的run-id> --phase run
-node evals/run-source-limit-comparison.mjs --lab "E:/幻/Documents/八股-Echo测试/2026-09-16" --run-id <新的run-id> --phase summarize
+node evals/run-source-limit-comparison.mjs --lab "${EVAL_ROOT}/2026-09-16" --run-id <新的run-id> --phase prepare
+node evals/run-source-limit-comparison.mjs --lab "${EVAL_ROOT}/2026-09-16" --run-id <新的run-id> --phase run
+node evals/run-source-limit-comparison.mjs --lab "${EVAL_ROOT}/2026-09-16" --run-id <新的run-id> --phase summarize
 ```
 
 - 8组真实运行complete、200行均ok；当前API上限135请求/6588字符全部符合。每组数据/输入/向量相同，唯一召回参数差为每篇配额。

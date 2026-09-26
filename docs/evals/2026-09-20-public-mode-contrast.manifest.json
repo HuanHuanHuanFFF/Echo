@@ -1,7 +1,7 @@
 {
   "status": "posthoc_mode_contrast_reviewed",
   "created": "2026-09-20T06:50:04.055Z",
-  "external_root": "E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19",
+  "external_root": "${EVAL_ROOT}/public-benchmarks-2026-09-19",
   "summary": {
     "plan": {
       "created": "2026-09-20T06:32:00.220581+00:00",
@@ -37,9 +37,9 @@
         "limitation": "Exploratory, already-opened data; no untouched holdout or multiple-comparison correction"
       },
       "implementation": {
-        "D:\\CodingProject\\echo\\evals\\analyze-public-mode-contrast.py": "c24a3c8ea0f41ed3e713fd0bb958e6cf066dfb201480481f1f06628ffa46e6a7",
-        "D:\\CodingProject\\echo\\evals\\lib\\public_lane_projection.py": "b36bfdd2313623cb71599dc70e09cfb1fb8a1b048d6d4c67d79cb13854b54b69",
-        "D:\\CodingProject\\echo\\evals\\lib\\public_score_validation.py": "7d39b991e4dde37c09b43e8a17ca34bab1eeaa0d232b225f80becdf25d6c5af4"
+        "${REPO_ROOT}/evals/analyze-public-mode-contrast.py": "c24a3c8ea0f41ed3e713fd0bb958e6cf066dfb201480481f1f06628ffa46e6a7",
+        "${REPO_ROOT}/evals/lib/public_lane_projection.py": "b36bfdd2313623cb71599dc70e09cfb1fb8a1b048d6d4c67d79cb13854b54b69",
+        "${REPO_ROOT}/evals/lib/public_score_validation.py": "7d39b991e4dde37c09b43e8a17ca34bab1eeaa0d232b225f80becdf25d6c5af4"
       },
       "versions": {
         "pytrec-eval-terrier": "0.5.10",

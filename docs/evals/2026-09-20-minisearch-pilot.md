@@ -90,7 +90,7 @@ RSS包括Node、SQLite连接和评测代码；查询计时是MiniSearch搜索、
 
 实现：[运行器](../../evals/run-minisearch-pilot.mjs)、[引擎适配](../../evals/lib/minisearch-pilot.mjs)、[独立核分](../../evals/score-minisearch-pilot.py)、[真实MiniSearch隔离回归](../../tests/minisearch-pilot.test.ts)。
 
-原始数据与输出放在ROOT/analysis/minisearch-pilot-2026-09-20-v3；ROOT为E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19。v1仅在准备阶段因原文不在总产物表中而停止，随后按已冻结文档清单的SHA逐篇校验。v2的QASPER第94题因查询末尾空白缺少schema规范化而无法命中已有向量；修复为使用真实searchSchema.parse后，仅在v3重跑QASPER。三个已完成固定库的33份文件逐字节复制，SHA及原因记入freeze.execution_correction；旧失败产物保留。评分器另修正Python字符序与Node localeCompare的同分排序差异，未改任何检索顺序。旧数据、原笔记、Chroma未重建；SQLite只读打开可能刷新-shm旁车，主库逻辑内容以SHA核对。
+原始数据与输出放在ROOT/analysis/minisearch-pilot-2026-09-20-v3；ROOT为${EVAL_ROOT}/public-benchmarks-2026-09-19。v1仅在准备阶段因原文不在总产物表中而停止，随后按已冻结文档清单的SHA逐篇校验。v2的QASPER第94题因查询末尾空白缺少schema规范化而无法命中已有向量；修复为使用真实searchSchema.parse后，仅在v3重跑QASPER。三个已完成固定库的33份文件逐字节复制，SHA及原因记入freeze.execution_correction；旧失败产物保留。评分器另修正Python字符序与Node localeCompare的同分排序差异，未改任何检索顺序。旧数据、原笔记、Chroma未重建；SQLite只读打开可能刷新-shm旁车，主库逻辑内容以SHA核对。
 
 ```text
 node evals/run-minisearch-pilot.mjs ROOT NEW_OUT

@@ -97,7 +97,7 @@ npm run build
 node evals/run-public-full-cap6.mjs PRIVATE_ROOT PUBLIC_ROOT OUT freeze
 node --expose-gc --max-old-space-size=6144 evals/run-public-full-cap6.mjs PRIVATE_ROOT PUBLIC_ROOT OUT run
 python evals/score-public-full-cap6.py PUBLIC_ROOT OUT
-python evals/analyze-public-full-cap6.py PUBLIC_ROOT OUT
+python evals/analyze-public-full-cap6.py PUBLIC_ROOT OUT --private-a-root REFERENCE_A --private-b-root REFERENCE_B
 node evals/audit-public-full-cap6.mjs PUBLIC_ROOT OUT REFERENCE_A REFERENCE_B
 ```
 
@@ -105,7 +105,7 @@ node evals/audit-public-full-cap6.mjs PUBLIC_ROOT OUT REFERENCE_A REFERENCE_B
 
 真实公开数据、向量和完整 JSONL 位于：
 
-E:\幻\Documents\八股-Echo测试\2026-09-22-cap6-public-full-v2
+${EVAL_ROOT}/2026-09-22-cap6-public-full-v2
 
 其中 freeze.json 冻结全量 ID、输入/DB/corpus/docs/vector hash、arms 和运行时 hash；run-receipt.json 记录 before/after 数据库 hash、向量 cache hash、6614 executions、0 new embedding calls；public-score.json 是官方评分结果；independent-audit.json 绑定11份独立主审计 JSONL、旧331逐字段复现、QASPER正文及12052条 RRF 检查；[manifest-final](2026-09-22-cap6-public-full.manifest.json) 绑定全部23份公开 JSONL、8份逐题评分、execution-source 原字节、格式等价收据和依赖；[provenance-final](2026-09-22-cap6-public-full.provenance.json) 绑定版本关系与 SHA。
 

@@ -6,9 +6,9 @@
 
 原始文件保留在知识库，本文只整理结果和分析，不复制或改写原始标签：
 
-- [report.md](E:/幻/Documents/八股/.rag/evals/2026-09-05-retrieval-baseline-2/report.md)
-- [queries.jsonl](E:/幻/Documents/八股/.rag/evals/2026-09-05-retrieval-baseline-2/queries.jsonl)
-- [results.jsonl](E:/幻/Documents/八股/.rag/evals/2026-09-05-retrieval-baseline-2/results.jsonl)
+- report.md（本地参考：`${NOTES_ROOT}/.rag/evals/2026-09-05-retrieval-baseline-2/report.md`）
+- queries.jsonl（本地参考：`${NOTES_ROOT}/.rag/evals/2026-09-05-retrieval-baseline-2/queries.jsonl`）
+- results.jsonl（本地参考：`${NOTES_ROOT}/.rag/evals/2026-09-05-retrieval-baseline-2/results.jsonl`）
 
 这是 Agent 核对的 12 题探索性样本，不能代表全库质量。最初测试曾被 Chroma MCP 错误阻塞，后来已完成；原故障根因未在本会话诊断。新实验另建有日期的记录，不覆盖本次原始结果。
 
@@ -79,7 +79,7 @@
 | BM25＋向量＋RRF | 验证明确术语是否补回遗漏材料 | 本样本尚未证明词项漏召回是普遍短板 |
 | rerank | 将机制证据排到泛泛说明之前 | 不能补回候选池中不存在的内容 |
 
-文档分组的算法、聚合键和边界集中维护在[检索设计草案](D:/CodingProject/echo/docs/design/retrieval.md)，此处只记录实验目的。
+文档分组的算法、聚合键和边界集中维护在[检索设计草案](../design/retrieval.md)，此处只记录实验目的。
 
 ## 7. 下一轮小对照建议
 

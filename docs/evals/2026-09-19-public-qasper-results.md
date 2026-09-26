@@ -78,4 +78,4 @@ P2剩余3道候选缺口也已定位：原索引存在对应完整段落，未�
 - 离线检索P50约62–67ms，P95约68–74ms；不含真实API、MCP传输或Agent，不能作为端到端延迟。
 - 未测试Agent回答/拒答、预览补读或动态拆分，也未证明中文个人笔记、未知资料库或公开榜单领先。
 
-复跑入口：[QASPER运行器](../../evals/run-public-qasper.mjs)、[官方核分](../../evals/score-public-benchmarks.py)、[基线运行器](../../evals/run-public-qasper-baselines.py)、[成对分析](../../evals/analyze-public-qasper.py)、[候选诊断](../../evals/diagnose-public-qasper.mjs)。原始产物在E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19的qasper、analysis与reference目录。
+复跑入口：[QASPER运行器](../../evals/run-public-qasper.mjs)、[官方核分](../../evals/score-public-benchmarks.py)、[基线运行器](../../evals/run-public-qasper-baselines.py)、[成对分析](../../evals/analyze-public-qasper.py)、[候选诊断](../../evals/diagnose-public-qasper.mjs)。原始产物在${EVAL_ROOT}/public-benchmarks-2026-09-19的qasper、analysis与reference目录。

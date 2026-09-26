@@ -1,7 +1,7 @@
 {
   "status": "qasper_weight_pilot_reviewed",
   "created": "2026-09-20T10:16:21.971Z",
-  "external_root": "E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19",
+  "external_root": "${EVAL_ROOT}/public-benchmarks-2026-09-19",
   "summary": {
     "created": "2026-09-20T09:56:45.721252+00:00",
     "plan": {
@@ -598,7 +598,7 @@
     "index_sha256_after": "11a9c804f7f10ef9a65d0bd4691b7613c01895f1c58abb39896dfacc09b28089",
     "network_forbidden": true,
     "new_embedding_calls": 0,
-    "source_archive_root": "E:\\幻\\Documents\\八股-Echo测试\\public-benchmarks-2026-09-19\\analysis\\qasper-weight-pilot-2026-09-20-v1",
+    "source_archive_root": "${EVAL_ROOT}/public-benchmarks-2026-09-19/analysis/qasper-weight-pilot-2026-09-20-v1",
     "sources": [
       {
         "source": "run-qasper-weight-pilot.mjs",

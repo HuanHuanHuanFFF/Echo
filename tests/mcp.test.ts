@@ -327,6 +327,7 @@ it('deduplicates same-intent variants while keeping one query identity', async (
   const { config } = await fixture();
   const result = await searchIndex(config, {
     queries: [{ query_id: 'fruit', text: '苹果', variants: ['水果', '苹果'] }],
+    diagnostics: true,
   });
   expect(result.queries).toHaveLength(1);
   expect(result.queries[0]!.variants).toHaveLength(2);

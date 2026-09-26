@@ -129,6 +129,6 @@ LangChain去重用途/输入44732条，引用5593份成功API响应、服务报�
 
 Du离线4-worker P50约1.16秒、P95约1.46–1.47秒，含资源竞争，未含API/MCP/Agent。全局186198条用途/输入去重向量已全部核对原始真实API响应，三个fixed索引的官方正文、缓存及索引向量逐条相等。共23749次尝试，23278成功、467次429、4次其他失败；成功响应报告111974895 tokens，失败未报告用量，不能当作零费用。每输入最多累计5次尝试，低于12次限制；scope引用tokens有交叉，不相加计总账。详见[全量总结](2026-09-20-public-full-results.md)。
 
-原始文件根目录为 E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19。对每个scope（langchain、godot、du），fixed/保存scope-rrf30.jsonl、scope-rrf10.jsonl、scope-run-receipt.json；analysis/保存scope-official-score.json、scope-paired-analysis.json、scope-vector-audit.json、scope-parallel-conformance.json、scope-candidate-pool.json。评分器拒绝重复/漏题、未知文档、重复名次与非法rank导出。
+原始文件根目录为 ${EVAL_ROOT}/public-benchmarks-2026-09-19。对每个scope（langchain、godot、du），fixed/保存scope-rrf30.jsonl、scope-rrf10.jsonl、scope-run-receipt.json；analysis/保存scope-official-score.json、scope-paired-analysis.json、scope-vector-audit.json、scope-parallel-conformance.json、scope-candidate-pool.json。评分器拒绝重复/漏题、未知文档、重复名次与非法rank导出。
 
 复跑入口：[串行运行器](../../evals/run-public-fixed.mjs)、[只读并行运行器](../../evals/run-public-fixed-parallel.mjs)、[官方评分](../../evals/score-public-benchmarks.py)、[成对分析](../../evals/analyze-public-fixed.py)、[原始向量审计](../../evals/audit-public-vectors.mjs)。已有结果以wx保护；失败残留由操作者核对并另存后重跑，不自动覆盖原产物。

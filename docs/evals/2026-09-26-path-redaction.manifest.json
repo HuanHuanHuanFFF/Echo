@@ -1,0 +1,194 @@
+{
+  "version": 1,
+  "date": "2026-09-26",
+  "base_commit": "0673f0ada6dd8f7dc17147d7973eb89501e616f8",
+  "operation": "Replace local paths in frozen structured publication copies; preserve original measurements and other values; JSON formatted for publication.",
+  "aliases": {
+    "${REPO_ROOT}": "Echo checkout root",
+    "${EVAL_ROOT}": "local evaluation data root",
+    "${NOTES_ROOT}": "original personal note root",
+    "${REFERENCE_ROOT}": "external reference repositories root",
+    "${CHECK_ROOT}": "isolated Agent recheck workspace"
+  },
+  "measurement_policy": "Numerical results, recorded response/request character counts and original source/artifact fingerprints remain original measurements. Redacted JSON is a publication copy, not byte-identical raw evidence; recomputing lengths from it does not reproduce the original measurements. original_sha256 binds the input; redacted_sha256 binds this publication copy.",
+  "files": [
+    {
+      "file": "docs/evals/2026-09-15-echo-local-custom.manifest.json",
+      "original_sha256": "51a1f4a3881094782f6c1fb53c4095f3b2d7cf2ed94749c2cbc556d74d912e16",
+      "redacted_sha256": "f3a2c4c68168dd9bbb35e2dac2890418a25aeb2d007419fc597ddfa9dac2f8d1",
+      "original_bytes": 5270,
+      "redacted_bytes": 5257
+    },
+    {
+      "file": "docs/evals/2026-09-15-echo-local-custom.rows.jsonl",
+      "original_sha256": "7131a6d10e2db0d9a858192c100bd522f283f0970f915b8b73240c67ec77f7a5",
+      "redacted_sha256": "cfdf1425aecc1215f9c10afbb22cd1558413fd5f927dafceb233d792f4cc7dce",
+      "original_bytes": 216964,
+      "redacted_bytes": 213562
+    },
+    {
+      "file": "docs/evals/2026-09-15-echo-local-default.rows.jsonl",
+      "original_sha256": "395016acc4182ddf193143846b2943bf930e8e2af01f38a242019b3f2973d30f",
+      "redacted_sha256": "1b5fed3785b21fb69d7f487099fe823c470001abb99af9fafb9622b31fb95eed",
+      "original_bytes": 215829,
+      "redacted_bytes": 212357
+    },
+    {
+      "file": "docs/evals/2026-09-15-echo-local-r2-context.rows.jsonl",
+      "original_sha256": "31b3cc7ca971a18928743894ceeca0104d1ee98669df0aade2f6c4859feb5ef0",
+      "redacted_sha256": "2f14b5ad59d0fa8e3899a2dcf8a1870be0d675c777525ce884360ce3f197ccae",
+      "original_bytes": 18691,
+      "redacted_bytes": 18649
+    },
+    {
+      "file": "docs/evals/2026-09-15-echo-local-r2-custom.manifest.json",
+      "original_sha256": "0bff273e01748ca693258523a06732548e2fa3cda2d20aab2098a4bdbac1ab30",
+      "redacted_sha256": "7b8dee140b08eb74732c5596cc04aa7021ee0dd319d59255cc657c98949ab6a1",
+      "original_bytes": 5304,
+      "redacted_bytes": 5291
+    },
+    {
+      "file": "docs/evals/2026-09-15-echo-local-r2-custom.rows.jsonl",
+      "original_sha256": "a6a195dc1e727dcff3411329f6fb7d0dfafd5238f82707a7f3cccdc2b6c3bff2",
+      "redacted_sha256": "701db36606ded7b18afee7c6298d37b098c75a57e03bcfbb5dc81ec8cdd34028",
+      "original_bytes": 216963,
+      "redacted_bytes": 213561
+    },
+    {
+      "file": "docs/evals/2026-09-15-echo-local-r2-default.rows.jsonl",
+      "original_sha256": "d9d5ecb51660d490aa887d288ec0e96e32f3b8145c87b06500c84147b604179c",
+      "redacted_sha256": "1ad2fbcf2d86bb93902d15d6fe667ad561fd071643c2d48c44742fa810bb5a7e",
+      "original_bytes": 215842,
+      "redacted_bytes": 212370
+    },
+    {
+      "file": "docs/evals/2026-09-16-configuration-bm25.rows.jsonl",
+      "original_sha256": "427b2734d6d4e14e9d131b54fd16bbe735b3c6b102d512b5b2148178931c3935",
+      "redacted_sha256": "7d21cbbe29eb8a7d29d44b026c1a5e82cc72d765ce149f57d1936d9e82c403fb",
+      "original_bytes": 226289,
+      "redacted_bytes": 222831
+    },
+    {
+      "file": "docs/evals/2026-09-18-final-four-arms.manifest.json",
+      "original_sha256": "51d4416b136308070235040a1b0193eb85baeed635fb93b4ee3a76cff8515dc2",
+      "redacted_sha256": "04fe3b95c05e2453509706937c648c749d9ed93f93f33c0c6e9d94476ae60ed2",
+      "original_bytes": 390317,
+      "redacted_bytes": 390028
+    },
+    {
+      "file": "docs/evals/2026-09-18-label-revision-and-current-architecture.manifest.json",
+      "original_sha256": "2c5c0f7488c8139a23bc1fd93da77d36e8b72a1cb5def51bcf86b04889fd47ed",
+      "redacted_sha256": "34bf2489e11be5c20eb94b49e4fe31cf39f7d2df2e63fdc11537f3b477f1934e",
+      "original_bytes": 371787,
+      "redacted_bytes": 371556
+    },
+    {
+      "file": "docs/evals/2026-09-19-public-qasper.manifest.json",
+      "original_sha256": "d6f012844a2e95420028caedb49e91514b6d1bc49674e990d306f3b8e5b1d6bc",
+      "redacted_sha256": "bf0b9fab7c804646225e84dd75276cea83c3fa8c55127a662a53c430edae82d9",
+      "original_bytes": 42931,
+      "redacted_bytes": 42905
+    },
+    {
+      "file": "docs/evals/2026-09-20-bm25-weight-pilot-03-04.manifest.json",
+      "original_sha256": "5bf0f2c6e63aa41ffee14d533bcffccfcf2b5a8ac16da5e7135cfda94bb90de2",
+      "redacted_sha256": "be4d447a9e07dbbc7a5dca5327ab880a20f5f0bb355f67e56dead668e5141f8e",
+      "original_bytes": 37027,
+      "redacted_bytes": 36977
+    },
+    {
+      "file": "docs/evals/2026-09-20-bm25-weight-pilot.manifest.json",
+      "original_sha256": "c442c1df9c8752e4107707b5ad54fde96a9dbb08e420235a5ce0a448ede479a8",
+      "redacted_sha256": "084d740df605ca509a8026145c14b4ee5ff654df2e9981023371817b397ffa91",
+      "original_bytes": 47927,
+      "redacted_bytes": 47877
+    },
+    {
+      "file": "docs/evals/2026-09-20-lexical-pilot.manifest.json",
+      "original_sha256": "4791439746a8015a32659b4fb4dc63a867a433c82aaef23ff4a579781233de56",
+      "redacted_sha256": "1d496e26fa6ba3dc665b1e29946acaa65f5a025ae33f630f4197156a0d1e4d6a",
+      "original_bytes": 44476,
+      "redacted_bytes": 44454
+    },
+    {
+      "file": "docs/evals/2026-09-20-minisearch-pilot.manifest.json",
+      "original_sha256": "c0039d5a72f75ebc0acf5bbf8bc9c62b9d4073408ba940b7a5d67262756f0595",
+      "redacted_sha256": "7e408196389469498ea6ab5c68adc4daa67f9673a89ad7b06d193ae93e68cfea",
+      "original_bytes": 103358,
+      "redacted_bytes": 103334
+    },
+    {
+      "file": "docs/evals/2026-09-20-public-fixed.manifest.json",
+      "original_sha256": "faca5091d804ddd0b8cd2cfc272827f4179b7283ca9c53c3815b9fa9f07df178",
+      "redacted_sha256": "535245d13a5b8b3323bcd3e54ce56289d6cfbe6854c069dc461f88433d6f870d",
+      "original_bytes": 52126,
+      "redacted_bytes": 52042
+    },
+    {
+      "file": "docs/evals/2026-09-20-public-full-results.manifest.json",
+      "original_sha256": "6d24ca2b477b06b4bca0528f512c8927a727c599ad4da322a86cdcf60b13794a",
+      "redacted_sha256": "34b8e4a220759fdbd2b6b308f7f837da2e0c3ed706cfcab4a99483bb60bf51f9",
+      "original_bytes": 85084,
+      "redacted_bytes": 85058
+    },
+    {
+      "file": "docs/evals/2026-09-20-public-mode-contrast.manifest.json",
+      "original_sha256": "f447b760b6164a1ea94099d1f770ea47ecd38c923fa5d3fa8c0eb62ec2ca3b57",
+      "redacted_sha256": "dffeb3d7215428cda08e17414a456989790e10270a9224a71c8eee9af8d509bf",
+      "original_bytes": 42706,
+      "redacted_bytes": 42643
+    },
+    {
+      "file": "docs/evals/2026-09-20-qasper-source-cap-pilot.manifest.json",
+      "original_sha256": "928c3aac80b6e155bb0ab76202c9df96d8a861ee3767d8905f7066bbcda7e405",
+      "redacted_sha256": "460ed926380c0957d1de4c8506b9df8ecd1cbbf3fa3df8002163bff3b14ddb5a",
+      "original_bytes": 64056,
+      "redacted_bytes": 64006
+    },
+    {
+      "file": "docs/evals/2026-09-20-qasper-weight-diagnosis.manifest.json",
+      "original_sha256": "5e4c353e83ca5861b78292452ac2f844d430e5142e699b82170ff52fa81589b6",
+      "redacted_sha256": "fd7f6a1d00710e63e7a92fc87b9d9637e77e462ed0e642a7cd1725d594999a7c",
+      "original_bytes": 21540,
+      "redacted_bytes": 21518
+    },
+    {
+      "file": "docs/evals/2026-09-20-qasper-weight-pilot.manifest.json",
+      "original_sha256": "aaee903d3926c3e4058057c6a25107f626b107d3649361baa877f2cd0b23c07b",
+      "redacted_sha256": "b3a31a107f997097b01af53eadd0f6d4444c775a8afe573da4d532cb53f4d675",
+      "original_bytes": 64910,
+      "redacted_bytes": 64860
+    },
+    {
+      "file": "docs/evals/2026-09-21-minisearch-without-coverage.manifest.json",
+      "original_sha256": "8a52245ad4b5ec22ab0513431f003b1becda7a924a5fa86eb17576eecf4eaddb",
+      "redacted_sha256": "b269194e13ff4af268931be59c432500d423f1d5093fb96e03f86d56b71fcea3",
+      "original_bytes": 89552,
+      "redacted_bytes": 89530
+    },
+    {
+      "file": "docs/evals/2026-09-22-cap6-public-full.manifest.json",
+      "original_sha256": "dc5d1e7f5d6d5b5e3b434c4b0ec0dac036fb664478c731c9b79c356387b0997e",
+      "redacted_sha256": "1cebeb0befe53cc33c7af4d6c5be424a3716fe2b0dfb8b54555427f2198fd608",
+      "original_bytes": 18458,
+      "redacted_bytes": 16689
+    },
+    {
+      "file": "docs/evals/2026-09-22-cap6-public-full.provenance.json",
+      "original_sha256": "352b8a1382f8ea55a3866822cbaa1b7999c70f111e9258785a56af3d5880aa4f",
+      "redacted_sha256": "4c7cb9df5920fbcc2b1f2e67fa859a7a86a23d7072d0688f4d7ac1effc479812",
+      "original_bytes": 6678,
+      "redacted_bytes": 6115
+    },
+    {
+      "file": "docs/evals/2026-09-26-agent-recheck.receipt.json",
+      "original_sha256": "5b91711f59d9831f89e298b75c02034a2322eb5d753efa4d40d6ed462b5b58cd",
+      "redacted_sha256": "74834fafa422c0c1005aae96852eb5f4faf919a8558d968ac2aa54350b705b19",
+      "original_bytes": 59767,
+      "redacted_bytes": 56514,
+      "origin": "external reviewer local receipt; original kept outside Git"
+    }
+  ],
+  "text_hash_policy": "Tracked input hashes use Git blob bytes at base_commit; published output hashes use UTF-8 LF text. External original receipt hash uses its original supplied bytes.",
+  "mutable_documentation": "Markdown and README path edits are recorded in Git, not pinned by this snapshot integrity check."
+}

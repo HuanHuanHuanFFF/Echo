@@ -17,11 +17,12 @@
     "test": "npm run build && vitest run",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "npm run format:check && npm run typecheck && npm test && npm run smoke:default",
+    "check": "npm run check:paths && npm run format:check && npm run typecheck && npm test && npm run smoke:default",
     "eval": "npm run build && node dist/eval-cli.js",
     "eval:retrieval": "npm run build && node dist/retrieval-eval-cli.js",
     "eval:compare": "npm run build && node dist/retrieval-compare-cli.js",
-    "smoke:default": "node scripts/verify-default-runtime.mjs"
+    "smoke:default": "node scripts/verify-default-runtime.mjs",
+    "check:paths": "node scripts/check-public-paths.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.30.0",

@@ -160,10 +160,10 @@ A和混合各净增加3道完整题；B两组总完整题数相同，但B-D13和
 ```powershell
 node evals/run-decomposition-comparison.mjs --self-test
 # 使用新的run-id；不要重跑已有真实批次
-node evals/run-decomposition-comparison.mjs --lab "E:/幻/Documents/八股-Echo测试/2026-09-16" --run-id <新的run-id> --phase prepare
+node evals/run-decomposition-comparison.mjs --lab "${EVAL_ROOT}/2026-09-16" --run-id <新的run-id> --phase prepare
 # run需要用户已配置的模型key；会发真实API请求
-node evals/run-decomposition-comparison.mjs --lab "E:/幻/Documents/八股-Echo测试/2026-09-16" --run-id <新的run-id> --phase run
-node evals/run-decomposition-comparison.mjs --lab "E:/幻/Documents/八股-Echo测试/2026-09-16" --run-id <新的run-id> --phase summarize
+node evals/run-decomposition-comparison.mjs --lab "${EVAL_ROOT}/2026-09-16" --run-id <新的run-id> --phase run
+node evals/run-decomposition-comparison.mjs --lab "${EVAL_ROOT}/2026-09-16" --run-id <新的run-id> --phase summarize
 node evals/audit-decomposition-results.mjs "<该run-id的绝对目录>"
 ```
 

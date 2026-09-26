@@ -42,7 +42,7 @@ QMD MCP 调用本身的记录延迟（服务已连接、已有模型缓存）为
 
 ## 复核与复现
 
-- 原始冻结 manifest SHA-256：`478ef81433e860a80b59d30fa2dc65c09b7216c811cce83c6b003f27e6d3ec4b`。测试副本、五个索引、逐题原生 MCP 结构化响应、freeze、run receipt、两组评分摘要和源码快照保存在 `E:\幻\Documents\八股-Echo测试\2026-09-25-qmd-comparison`；个人数据、模型和生成索引不入 Git。
+- 原始冻结 manifest SHA-256：`478ef81433e860a80b59d30fa2dc65c09b7216c811cce83c6b003f27e6d3ec4b`。测试副本、五个索引、逐题原生 MCP 结构化响应、freeze、run receipt、两组评分摘要和源码快照保存在 `${EVAL_ROOT}/2026-09-25-qmd-comparison`；个人数据、模型和生成索引不入 Git。
 - [准备器](../../evals/prepare-qmd-private.mjs)校验输入哈希并生成隔离副本；[原生 MCP 运行器](../../evals/run-qmd-mcp-private.mjs)固定单次父题查询与参数；[评分器](../../evals/score-qmd-mcp-private.mjs)复核语料/标签 SHA、逐题顺序、原始结果文件路径和片段、来源偏移、打包预算及回执 SHA，然后按与 Echo 相同的完整行规则计分。独立只读复查未发现阻断级评分错误。
 - 已执行两组各 200 次 MCP 查询，严格复算得到上表。运行器与映射辅助文件在 E 盘 `source-snapshots` 留存当次字节：SHA-256 分别为 `baa819ab6138d2e6498bb485a4aa11154ec8b7fb3afd21ae5b1c10e731ec25a3`、`7ee39fdb174a1f2b95171a19639f1202ad356ff1425caad3bc57b386b5627238`；冻结回执也记录这两个值。评分器后来补强审计断言，不改变已保存的查询输出。
 - 旧 `runs-v4` 是**每子问题分别调用 QMD 再合并**的诊断，不属于上表原生单次父题 MCP 路径；保留原始产物，不将两种调用方式混算。

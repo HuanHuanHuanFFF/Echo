@@ -92,7 +92,7 @@ v2冻结的arms/private/public完整对象与v1相同，仅代码修复。v2对�
 - 两位审查者独立复算v2私有200行、分库/成本、QASPER101/78及对应历史排名；逐条RRF公式通过。源码110/110、产物68/68（含全部53JSONL）、14项输入SHA均独立核验通过，v1未用于结论。
 - 已开卷探索，不声称新盲测、通用最优或答案正确率；本轮产品cap、BM25权重和RRF默认保持。
 
-本轮目录E:/幻/Documents/八股-Echo测试/2026-09-21-budget20-followup-v2。BASE20为同父目录2026-09-21-default-budget20-cap-v1，HIGH16为2026-09-21-minisearch-031-cap6-v1。新OUT拒绝覆盖：
+本轮目录${EVAL_ROOT}/2026-09-21-budget20-followup-v2。BASE20为同父目录2026-09-21-default-budget20-cap-v1，HIGH16为2026-09-21-minisearch-031-cap6-v1。新OUT拒绝覆盖：
 
 ```text
 node evals/run-minisearch-parameter-exploration.mjs PRIVATE_ROOT PUBLIC_ROOT NEW_OUT freeze-budget20-followup

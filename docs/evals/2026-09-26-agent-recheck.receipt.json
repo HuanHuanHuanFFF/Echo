@@ -1,0 +1,1916 @@
+{
+  "revision": "0673f0ada6dd8f7dc17147d7973eb89501e616f8",
+  "repo": "${REPO_ROOT}",
+  "cli": "${REPO_ROOT}/dist/cli.js",
+  "build_sha256": "8ba70b35cb95da70dfda2c28bb78aa1972851395ac3310a15a1a0a5275e75920",
+  "checks": [
+    {
+      "label": "typed topk and bounds"
+    },
+    {
+      "label": "overrides no schema defaults"
+    },
+    {
+      "label": "all override fields described"
+    },
+    {
+      "label": "relative filter explained"
+    },
+    {
+      "label": "status check_sources exposed"
+    },
+    {
+      "label": "two original samples synced"
+    },
+    {
+      "label": "collection discovered"
+    },
+    {
+      "label": "status preserves database and note bytes"
+    },
+    {
+      "label": "single nonempty"
+    },
+    {
+      "label": "single exact text and section ranges",
+      "details": 2
+    },
+    {
+      "label": "compact omits optional fields"
+    },
+    {
+      "label": "diagnostics restores fields"
+    },
+    {
+      "label": "multi nonempty"
+    },
+    {
+      "label": "multi exact text and section ranges",
+      "details": 2
+    },
+    {
+      "label": "independent query ownership"
+    },
+    {
+      "label": "shared evidence kept once"
+    },
+    {
+      "label": "filtered nonempty"
+    },
+    {
+      "label": "filtered exact text and section ranges",
+      "details": 1
+    },
+    {
+      "label": "unknown_collection error code"
+    },
+    {
+      "label": "absolute_prefix error code"
+    },
+    {
+      "label": "parent_prefix error code"
+    },
+    {
+      "label": "unc_prefix error code"
+    },
+    {
+      "label": "empty_scope normal empty"
+    },
+    {
+      "label": "unmatched_prefix normal empty"
+    },
+    {
+      "label": "unknown_override rejected"
+    },
+    {
+      "label": "out_of_range rejected"
+    },
+    {
+      "label": "budget empty clear and bounded"
+    },
+    {
+      "label": "compact packs before budget"
+    },
+    {
+      "label": "limit empty reason"
+    },
+    {
+      "label": "source limit reported"
+    },
+    {
+      "label": "no candidates clear"
+    },
+    {
+      "label": "only explicit overrides change"
+    },
+    {
+      "label": "hash catches equal-size edit"
+    },
+    {
+      "label": "content sync nonempty"
+    },
+    {
+      "label": "content sync exact text and section ranges",
+      "details": 2
+    },
+    {
+      "label": "line sync nonempty"
+    },
+    {
+      "label": "line sync exact text and section ranges",
+      "details": 2
+    },
+    {
+      "label": "line numbers advanced by three"
+    },
+    {
+      "label": "move is add plus remove"
+    },
+    {
+      "label": "move sync nonempty"
+    },
+    {
+      "label": "move sync exact text and section ranges",
+      "details": 2
+    },
+    {
+      "label": "source identity preserved on move"
+    },
+    {
+      "label": "new note check never writes UUID or DB"
+    },
+    {
+      "label": "removed source detected"
+    },
+    {
+      "label": "read failure not latest"
+    },
+    {
+      "label": "oversize not latest"
+    },
+    {
+      "label": "CLI status check matches MCP"
+    }
+  ],
+  "receipts": [
+    {
+      "label": "before_sync",
+      "name": "echo_status",
+      "args": {
+        "check_sources": true
+      },
+      "ms": 306,
+      "isError": false,
+      "chars": 886,
+      "body": {
+        "configured": true,
+        "active": {
+          "chunker": "markdown-structure-v1",
+          "tokenizer": "icu-zh",
+          "embedding": "default",
+          "retrieval": "balanced"
+        },
+        "revision": "f27e3630e49694725cfb98bb166e3d6125c72cf23414c5d284910482574f0052",
+        "ready": false,
+        "reason": {
+          "code": "INDEX_REQUIRED",
+          "next": "Run echo-mcp sync"
+        },
+        "last_sync": null,
+        "sources": 0,
+        "chunks": 0,
+        "embeddings": 0,
+        "indexes": {
+          "chunks": "b816b8b07647ec936aa79bc007db9841caeb3cf69193b474df990d89b0d8c083",
+          "fts": "95e42262363b093d3a2c7e0adbb29824c8ec28fbc38eabc77e2e1072b38b17c3",
+          "vectors": null
+        },
+        "collections": [
+          {
+            "id": "sample",
+            "root": "${CHECK_ROOT}/notes",
+            "indexed_sources": 0
+          }
+        ],
+        "freshness": {
+          "state": "unknown",
+          "reason": "Selected chunk index has no successful sync to compare.",
+          "next": "Run echo-mcp sync"
+        },
+        "needs_sync": true,
+        "capabilities": {
+          "sqlite": "3.53.4",
+          "vector": "v0.1.9"
+        },
+        "active_searches": 0,
+        "embedding_configured": false
+      }
+    },
+    {
+      "label": "unchecked",
+      "name": "echo_status",
+      "args": {},
+      "ms": 277,
+      "isError": false,
+      "chars": 753,
+      "body": {
+        "configured": true,
+        "active": {
+          "chunker": "markdown-structure-v1",
+          "tokenizer": "icu-zh",
+          "embedding": "default",
+          "retrieval": "balanced"
+        },
+        "revision": "f27e3630e49694725cfb98bb166e3d6125c72cf23414c5d284910482574f0052",
+        "ready": true,
+        "last_sync": "2026-09-26T15:22:58.021Z",
+        "sources": 2,
+        "chunks": 4,
+        "embeddings": 0,
+        "indexes": {
+          "chunks": "b816b8b07647ec936aa79bc007db9841caeb3cf69193b474df990d89b0d8c083",
+          "fts": "95e42262363b093d3a2c7e0adbb29824c8ec28fbc38eabc77e2e1072b38b17c3",
+          "vectors": null
+        },
+        "collections": [
+          {
+            "id": "sample",
+            "root": "${CHECK_ROOT}/notes",
+            "indexed_sources": 2
+          }
+        ],
+        "freshness": {
+          "state": "unchecked"
+        },
+        "needs_sync": null,
+        "capabilities": {
+          "sqlite": "3.53.4",
+          "vector": "v0.1.9"
+        },
+        "active_searches": 0,
+        "embedding_configured": false
+      }
+    },
+    {
+      "label": "checked_initial",
+      "name": "echo_status",
+      "args": {
+        "check_sources": true
+      },
+      "ms": 341,
+      "isError": false,
+      "chars": 893,
+      "body": {
+        "configured": true,
+        "active": {
+          "chunker": "markdown-structure-v1",
+          "tokenizer": "icu-zh",
+          "embedding": "default",
+          "retrieval": "balanced"
+        },
+        "revision": "f27e3630e49694725cfb98bb166e3d6125c72cf23414c5d284910482574f0052",
+        "ready": true,
+        "last_sync": "2026-09-26T15:22:58.021Z",
+        "sources": 2,
+        "chunks": 4,
+        "embeddings": 0,
+        "indexes": {
+          "chunks": "b816b8b07647ec936aa79bc007db9841caeb3cf69193b474df990d89b0d8c083",
+          "fts": "95e42262363b093d3a2c7e0adbb29824c8ec28fbc38eabc77e2e1072b38b17c3",
+          "vectors": null
+        },
+        "collections": [
+          {
+            "id": "sample",
+            "root": "${CHECK_ROOT}/notes",
+            "indexed_sources": 2
+          }
+        ],
+        "freshness": {
+          "state": "unchanged",
+          "checked_at": "2026-09-26T15:22:58.660Z",
+          "duration_ms": 14,
+          "files_checked": 2,
+          "bytes_read": 604,
+          "changes": {
+            "added": 0,
+            "modified": 0,
+            "removed": 0
+          }
+        },
+        "needs_sync": false,
+        "capabilities": {
+          "sqlite": "3.53.4",
+          "vector": "v0.1.9"
+        },
+        "active_searches": 0,
+        "embedding_configured": false
+      }
+    },
+    {
+      "label": "single_default",
+      "name": "echo_search",
+      "args": {
+        "query": "事务失败怎样恢复"
+      },
+      "ms": 296,
+      "isError": false,
+      "chars": 1135,
+      "body": {
+        "status": "ok",
+        "results": [
+          {
+            "chunk_id": "97204063c369ac966611390419d0e24865ee0058ac51c519ccf129ff91a36135",
+            "text": "# SQLite 事务\n\n提交后新索引才对检索可见。更新失败时回滚，保留上一份可用数据。",
+            "heading_path": ["SQLite 事务"],
+            "start_line": 6,
+            "end_line": 8,
+            "section_start_line": 6,
+            "section_end_line": 13,
+            "source_id": "9d425f10-3357-4c94-80bb-87b9cba85f51",
+            "collection_id": "sample",
+            "path": "${CHECK_ROOT}/notes/transactions.md",
+            "source_version": "d6596010f27037f32106b8817449f35538b38f998fdde8718720767ae55f3260",
+            "matched_query_ids": ["q0"]
+          },
+          {
+            "chunk_id": "eafdaf92db960c11c9fd77184a48318271a133ec41d3b5f3bf176a84d23978e6",
+            "text": "## WAL 读写\n\nWAL 模式允许读者在写者准备更新时继续读取旧提交。一个数据库同一时刻只有一个写者。",
+            "heading_path": ["SQLite 事务", "WAL 读写"],
+            "start_line": 10,
+            "end_line": 12,
+            "section_start_line": 10,
+            "section_end_line": 13,
+            "source_id": "9d425f10-3357-4c94-80bb-87b9cba85f51",
+            "collection_id": "sample",
+            "path": "${CHECK_ROOT}/notes/transactions.md",
+            "source_version": "d6596010f27037f32106b8817449f35538b38f998fdde8718720767ae55f3260",
+            "matched_query_ids": ["q0"]
+          }
+        ],
+        "queries": [
+          {
+            "query_id": "q0",
+            "status": "ok",
+            "returned": 2
+          }
+        ]
+      }
+    },
+    {
+      "label": "single_diagnostics",
+      "name": "echo_search",
+      "args": {
+        "query": "事务失败怎样恢复",
+        "diagnostics": true
+      },
+      "ms": 24,
+      "isError": false,
+      "chars": 2050,
+      "body": {
+        "status": "ok",
+        "results": [
+          {
+            "chunk_id": "97204063c369ac966611390419d0e24865ee0058ac51c519ccf129ff91a36135",
+            "text": "# SQLite 事务\n\n提交后新索引才对检索可见。更新失败时回滚，保留上一份可用数据。",
+            "heading_path": ["SQLite 事务"],
+            "start_line": 6,
+            "end_line": 8,
+            "section_start_line": 6,
+            "section_end_line": 13,
+            "source_id": "9d425f10-3357-4c94-80bb-87b9cba85f51",
+            "collection_id": "sample",
+            "path": "${CHECK_ROOT}/notes/transactions.md",
+            "relative_path": "transactions.md",
+            "source_version": "d6596010f27037f32106b8817449f35538b38f998fdde8718720767ae55f3260",
+            "matched_query_ids": ["q0"],
+            "rankings": [
+              {
+                "query_id": "q0",
+                "rrf_score": 0.09090909090909091,
+                "bm25_rank": 1
+              }
+            ]
+          },
+          {
+            "chunk_id": "eafdaf92db960c11c9fd77184a48318271a133ec41d3b5f3bf176a84d23978e6",
+            "text": "## WAL 读写\n\nWAL 模式允许读者在写者准备更新时继续读取旧提交。一个数据库同一时刻只有一个写者。",
+            "heading_path": ["SQLite 事务", "WAL 读写"],
+            "start_line": 10,
+            "end_line": 12,
+            "section_start_line": 10,
+            "section_end_line": 13,
+            "source_id": "9d425f10-3357-4c94-80bb-87b9cba85f51",
+            "collection_id": "sample",
+            "path": "${CHECK_ROOT}/notes/transactions.md",
+            "relative_path": "transactions.md",
+            "source_version": "d6596010f27037f32106b8817449f35538b38f998fdde8718720767ae55f3260",
+            "matched_query_ids": ["q0"],
+            "rankings": [
+              {
+                "query_id": "q0",
+                "rrf_score": 0.08333333333333333,
+                "bm25_rank": 2
+              }
+            ]
+          }
+        ],
+        "queries": [
+          {
+            "query_id": "q0",
+            "status": "ok",
+            "candidates": {
+              "bm25": 2,
+              "dense": 0,
+              "fused": 2
+            },
+            "returned": 2
+          }
+        ],
+        "applied": {
+          "mode": "bm25",
+          "lexical_engine": "minisearch",
+          "minisearch_k": 1.2,
+          "minisearch_b": 0.7,
+          "minisearch_d": 0.5,
+          "topk": 10,
+          "max_chunks_per_source": 6,
+          "bm25_candidates": 60,
+          "dense_candidates": 60,
+          "rrf_k": 10,
+          "title_weight": 2,
+          "bm25_weight": 0.5,
+          "dense_weight": 1,
+          "max_context_chars": 20000,
+          "min_dense_similarity": 0.3
+        },
+        "excluded": {
+          "source_limit": 0,
+          "duplicate": 0,
+          "budget": 0,
+          "topk": 0
+        },
+        "selection": {
+          "chunker": "markdown-structure-v1",
+          "tokenizer": "icu-zh",
+          "embedding": "default",
+          "retrieval": "balanced",
+          "revision": "f27e3630e49694725cfb98bb166e3d6125c72cf23414c5d284910482574f0052",
+          "source_snapshot": "6051a77200a8e319eb1fe9abd3a85d3fc72a66ce84da679aae05d85d04a0372a"
+        }
+      }
+    },
+    {
+      "label": "multi_default",
+      "name": "echo_search",
+      "args": {
+        "queries": [
+          {
+            "query_id": "recovery",
+            "text": "事务失败时怎样恢复"
+          },
+          {
+            "query_id": "custom",
+            "text": "如何自定义切块规则"
+          }
+        ],
+        "overrides": {
+          "topk": 2,
+          "max_chunks_per_source": 1
+        }
+      },
+      "ms": 24,
+      "isError": false,
+      "chars": 1203,
+      "body": {
+        "status": "ok",
+        "results": [
+          {
+            "chunk_id": "97204063c369ac966611390419d0e24865ee0058ac51c519ccf129ff91a36135",
+            "text": "# SQLite 事务\n\n提交后新索引才对检索可见。更新失败时回滚，保留上一份可用数据。",
+            "heading_path": ["SQLite 事务"],
+            "start_line": 6,
+            "end_line": 8,
+            "section_start_line": 6,
+            "section_end_line": 13,
+            "source_id": "9d425f10-3357-4c94-80bb-87b9cba85f51",
+            "collection_id": "sample",
+            "path": "${CHECK_ROOT}/notes/transactions.md",
+            "source_version": "d6596010f27037f32106b8817449f35538b38f998fdde8718720767ae55f3260",
+            "matched_query_ids": ["recovery"]
+          },
+          {
+            "chunk_id": "44c3447330047c6d8cf485460be3ebec71d6b93d6084b513e95ccfe4065eab46",
+            "text": "## 自定义规则\n\n可以完整替换切块模块，再配套调整候选数量、融合权重和每篇返回上限。",
+            "heading_path": ["Markdown 切块", "自定义规则"],
+            "start_line": 9,
+            "end_line": 11,
+            "section_start_line": 9,
+            "section_end_line": 12,
+            "source_id": "4ec91f0c-d858-4a39-b7b1-daa7675a14f1",
+            "collection_id": "sample",
+            "path": "${CHECK_ROOT}/notes/chunking.md",
+            "source_version": "68efb9ef4c5b7d1f9419ad56729baf2c157daa24eaef63b57cc4e4d39fd45057",
+            "matched_query_ids": ["custom"]
+          }
+        ],
+        "queries": [
+          {
+            "query_id": "recovery",
+            "status": "ok",
+            "returned": 1
+          },
+          {
+            "query_id": "custom",
+            "status": "ok",
+            "returned": 1
+          }
+        ],
+        "limits": ["topk"]
+      }
+    },
+    {
+      "label": "multi_diagnostics",
+      "name": "echo_search",
+      "args": {
+        "queries": [
+          {
+            "query_id": "recovery",
+            "text": "事务失败时怎样恢复"
+          },
+          {
+            "query_id": "custom",
+            "text": "如何自定义切块规则"
+          }
+        ],
+        "overrides": {
+          "topk": 2,
+          "max_chunks_per_source": 1
+        },
+        "diagnostics": true
+      },
+      "ms": 21,
+      "isError": false,
+      "chars": 2149,
+      "body": {
+        "status": "ok",
+        "results": [
+          {
+            "chunk_id": "97204063c369ac966611390419d0e24865ee0058ac51c519ccf129ff91a36135",
+            "text": "# SQLite 事务\n\n提交后新索引才对检索可见。更新失败时回滚，保留上一份可用数据。",
+            "heading_path": ["SQLite 事务"],
+            "start_line": 6,
+            "end_line": 8,
+            "section_start_line": 6,
+            "section_end_line": 13,
+            "source_id": "9d425f10-3357-4c94-80bb-87b9cba85f51",
+            "collection_id": "sample",
+            "path": "${CHECK_ROOT}/notes/transactions.md",
+            "relative_path": "transactions.md",
+            "source_version": "d6596010f27037f32106b8817449f35538b38f998fdde8718720767ae55f3260",
+            "matched_query_ids": ["recovery"],
+            "rankings": [
+              {
+                "query_id": "recovery",
+                "rrf_score": 0.09090909090909091,
+                "bm25_rank": 1
+              }
+            ]
+          },
+          {
+            "chunk_id": "44c3447330047c6d8cf485460be3ebec71d6b93d6084b513e95ccfe4065eab46",
+            "text": "## 自定义规则\n\n可以完整替换切块模块，再配套调整候选数量、融合权重和每篇返回上限。",
+            "heading_path": ["Markdown 切块", "自定义规则"],
+            "start_line": 9,
+            "end_line": 11,
+            "section_start_line": 9,
+            "section_end_line": 12,
+            "source_id": "4ec91f0c-d858-4a39-b7b1-daa7675a14f1",
+            "collection_id": "sample",
+            "path": "${CHECK_ROOT}/notes/chunking.md",
+            "relative_path": "chunking.md",
+            "source_version": "68efb9ef4c5b7d1f9419ad56729baf2c157daa24eaef63b57cc4e4d39fd45057",
+            "matched_query_ids": ["custom"],
+            "rankings": [
+              {
+                "query_id": "custom",
+                "rrf_score": 0.09090909090909091,
+                "bm25_rank": 1
+              }
+            ]
+          }
+        ],
+        "queries": [
+          {
+            "query_id": "recovery",
+            "status": "ok",
+            "candidates": {
+              "bm25": 2,
+              "dense": 0,
+              "fused": 2
+            },
+            "returned": 1
+          },
+          {
+            "query_id": "custom",
+            "status": "ok",
+            "candidates": {
+              "bm25": 2,
+              "dense": 0,
+              "fused": 2
+            },
+            "returned": 1
+          }
+        ],
+        "applied": {
+          "mode": "bm25",
+          "lexical_engine": "minisearch",
+          "minisearch_k": 1.2,
+          "minisearch_b": 0.7,
+          "minisearch_d": 0.5,
+          "topk": 2,
+          "max_chunks_per_source": 1,
+          "bm25_candidates": 60,
+          "dense_candidates": 60,
+          "rrf_k": 10,
+          "title_weight": 2,
+          "bm25_weight": 0.5,
+          "dense_weight": 1,
+          "max_context_chars": 20000,
+          "min_dense_similarity": 0.3
+        },
+        "excluded": {
+          "source_limit": 0,
+          "duplicate": 0,
+          "budget": 0,
+          "topk": 2
+        },
+        "selection": {
+          "chunker": "markdown-structure-v1",
+          "tokenizer": "icu-zh",
+          "embedding": "default",
+          "retrieval": "balanced",
+          "revision": "f27e3630e49694725cfb98bb166e3d6125c72cf23414c5d284910482574f0052",
+          "source_snapshot": "6051a77200a8e319eb1fe9abd3a85d3fc72a66ce84da679aae05d85d04a0372a"
+        }
+      }
+    },
+    {
+      "label": "shared_evidence",
+      "name": "echo_search",
+      "args": {
+        "queries": [
+          {
+            "query_id": "a",
+            "text": "事务失败怎样恢复"
+          },
+          {
+            "query_id": "b",
+            "text": "事务失败怎样恢复",
+            "variants": ["事务失败怎样恢复"]
+          }
+        ],
+        "overrides": {
+          "topk": 1
+        }
+      },
+      "ms": 18,
+      "isError": false,
+      "chars": 663,
+      "body": {
+        "status": "ok",
+        "results": [
+          {
+            "chunk_id": "97204063c369ac966611390419d0e24865ee0058ac51c519ccf129ff91a36135",
+            "text": "# SQLite 事务\n\n提交后新索引才对检索可见。更新失败时回滚，保留上一份可用数据。",
+            "heading_path": ["SQLite 事务"],
+            "start_line": 6,
+            "end_line": 8,
+            "section_start_line": 6,
+            "section_end_line": 13,
+            "source_id": "9d425f10-3357-4c94-80bb-87b9cba85f51",
+            "collection_id": "sample",
+            "path": "${CHECK_ROOT}/notes/transactions.md",
+            "source_version": "d6596010f27037f32106b8817449f35538b38f998fdde8718720767ae55f3260",
+            "matched_query_ids": ["a", "b"]
+          }
+        ],
+        "queries": [
+          {
+            "query_id": "a",
+            "status": "ok",
+            "returned": 1
+          },
+          {
+            "query_id": "b",
+            "status": "ok",
+            "returned": 1
+          }
+        ],
+        "limits": ["topk"]
+      }
+    },
+    {
+      "label": "filter_from_tools_and_status",
+      "name": "echo_search",
+      "args": {
+        "query": "事务",
+        "filters": {
+          "collections": ["sample"],
+          "path_prefix": "transactions.md"
+        },
+        "overrides": {
+          "topk": 1
+        }
+      },
+      "ms": 22,
+      "isError": false,
+      "chars": 617,
+      "body": {
+        "status": "ok",
+        "results": [
+          {
+            "chunk_id": "97204063c369ac966611390419d0e24865ee0058ac51c519ccf129ff91a36135",
+            "text": "# SQLite 事务\n\n提交后新索引才对检索可见。更新失败时回滚，保留上一份可用数据。",
+            "heading_path": ["SQLite 事务"],
+            "start_line": 6,
+            "end_line": 8,
+            "section_start_line": 6,
+            "section_end_line": 13,
+            "source_id": "9d425f10-3357-4c94-80bb-87b9cba85f51",
+            "collection_id": "sample",
+            "path": "${CHECK_ROOT}/notes/transactions.md",
+            "source_version": "d6596010f27037f32106b8817449f35538b38f998fdde8718720767ae55f3260",
+            "matched_query_ids": ["q0"]
+          }
+        ],
+        "queries": [
+          {
+            "query_id": "q0",
+            "status": "ok",
+            "returned": 1
+          }
+        ],
+        "limits": ["topk"]
+      }
+    },
+    {
+      "label": "unknown_collection",
+      "name": "echo_search",
+      "args": {
+        "query": "事务",
+        "filters": {
+          "collections": ["sample", "typo"]
+        }
+      },
+      "ms": 16,
+      "isError": true,
+      "chars": 141,
+      "body": {
+        "status": "error",
+        "code": "INVALID_COLLECTION",
+        "next": "Use collection IDs from echo_status.collections",
+        "error": "Unknown collection ID: typo"
+      }
+    },
+    {
+      "label": "absolute_prefix",
+      "name": "echo_search",
+      "args": {
+        "query": "事务",
+        "filters": {
+          "path_prefix": "${CHECK_ROOT}/notes/transactions.md"
+        }
+      },
+      "ms": 357,
+      "isError": true,
+      "chars": 181,
+      "body": {
+        "status": "error",
+        "code": "INVALID_PATH_PREFIX",
+        "next": "Use a relative path such as topics/; see echo_status.collections",
+        "error": "path_prefix must be relative to a collection root"
+      }
+    },
+    {
+      "label": "parent_prefix",
+      "name": "echo_search",
+      "args": {
+        "query": "事务",
+        "filters": {
+          "path_prefix": "topics/../transactions.md"
+        }
+      },
+      "ms": 306,
+      "isError": true,
+      "chars": 181,
+      "body": {
+        "status": "error",
+        "code": "INVALID_PATH_PREFIX",
+        "next": "Use a relative path such as topics/; see echo_status.collections",
+        "error": "path_prefix must be relative to a collection root"
+      }
+    },
+    {
+      "label": "unc_prefix",
+      "name": "echo_search",
+      "args": {
+        "query": "事务",
+        "filters": {
+          "path_prefix": "\\\\host\\share"
+        }
+      },
+      "ms": 307,
+      "isError": true,
+      "chars": 181,
+      "body": {
+        "status": "error",
+        "code": "INVALID_PATH_PREFIX",
+        "next": "Use a relative path such as topics/; see echo_status.collections",
+        "error": "path_prefix must be relative to a collection root"
+      }
+    },
+    {
+      "label": "empty_scope",
+      "name": "echo_search",
+      "args": {
+        "query": "事务",
+        "filters": {
+          "collections": []
+        }
+      },
+      "ms": 272,
+      "isError": false,
+      "chars": 119,
+      "body": {
+        "status": "ok",
+        "results": [],
+        "queries": [
+          {
+            "query_id": "q0",
+            "status": "empty",
+            "empty_reason": "no_candidates",
+            "returned": 0
+          }
+        ]
+      }
+    },
+    {
+      "label": "unmatched_prefix",
+      "name": "echo_search",
+      "args": {
+        "query": "事务",
+        "filters": {
+          "path_prefix": "absent/"
+        }
+      },
+      "ms": 20,
+      "isError": false,
+      "chars": 119,
+      "body": {
+        "status": "ok",
+        "results": [],
+        "queries": [
+          {
+            "query_id": "q0",
+            "status": "empty",
+            "empty_reason": "no_candidates",
+            "returned": 0
+          }
+        ]
+      }
+    },
+    {
+      "label": "unknown_override",
+      "name": "echo_search",
+      "args": {
+        "query": "事务",
+        "overrides": {
+          "top_k": 3
+        }
+      },
+      "ms": 2,
+      "isError": true,
+      "chars": 241,
+      "body": {
+        "status": "error",
+        "code": "INVALID_REQUEST",
+        "next": "Check input and configuration; use echo-mcp config show",
+        "error": "MCP error -32602: Input validation error: Invalid arguments for tool echo_search: Unrecognized key: \"top_k\" at overrides"
+      }
+    },
+    {
+      "label": "out_of_range",
+      "name": "echo_search",
+      "args": {
+        "query": "事务",
+        "overrides": {
+          "topk": 0
+        }
+      },
+      "ms": 1,
+      "isError": true,
+      "chars": 255,
+      "body": {
+        "status": "error",
+        "code": "INVALID_REQUEST",
+        "next": "Check input and configuration; use echo-mcp config show",
+        "error": "MCP error -32602: Input validation error: Invalid arguments for tool echo_search: Too small: expected number to be >=1 at overrides.topk"
+      }
+    },
+    {
+      "label": "budget_256",
+      "name": "echo_search",
+      "args": {
+        "query": "事务失败怎样恢复",
+        "overrides": {
+          "max_context_chars": 256
+        }
+      },
+      "ms": 21,
+      "isError": false,
+      "chars": 129,
+      "body": {
+        "status": "ok",
+        "results": [],
+        "queries": [
+          {
+            "query_id": "q0",
+            "status": "ok",
+            "empty_reason": "budget",
+            "returned": 0
+          }
+        ],
+        "limits": ["budget"]
+      }
+    },
+    {
+      "label": "budget_1200_default",
+      "name": "echo_search",
+      "args": {
+        "query": "事务失败怎样恢复",
+        "overrides": {
+          "max_context_chars": 1200
+        }
+      },
+      "ms": 17,
+      "isError": false,
+      "chars": 1135,
+      "body": {
+        "status": "ok",
+        "results": [
+          {
+            "chunk_id": "97204063c369ac966611390419d0e24865ee0058ac51c519ccf129ff91a36135",
+            "text": "# SQLite 事务\n\n提交后新索引才对检索可见。更新失败时回滚，保留上一份可用数据。",
+            "heading_path": ["SQLite 事务"],
+            "start_line": 6,
+            "end_line": 8,
+            "section_start_line": 6,
+            "section_end_line": 13,
+            "source_id": "9d425f10-3357-4c94-80bb-87b9cba85f51",
+            "collection_id": "sample",
+            "path": "${CHECK_ROOT}/notes/transactions.md",
+            "source_version": "d6596010f27037f32106b8817449f35538b38f998fdde8718720767ae55f3260",
+            "matched_query_ids": ["q0"]
+          },
+          {
+            "chunk_id": "eafdaf92db960c11c9fd77184a48318271a133ec41d3b5f3bf176a84d23978e6",
+            "text": "## WAL 读写\n\nWAL 模式允许读者在写者准备更新时继续读取旧提交。一个数据库同一时刻只有一个写者。",
+            "heading_path": ["SQLite 事务", "WAL 读写"],
+            "start_line": 10,
+            "end_line": 12,
+            "section_start_line": 10,
+            "section_end_line": 13,
+            "source_id": "9d425f10-3357-4c94-80bb-87b9cba85f51",
+            "collection_id": "sample",
+            "path": "${CHECK_ROOT}/notes/transactions.md",
+            "source_version": "d6596010f27037f32106b8817449f35538b38f998fdde8718720767ae55f3260",
+            "matched_query_ids": ["q0"]
+          }
+        ],
+        "queries": [
+          {
+            "query_id": "q0",
+            "status": "ok",
+            "returned": 2
+          }
+        ]
+      }
+    },
+    {
+      "label": "budget_1200_diagnostics",
+      "name": "echo_search",
+      "args": {
+        "query": "事务失败怎样恢复",
+        "diagnostics": true,
+        "overrides": {
+          "max_context_chars": 1200
+        }
+      },
+      "ms": 16,
+      "isError": false,
+      "chars": 777,
+      "body": {
+        "status": "ok",
+        "results": [],
+        "queries": [
+          {
+            "query_id": "q0",
+            "status": "ok",
+            "candidates": {
+              "bm25": 2,
+              "dense": 0,
+              "fused": 2
+            },
+            "returned": 0
+          }
+        ],
+        "applied": {
+          "mode": "bm25",
+          "lexical_engine": "minisearch",
+          "minisearch_k": 1.2,
+          "minisearch_b": 0.7,
+          "minisearch_d": 0.5,
+          "topk": 10,
+          "max_chunks_per_source": 6,
+          "bm25_candidates": 60,
+          "dense_candidates": 60,
+          "rrf_k": 10,
+          "title_weight": 2,
+          "bm25_weight": 0.5,
+          "dense_weight": 1,
+          "max_context_chars": 1200,
+          "min_dense_similarity": 0.3
+        },
+        "excluded": {
+          "source_limit": 0,
+          "duplicate": 0,
+          "budget": 2,
+          "topk": 0
+        },
+        "selection": {
+          "chunker": "markdown-structure-v1",
+          "tokenizer": "icu-zh",
+          "embedding": "default",
+          "retrieval": "balanced",
+          "revision": "f27e3630e49694725cfb98bb166e3d6125c72cf23414c5d284910482574f0052",
+          "source_snapshot": "6051a77200a8e319eb1fe9abd3a85d3fc72a66ce84da679aae05d85d04a0372a"
+        }
+      }
+    },
+    {
+      "label": "topk_empty_reason",
+      "name": "echo_search",
+      "args": {
+        "queries": [
+          {
+            "query_id": "recovery",
+            "text": "事务失败时怎样恢复"
+          },
+          {
+            "query_id": "custom",
+            "text": "如何自定义切块规则"
+          }
+        ],
+        "overrides": {
+          "topk": 1
+        }
+      },
+      "ms": 17,
+      "isError": false,
+      "chars": 702,
+      "body": {
+        "status": "ok",
+        "results": [
+          {
+            "chunk_id": "97204063c369ac966611390419d0e24865ee0058ac51c519ccf129ff91a36135",
+            "text": "# SQLite 事务\n\n提交后新索引才对检索可见。更新失败时回滚，保留上一份可用数据。",
+            "heading_path": ["SQLite 事务"],
+            "start_line": 6,
+            "end_line": 8,
+            "section_start_line": 6,
+            "section_end_line": 13,
+            "source_id": "9d425f10-3357-4c94-80bb-87b9cba85f51",
+            "collection_id": "sample",
+            "path": "${CHECK_ROOT}/notes/transactions.md",
+            "source_version": "d6596010f27037f32106b8817449f35538b38f998fdde8718720767ae55f3260",
+            "matched_query_ids": ["recovery"]
+          }
+        ],
+        "queries": [
+          {
+            "query_id": "recovery",
+            "status": "ok",
+            "returned": 1
+          },
+          {
+            "query_id": "custom",
+            "status": "ok",
+            "empty_reason": "limits",
+            "returned": 0
+          }
+        ],
+        "limits": ["topk"]
+      }
+    },
+    {
+      "label": "source_limit",
+      "name": "echo_search",
+      "args": {
+        "query": "事务",
+        "overrides": {
+          "max_chunks_per_source": 1
+        }
+      },
+      "ms": 13,
+      "isError": false,
+      "chars": 625,
+      "body": {
+        "status": "ok",
+        "results": [
+          {
+            "chunk_id": "97204063c369ac966611390419d0e24865ee0058ac51c519ccf129ff91a36135",
+            "text": "# SQLite 事务\n\n提交后新索引才对检索可见。更新失败时回滚，保留上一份可用数据。",
+            "heading_path": ["SQLite 事务"],
+            "start_line": 6,
+            "end_line": 8,
+            "section_start_line": 6,
+            "section_end_line": 13,
+            "source_id": "9d425f10-3357-4c94-80bb-87b9cba85f51",
+            "collection_id": "sample",
+            "path": "${CHECK_ROOT}/notes/transactions.md",
+            "source_version": "d6596010f27037f32106b8817449f35538b38f998fdde8718720767ae55f3260",
+            "matched_query_ids": ["q0"]
+          }
+        ],
+        "queries": [
+          {
+            "query_id": "q0",
+            "status": "ok",
+            "returned": 1
+          }
+        ],
+        "limits": ["source_limit"]
+      }
+    },
+    {
+      "label": "no_candidates",
+      "name": "echo_search",
+      "args": {
+        "query": "火星气温是多少"
+      },
+      "ms": 15,
+      "isError": false,
+      "chars": 119,
+      "body": {
+        "status": "ok",
+        "results": [],
+        "queries": [
+          {
+            "query_id": "q0",
+            "status": "empty",
+            "empty_reason": "no_candidates",
+            "returned": 0
+          }
+        ]
+      }
+    },
+    {
+      "label": "overrides_inherit_config",
+      "name": "echo_search",
+      "args": {
+        "query": "事务",
+        "overrides": {
+          "topk": 1
+        },
+        "diagnostics": true
+      },
+      "ms": 13,
+      "isError": false,
+      "chars": 1402,
+      "body": {
+        "status": "ok",
+        "results": [
+          {
+            "chunk_id": "97204063c369ac966611390419d0e24865ee0058ac51c519ccf129ff91a36135",
+            "text": "# SQLite 事务\n\n提交后新索引才对检索可见。更新失败时回滚，保留上一份可用数据。",
+            "heading_path": ["SQLite 事务"],
+            "start_line": 6,
+            "end_line": 8,
+            "section_start_line": 6,
+            "section_end_line": 13,
+            "source_id": "9d425f10-3357-4c94-80bb-87b9cba85f51",
+            "collection_id": "sample",
+            "path": "${CHECK_ROOT}/notes/transactions.md",
+            "relative_path": "transactions.md",
+            "source_version": "d6596010f27037f32106b8817449f35538b38f998fdde8718720767ae55f3260",
+            "matched_query_ids": ["q0"],
+            "rankings": [
+              {
+                "query_id": "q0",
+                "rrf_score": 0.07142857142857142,
+                "bm25_rank": 1
+              }
+            ]
+          }
+        ],
+        "queries": [
+          {
+            "query_id": "q0",
+            "status": "ok",
+            "candidates": {
+              "bm25": 2,
+              "dense": 0,
+              "fused": 2
+            },
+            "returned": 1
+          }
+        ],
+        "applied": {
+          "mode": "bm25",
+          "lexical_engine": "minisearch",
+          "minisearch_k": 1.2,
+          "minisearch_b": 0.7,
+          "minisearch_d": 0.5,
+          "topk": 1,
+          "max_chunks_per_source": 6,
+          "bm25_candidates": 60,
+          "dense_candidates": 60,
+          "rrf_k": 13,
+          "title_weight": 2,
+          "bm25_weight": 0.5,
+          "dense_weight": 1,
+          "max_context_chars": 20000,
+          "min_dense_similarity": 0.3
+        },
+        "excluded": {
+          "source_limit": 0,
+          "duplicate": 0,
+          "budget": 0,
+          "topk": 1
+        },
+        "selection": {
+          "chunker": "markdown-structure-v1",
+          "tokenizer": "icu-zh",
+          "embedding": "default",
+          "retrieval": "balanced",
+          "revision": "a9d08f61884e45d8c2311f178f8ab395964e3b718f359386a4d33b3474d9a5d3",
+          "source_snapshot": "6051a77200a8e319eb1fe9abd3a85d3fc72a66ce84da679aae05d85d04a0372a"
+        }
+      }
+    },
+    {
+      "label": "same_size_restored_mtime",
+      "name": "echo_status",
+      "args": {
+        "check_sources": true
+      },
+      "ms": 283,
+      "isError": false,
+      "chars": 916,
+      "body": {
+        "configured": true,
+        "active": {
+          "chunker": "markdown-structure-v1",
+          "tokenizer": "icu-zh",
+          "embedding": "default",
+          "retrieval": "balanced"
+        },
+        "revision": "f27e3630e49694725cfb98bb166e3d6125c72cf23414c5d284910482574f0052",
+        "ready": true,
+        "last_sync": "2026-09-26T15:22:58.021Z",
+        "sources": 2,
+        "chunks": 4,
+        "embeddings": 0,
+        "indexes": {
+          "chunks": "b816b8b07647ec936aa79bc007db9841caeb3cf69193b474df990d89b0d8c083",
+          "fts": "95e42262363b093d3a2c7e0adbb29824c8ec28fbc38eabc77e2e1072b38b17c3",
+          "vectors": null
+        },
+        "collections": [
+          {
+            "id": "sample",
+            "root": "${CHECK_ROOT}/notes",
+            "indexed_sources": 2
+          }
+        ],
+        "freshness": {
+          "state": "changed",
+          "checked_at": "2026-09-26T15:23:00.751Z",
+          "duration_ms": 9,
+          "files_checked": 2,
+          "bytes_read": 604,
+          "changes": {
+            "added": 0,
+            "modified": 1,
+            "removed": 0
+          },
+          "next": "Run echo-mcp sync"
+        },
+        "needs_sync": true,
+        "capabilities": {
+          "sqlite": "3.53.4",
+          "vector": "v0.1.9"
+        },
+        "active_searches": 0,
+        "embedding_configured": false
+      }
+    },
+    {
+      "label": "after_content_sync",
+      "name": "echo_search",
+      "args": {
+        "query": "事务失败怎样恢复"
+      },
+      "ms": 34,
+      "isError": false,
+      "chars": 1135,
+      "body": {
+        "status": "ok",
+        "results": [
+          {
+            "chunk_id": "74948874004eac85e1deec2696a200f1dde410c48aaeee769b2bc41df7cd78ab",
+            "text": "# SQLite 事务\n\n提交后新索引才对检索可见。更新失败时回滚，沿用上一份可用数据。",
+            "heading_path": ["SQLite 事务"],
+            "start_line": 6,
+            "end_line": 8,
+            "section_start_line": 6,
+            "section_end_line": 13,
+            "source_id": "9d425f10-3357-4c94-80bb-87b9cba85f51",
+            "collection_id": "sample",
+            "path": "${CHECK_ROOT}/notes/transactions.md",
+            "source_version": "88aba6b5453e4d4f296a7d561a755296c9e97471638e71b5ba1a7854aff25bca",
+            "matched_query_ids": ["q0"]
+          },
+          {
+            "chunk_id": "eafdaf92db960c11c9fd77184a48318271a133ec41d3b5f3bf176a84d23978e6",
+            "text": "## WAL 读写\n\nWAL 模式允许读者在写者准备更新时继续读取旧提交。一个数据库同一时刻只有一个写者。",
+            "heading_path": ["SQLite 事务", "WAL 读写"],
+            "start_line": 10,
+            "end_line": 12,
+            "section_start_line": 10,
+            "section_end_line": 13,
+            "source_id": "9d425f10-3357-4c94-80bb-87b9cba85f51",
+            "collection_id": "sample",
+            "path": "${CHECK_ROOT}/notes/transactions.md",
+            "source_version": "88aba6b5453e4d4f296a7d561a755296c9e97471638e71b5ba1a7854aff25bca",
+            "matched_query_ids": ["q0"]
+          }
+        ],
+        "queries": [
+          {
+            "query_id": "q0",
+            "status": "ok",
+            "returned": 2
+          }
+        ]
+      }
+    },
+    {
+      "label": "after_content_sync_check",
+      "name": "echo_status",
+      "args": {
+        "check_sources": true
+      },
+      "ms": 452,
+      "isError": false,
+      "chars": 893,
+      "body": {
+        "configured": true,
+        "active": {
+          "chunker": "markdown-structure-v1",
+          "tokenizer": "icu-zh",
+          "embedding": "default",
+          "retrieval": "balanced"
+        },
+        "revision": "f27e3630e49694725cfb98bb166e3d6125c72cf23414c5d284910482574f0052",
+        "ready": true,
+        "last_sync": "2026-09-26T15:23:01.343Z",
+        "sources": 2,
+        "chunks": 4,
+        "embeddings": 0,
+        "indexes": {
+          "chunks": "b816b8b07647ec936aa79bc007db9841caeb3cf69193b474df990d89b0d8c083",
+          "fts": "95e42262363b093d3a2c7e0adbb29824c8ec28fbc38eabc77e2e1072b38b17c3",
+          "vectors": null
+        },
+        "collections": [
+          {
+            "id": "sample",
+            "root": "${CHECK_ROOT}/notes",
+            "indexed_sources": 2
+          }
+        ],
+        "freshness": {
+          "state": "unchanged",
+          "checked_at": "2026-09-26T15:23:01.866Z",
+          "duration_ms": 11,
+          "files_checked": 2,
+          "bytes_read": 604,
+          "changes": {
+            "added": 0,
+            "modified": 0,
+            "removed": 0
+          }
+        },
+        "needs_sync": false,
+        "capabilities": {
+          "sqlite": "3.53.4",
+          "vector": "v0.1.9"
+        },
+        "active_searches": 0,
+        "embedding_configured": false
+      }
+    },
+    {
+      "label": "inserted_lines",
+      "name": "echo_status",
+      "args": {
+        "check_sources": true
+      },
+      "ms": 274,
+      "isError": false,
+      "chars": 917,
+      "body": {
+        "configured": true,
+        "active": {
+          "chunker": "markdown-structure-v1",
+          "tokenizer": "icu-zh",
+          "embedding": "default",
+          "retrieval": "balanced"
+        },
+        "revision": "f27e3630e49694725cfb98bb166e3d6125c72cf23414c5d284910482574f0052",
+        "ready": true,
+        "last_sync": "2026-09-26T15:23:01.343Z",
+        "sources": 2,
+        "chunks": 4,
+        "embeddings": 0,
+        "indexes": {
+          "chunks": "b816b8b07647ec936aa79bc007db9841caeb3cf69193b474df990d89b0d8c083",
+          "fts": "95e42262363b093d3a2c7e0adbb29824c8ec28fbc38eabc77e2e1072b38b17c3",
+          "vectors": null
+        },
+        "collections": [
+          {
+            "id": "sample",
+            "root": "${CHECK_ROOT}/notes",
+            "indexed_sources": 2
+          }
+        ],
+        "freshness": {
+          "state": "changed",
+          "checked_at": "2026-09-26T15:23:02.142Z",
+          "duration_ms": 11,
+          "files_checked": 2,
+          "bytes_read": 607,
+          "changes": {
+            "added": 0,
+            "modified": 1,
+            "removed": 0
+          },
+          "next": "Run echo-mcp sync"
+        },
+        "needs_sync": true,
+        "capabilities": {
+          "sqlite": "3.53.4",
+          "vector": "v0.1.9"
+        },
+        "active_searches": 0,
+        "embedding_configured": false
+      }
+    },
+    {
+      "label": "after_line_sync",
+      "name": "echo_search",
+      "args": {
+        "query": "事务失败怎样恢复"
+      },
+      "ms": 18,
+      "isError": false,
+      "chars": 1136,
+      "body": {
+        "status": "ok",
+        "results": [
+          {
+            "chunk_id": "483d5a36c278b0c69c50bd32ff8c53ca98a667b29330ffd96aa605baa39b1241",
+            "text": "# SQLite 事务\n\n提交后新索引才对检索可见。更新失败时回滚，沿用上一份可用数据。",
+            "heading_path": ["SQLite 事务"],
+            "start_line": 9,
+            "end_line": 11,
+            "section_start_line": 9,
+            "section_end_line": 16,
+            "source_id": "9d425f10-3357-4c94-80bb-87b9cba85f51",
+            "collection_id": "sample",
+            "path": "${CHECK_ROOT}/notes/transactions.md",
+            "source_version": "c2da4389e4ed4bf4db8c0c53d4cf1c2776982e137285c79575a59a783f75260f",
+            "matched_query_ids": ["q0"]
+          },
+          {
+            "chunk_id": "0d6f6af27d12aebfa0a0275fa857ba9f7a8bdb87604c65c9fceb02ea419ef21c",
+            "text": "## WAL 读写\n\nWAL 模式允许读者在写者准备更新时继续读取旧提交。一个数据库同一时刻只有一个写者。",
+            "heading_path": ["SQLite 事务", "WAL 读写"],
+            "start_line": 13,
+            "end_line": 15,
+            "section_start_line": 13,
+            "section_end_line": 16,
+            "source_id": "9d425f10-3357-4c94-80bb-87b9cba85f51",
+            "collection_id": "sample",
+            "path": "${CHECK_ROOT}/notes/transactions.md",
+            "source_version": "c2da4389e4ed4bf4db8c0c53d4cf1c2776982e137285c79575a59a783f75260f",
+            "matched_query_ids": ["q0"]
+          }
+        ],
+        "queries": [
+          {
+            "query_id": "q0",
+            "status": "ok",
+            "returned": 2
+          }
+        ]
+      }
+    },
+    {
+      "label": "moved_file",
+      "name": "echo_status",
+      "args": {
+        "check_sources": true
+      },
+      "ms": 266,
+      "isError": false,
+      "chars": 917,
+      "body": {
+        "configured": true,
+        "active": {
+          "chunker": "markdown-structure-v1",
+          "tokenizer": "icu-zh",
+          "embedding": "default",
+          "retrieval": "balanced"
+        },
+        "revision": "f27e3630e49694725cfb98bb166e3d6125c72cf23414c5d284910482574f0052",
+        "ready": true,
+        "last_sync": "2026-09-26T15:23:02.796Z",
+        "sources": 2,
+        "chunks": 4,
+        "embeddings": 0,
+        "indexes": {
+          "chunks": "b816b8b07647ec936aa79bc007db9841caeb3cf69193b474df990d89b0d8c083",
+          "fts": "95e42262363b093d3a2c7e0adbb29824c8ec28fbc38eabc77e2e1072b38b17c3",
+          "vectors": null
+        },
+        "collections": [
+          {
+            "id": "sample",
+            "root": "${CHECK_ROOT}/notes",
+            "indexed_sources": 2
+          }
+        ],
+        "freshness": {
+          "state": "changed",
+          "checked_at": "2026-09-26T15:23:03.105Z",
+          "duration_ms": 12,
+          "files_checked": 2,
+          "bytes_read": 607,
+          "changes": {
+            "added": 1,
+            "modified": 0,
+            "removed": 1
+          },
+          "next": "Run echo-mcp sync"
+        },
+        "needs_sync": true,
+        "capabilities": {
+          "sqlite": "3.53.4",
+          "vector": "v0.1.9"
+        },
+        "active_searches": 0,
+        "embedding_configured": false
+      }
+    },
+    {
+      "label": "after_move_sync",
+      "name": "echo_search",
+      "args": {
+        "query": "事务失败怎样恢复"
+      },
+      "ms": 10,
+      "isError": false,
+      "chars": 1150,
+      "body": {
+        "status": "ok",
+        "results": [
+          {
+            "chunk_id": "483d5a36c278b0c69c50bd32ff8c53ca98a667b29330ffd96aa605baa39b1241",
+            "text": "# SQLite 事务\n\n提交后新索引才对检索可见。更新失败时回滚，沿用上一份可用数据。",
+            "heading_path": ["SQLite 事务"],
+            "start_line": 9,
+            "end_line": 11,
+            "section_start_line": 9,
+            "section_end_line": 16,
+            "source_id": "9d425f10-3357-4c94-80bb-87b9cba85f51",
+            "collection_id": "sample",
+            "path": "${CHECK_ROOT}/notes/moved/transactions.md",
+            "source_version": "c2da4389e4ed4bf4db8c0c53d4cf1c2776982e137285c79575a59a783f75260f",
+            "matched_query_ids": ["q0"]
+          },
+          {
+            "chunk_id": "0d6f6af27d12aebfa0a0275fa857ba9f7a8bdb87604c65c9fceb02ea419ef21c",
+            "text": "## WAL 读写\n\nWAL 模式允许读者在写者准备更新时继续读取旧提交。一个数据库同一时刻只有一个写者。",
+            "heading_path": ["SQLite 事务", "WAL 读写"],
+            "start_line": 13,
+            "end_line": 15,
+            "section_start_line": 13,
+            "section_end_line": 16,
+            "source_id": "9d425f10-3357-4c94-80bb-87b9cba85f51",
+            "collection_id": "sample",
+            "path": "${CHECK_ROOT}/notes/moved/transactions.md",
+            "source_version": "c2da4389e4ed4bf4db8c0c53d4cf1c2776982e137285c79575a59a783f75260f",
+            "matched_query_ids": ["q0"]
+          }
+        ],
+        "queries": [
+          {
+            "query_id": "q0",
+            "status": "ok",
+            "returned": 2
+          }
+        ]
+      }
+    },
+    {
+      "label": "new_no_uuid",
+      "name": "echo_status",
+      "args": {
+        "check_sources": true
+      },
+      "ms": 221,
+      "isError": false,
+      "chars": 917,
+      "body": {
+        "configured": true,
+        "active": {
+          "chunker": "markdown-structure-v1",
+          "tokenizer": "icu-zh",
+          "embedding": "default",
+          "retrieval": "balanced"
+        },
+        "revision": "f27e3630e49694725cfb98bb166e3d6125c72cf23414c5d284910482574f0052",
+        "ready": true,
+        "last_sync": "2026-09-26T15:23:03.558Z",
+        "sources": 2,
+        "chunks": 4,
+        "embeddings": 0,
+        "indexes": {
+          "chunks": "b816b8b07647ec936aa79bc007db9841caeb3cf69193b474df990d89b0d8c083",
+          "fts": "95e42262363b093d3a2c7e0adbb29824c8ec28fbc38eabc77e2e1072b38b17c3",
+          "vectors": null
+        },
+        "collections": [
+          {
+            "id": "sample",
+            "root": "${CHECK_ROOT}/notes",
+            "indexed_sources": 2
+          }
+        ],
+        "freshness": {
+          "state": "changed",
+          "checked_at": "2026-09-26T15:23:03.806Z",
+          "duration_ms": 10,
+          "files_checked": 3,
+          "bytes_read": 644,
+          "changes": {
+            "added": 1,
+            "modified": 0,
+            "removed": 0
+          },
+          "next": "Run echo-mcp sync"
+        },
+        "needs_sync": true,
+        "capabilities": {
+          "sqlite": "3.53.4",
+          "vector": "v0.1.9"
+        },
+        "active_searches": 0,
+        "embedding_configured": false
+      }
+    },
+    {
+      "label": "removed_file",
+      "name": "echo_status",
+      "args": {
+        "check_sources": true
+      },
+      "ms": 217,
+      "isError": false,
+      "chars": 916,
+      "body": {
+        "configured": true,
+        "active": {
+          "chunker": "markdown-structure-v1",
+          "tokenizer": "icu-zh",
+          "embedding": "default",
+          "retrieval": "balanced"
+        },
+        "revision": "f27e3630e49694725cfb98bb166e3d6125c72cf23414c5d284910482574f0052",
+        "ready": true,
+        "last_sync": "2026-09-26T15:23:03.558Z",
+        "sources": 2,
+        "chunks": 4,
+        "embeddings": 0,
+        "indexes": {
+          "chunks": "b816b8b07647ec936aa79bc007db9841caeb3cf69193b474df990d89b0d8c083",
+          "fts": "95e42262363b093d3a2c7e0adbb29824c8ec28fbc38eabc77e2e1072b38b17c3",
+          "vectors": null
+        },
+        "collections": [
+          {
+            "id": "sample",
+            "root": "${CHECK_ROOT}/notes",
+            "indexed_sources": 2
+          }
+        ],
+        "freshness": {
+          "state": "changed",
+          "checked_at": "2026-09-26T15:23:04.025Z",
+          "duration_ms": 7,
+          "files_checked": 1,
+          "bytes_read": 333,
+          "changes": {
+            "added": 0,
+            "modified": 0,
+            "removed": 1
+          },
+          "next": "Run echo-mcp sync"
+        },
+        "needs_sync": true,
+        "capabilities": {
+          "sqlite": "3.53.4",
+          "vector": "v0.1.9"
+        },
+        "active_searches": 0,
+        "embedding_configured": false
+      }
+    },
+    {
+      "label": "invalid_utf8",
+      "name": "echo_status",
+      "args": {
+        "check_sources": true
+      },
+      "ms": 217,
+      "isError": false,
+      "chars": 983,
+      "body": {
+        "configured": true,
+        "active": {
+          "chunker": "markdown-structure-v1",
+          "tokenizer": "icu-zh",
+          "embedding": "default",
+          "retrieval": "balanced"
+        },
+        "revision": "f27e3630e49694725cfb98bb166e3d6125c72cf23414c5d284910482574f0052",
+        "ready": true,
+        "last_sync": "2026-09-26T15:23:03.558Z",
+        "sources": 2,
+        "chunks": 4,
+        "embeddings": 0,
+        "indexes": {
+          "chunks": "b816b8b07647ec936aa79bc007db9841caeb3cf69193b474df990d89b0d8c083",
+          "fts": "95e42262363b093d3a2c7e0adbb29824c8ec28fbc38eabc77e2e1072b38b17c3",
+          "vectors": null
+        },
+        "collections": [
+          {
+            "id": "sample",
+            "root": "${CHECK_ROOT}/notes",
+            "indexed_sources": 2
+          }
+        ],
+        "freshness": {
+          "state": "unknown",
+          "checked_at": "2026-09-26T15:23:04.243Z",
+          "duration_ms": 6,
+          "files_checked": 0,
+          "bytes_read": 0,
+          "reason": "The encoded data was not valid for encoding utf-8",
+          "next": "Fix source access or scan settings, then retry status with check_sources"
+        },
+        "needs_sync": null,
+        "capabilities": {
+          "sqlite": "3.53.4",
+          "vector": "v0.1.9"
+        },
+        "active_searches": 0,
+        "embedding_configured": false
+      }
+    },
+    {
+      "label": "oversize",
+      "name": "echo_status",
+      "args": {
+        "check_sources": true
+      },
+      "ms": 272,
+      "isError": false,
+      "chars": 1044,
+      "body": {
+        "configured": true,
+        "active": {
+          "chunker": "markdown-structure-v1",
+          "tokenizer": "icu-zh",
+          "embedding": "default",
+          "retrieval": "balanced"
+        },
+        "revision": "f27e3630e49694725cfb98bb166e3d6125c72cf23414c5d284910482574f0052",
+        "ready": true,
+        "last_sync": "2026-09-26T15:23:03.558Z",
+        "sources": 2,
+        "chunks": 4,
+        "embeddings": 0,
+        "indexes": {
+          "chunks": "b816b8b07647ec936aa79bc007db9841caeb3cf69193b474df990d89b0d8c083",
+          "fts": "95e42262363b093d3a2c7e0adbb29824c8ec28fbc38eabc77e2e1072b38b17c3",
+          "vectors": null
+        },
+        "collections": [
+          {
+            "id": "sample",
+            "root": "${CHECK_ROOT}/notes",
+            "indexed_sources": 2
+          }
+        ],
+        "freshness": {
+          "state": "unknown",
+          "checked_at": "2026-09-26T15:23:04.515Z",
+          "duration_ms": 8,
+          "files_checked": 2,
+          "bytes_read": 607,
+          "reason": "Source exceeds max_file_bytes: ${CHECK_ROOT}/notes/oversized.md",
+          "next": "Fix source access or scan settings, then retry status with check_sources"
+        },
+        "needs_sync": null,
+        "capabilities": {
+          "sqlite": "3.53.4",
+          "vector": "v0.1.9"
+        },
+        "active_searches": 0,
+        "embedding_configured": false
+      }
+    },
+    {
+      "label": "final_check",
+      "name": "echo_status",
+      "args": {
+        "check_sources": true
+      },
+      "ms": 278,
+      "isError": false,
+      "chars": 893,
+      "body": {
+        "configured": true,
+        "active": {
+          "chunker": "markdown-structure-v1",
+          "tokenizer": "icu-zh",
+          "embedding": "default",
+          "retrieval": "balanced"
+        },
+        "revision": "f27e3630e49694725cfb98bb166e3d6125c72cf23414c5d284910482574f0052",
+        "ready": true,
+        "last_sync": "2026-09-26T15:23:03.558Z",
+        "sources": 2,
+        "chunks": 4,
+        "embeddings": 0,
+        "indexes": {
+          "chunks": "b816b8b07647ec936aa79bc007db9841caeb3cf69193b474df990d89b0d8c083",
+          "fts": "95e42262363b093d3a2c7e0adbb29824c8ec28fbc38eabc77e2e1072b38b17c3",
+          "vectors": null
+        },
+        "collections": [
+          {
+            "id": "sample",
+            "root": "${CHECK_ROOT}/notes",
+            "indexed_sources": 2
+          }
+        ],
+        "freshness": {
+          "state": "unchanged",
+          "checked_at": "2026-09-26T15:23:04.795Z",
+          "duration_ms": 11,
+          "files_checked": 2,
+          "bytes_read": 607,
+          "changes": {
+            "added": 0,
+            "modified": 0,
+            "removed": 0
+          }
+        },
+        "needs_sync": false,
+        "capabilities": {
+          "sqlite": "3.53.4",
+          "vector": "v0.1.9"
+        },
+        "active_searches": 0,
+        "embedding_configured": false
+      }
+    }
+  ]
+}

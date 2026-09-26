@@ -4,23 +4,91 @@ import { z } from 'zod';
 import type { ProfileSnapshot } from './profile-types.js';
 
 const positive = (max: number) => z.number().int().min(1).max(max);
+const retrievalFields = {
+  mode: z.enum(['hybrid', 'bm25', 'dense']).describe('Retrieval lanes to run.'),
+  lexical_engine: z
+    .enum(['minisearch', 'sqlite'])
+    .describe('Local keyword engine; both use the selected tokenizer.'),
+  minisearch_k: z
+    .number()
+    .positive()
+    .max(100)
+    .describe('MiniSearch term-frequency saturation.'),
+  minisearch_b: z
+    .number()
+    .min(0)
+    .max(1)
+    .describe('MiniSearch document-length normalization.'),
+  minisearch_d: z
+    .number()
+    .min(0)
+    .max(100)
+    .describe('MiniSearch lower-bound term-frequency boost.'),
+  topk: positive(100).describe(
+    'Maximum chunks across all queries; not a target count.',
+  ),
+  max_chunks_per_source: positive(100).describe(
+    'Maximum chunks from one source across all queries, also bounded by topk.',
+  ),
+  bm25_candidates: positive(1000).describe(
+    'Keyword candidates per query expression before fusion.',
+  ),
+  dense_candidates: positive(1000).describe(
+    'Vector candidates per query expression before fusion.',
+  ),
+  rrf_k: positive(1000).describe('RRF rank smoothing constant.'),
+  title_weight: z
+    .number()
+    .min(0)
+    .max(20)
+    .describe('Keyword title weight; body weight is 1.'),
+  bm25_weight: z
+    .number()
+    .min(0)
+    .max(10)
+    .describe('Keyword lane weight in hybrid RRF, not a probability.'),
+  dense_weight: z
+    .number()
+    .min(0)
+    .max(10)
+    .describe('Vector lane weight in hybrid RRF, not a probability.'),
+  max_context_chars: positive(100000)
+    .min(256)
+    .describe(
+      'Maximum UTF-16 characters in the complete compact response JSON, including metadata. Not tokens.',
+    ),
+  min_dense_similarity: z
+    .number()
+    .min(-1)
+    .max(1)
+    .describe(
+      'Minimum cosine similarity for vector candidates; not answer confidence.',
+    ),
+};
+export const retrievalOverridesSchema = z
+  .object(retrievalFields)
+  .partial()
+  .strict()
+  .describe(
+    'Only supplied fields override the active retrieval configuration. Omitted fields keep configured values. The two lane weights cannot both be zero after merging.',
+  );
 export const retrievalSchema = z
   .object({
-    mode: z.enum(['hybrid', 'bm25', 'dense']).default('hybrid'),
-    lexical_engine: z.enum(['minisearch', 'sqlite']).default('minisearch'),
-    minisearch_k: z.number().positive().max(100).default(1.2),
-    minisearch_b: z.number().min(0).max(1).default(0.7),
-    minisearch_d: z.number().min(0).max(100).default(0.5),
-    topk: positive(100).default(10),
-    max_chunks_per_source: positive(100).default(6),
-    bm25_candidates: positive(1000).default(60),
-    dense_candidates: positive(1000).default(60),
-    rrf_k: positive(1000).default(10),
-    title_weight: z.number().min(0).max(20).default(2),
-    bm25_weight: z.number().min(0).max(10).default(0.5),
-    dense_weight: z.number().min(0).max(10).default(1),
-    max_context_chars: positive(100000).min(256).default(20000),
-    min_dense_similarity: z.number().min(-1).max(1).default(0.3),
+    mode: retrievalFields.mode.default('hybrid'),
+    lexical_engine: retrievalFields.lexical_engine.default('minisearch'),
+    minisearch_k: retrievalFields.minisearch_k.default(1.2),
+    minisearch_b: retrievalFields.minisearch_b.default(0.7),
+    minisearch_d: retrievalFields.minisearch_d.default(0.5),
+    topk: retrievalFields.topk.default(10),
+    max_chunks_per_source: retrievalFields.max_chunks_per_source.default(6),
+    bm25_candidates: retrievalFields.bm25_candidates.default(60),
+    dense_candidates: retrievalFields.dense_candidates.default(60),
+    rrf_k: retrievalFields.rrf_k.default(10),
+    title_weight: retrievalFields.title_weight.default(2),
+    bm25_weight: retrievalFields.bm25_weight.default(0.5),
+    dense_weight: retrievalFields.dense_weight.default(1),
+    max_context_chars: retrievalFields.max_context_chars.default(20000),
+    min_dense_similarity: retrievalFields.min_dense_similarity.default(0.3),
   })
   .strict()
   .refine(
@@ -125,7 +193,7 @@ export function retrievalOptions(
   base: RetrievalConfig,
   overrides: unknown = {},
 ): RetrievalConfig {
-  const partial = z.record(z.string(), z.unknown()).parse(overrides);
+  const partial = retrievalOverridesSchema.parse(overrides);
   return retrievalSchema.parse({ ...base, ...partial });
 }
 export async function loadConfig(path: string): Promise<EchoConfig> {

@@ -259,7 +259,7 @@ RRF30使mix-dev-013恢复完整覆盖，mix-dev-019多找回1项但仍未完整�
 [驱动](../../evals/run-source-limit-comparison.mjs)使用四个固定preset；每次prepare/run/summarize明确指定同一experiment和新run-id。每份计划冻结当前基线、执行脚本、配置与题库哈希，防止累计上一组参数或漂移。
 
 ```powershell
-node evals/run-source-limit-comparison.mjs --experiment rrf-k --lab "E:/幻/Documents/八股-Echo测试/2026-09-16" --run-id <新的run-id> --phase prepare
+node evals/run-source-limit-comparison.mjs --experiment rrf-k --lab "${EVAL_ROOT}/2026-09-16" --run-id <新的run-id> --phase prepare
 # 随后相同experiment/run-id依次执行run和summarize
 # 其他预设：title-weight、dense-threshold、context-budget
 ```

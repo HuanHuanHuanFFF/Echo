@@ -74,7 +74,7 @@ Anthropic官方[按需上下文/渐进披露说明](https://www.anthropic.com/en
 | 再合并重复来源信息 |       830927 |   4154.6 |  −19.61% |
 
 这是保留正文与可还原定位信息的格式估算，当前产品没有修改。它不证明Agent理解新格式不退化，也不是整轮输入/计费减少19.61%；统计未包括系统提示、工具定义、历史或宿主封装。未来若实施，应验证真实MCP可读性与引用正确性。
-[公开统计指纹](2026-09-19-progressive-retrieval-layout.manifest.json)绑定5份报告与测量脚本；脚本和私有输入位于E:/幻/Documents/八股-Echo测试/2026-09-16/evidence/response-layout-research-2026-09-19-v1。
+[公开统计指纹](2026-09-19-progressive-retrieval-layout.manifest.json)绑定5份报告与测量脚本；脚本和私有输入位于${EVAL_ROOT}/2026-09-16/evidence/response-layout-research-2026-09-19-v1。
 
 ## 搜得不准时，按失败环节选择方法
 

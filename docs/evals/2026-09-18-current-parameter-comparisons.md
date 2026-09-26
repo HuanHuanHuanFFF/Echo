@@ -100,9 +100,9 @@
 - 代码提交d30e96c，完整npm run check：149通过、1项原有跳过，格式/类型/构建通过；该执行提交的[Windows/Linux CI](https://github.com/HuanHuanHuanFFF/Echo/actions/runs/35311649040)通过。
 - 主线程额外逐行核对400行、3936块的源文件版本/原文行文本、JSON长度、预算、topk与单篇上限；三份新结果与共同基线独立重算统计相等。
 
-E盘三个run目录分别为structure-bm25-02-current-2026-09-18-v1、structure-bm25-025-current-2026-09-18-v1、structure-rrf10-current-2026-09-18-v1，均在E:/幻/Documents/八股-Echo测试/2026-09-16/evidence下；旧冻结产物不覆盖。
+E盘三个run目录分别为structure-bm25-02-current-2026-09-18-v1、structure-bm25-025-current-2026-09-18-v1、structure-rrf10-current-2026-09-18-v1，均在${EVAL_ROOT}/2026-09-16/evidence下；旧冻结产物不覆盖。
 
-本批审计、原始案例与交付收据集中在同级current-parameter-single-variable-2026-09-18-v1。原始笔记/问句/向量均留在E盘；仓库只放脚本、统计与哈希。审计脚本归档按原运行位置D:/CodingProject/echo/.echo恢复后可读取仓库的冻结指标模块，本轮不宣称其为通用独立CLI。
+本批审计、原始案例与交付收据集中在同级current-parameter-single-variable-2026-09-18-v1。原始笔记/问句/向量均留在E盘；仓库只放脚本、统计与哈希。审计脚本归档按原运行位置${REPO_ROOT}/.echo恢复后可读取仓库的冻结指标模块，本轮不宣称其为通用独立CLI。
 
 两位独立复核均重算400行指标，核对单变量与同查询向量、预算和逐题正文，无阻断问题；A另运行22项相关测试通过。按复核意见区分网络输入与逻辑回放输入，明确配置revision与实际索引内容的区别，并保留B-D10部分证据仍在的解释。文档链接、JSON、格式与git diff --check均通过。
 

@@ -92,7 +92,7 @@ QASPER 保持产品打包口径，严格文本分母为 78，官方 Evidence F1 
 |      0.17 |                38.56% / 53.18% |            16.05% / 29.50% |       85.90% / 97.56% |                 21.71% |
 |      0.29 |                39.88% / 56.37% |            16.24% / 31.50% |       85.39% / 97.56% |                 22.26% |
 
-`0.29` 是这三组里自设 200 题最好的候选，并补回一个事实和一个单块 Hit；`0.17` 的 MRR 较高且 Du 更接近 dense，但 LangChain/QASPER 不占优。它们仍没有全面超过当前 default，因此不改默认。扩展原始收据在 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-weight-extension-v1`。
+`0.29` 是这三组里自设 200 题最好的候选，并补回一个事实和一个单块 Hit；`0.17` 的 MRR 较高且 Du 更接近 dense，但 LangChain/QASPER 不占优。它们仍没有全面超过当前 default，因此不改默认。扩展原始收据在 `${EVAL_ROOT}/2026-09-21-minisearch-weight-extension-v1`。
 
 ## BM25 权重 0.31 / 0.37 / 0.43
 
@@ -112,7 +112,7 @@ QASPER 保持产品打包口径，严格文本分母为 78，官方 Evidence F1 
 |      0.37 |             41.19% / 56.35% / 48.93% |         16.25% / 31.50% / 20.00% |    84.85% / 97.53% / 91.03% |              48/78 / 65.81% / 22.34% |
 |      0.43 |             41.22% / 56.10% / 48.76% |         16.27% / 31.50% / 20.00% |    84.49% / 97.40% / 90.36% |              48/78 / 65.81% / 22.34% |
 
-结论：`0.31` 和 `0.37` 在自设 200 题上都比 default 多 2 道完整题、多覆盖 2 个事实、多 1 个单块 Hit；其中 `0.31` 的私有 MRR 更高，`0.37` 的公开 LangChain MRR 和 QASPER F1 略高。`0.43` 没有带来私有收益，Du 也随权重升高而下降。三组都没有在私有、LangChain、Godot、Du、QASPER 上全面胜过 default，因此暂不改默认；如果只看这批数据，优先保留 `0.31` 作为下一轮调参中心，细扫 `0.29–0.37`。本次收据在 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-weight-extension2-v1`。
+结论：`0.31` 和 `0.37` 在自设 200 题上都比 default 多 2 道完整题、多覆盖 2 个事实、多 1 个单块 Hit；其中 `0.31` 的私有 MRR 更高，`0.37` 的公开 LangChain MRR 和 QASPER F1 略高。`0.43` 没有带来私有收益，Du 也随权重升高而下降。三组都没有在私有、LangChain、Godot、Du、QASPER 上全面胜过 default，因此暂不改默认；如果只看这批数据，优先保留 `0.31` 作为下一轮调参中心，细扫 `0.29–0.37`。本次收据在 `${EVAL_ROOT}/2026-09-21-minisearch-weight-extension2-v1`。
 
 ## BM25=0.31、RRF=10 的其他参数
 
@@ -140,7 +140,7 @@ QASPER 保持产品打包口径，严格文本分母为 78，官方 Evidence F1 
 | 每篇最多 4 块 |    52/78 |   70.30% |          18.91% |           7575 |
 | 每篇最多 5 块 |    57/78 |   76.28% |          17.43% |           9153 |
 
-结论：真正有效的轴是 `max_chunks_per_source`。`cap4` 是较温和的私有覆盖提升，`cap5` 是更强的证据扩展；但 QASPER 的官方 F1 因未标注上下文增加而下降，不能把它们直接改成全局默认。预算从 16000 增到 20000/24000、topk 从 10 增到 12/15 在本批没有额外收益；余弦阈值和标题权重也可暂时排后。第一轮与组合收据分别在 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-other-params-v1` 和 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-combinations-v1`。
+结论：真正有效的轴是 `max_chunks_per_source`。`cap4` 是较温和的私有覆盖提升，`cap5` 是更强的证据扩展；但 QASPER 的官方 F1 因未标注上下文增加而下降，不能把它们直接改成全局默认。预算从 16000 增到 20000/24000、topk 从 10 增到 12/15 在本批没有额外收益；余弦阈值和标题权重也可暂时排后。第一轮与组合收据分别在 `${EVAL_ROOT}/2026-09-21-minisearch-031-other-params-v1` 和 `${EVAL_ROOT}/2026-09-21-minisearch-031-combinations-v1`。
 
 ## BM25=0.31 的深组合扩展
 
@@ -154,7 +154,7 @@ QASPER 保持产品打包口径，严格文本分母为 78，官方 Evidence F1 
 | cap4、dense=0.8 | 184/196 / 386/403 |   85.37% |        41.22% / 48.93% | 84.92% / 91.27% |    18.40% |
 | cap4、dense=1.2 | 182/196 / 384/403 |   85.80% |        39.36% / 47.14% | 85.57% / 91.88% |    18.90% |
 
-因此 dense 权重也不直接改默认：0.8 偏向私有完整题和 LangChain，1.2 偏向 Du，但两者都有明显的其他资料代价。深组合收据在 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-deep-v1`。
+因此 dense 权重也不直接改默认：0.8 偏向私有完整题和 LangChain，1.2 偏向 Du，但两者都有明显的其他资料代价。深组合收据在 `${EVAL_ROOT}/2026-09-21-minisearch-031-deep-v1`。
 
 ## RRF 局部组合与 cap6 曲线
 
@@ -168,7 +168,7 @@ QASPER 保持产品打包口径，严格文本分母为 78，官方 Evidence F1 
 | cap6、RRF10          |  190/196 |  392/403 |   85.85% |         40/40 |   61/78 / 15.74% |
 | cap6、RRF5、dense0.8 |  191/196 |  394/403 |   86.75% |         40/40 |   60/78 / 15.59% |
 
-cap6 的预算20k/24k和 topk12/15 与 cap6 本身没有新增私有收益。cap6 及 dense0.8/RRF5 确实继续提高私有证据覆盖，但 QASPER F1 继续下降、平均上下文约10800字符；它们应被视为高召回、高成本的显式扩展档，不是默认配置。RRF 和 cap6 收据分别在 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-rrf-v1`、`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-cap6-v1` 和 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-cap6plus-v1`。
+cap6 的预算20k/24k和 topk12/15 与 cap6 本身没有新增私有收益。cap6 及 dense0.8/RRF5 确实继续提高私有证据覆盖，但 QASPER F1 继续下降、平均上下文约10800字符；它们应被视为高召回、高成本的显式扩展档，不是默认配置。RRF 和 cap6 收据分别在 `${EVAL_ROOT}/2026-09-21-minisearch-031-rrf-v1`、`${EVAL_ROOT}/2026-09-21-minisearch-031-cap6-v1` 和 `${EVAL_ROOT}/2026-09-21-minisearch-031-cap6plus-v1`。
 
 ## 纯 BM25 mode
 
@@ -197,16 +197,16 @@ cap6 的预算20k/24k和 topk12/15 与 cap6 本身没有新增私有收益。cap
 | cap3、RRF5、dense1.2      |     178/196 / 379/403 |     86.24% |           38.79% | **85.84%** | **22.34%** |
 | cap6、RRF5、dense0.8      | **191/196 / 394/403** | **86.75%** |           39.43% |     85.64% |     15.59% |
 
-结论：`cap3 + RRF15 + dense0.8` 主要赢 LangChain/Godot，但私有主集退化；`cap3 + RRF5 + dense1.2` 在私有 MRR、Du、QASPER 有优势，但 LangChain 明显退化；`cap6 + RRF5 + dense0.8` 私有覆盖最强，却以 QASPER F1 和上下文成本为代价。没有配置在所有数据集上同时超过 default，因此不修改产品默认。最终组合收据在 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-final-combos-v1`。
+结论：`cap3 + RRF15 + dense0.8` 主要赢 LangChain/Godot，但私有主集退化；`cap3 + RRF5 + dense1.2` 在私有 MRR、Du、QASPER 有优势，但 LangChain 明显退化；`cap6 + RRF5 + dense0.8` 私有覆盖最强，却以 QASPER F1 和上下文成本为代价。没有配置在所有数据集上同时超过 default，因此不修改产品默认。最终组合收据在 `${EVAL_ROOT}/2026-09-21-minisearch-031-final-combos-v1`。
 
 ## 证据与边界
 
 - 运行器：[run-minisearch-parameter-exploration.mjs](../../evals/run-minisearch-parameter-exploration.mjs)；官方评分器：[score-minisearch-parameter-exploration.py](../../evals/score-minisearch-parameter-exploration.py)。二者只放公开脚本，不包含私有题干、正文、向量或 key。
-- E 盘输出目录：`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-parameter-exploration-v1`；其中 `freeze.json`、`run-receipt.json`、`public-score.json` 和逐题 JSONL 是本批原始收据。
-- BM25 权重扩展输出目录：`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-weight-extension-v1` 和 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-weight-extension2-v1`；两次扩展均使用冻结向量和同一评分口径。
-- BM25=0.31 其他参数输出目录：`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-other-params-v1` 和 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-combinations-v1`；RRF=10 全程固定。
-- BM25=0.31 深组合输出目录：`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-deep-v1`；候选数、MiniSearch k/b/d 和 dense 权重均使用冻结向量离线测试。
-- BM25=0.31 的 RRF/cap6 输出目录：`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-rrf-v1`、`E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-cap6-v1` 和 `E:\幻\Documents\八股-Echo测试\2026-09-21-minisearch-031-cap6plus-v1`。
+- E 盘输出目录：`${EVAL_ROOT}/2026-09-21-minisearch-parameter-exploration-v1`；其中 `freeze.json`、`run-receipt.json`、`public-score.json` 和逐题 JSONL 是本批原始收据。
+- BM25 权重扩展输出目录：`${EVAL_ROOT}/2026-09-21-minisearch-weight-extension-v1` 和 `${EVAL_ROOT}/2026-09-21-minisearch-weight-extension2-v1`；两次扩展均使用冻结向量和同一评分口径。
+- BM25=0.31 其他参数输出目录：`${EVAL_ROOT}/2026-09-21-minisearch-031-other-params-v1` 和 `${EVAL_ROOT}/2026-09-21-minisearch-031-combinations-v1`；RRF=10 全程固定。
+- BM25=0.31 深组合输出目录：`${EVAL_ROOT}/2026-09-21-minisearch-031-deep-v1`；候选数、MiniSearch k/b/d 和 dense 权重均使用冻结向量离线测试。
+- BM25=0.31 的 RRF/cap6 输出目录：`${EVAL_ROOT}/2026-09-21-minisearch-031-rrf-v1`、`${EVAL_ROOT}/2026-09-21-minisearch-031-cap6-v1` 和 `${EVAL_ROOT}/2026-09-21-minisearch-031-cap6plus-v1`。
 - 统一对比表：[2026-09-21-minisearch-unified-comparison.md](2026-09-21-minisearch-unified-comparison.md)，包含75次 arm 运行去重后的66个唯一参数配置；表中公开指标统一采用 hybrid 条件，纯 BM25 结果保留在本报告的独立小节。
 - 私有 Hit/MRR/宏微 Recall 重算脚本：[summarize-minisearch-parameter-metrics.mjs](../../evals/summarize-minisearch-parameter-metrics.mjs)；摘要为 E 盘 `private-score.json`。
 - 最终收据记录 9 份 SQLite 输入前后 SHA 相同、向量缓存冻结 stat 未变、收尾 SHA `306b5eb6aa8acff83f1caa9026c5403bb5163d775cea0025e388500f437dec32`、新增 embedding/API 调用 0。

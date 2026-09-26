@@ -94,6 +94,7 @@ it('compares BM25/dense/hybrid, preserves raw locations and enforces both caps',
     config,
     {
       query: '苹果',
+      diagnostics: true,
       overrides: { mode: 'hybrid', topk: 10, max_chunks_per_source: 2 },
     },
     undefined,
@@ -115,7 +116,7 @@ it('compares BM25/dense/hybrid, preserves raw locations and enforces both caps',
   expect(hybrid.results.every((e) => e.path === join(root, 'a.md'))).toBe(true);
 });
 it('filters before candidate limits and keeps empty scopes empty', async () => {
-  const { config } = await fixture();
+  const { config, root } = await fixture();
   const result = await searchIndex(
     config,
     {
@@ -131,7 +132,7 @@ it('filters before candidate limits and keeps empty scopes empty', async () => {
     mock,
   );
   expect(result.results).toHaveLength(1);
-  expect(result.results[0]!.relative_path).toBe('state.md');
+  expect(result.results[0]!.path).toBe(join(root, 'state.md'));
   expect(
     (
       await searchIndex(
@@ -142,16 +143,14 @@ it('filters before candidate limits and keeps empty scopes empty', async () => {
       )
     ).results,
   ).toEqual([]);
-  expect(
-    (
-      await searchIndex(
-        config,
-        { query: '苹果', filters: { collections: ['missing'] } },
-        undefined,
-        mock,
-      )
-    ).results,
-  ).toEqual([]);
+  await expect(
+    searchIndex(
+      config,
+      { query: '苹果', filters: { collections: ['missing'] } },
+      undefined,
+      mock,
+    ),
+  ).rejects.toMatchObject({ code: 'INVALID_COLLECTION' });
 });
 it('bounds the entire serialized result, exposes budget/source exclusions, and rejects invalid overrides', async () => {
   const { config } = await fixture();
@@ -169,7 +168,7 @@ it('bounds the entire serialized result, exposes budget/source exclusions, and r
     mock,
   );
   expect(JSON.stringify(result).length).toBeLessThanOrEqual(1300);
-  expect(result.excluded.budget).toBeGreaterThan(0);
+  expect(result.limits).toContain('budget');
   await expect(
     searchIndex(
       config,
@@ -352,6 +351,7 @@ it('reports exact weighted RRF contributions for returned evidence', async () =>
     config,
     {
       query: '苹果',
+      diagnostics: true,
       overrides: {
         mode: 'hybrid',
         bm25_weight: 2,

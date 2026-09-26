@@ -1,7 +1,7 @@
 {
   "date": "2026-09-20",
   "status": "complete: official scoring, two independent reviews, Windows/Linux code CI passed",
-  "root_local_reference": "E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19",
+  "root_local_reference": "${EVAL_ROOT}/public-benchmarks-2026-09-19",
   "output": "analysis/minisearch-pilot-2026-09-20-v3",
   "arms": {
     "default": {
@@ -1154,7 +1154,7 @@
         "k_minus30-hybrid": {
           "ndcg_cut_10": {
             "delta": 0.0015968350474325707,
-            "ci95": [-0.00002301977633348939, 0.003795018152783094],
+            "ci95": [-2.301977633348939e-5, 0.003795018152783094],
             "wins": 7,
             "losses": 7,
             "ties": 186,

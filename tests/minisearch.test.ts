@@ -196,7 +196,9 @@ it('reuses a snapshot, filters before cap, and refreshes content/path/deletion o
     filters: { path_prefix: 'b' },
     overrides: { bm25_candidates: 1 },
   });
-  expect(filtered.results.map((x) => x.relative_path)).toEqual(['b.md']);
+  expect(filtered.results.map((x) => x.path.split(/[\\/]/).at(-1))).toEqual([
+    'b.md',
+  ]);
   const source = filtered.results[0]!.source_id;
   expect(
     (
@@ -220,7 +222,7 @@ it('reuses a snapshot, filters before cap, and refreshes content/path/deletion o
   const updated = await searchIndex(config, { query: 'cherry' });
   expect(updated.results[0]).toMatchObject({
     source_id: source,
-    relative_path: 'c.md',
+    path: join(root, 'c.md'),
   });
   expect(updated.results[0]!.text).toContain('cherry');
   expect(miniCacheDiagnostics().builds).toBe(builds + 1);

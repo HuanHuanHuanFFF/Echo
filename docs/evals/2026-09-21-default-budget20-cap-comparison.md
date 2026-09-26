@@ -87,7 +87,7 @@ QASPER完整文本证据48/78→60/78，但官方Evidence F1从22.21%降至15.81
 - 输入预检与原批次ID/文件/数据库相同；QASPER最初freeze曾保存1题未trim文本哈希，其实际重跑已记录trim修正。本轮同时重算raw和trim哈希，匹配旧freeze和最新cap6freeze；不是换题，详情在E盘input-identity-check.json。
 - 仍为已开卷探索，不声明新的盲测、通用最优或Agent答案准确率。4道无答案题不足以评价稳健的证据不足处理。cap产品默认本轮未改。
 
-原始目录：E:/幻/Documents/八股-Echo测试/2026-09-21-default-budget20-cap-v1；包括freeze、run-receipt、private/public-score、comparison-final及全部逐题JSONL（初次comparison另行保留）。复跑必须使用新OUT：
+原始目录：${EVAL_ROOT}/2026-09-21-default-budget20-cap-v1；包括freeze、run-receipt、private/public-score、comparison-final及全部逐题JSONL（初次comparison另行保留）。复跑必须使用新OUT：
 
 ```text
 node evals/run-minisearch-parameter-exploration.mjs PRIVATE_ROOT PUBLIC_ROOT NEW_OUT freeze-budget20-cap

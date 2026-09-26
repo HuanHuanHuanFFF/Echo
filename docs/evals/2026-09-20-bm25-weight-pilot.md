@@ -72,7 +72,7 @@ LangChain的0.25比0.5多命中1题，但排序与Recall@50较低；Hit变好不
 
 [隔离回归](../../tests/public-weight-pilot.test.ts)覆盖不依赖输入顺序的抽样、重复ID拒绝、零权重候选过滤、权重变化、同分排序及非法名次。完整本地检查172通过、1既有跳过，Python评分验证6通过；两位Luna/max独立核对抽样、920份排名、指标、成对统计和来源绑定，均通过。当前提交的双平台CI另按Actions记录核对。
 
-ROOT为E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19；本轮OUT为ROOT/analysis/weight-pilot-10pct-2026-09-20-v1。复跑使用新的OUT，依次执行：
+ROOT为${EVAL_ROOT}/public-benchmarks-2026-09-19；本轮OUT为ROOT/analysis/weight-pilot-10pct-2026-09-20-v1。复跑使用新的OUT，依次执行：
 
 ```text
 node evals/run-public-weight-pilot.mjs ROOT NEW_OUT

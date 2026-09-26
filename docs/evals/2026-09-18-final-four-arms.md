@@ -151,7 +151,7 @@ D留出库仍是主要弱项：混合23/30，低于纯向量24/30；最终混合
 - [隔离回归](../../tests/final-four-arms.test.ts)：ABCD最终范围不复用ABC开发索引、配置id解析、配对题与事实不得漂移。
 - [公开清单](2026-09-18-final-four-arms.manifest.json)：完整K/分库/题型/区间/逐题差异与产物哈希；私有正文、问题及向量留E盘。
 
-本地有效目录E:/幻/Documents/八股-Echo测试/2026-09-16/evidence/final-four-arms-2026-09-18-v3；冻结selection、plan、index、capture、queries、analysis分别保存。v1/v2仅离线准备失败/否决，均无API/索引写/检索，详见冻结文档。旧本地run-final-evaluation.mjs已被当前执行器的参数范围替代，不应误跑。公开仓库不含私有输入，不能宣称仅凭GitHub可完整复算。
+本地有效目录${EVAL_ROOT}/2026-09-16/evidence/final-four-arms-2026-09-18-v3；冻结selection、plan、index、capture、queries、analysis分别保存。v1/v2仅离线准备失败/否决，均无API/索引写/检索，详见冻结文档。旧本地run-final-evaluation.mjs已被当前执行器的参数范围替代，不应误跑。公开仓库不含私有输入，不能宣称仅凭GitHub可完整复算。
 
 执行代码完整check为156通过、1项既有跳过，格式/类型/构建通过；aacca18的Windows/Linux CI均成功（run35324724059）。分析提交0186a7d已实际核验全部原始结果；两位独立审查分别重算24组、主/配对指标、成对区间与费用记录，结论一致。按复核意见把语言因素归因收紧为本冻结语料的观察，不声称跨语言因果收益。
 

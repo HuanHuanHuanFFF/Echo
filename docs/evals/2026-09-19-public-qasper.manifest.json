@@ -1,7 +1,7 @@
 {
   "status": "qasper_executed_reviewed",
   "created": "2026-09-19T16:13:40.726Z",
-  "external_root": "E:\\幻\\Documents\\八股-Echo测试\\public-benchmarks-2026-09-19",
+  "external_root": "${EVAL_ROOT}/public-benchmarks-2026-09-19",
   "conditions": {
     "qasper": ["heading/RRF30", "structure1.0.1/RRF30", "structure1.0.1/RRF10"],
     "fixed": ["RRF30", "RRF10"]

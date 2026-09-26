@@ -153,9 +153,9 @@ Hit/MRR按“单块独立完整覆盖至少一个必需事实”定义；事实R
 
 ```powershell
 # 新run-id；三个阶段均显式选择bm25-weight，使用已绑定的真实响应，只作离线查询
-node evals/run-source-limit-comparison.mjs --experiment bm25-weight --lab "E:/幻/Documents/八股-Echo测试/2026-09-16" --run-id <新的run-id> --phase prepare
-node evals/run-source-limit-comparison.mjs --experiment bm25-weight --lab "E:/幻/Documents/八股-Echo测试/2026-09-16" --run-id <新的run-id> --phase run
-node evals/run-source-limit-comparison.mjs --experiment bm25-weight --lab "E:/幻/Documents/八股-Echo测试/2026-09-16" --run-id <新的run-id> --phase summarize
+node evals/run-source-limit-comparison.mjs --experiment bm25-weight --lab "${EVAL_ROOT}/2026-09-16" --run-id <新的run-id> --phase prepare
+node evals/run-source-limit-comparison.mjs --experiment bm25-weight --lab "${EVAL_ROOT}/2026-09-16" --run-id <新的run-id> --phase run
+node evals/run-source-limit-comparison.mjs --experiment bm25-weight --lab "${EVAL_ROOT}/2026-09-16" --run-id <新的run-id> --phase summarize
 ```
 
 - [专项测试](../../tests/source-limit-evaluation.test.ts)共11项，包括新增“仅BM25变化且每篇3固定”“seed不可变、缓存缺失零联网”“损坏seed拒绝”，并验证source-limit历史limits字段及各预设的授权描述；保留原来源上限、并发去重、失败不重试等回归。

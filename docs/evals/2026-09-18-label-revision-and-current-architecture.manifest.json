@@ -10883,14 +10883,14 @@
     "all_rescored_pieces": 35615,
     "rescore_sha256": "a11491c0c6c9364c31c14c7f370501b201da937033f6c16d178f58df177671d3",
     "databases": {
-      "E:\\幻\\Documents\\八股-Echo测试\\2026-09-16\\.echo\\index.sqlite": "9dccb10566f439fa5ab8107e6f23910cfef4afde8bad40c89481c7fd7d871200",
-      "E:\\幻\\Documents\\八股-Echo测试\\2026-09-16\\.echo\\B\\index.sqlite": "0d83013d3831b9a97642d0031389fd09fea55a33890849c589535d6e67faf355",
-      "E:\\幻\\Documents\\八股-Echo测试\\2026-09-16\\.echo\\C-v2\\index.sqlite": "c3f8e202ab6986b4264d3597e73f59269be1ef7ecd9becba054588b8dd059b53",
-      "E:\\幻\\Documents\\八股-Echo测试\\2026-09-16\\.echo\\mixed-development-v2\\index.sqlite": "5940af0616c113449cc9432d67434c5f53e6c601c5b70ae26f491afd1e7037d4",
-      "E:\\幻\\Documents\\八股-Echo测试\\2026-09-16\\.echo\\structure-ab-2026-09-17-v3\\A-development.sqlite": "7890776ff817f5c111f82c3691b6183cf5ae72c6076f03f7c19ea1b9c3932718",
-      "E:\\幻\\Documents\\八股-Echo测试\\2026-09-16\\.echo\\structure-ab-2026-09-17-v3\\B-development.sqlite": "8539113fe8dce9dcc868d287ff35ca999e6167c8ba40e57c2f38847da039ed40",
-      "E:\\幻\\Documents\\八股-Echo测试\\2026-09-16\\.echo\\structure-ab-2026-09-17-v3\\C-development.sqlite": "61a66a4effeb9c2ad21953e619a504fe9f2fe487d215d6a255562c0192e88804",
-      "E:\\幻\\Documents\\八股-Echo测试\\2026-09-16\\.echo\\structure-ab-2026-09-17-v3\\mixed-development.sqlite": "6d249cadc58875a7ea661c348ff96d95e652b76ad293f93851acd41e78277b12"
+      "${EVAL_ROOT}/2026-09-16/.echo/index.sqlite": "9dccb10566f439fa5ab8107e6f23910cfef4afde8bad40c89481c7fd7d871200",
+      "${EVAL_ROOT}/2026-09-16/.echo/B/index.sqlite": "0d83013d3831b9a97642d0031389fd09fea55a33890849c589535d6e67faf355",
+      "${EVAL_ROOT}/2026-09-16/.echo/C-v2/index.sqlite": "c3f8e202ab6986b4264d3597e73f59269be1ef7ecd9becba054588b8dd059b53",
+      "${EVAL_ROOT}/2026-09-16/.echo/mixed-development-v2/index.sqlite": "5940af0616c113449cc9432d67434c5f53e6c601c5b70ae26f491afd1e7037d4",
+      "${EVAL_ROOT}/2026-09-16/.echo/structure-ab-2026-09-17-v3/A-development.sqlite": "7890776ff817f5c111f82c3691b6183cf5ae72c6076f03f7c19ea1b9c3932718",
+      "${EVAL_ROOT}/2026-09-16/.echo/structure-ab-2026-09-17-v3/B-development.sqlite": "8539113fe8dce9dcc868d287ff35ca999e6167c8ba40e57c2f38847da039ed40",
+      "${EVAL_ROOT}/2026-09-16/.echo/structure-ab-2026-09-17-v3/C-development.sqlite": "61a66a4effeb9c2ad21953e619a504fe9f2fe487d215d6a255562c0192e88804",
+      "${EVAL_ROOT}/2026-09-16/.echo/structure-ab-2026-09-17-v3/mixed-development.sqlite": "6d249cadc58875a7ea661c348ff96d95e652b76ad293f93851acd41e78277b12"
     },
     "databases_unchanged": true,
     "runtime_sha256": "1b283e4294b9925cd69775579d4702d2e3b2ecc72d469455498c20227f55c020",

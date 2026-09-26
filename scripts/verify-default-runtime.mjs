@@ -150,11 +150,19 @@ try {
   assert.equal((await invoke('sync')).status, 'ok');
   const found = await invoke('search', '--query', 'rollback');
   assert.equal(found.status, 'ok');
-  assert.equal(found.selection.chunker, 'markdown-structure-v1');
-  assert.equal(found.applied.rrf_k, 10);
-  assert.equal(found.applied.lexical_engine, 'minisearch');
-  assert.equal(found.applied.max_context_chars, 20000);
-  assert.equal(found.applied.max_chunks_per_source, 6);
+  const diagnostic = await invoke(
+    'search',
+    '--query',
+    'rollback',
+    '--diagnostics',
+  );
+  assert.equal(diagnostic.selection.chunker, 'markdown-structure-v1');
+  assert.equal(found.applied, undefined);
+  assert.equal(found.selection, undefined);
+  assert.equal(diagnostic.applied.rrf_k, 10);
+  assert.equal(diagnostic.applied.lexical_engine, 'minisearch');
+  assert.equal(diagnostic.applied.max_context_chars, 20000);
+  assert.equal(diagnostic.applied.max_chunks_per_source, 6);
   assert.ok(found.results.length > 0);
   for (const piece of found.results)
     assert.equal(
@@ -180,7 +188,8 @@ try {
   assert.equal(answer.isError, undefined);
   const result = JSON.parse(answer.content[0].text);
   assert.equal(result.status, 'ok');
-  assert.equal(result.selection.chunker, 'markdown-structure-v1');
+  assert.equal(result.selection, undefined);
+  assert.equal(result.applied, undefined);
   assert.deepEqual(result.results, found.results);
   const receipt = {
     status: 'passed',

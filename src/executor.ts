@@ -1,15 +1,9 @@
-import type { profileStatus } from './profile-store.js';
+import type { readStatus, StatusInput } from './status.js';
 import { Worker } from 'node:worker_threads';
 import type { EchoConfig } from './config.js';
 import type { searchIndex } from './retrieval.js';
-import type { indexStatus } from './store.js';
-import type { databaseCapabilities } from './database.js';
 type SearchResult = Awaited<ReturnType<typeof searchIndex>>;
-type StatusResult = (
-  ReturnType<typeof indexStatus> | ReturnType<typeof profileStatus>
-) & {
-  capabilities: ReturnType<typeof databaseCapabilities>;
-};
+type StatusResult = Awaited<ReturnType<typeof readStatus>>;
 export function runSearchInWorker(
   config: EchoConfig,
   input: unknown,
@@ -17,8 +11,12 @@ export function runSearchInWorker(
 ) {
   return runIndexJob<SearchResult>(config, input, signal, 'search');
 }
-export function runStatusInWorker(config: EchoConfig, signal?: AbortSignal) {
-  return runIndexJob<StatusResult>(config, undefined, signal, 'status');
+export function runStatusInWorker(
+  config: EchoConfig,
+  signal?: AbortSignal,
+  input: StatusInput = {},
+) {
+  return runIndexJob<StatusResult>(config, input, signal, 'status');
 }
 function runIndexJob<T>(
   config: EchoConfig,
