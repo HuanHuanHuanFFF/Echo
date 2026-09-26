@@ -8,12 +8,6 @@ import { fileSha256 } from './lib/product-freeze.mjs';
 import { validateIndexReceipt } from './lib/product-index-receipt.mjs';
 import { requiredProductRunExecutionFiles } from './lib/product-run-integrity.mjs';
 
-const DEFAULTS = {
-  root: 'E:\\幻\\Documents\\八股-Echo测试\\2026-09-22-product-comparison',
-  privateRoot: 'E:\\幻\\Documents\\八股-Echo测试\\2026-09-16',
-  publicRoot: 'E:\\幻\\Documents\\八股-Echo测试\\public-benchmarks-2026-09-19',
-};
-
 const MODELS = Object.freeze({
   name: 'qwen3.7-text-embedding',
   dimensions: 1024,
@@ -694,7 +688,7 @@ export async function writeFreezeOnce(file, bytes) {
 }
 
 function parseArgs(argv) {
-  const options = { ...DEFAULTS, mode: 'dry-run' };
+  const options = { mode: 'dry-run' };
   for (let index = 0; index < argv.length; index += 1) {
     const item = argv[index];
     if (item === '--dry-run') options.mode = 'dry-run';
@@ -705,6 +699,15 @@ function parseArgs(argv) {
     else if (item === '--help' || item === '-h') options.help = true;
     else throw new Error('unknown argument');
   }
+  if (!options.help) {
+    for (const key of ['root', 'privateRoot', 'publicRoot'])
+      assert.ok(
+        typeof options[key] === 'string' &&
+          options[key].trim() &&
+          !options[key].startsWith('--'),
+        'All three root paths must be supplied',
+      );
+  }
   return options;
 }
 
@@ -714,14 +717,14 @@ async function main() {
     options = parseArgs(process.argv.slice(2));
   } catch {
     console.error(
-      'Usage: node freeze-product-comparison.mjs [--dry-run|--freeze] [--root PATH] [--private-root PATH] [--public-root PATH]',
+      'Usage: node freeze-product-comparison.mjs [--dry-run|--freeze] --root PATH --private-root PATH --public-root PATH',
     );
     process.exitCode = 2;
     return;
   }
   if (options.help) {
     console.log(
-      'Usage: node freeze-product-comparison.mjs [--dry-run|--freeze] [--root PATH] [--private-root PATH] [--public-root PATH]',
+      'Usage: node freeze-product-comparison.mjs [--dry-run|--freeze] --root PATH --private-root PATH --public-root PATH',
     );
     return;
   }

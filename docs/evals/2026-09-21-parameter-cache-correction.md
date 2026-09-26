@@ -18,7 +18,7 @@ Hybrid会按arm重新融合；只改变RRF/融合权重而候选相关参数一�
 - 公开每臂dense生成改用该arm，候选收据补存各臂dense，独立dense参考仍用明确defaultArm。
 - [隔离回归](../../tests/parameter-exploration-cache.test.ts)用真实SQLite/MiniSearch复现RRF5误用1/11，再验证修复后1/6、候选数1→3、标题权重0和向量候选/阈值生效。仅接口回归的向量为确定性样本，不作为语义效果证据。
 - [补测审计](../../evals/audit-budget20-followup.mjs)逐条验证实际RRF公式和参数，而不只检查applied。保持完整排名对象对照，不放宽成仅比较ID来掩盖错误。
-- 本次先重跑用户要求的两臂，目录为E:/幻/Documents/八股-Echo测试/2026-09-21-budget20-followup-v2。不擅自重跑全部历史组合，不改产品默认。
+- 本次先重跑用户要求的两臂，目录为${EVAL_ROOT}/2026-09-21-budget20-followup-v2。不擅自重跑全部历史组合，不改产品默认。
 
 验证记录：回归先在原缓存下失败（RRF5误得1/11），修复后通过；无dist的隔离检出同样通过。npm run check为189项通过、1项既有跳过，格式/类型/构建/默认CLI与MCP烟测通过。v1运行器已重建并与freeze中的SHA88c936430b7a419297a180316e51e5bcad6971641cf1d02a2a199719c377cd07精确一致，失败证据可追溯。
 

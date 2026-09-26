@@ -59,7 +59,7 @@
 
 [评分器](../../evals/score-qasper-source-cap-pilot.py)从真实行范围重建完整段落，用官方evaluator重算Evidence F1，并独立复算严格覆盖与配对区间。基线101题逐题字典与旧0.5结果一致；202份响应均通过，索引前后SHA相同。主线程另按实际JSON.stringify复核字符数和新增9题与旧排名诊断的对应关系。收尾时补核1.33GB向量缓存SHA，与原全量冻结收据一致，WAL为0字节；这是对旧指纹的收尾比对，不冒充本轮新记录的运行前哈希，检索时也逐条核对了缓存查询向量SHA。
 
-本地完整检查174通过、1既有跳过，另6项Python评分输入回归通过，格式/类型/构建通过；两位Luna/max独立复核通过。[公开收据](2026-09-20-qasper-source-cap-pilot.manifest.json)绑定输入、冻结条件、原始输出、源码与核分结果。原始资料位于ROOT/analysis/qasper-source-cap-pilot-2026-09-20-v1，ROOT为E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19；语料、向量和原响应留在E盘。
+本地完整检查174通过、1既有跳过，另6项Python评分输入回归通过，格式/类型/构建通过；两位Luna/max独立复核通过。[公开收据](2026-09-20-qasper-source-cap-pilot.manifest.json)绑定输入、冻结条件、原始输出、源码与核分结果。原始资料位于ROOT/analysis/qasper-source-cap-pilot-2026-09-20-v1，ROOT为${EVAL_ROOT}/public-benchmarks-2026-09-19；语料、向量和原响应留在E盘。
 
 复跑应在仓库根目录执行，NEW_OUT必须是ROOT内不存在的新目录：
 

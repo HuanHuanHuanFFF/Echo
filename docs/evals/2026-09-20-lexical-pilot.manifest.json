@@ -1,7 +1,7 @@
 {
   "created": "2026-09-20T13:56:48.631Z",
   "status": "lexical_pilot_reviewed",
-  "external_root": "E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19",
+  "external_root": "${EVAL_ROOT}/public-benchmarks-2026-09-19",
   "summary": {
     "created": "2026-09-20T13:43:09.583315+00:00",
     "plan": {

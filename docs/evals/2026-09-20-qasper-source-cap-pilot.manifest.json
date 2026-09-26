@@ -1,7 +1,7 @@
 {
   "created": "2026-09-20T12:14:02.358Z",
   "status": "source_cap_pilot_reviewed",
-  "external_root": "E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19",
+  "external_root": "${EVAL_ROOT}/public-benchmarks-2026-09-19",
   "summary": {
     "created": "2026-09-20T12:09:32.637861+00:00",
     "plan": {
@@ -793,7 +793,7 @@
         "sha256": "47e7964f3bc1c631a89fb8e038be24936c916c5190893cb39ba2e7857ff4e382"
       }
     ],
-    "source_archive_root": "E:\\幻\\Documents\\八股-Echo测试\\public-benchmarks-2026-09-19\\analysis\\qasper-source-cap-pilot-2026-09-20-v1",
+    "source_archive_root": "${EVAL_ROOT}/public-benchmarks-2026-09-19/analysis/qasper-source-cap-pilot-2026-09-20-v1",
     "new_embedding_calls": 0,
     "network_forbidden": true
   },

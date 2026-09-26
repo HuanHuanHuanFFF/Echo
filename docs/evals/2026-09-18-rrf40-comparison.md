@@ -72,10 +72,10 @@ RRF40介于30和60之间：完整89/95、事实219/226；相对30少1项事实�
 
 [专项回归](../../tests/source-limit-evaluation.test.ts)19/19通过，包含只有40一个新值、16000预算、默认仍30及非法取值拒绝。完整npm run check：146通过、1项原有跳过；格式、类型和构建通过。两位Luna/max独立只读复核通过：共同问句/向量、仅RRF变化、历史结果哈希、行级预算和来源上限、指标及逐题变化均核实；执行代码提交f4c399b。详见[公开manifest与复核收据](2026-09-18-rrf40-comparison.manifest.json)。
 
-本轮E盘证据目录：evidence/structure-rrf40-budget16000-2026-09-18-v1；位于E:/幻/Documents/八股-Echo测试/2026-09-16。个人正文、完整问句、索引和向量不入Git。
+本轮E盘证据目录：evidence/structure-rrf40-budget16000-2026-09-18-v1；位于${EVAL_ROOT}/2026-09-16。个人正文、完整问句、索引和向量不入Git。
 
 ```powershell
-node evals/run-source-limit-comparison.mjs --experiment rrf40-budget16000 --lab "E:/幻/Documents/八股-Echo测试/2026-09-16" --run-id <新的run-id> --phase prepare
+node evals/run-source-limit-comparison.mjs --experiment rrf40-budget16000 --lab "${EVAL_ROOT}/2026-09-16" --run-id <新的run-id> --phase prepare
 # 相同experiment/run-id，依次执行run、summarize、compare
 ```
 

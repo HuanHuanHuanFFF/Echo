@@ -54,7 +54,7 @@
 
 [评分器](../../evals/score-qasper-weight-pilot.py)逐条用官方QASPER evaluator核对F1；另外从真实返回的原文行重新计算完整段落、替代证据范围、多标注者最佳有效组与严格覆盖。606条全部一致，不以Node自报分数作唯一依据。全部请求加响应不超过16000，返回块数不超过3，索引前后SHA相等。
 
-本地完整检查174通过、1既有跳过，另6项Python评分验证通过，格式/类型/构建通过；两位Luna/max独立复核通过。另以runtime-profile-audit核对98份冻结运行时、配置和策略文件，与原全量收据逐项一致。评分实现、冻结样本、606份响应、逐题分数与按论文统计保存在ROOT/analysis/qasper-weight-pilot-2026-09-20-v1；ROOT为E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19。[公开收据](2026-09-20-qasper-weight-pilot.manifest.json)只收配置、摘要和指纹，语料/响应/数据库不进入Git。
+本地完整检查174通过、1既有跳过，另6项Python评分验证通过，格式/类型/构建通过；两位Luna/max独立复核通过。另以runtime-profile-audit核对98份冻结运行时、配置和策略文件，与原全量收据逐项一致。评分实现、冻结样本、606份响应、逐题分数与按论文统计保存在ROOT/analysis/qasper-weight-pilot-2026-09-20-v1；ROOT为${EVAL_ROOT}/public-benchmarks-2026-09-19。[公开收据](2026-09-20-qasper-weight-pilot.manifest.json)只收配置、摘要和指纹，语料/响应/数据库不进入Git。
 
 ```text
 node evals/run-qasper-weight-pilot.mjs ROOT NEW_OUT

@@ -20,7 +20,7 @@
 
 [运行器](../../evals/run-minisearch-pilot.mjs)以--without-coverage读取上一轮冻结输出；逐库核对完整索引词项输入SHA，逐题核对原生默认、SQLite与dense。[官方核分](../../evals/score-minisearch-pilot.py)复用pytrec_eval/pyndeval/FreshStack和QASPER evaluator，独立验证旧分数不变、新RRF排序与原文行覆盖；同分按固定Node/ICU的localeCompare契约处理。
 
-新输出ROOT/analysis/minisearch-without-coverage-2026-09-21-v1，参考ROOT/analysis/minisearch-pilot-2026-09-20-v3；ROOT=E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19。旧输出不覆盖，旧SQLite索引、笔记和Chroma不改写；本轮从冻结词项重新建立MiniSearch内存索引。readonly SQLite打开可能刷新-shm旁车，主库SHA必须保持。
+新输出ROOT/analysis/minisearch-without-coverage-2026-09-21-v1，参考ROOT/analysis/minisearch-pilot-2026-09-20-v3；ROOT=${EVAL_ROOT}/public-benchmarks-2026-09-19。旧输出不覆盖，旧SQLite索引、笔记和Chroma不改写；本轮从冻结词项重新建立MiniSearch内存索引。readonly SQLite打开可能刷新-shm旁车，主库SHA必须保持。
 
 ```text
 node evals/run-minisearch-pilot.mjs ROOT NEW_OUT --without-coverage analysis/minisearch-pilot-2026-09-20-v3

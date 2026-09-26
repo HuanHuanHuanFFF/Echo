@@ -138,7 +138,7 @@ node evals/rescore-development-labels.mjs --lab "$LAB" --revision "$REV" --run-i
 
 重算脚本以事先审核的修订文件为输入：它检查旧事实SHA、引文非空与行数，但不自动完成源文件/语义审查；分库不含目标事实时跳过，也没有跨所有分库拒绝未知fact_id的总校验。本轮只有两个已知B库事实，均已核对原文SHA、精确行文本和题意，两位独立结果审查再次确认。此边界不能省略为“任意标签修订可自动验收”。
 
-E盘证据根为E:/幻/Documents/八股-Echo测试/2026-09-16/evidence，新增目录development-label-amendment-2026-09-18-v1、development-label-rescore-2026-09-18-v1、current-architecture-2026-09-18-v1、current-architecture-rescore-2026-09-18-v1、current-architecture-delivery-2026-09-18-v1。main-audit.mjs只作主线程审计快照，若复用需放回仓库.echo以满足相对导入；正式可执行入口是上面两个已提交脚本。
+E盘证据根为${EVAL_ROOT}/2026-09-16/evidence，新增目录development-label-amendment-2026-09-18-v1、development-label-rescore-2026-09-18-v1、current-architecture-2026-09-18-v1、current-architecture-rescore-2026-09-18-v1、current-architecture-delivery-2026-09-18-v1。main-audit.mjs只作主线程审计快照，若复用需放回仓库.echo以满足相对导入；正式可执行入口是上面两个已提交脚本。
 
 执行提交8a1f79d的Windows/Linux CI均通过（run35319807558）。npm run check：153通过、1项既有跳过，格式/类型/构建通过。当前对照400行（新增300行、复用100行）额外核对实际参数、请求相等、索引内容、向量哈希与预算；更广的统一重算验证4140行、35615块。两位独立结果审查各重核当前400行及历史汇总，未发现当前数据阻断；当前400行共3938个返回块，原始数据清单672项哈希通过。8个数据库与本轮运行前SHA相同，其中新综合4个还与上轮封存SHA一致。当前没有新建PR、合并或默认采用；最终200题/40题成对复跑、实际Agent作答仍不在本轮执行范围。
 

@@ -1,12 +1,12 @@
 # Echo 项目基线
 
-更新日期：2026-09-15。用途：供用户和后续 Agent 继续讨论、确定开发范围。详细检索方案见[检索设计草案](D:/CodingProject/echo/docs/design/retrieval.md)，测试数据见[探索性基线](D:/CodingProject/echo/docs/evals/2026-09-05-chroma-baseline.md)。
+更新日期：2026-09-15。用途：供用户和后续 Agent 继续讨论、确定开发范围。详细检索方案见[检索设计草案](../design/retrieval.md)，测试数据见[探索性基线](../evals/2026-09-05-chroma-baseline.md)。
 
 ## 1. 已确认决定
 
 | 项目 | 决定 | 含义 |
 |---|---|---|
-| 项目 | 名称 `echo`，目录 `D:/CodingProject/echo` | 作为新项目推进；文档统一位于 `docs/` |
+| 项目 | 名称 `echo`，目录 `${REPO_ROOT}` | 作为新项目推进；文档统一位于 `docs/` |
 | 用途 | 主要由 Agent 调用，快速检索已有审核／学习过的 Markdown 知识，同时形成简历项目 | 返回原文片段及定位，不生成答案；对外成果以实际实现、评测和使用证据为准 |
 | 技术栈 | **TypeScript＋SQLite** | 具体驱动、扩展和版本尚未确认 |
 | 轻量约束 | 进程内嵌入、无需额外数据库服务 | 已排除 Qdrant 独立服务方案 |
@@ -79,24 +79,24 @@ SQLite 有利于集中保存原文、元数据、同步状态和检索数据，�
 
 ### NoteRAG
 
-仓库：[D:/CodingProject/NoteRAG](D:/CodingProject/NoteRAG)。参考职责分工与行为，不默认继承前端、会话和答案生成流程。
+仓库：${REFERENCE_ROOT}/NoteRAG（本地参考：`${REFERENCE_ROOT}/NoteRAG`）。参考职责分工与行为，不默认继承前端、会话和答案生成流程。
 
 | 需求 | 来源 |
 |---|---|
-| 标题解析与切块边界 | [MarkdownSectionParser.java](D:/CodingProject/NoteRAG/src/main/java/com/huanf/noterag/chunk/MarkdownSectionParser.java)、[MarkdownChunker.java](D:/CodingProject/NoteRAG/src/main/java/com/huanf/noterag/chunk/MarkdownChunker.java) |
-| 检索与重排的职责拆分 | [QueryService.java](D:/CodingProject/NoteRAG/src/main/java/com/huanf/noterag/service/QueryService.java) |
-| 正文／SUMMARY 的向量文本 | [NoteEmbeddingService.java](D:/CodingProject/NoteRAG/src/main/java/com/huanf/noterag/service/NoteEmbeddingService.java)、[RagTextFormatter.java](D:/CodingProject/NoteRAG/src/main/java/com/huanf/noterag/rag/RagTextFormatter.java) |
-| 旧切块对照实验 | [retrieval-baseline-report.md](D:/CodingProject/NoteRAG/src/test/http/responses/compare/retrieval-baseline-report.md) |
+| 标题解析与切块边界 | MarkdownSectionParser.java（本地参考：`${REFERENCE_ROOT}/NoteRAG/src/main/java/com/huanf/noterag/chunk/MarkdownSectionParser.java`）、MarkdownChunker.java（本地参考：`${REFERENCE_ROOT}/NoteRAG/src/main/java/com/huanf/noterag/chunk/MarkdownChunker.java`） |
+| 检索与重排的职责拆分 | QueryService.java（本地参考：`${REFERENCE_ROOT}/NoteRAG/src/main/java/com/huanf/noterag/service/QueryService.java`） |
+| 正文／SUMMARY 的向量文本 | NoteEmbeddingService.java（本地参考：`${REFERENCE_ROOT}/NoteRAG/src/main/java/com/huanf/noterag/service/NoteEmbeddingService.java`）、RagTextFormatter.java（本地参考：`${REFERENCE_ROOT}/NoteRAG/src/main/java/com/huanf/noterag/rag/RagTextFormatter.java`） |
+| 旧切块对照实验 | retrieval-baseline-report.md（本地参考：`${REFERENCE_ROOT}/NoteRAG/src/test/http/responses/compare/retrieval-baseline-report.md`） |
 
 旧实验只有单篇 JavaGuide MySQL 文档、15 题；对照为相近切块粒度的 Spring AI baseline。Hit@1 从 80.0% 到 93.3%，两组 Recall@5/10 都为 100%。只支持该样本的靠前排序改善，不能代表八股全库、最终回答质量或 Echo 收益。旧 SUMMARY chunk 是否用于 Echo 是可选实验。
 
 ### 八股知识库
 
-知识库：[E:/幻/Documents/八股](E:/幻/Documents/八股)。Markdown 是源数据，Chroma 是可重建检索缓存。
+知识库：${NOTES_ROOT}（本地参考：`${NOTES_ROOT}`）。Markdown 是源数据，Chroma 是可重建检索缓存。
 
-- 核对层级和工作边界：读取 [AGENTS.md](E:/幻/Documents/八股/AGENTS.md)。`10_topics` 为知识主干，`05_scaffolds` 为表达支架，`20_review` 为复习材料；其他层以该仓库规则为准。
-- 核对实际切块和载荷：读取 [prepare_chroma_mcp_batches.py](E:/幻/Documents/八股/tools/prepare_chroma_mcp_batches.py)。该脚本生成载荷，实际模型与数据库操作由现有 Chroma MCP 承担。
-- 执行查询测试或同步时：读取 [obsidian-rag-importer/SKILL.md](E:/幻/Documents/八股/skills/obsidian-rag-importer/SKILL.md)，按当次任务区分只读检索与索引写入。
+- 核对层级和工作边界：读取 AGENTS.md（本地参考：`${NOTES_ROOT}/AGENTS.md`）。`10_topics` 为知识主干，`05_scaffolds` 为表达支架，`20_review` 为复习材料；其他层以该仓库规则为准。
+- 核对实际切块和载荷：读取 prepare_chroma_mcp_batches.py（本地参考：`${NOTES_ROOT}/tools/prepare_chroma_mcp_batches.py`）。该脚本生成载荷，实际模型与数据库操作由现有 Chroma MCP 承担。
+- 执行查询测试或同步时：读取 obsidian-rag-importer/SKILL.md（本地参考：`${NOTES_ROOT}/skills/obsidian-rag-importer/SKILL.md`），按当次任务区分只读检索与索引写入。
 
 脚本默认处理 `20_review`、`10_topics`、`05_scaffolds`。既有检索文本包含“文档标题＋标题路径＋正文”，保留来源、层级、哈希和位置等元数据；不要把它误当成没有上下文的裸片段检索。
 

@@ -73,7 +73,7 @@ D只在工作副本写入27个UUID；公开参考原件及原八股库保持不�
 
 ## 本地入口与证据边界
 
-评测目录仍为E盘八股-Echo测试/2026-09-16。WORKSPACE-STATE.json保存恢复入口；原文、完整标签与索引只在本地。
+评测目录仍为 `${EVAL_ROOT}/2026-09-16`。WORKSPACE-STATE.json保存恢复入口；原文、完整标签与索引只在本地。
 当前运行器eval-retrieval.ps1指向b454686，比较器eval-compare.ps1指向e3c996f；[脚本契约](../design/retrieval-evaluation.md)与[统计边界](../development/2026-09-16-paired-evaluation-statistics.md)保持不变。
 corpora/d-simon/SOURCE.json及provenance记录来源；evidence/corpus-freshness-review/c-a记录C逐文件日期审计；
 annotation-author与annotation-review分别保留作者稿和独立复核，未把过程草稿冒充冻结题集。

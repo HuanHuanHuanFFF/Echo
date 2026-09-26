@@ -60,7 +60,7 @@ FreshStack引用[固定官方榜单](https://github.com/fresh-stack/fresh-stack.
 
 ## 复核、复跑与交付边界
 
-[执行冻结](2026-09-19-public-full-evaluation-freeze.md#独立复跑入口)提供脚本入口；[最终总收据](2026-09-20-public-full-results.manifest.json)绑定运行环境、数据、配置、原始结果、评分、审计和代码版本。原始资料位于 `E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19`，仓库只保存脚本、公开协议与摘要指纹。
+[执行冻结](2026-09-19-public-full-evaluation-freeze.md#独立复跑入口)提供脚本入口；[最终总收据](2026-09-20-public-full-results.manifest.json)绑定运行环境、数据、配置、原始结果、评分、审计和代码版本。原始资料位于 `${EVAL_ROOT}/public-benchmarks-2026-09-19`，仓库只保存脚本、公开协议与摘要指纹。
 
 评分器验证题目ID、排名、文档ID、逐题得分均值及SHA绑定；3619条先完成的结果在独立目录重评分与原件一致，原始成绩保留。QASPER按官方evaluator逐题核对，FreshStack执行官方metrics模块，Du按官方dev/nDCG@10协议使用pytrec_eval；没有声称执行完整官方pipeline。
 

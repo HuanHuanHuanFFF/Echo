@@ -1,7 +1,7 @@
 {
   "status": "incremental_weights_reviewed",
   "created": "2026-09-20T08:19:48.323Z",
-  "external_root": "E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19",
+  "external_root": "${EVAL_ROOT}/public-benchmarks-2026-09-19",
   "summary": {
     "created": "2026-09-20T08:09:54.628857+00:00",
     "plan": {
@@ -731,7 +731,7 @@
     },
     "network_forbidden": true,
     "new_embedding_calls": 0,
-    "source_archive_root": "E:\\幻\\Documents\\八股-Echo测试\\public-benchmarks-2026-09-19\\analysis\\weight-pilot-03-04-2026-09-20-v1",
+    "source_archive_root": "${EVAL_ROOT}/public-benchmarks-2026-09-19/analysis/weight-pilot-03-04-2026-09-20-v1",
     "sources": [
       {
         "source": "run-public-weight-pilot.mjs",

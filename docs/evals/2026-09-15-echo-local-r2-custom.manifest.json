@@ -34,7 +34,7 @@
   },
   "profile": {
     "chunker": {
-      "module": "D:\\CodingProject\\echo\\examples\\structural-heading-chunker.mjs",
+      "module": "${REPO_ROOT}/examples/structural-heading-chunker.mjs",
       "version": "1",
       "options": {
         "max_chars": 1000

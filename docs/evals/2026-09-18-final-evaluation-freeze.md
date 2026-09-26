@@ -35,7 +35,7 @@
 完整证据比例、事实微平均Recall为主；Hit/MRR采用单块独立支持至少一事实口径，另报多块联合命中与来源指标。K=1/3/5/10。分母排除4道无答案，但预算/成本包含全部200题；40配对另表。
 主对比是候选分别减heading、dense、BM25；按声明intent_group作成对cluster bootstrap，10000次、种子20260918、百分位95%区间。报告分库、题型、完整题得失和上下文，区间不作多重比较显著性认证。40题干扰对比使用相同题号和事实；不混入主总体。
 
-执行器见[run-final-four-arms.mjs](../../evals/run-final-four-arms.mjs)，prepare/index/capture/run分阶段，已有输出拒绝覆盖。有效运行目录为E:/幻/Documents/八股-Echo测试/2026-09-16/evidence/final-four-arms-2026-09-18-v3。
+执行器见[run-final-four-arms.mjs](../../evals/run-final-four-arms.mjs)，prepare/index/capture/run分阶段，已有输出拒绝覆盖。有效运行目录为${EVAL_ROOT}/2026-09-16/evidence/final-four-arms-2026-09-18-v3。
 v1/v2仅为纯离线准备失败/否决记录（profile id比较、ABCD索引选择），均无API、索引写或题目检索；修复含隔离回归，不能算正式尝试结果。
 
 正式结果须由两位Luna/max独立复核；最终检索评测不等于Agent回答质量、人工金标或五阶段全部验收。最终结果、实际用量和验收缺口在完成后另行发布。

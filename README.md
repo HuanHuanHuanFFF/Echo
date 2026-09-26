@@ -52,7 +52,7 @@ node /absolute/path/to/echo/dist/cli.js config use --retrieval balanced
 node /absolute/path/to/echo/dist/cli.js serve --config /absolute/path/to/echo/echo.config.json
 ```
 
-通用配置示例（具体配置入口由宿主决定）：
+通用配置示例（具体配置入口由宿主决定）。将示例路径替换为本机实际绝对路径；JSON 不会自动展开环境变量：
 
 ```json
 {
@@ -60,10 +60,10 @@ node /absolute/path/to/echo/dist/cli.js serve --config /absolute/path/to/echo/ec
     "echo": {
       "command": "node",
       "args": [
-        "D:/CodingProject/echo/dist/cli.js",
+        "/absolute/path/to/echo/dist/cli.js",
         "serve",
         "--config",
-        "D:/CodingProject/echo/echo.config.json"
+        "/absolute/path/to/echo/echo.config.json"
       ]
     }
   }

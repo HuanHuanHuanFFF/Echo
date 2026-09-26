@@ -107,7 +107,7 @@ C仅15题，100%不可外推全库。区间依赖当前分组与AI标签，未�
 
 ## 复现、验证与剩余工作
 
-本地产物在E盘八股-Echo测试/2026-09-16/evidence：frozen-evaluation-2026-09-16-v1、development-bm25-2026-09-16-v2、development-paired-bm25-2026-09-16-v1。
+本地产物在 `${EVAL_ROOT}/2026-09-16/evidence`：frozen-evaluation-2026-09-16-v1、development-bm25-2026-09-16-v2、development-paired-bm25-2026-09-16-v1。
 测试根目录的run-development-bm25.mjs与run-development-paired-bm25.mjs接受参数 --bundle <冻结manifest> --output <全新evidence目录> --run；已有目录被拒绝。
 可移植底层入口见[单轮运行器](../design/retrieval-evaluation.md)与[比较器](../development/2026-09-16-paired-evaluation-statistics.md)。
 公开摘要绑定脚本、代码、配置revision、标签与结果哈希；完整私有输入仍需本地访问，不能宣称仅凭GitHub完整复算。

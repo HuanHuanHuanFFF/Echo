@@ -77,7 +77,7 @@ Echo只提供证据，没有生成答案。本轮未测Agent能否识别这些�
 3. 无答案题先作为“近似主题干扰”的证据边界用例；5题不足以单独调拒答阈值。最终评测与Agent作答测试仍未进行。
 
 原始问句、源文片段、查询向量和完整轨迹保存在E盘：
-E:/幻/Documents/八股-Echo测试/2026-09-16/evidence/structure-failure-diagnosis-2026-09-18-v2。
+${EVAL_ROOT}/2026-09-16/evidence/structure-failure-diagnosis-2026-09-18-v2。
 首个v1目录仅保留在核验向量哈希格式时停止的诊断脚本，没有成功结果；本报告只引用完成的v2。
 公开[诊断清单](2026-09-18-failure-diagnosis.manifest.json)只含题号、名次、排除原因、统计与哈希。
 

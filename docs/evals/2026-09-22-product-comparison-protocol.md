@@ -37,7 +37,7 @@
 
 ## 数据、执行与交付
 
-独立实验目录为 `E:/幻/Documents/八股-Echo测试/2026-09-22-product-comparison`。原笔记、旧Chroma、旧SQLite及向量缓存只读。新服务使用独立名称、端口和数据目录；不启动或修改已有业务容器。个人正文、题干、密钥、生成索引与原始模型回执不进入Git。
+独立实验目录为 `${EVAL_ROOT}/2026-09-22-product-comparison`。原笔记、旧Chroma、旧SQLite及向量缓存只读。新服务使用独立名称、端口和数据目录；不启动或修改已有业务容器。个人正文、题干、密钥、生成索引与原始模型回执不进入Git。
 
 本机预检：Docker Desktop已安装并启动，镜像盘位于E盘；Docker VM约4GB内存，两个产品串行运行。该信息是部署条件，不是已完成运行证据。Dify 的 plugin_daemon 是官方模型 provider 的必需运行组件；保留签名校验，仅安装本轮模型插件。未启动的“代码执行服务”指 sandbox、agent sandbox 等用户代码工作流，不包括这个模型插件运行组件。
 

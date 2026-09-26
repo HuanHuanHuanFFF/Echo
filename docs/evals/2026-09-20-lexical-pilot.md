@@ -77,7 +77,7 @@ B和C未组合。C是IDF公式消融，不是完整Lucene引擎，不包括其no
 - 本轮实际400次原生词法查询、200个手算控制、200个IDF变体排名；新增模型/API调用0。两个FTS索引及映射总文件约375MB；构建观察耗时98.71秒，非生产性能保证。计时中的C scoring-only不包含读取倒排项，不与原生查询耗时横比。
 - 原du.sqlite主库前后SHA一致，收尾时WAL为0字节。readonly连接可能刷新SQLite的-shm锁共享内存旁车，因此不宣称整个旧目录的文件时间戳完全未变；未重建主索引或写入源记录，原笔记/旧Chroma未触碰。
 
-原数据与产物在ROOT/analysis/lexical-pilot-2026-09-20-v1；ROOT为E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19。第三方依赖单独在ROOT/tooling/jieba-wasm-2.4.0。[公开收据](2026-09-20-lexical-pilot.manifest.json)只发布参数、汇总与指纹，不提交语料、索引、原响应或第三方二进制。
+原数据与产物在ROOT/analysis/lexical-pilot-2026-09-20-v1；ROOT为${EVAL_ROOT}/public-benchmarks-2026-09-19。第三方依赖单独在ROOT/tooling/jieba-wasm-2.4.0。[公开收据](2026-09-20-lexical-pilot.manifest.json)只发布参数、汇总与指纹，不提交语料、索引、原响应或第三方二进制。
 
 ```text
 node evals/run-lexical-pilot.mjs ROOT NEW_OUT

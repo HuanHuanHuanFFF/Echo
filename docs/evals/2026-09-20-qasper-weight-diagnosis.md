@@ -80,7 +80,7 @@ RRF只根据两路名次加权，不判断段落是否真正回答问题。调�
 
 ## 证据与验证
 
-- 原始数据、诊断脚本和逐题关联位于E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19/analysis/qasper-weight-diagnosis-2026-09-20-v1。
+- 原始数据、诊断脚本和逐题关联位于${EVAL_ROOT}/public-benchmarks-2026-09-19/analysis/qasper-weight-diagnosis-2026-09-20-v1。
 - 606条段落公式分逐条与冻结响应一致；94项输入、25份原输出收据工件已核对；原P1诊断按题目ID关联，未重新检索或放宽参数。
 - 诊断中的precision/recall使用逐题取得最高官方F1的首个标注组计算，再宏平均；没有分别挑最高precision和最高recall。正文未把这些诊断均值混为官方另设指标。
 - [分析收据](2026-09-20-qasper-weight-diagnosis.manifest.json)保存输入和新产物SHA256。旧结果、数据库、标签、默认配置保持原样。

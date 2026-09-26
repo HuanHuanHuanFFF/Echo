@@ -172,7 +172,7 @@ OR替代也计入来源分母：某事实可由3个文件中的任一个支持�
 
 ```powershell
 node evals/summarize-chunk-comparison.mjs --self-test
-node evals/summarize-chunk-comparison.mjs "E:/幻/Documents/八股-Echo测试/2026-09-16/evidence/structure-ab-2026-09-17-v3" "<新的输出文件.json>"
+node evals/summarize-chunk-comparison.mjs "${EVAL_ROOT}/2026-09-16/evidence/structure-ab-2026-09-17-v3" "<新的输出文件.json>"
 ```
 
 输出文件必须不存在；已有报告不会覆盖。输入仅支持本轮三策略、四库、成功完成的固定运行，不把它作为新的通用评测引擎。

@@ -163,7 +163,7 @@
         "queries": 203,
         "conditions": [30, 10],
         "config": {
-          "database": "E:\\幻\\Documents\\八股-Echo测试\\public-benchmarks-2026-09-19\\fixed\\langchain.sqlite",
+          "database": "${EVAL_ROOT}/public-benchmarks-2026-09-19/fixed/langchain.sqlite",
           "collections": [],
           "chunker": {
             "version": "1",
@@ -491,7 +491,7 @@
         "queries": 99,
         "conditions": [30, 10],
         "config": {
-          "database": "E:\\幻\\Documents\\八股-Echo测试\\public-benchmarks-2026-09-19\\fixed\\godot.sqlite",
+          "database": "${EVAL_ROOT}/public-benchmarks-2026-09-19/fixed/godot.sqlite",
           "collections": [],
           "chunker": {
             "version": "1",
@@ -866,7 +866,7 @@
         "queries": 2000,
         "conditions": [30, 10],
         "config": {
-          "database": "E:\\幻\\Documents\\八股-Echo测试\\public-benchmarks-2026-09-19\\fixed\\du.sqlite",
+          "database": "${EVAL_ROOT}/public-benchmarks-2026-09-19/fixed/du.sqlite",
           "collections": [],
           "chunker": {
             "version": "1",

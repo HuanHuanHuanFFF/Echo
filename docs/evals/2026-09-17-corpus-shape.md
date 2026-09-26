@@ -14,7 +14,7 @@
 - 块内完整：一个已有chunk覆盖该单元全部非空原文行。只被多个chunk合起来覆盖记为拆分，不等于实际检索必然失败。
 
 [聚合统计与指纹](2026-09-17-corpus-shape.manifest.json)不含笔记正文、路径清单或题目。
-本地复现脚本：[inspect-corpus-shape-v2.mjs](E:/幻/Documents/八股-Echo测试/2026-09-16/inspect-corpus-shape-v2.mjs)，输入为测试工作区根目录与新的输出文件路径；输出禁止覆盖，脚本禁用fetch并以SQLite只读模式运行。脚本、冻结题库及语料指纹在摘要中绑定。
+本地复现脚本：inspect-corpus-shape-v2.mjs（本地参考：`${EVAL_ROOT}/2026-09-16/inspect-corpus-shape-v2.mjs`），输入为测试工作区根目录与新的输出文件路径；输出禁止覆盖，脚本禁用fetch并以SQLite只读模式运行。脚本、冻结题库及语料指纹在摘要中绑定。
 
 ## 原文分布
 

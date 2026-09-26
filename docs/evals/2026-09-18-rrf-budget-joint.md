@@ -92,10 +92,10 @@
 
 执行代码提交fb9e063，完整npm run check通过145项测试、1项原有跳过；格式、类型和构建通过。主线程逐行重算100题JSON长度/预算、topk/来源上限，并校验135份真实响应和全部引用产物哈希。两位Luna/max独立复核通过：A重算指标并通过45项相关测试，B独立运行测试145通过/1跳过、类型及格式检查。复核收据与产物哈希见[公开manifest](2026-09-18-rrf-budget-joint.manifest.json)。
 
-冻结目录：E:/幻/Documents/八股-Echo测试/2026-09-16/evidence/structure-rrf-budget-combined-2026-09-18-v1。原始问句、正文、索引和向量留在E盘，公开交付仅统计与哈希。
+冻结目录：${EVAL_ROOT}/2026-09-16/evidence/structure-rrf-budget-combined-2026-09-18-v1。原始问句、正文、索引和向量留在E盘，公开交付仅统计与哈希。
 
 ```powershell
-node evals/run-source-limit-comparison.mjs --experiment rrf-budget-combined --lab "E:/幻/Documents/八股-Echo测试/2026-09-16" --run-id <新的run-id> --phase prepare
+node evals/run-source-limit-comparison.mjs --experiment rrf-budget-combined --lab "${EVAL_ROOT}/2026-09-16" --run-id <新的run-id> --phase prepare
 # 相同experiment/run-id，依次执行run、summarize、compare
 ```
 

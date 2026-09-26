@@ -1,7 +1,7 @@
 {
   "date": "2026-09-21",
   "status": "complete: official scoring, two independent reviews, code Windows/Linux CI passed",
-  "root_local_reference": "E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19",
+  "root_local_reference": "${EVAL_ROOT}/public-benchmarks-2026-09-19",
   "output": "analysis/minisearch-without-coverage-2026-09-21-v1",
   "variant": "without_coverage",
   "previous": "analysis/minisearch-pilot-2026-09-20-v3",

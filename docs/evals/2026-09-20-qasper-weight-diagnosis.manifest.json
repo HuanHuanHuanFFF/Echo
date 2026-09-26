@@ -1,7 +1,7 @@
 {
   "created": "2026-09-20T10:25:58.262Z",
   "status": "read_only_diagnosis_reviewed",
-  "external_root": "E:/幻/Documents/八股-Echo测试/public-benchmarks-2026-09-19",
+  "external_root": "${EVAL_ROOT}/public-benchmarks-2026-09-19",
   "scope": "Read-only rescore of frozen 101x6 outputs; no retrieval/model calls or parameter changes",
   "summary": {
     "0": {

@@ -1,12 +1,18 @@
 """Analyze full public cap6 results by opened 331-question sample vs remaining diagnostics."""
+import argparse
 import hashlib
 import json
 import pathlib
 import statistics
-import sys
 
-PUBLIC = pathlib.Path(sys.argv[1]).resolve()
-OUT = pathlib.Path(sys.argv[2]).resolve()
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("public_root")
+parser.add_argument("output_root")
+parser.add_argument("--private-a-root", required=True)
+parser.add_argument("--private-b-root", required=True)
+args = parser.parse_args()
+PUBLIC = pathlib.Path(args.public_root).resolve()
+OUT = pathlib.Path(args.output_root).resolve()
 SCORE = json.loads((OUT / "public-score.json").read_text(encoding="utf8"))
 OLD_FREEZE = json.loads(
     (PUBLIC / "analysis/minisearch-without-coverage-2026-09-21-v1/freeze.json").read_text(
@@ -215,14 +221,14 @@ def load_qasper():
 
 private = {
     "A": {
-        "root": "E:/幻/Documents/八股-Echo测试/2026-09-21-default-budget20-cap-v1",
+        "root": str(pathlib.Path(args.private_a_root).resolve()),
         "freeze_sha256": "c4db57042f560c839662ea97c808b7ee06b55f504807e6fb54f484cff398e9c4",
         "run_receipt_sha256": "d1b6dd27587d1dc2f0f3851ad923387c0e55addd37d58894d0840b7ba85dd473",
         "private_score_sha256": "145f43b9b9750478ead4a3b66810ca1a180da3e1fa310b5bd117250f3164715f",
         "result": "default20-cap6 hybrid 190/196; 393/403; MRR@10 0.8557458698",
     },
     "B": {
-        "root": "E:/幻/Documents/八股-Echo测试/2026-09-21-budget20-followup-v2",
+        "root": str(pathlib.Path(args.private_b_root).resolve()),
         "freeze_sha256": "f754c8c29c54bc80f4d44d498a8a52e0495b034d69d8af7569bba615010f6769",
         "run_receipt_sha256": "50056d930a42a9ceffcec6554bcbfc6d76743432897731435d3cd0f64b28cf02",
         "private_score_sha256": "d036b3ce0a8975cb03d2aedab42cd41144db3f1ee002cf21637cfae52c9127f6",
