@@ -12,14 +12,14 @@ export const retrievalSchema = z
     minisearch_b: z.number().min(0).max(1).default(0.7),
     minisearch_d: z.number().min(0).max(100).default(0.5),
     topk: positive(100).default(10),
-    max_chunks_per_source: positive(100).default(3),
+    max_chunks_per_source: positive(100).default(6),
     bm25_candidates: positive(1000).default(60),
     dense_candidates: positive(1000).default(60),
     rrf_k: positive(1000).default(10),
     title_weight: z.number().min(0).max(20).default(2),
     bm25_weight: z.number().min(0).max(10).default(0.5),
     dense_weight: z.number().min(0).max(10).default(1),
-    max_context_chars: positive(100000).min(256).default(16000),
+    max_context_chars: positive(100000).min(256).default(20000),
     min_dense_similarity: z.number().min(-1).max(1).default(0.3),
   })
   .strict()

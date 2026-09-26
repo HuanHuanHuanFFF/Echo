@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "node": "v24.15.0",
+  "icu": "78.2",
+  "default_active": {
+    "chunker": "markdown-structure-v1",
+    "tokenizer": "icu-zh",
+    "embedding": "default",
+    "retrieval": "balanced"
+  },
+  "default_retrieval": {
+    "id": "balanced",
+    "mode": "hybrid",
+    "lexical_engine": "minisearch",
+    "minisearch_k": 1.2,
+    "minisearch_b": 0.7,
+    "minisearch_d": 0.5,
+    "topk": 10,
+    "max_chunks_per_source": 3,
+    "bm25_candidates": 60,
+    "dense_candidates": 60,
+    "rrf_k": 10,
+    "title_weight": 2,
+    "bm25_weight": 0.5,
+    "dense_weight": 1,
+    "max_context_chars": 16000,
+    "min_dense_similarity": 0.3
+  },
+  "strategy_sha256": "ac3e1686394fed2da44e1eb395a5b428407c760c3fe13686d26d8ff9b9120c24",
+  "runtime_layout": "copied dist + package.json; no examples/src in copied runtime; dependencies resolved from repository",
+  "preserved_explicit_existing_settings": true,
+  "cli_and_mcp_evidence_equal": true,
+  "exact_source_lines": true,
+  "fixture_unchanged": true,
+  "tested_mode": "bm25; hybrid defaults checked without a model call",
+  "new_embedding_calls": 0
+}

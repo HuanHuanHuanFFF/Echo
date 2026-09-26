@@ -1,12 +1,25 @@
 # Echo 文档入口
 
-更新日期：2026-09-21。
+更新日期：2026-09-26。
 
 Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前四阶段已合并并通过双平台 CI；第五阶段已完成独立安装、真实向量、100题开发及最终200题四臂对照；默认已确认新综合＋BM25 0.5＋RRF10，旧安装升级与整体Agent验收另列。安装使用从[README](../README.md)开始，当前配置以[v2 配置契约](design/configuration-profiles.md)为准。
 
 ## 当前默认与下一步
 
-- [MiniSearch默认采用与参数基线](project/2026-09-21-minisearch-default.md)：当前产品默认MiniSearch 7.2.0、取消匹配查询词乘数；k/b/d=1.2/0.7/0.5，其余新综合＋权重0.5/1＋RRF10保持。后续参数实验以此为起点。
+- [最终默认与精简初始化](project/2026-09-26-final-default-profile.md)：新综合、BM25/dense 0.5/1、RRF10、topk10、每篇6、预算20000；新初始化只保留一个切块策略和一个召回配置。
+
+- [QMD 私有 200 题首轮对照](evals/2026-09-25-qmd-private-comparison.md)：QMD 2.8.3 原生 MCP 各 200 次无重排/本地重排调用；正确文件与首次预览证据分开计分，模型与补读边界明确。
+- [QMD 公开固定单元全量对照](evals/2026-09-26-qmd-public-fixed-results.md)：FreshStack LangChain 203 题＋Godot 99 题全量；含索引审计、QMD 重排收益、Echo 配对区间与 3 道长问题上下文错误。
+- [Echo 与 Dify 全量对照结果](evals/2026-09-24-echo-dify-results.md)：两条件各3507题已核分，私有证据、QASPER和固定公开库分列；两位独立复查完成，不改产品默认。
+- [Echo 与 Dify 对照范围修订](evals/2026-09-24-echo-dify-scope-revision.md)：用户取消 Khoj 后续测试；原[三产品协议](evals/2026-09-22-product-comparison-protocol.md)保留为输入与历史执行依据。
+
+- [两组cap6公开全量评测协议](evals/2026-09-22-cap6-public-full-freeze.md)：固定现有评分与高召回组合，两组均每篇6、topk10、20k预算；公开331题扩展到3307题，结果已完成，见[全量结果](evals/2026-09-22-cap6-public-full-results.md)；产品默认保持。
+
+- [两组cap6公开全量评测结果](evals/2026-09-22-cap6-public-full-results.md)：3307题/6614次离线检索完成；按官方 FreshStack/QASPER/Du 评分与独立 audit 核验，旧331样本与其余2976题分列，产品默认保持。
+
+- [批量参数评测缓存更正](evals/2026-09-21-parameter-cache-correction.md)：缓存遗漏候选/评分参数，旧候选数、标题与阈值对照的无收益结论暂停采用；新两组按修复后的v2重跑，保留无效首批。
+
+- [MiniSearch默认采用与参数基线](project/2026-09-21-minisearch-default.md)：当前产品默认MiniSearch 7.2.0、取消匹配查询词乘数；k/b/d=1.2/0.7/0.5，其余新综合＋权重0.5/1＋RRF10保持；同日用户确认默认结果JSON预算上调至20000，每篇上限仍3。后续参数实验以此为起点。
 
 - [MiniSearch 六组参数探索](evals/2026-09-21-minisearch-parameter-exploration.md)：当前默认＋5组候选覆盖私有200主集、paired40单列和公开331题；结果为已开卷探索，不改产品默认，E盘保留逐题收据与官方评分。
 
@@ -15,6 +28,10 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 - [BM25现状与分词候选](research/2026-09-20-bm25-tokenizer-options.md)：公开全量显示词法信号有互补也有排序损失；ICU扩展词项、Jieba搜索模式与词典的适用边界已核对，未更换分词或宣称效果提升。
 
 ## 历史评测（各自条件保持冻结）
+
+- [20k补测cap5与高召回组合](evals/2026-09-21-budget20-cap5-recall-comparison.md)：缓存修复后沿用200＋331题重跑：当前cap5完整188/196，高召回20k为191/196；对照、精度/成本与无效首批均保留。
+
+- [当前默认20000预算：cap3/cap6](evals/2026-09-21-default-budget20-cap-comparison.md)：同一200主集与331公开题，固定0.5/1权重、RRF10；cap3→6完整176/196→190/196、平均上下文基本不变，QASPER完整48/78→60/78但F1下降；不改产品cap默认。
 
 - [MiniSearch取消匹配词乘数](evals/2026-09-21-minisearch-without-coverage.md)：331题已核分；仅取消乘数恢复Du纯BM25与LangChain混合的部分退化，QASPER完整50→48；保留默认k/b/d，双人复核及代码双平台CI通过；报告保留实验当时状态，后续产品采用见上方决定。
 
@@ -120,6 +137,7 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 
 ## 开发与当前契约
 
+- [架构概览与模块职责](architecture/README.md)：索引与检索路径、持久化和缓存、MCP 请求边界；含可浏览图及静态概览。
 - [阶段 1 工程基础验收](development/phase-01-foundation.md)
 - [配置与模块契约](design/configuration.md)
 - [安装开发入口](../README.md)
@@ -157,3 +175,7 @@ Echo 是面向个人 Markdown 知识库的 TypeScript＋SQLite 检索 MCP。前�
 - [标签冻结与首轮开发集BM25对照](evals/2026-09-16-frozen-labels-and-development-bm25.md)：100/200标签冻结、两切块开发结果与同题干扰；[公开统计指纹](evals/2026-09-16-development-bm25.manifest.json)。真实语义与最终评测仍待完成。
 
 - [真实向量准备与开发集语义对照](evals/2026-09-17-real-model-development.md)：真实索引与首轮开发语义对照已完成，结果复核及默认方案选择仍在进行；[用量与指纹](evals/2026-09-17-real-vector-preparation.manifest.json)。
+
+- [三产品对照恢复与执行边界](evals/2026-09-24-product-comparison-recovery.md)：运行恢复、实际证据映射与逐库冻结；正式比较尚未完成。
+
+- [产品对照运行恢复与模型批处理](evals/2026-09-24-product-runtime-recovery.md)：隔离运行修复、合并模型小批请求及真实探针验证。

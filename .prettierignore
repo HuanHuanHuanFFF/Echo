@@ -14,3 +14,4 @@ docs/design/agent-interface.md
 docs/research/
 docs/evals/2026-09-05-chroma-baseline.md
 docs/evals/*.jsonl
+docs/architecture/echo-architecture.html

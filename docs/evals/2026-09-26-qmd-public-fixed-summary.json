@@ -1,0 +1,533 @@
+{
+  "schema": "echo-qmd-public-fixed-summary-v1",
+  "date": "2026-09-26",
+  "protocol": {
+    "benchmark": "FreshStack fixed-unit retrieval",
+    "corpus_manifest_sha256": "478ef81433e860a80b59d30fa2dc65c09b7216c811cce83c6b003f27e6d3ec4b",
+    "question_count": 302,
+    "scopes": {
+      "langchain": {
+        "questions": 203,
+        "documents": 49505
+      },
+      "godot": {
+        "questions": 99,
+        "documents": 25477
+      }
+    },
+    "qmd_version": "2.8.3",
+    "embedding_model": "hf:Qwen/Qwen3-Embedding-0.6B-GGUF/Qwen3-Embedding-0.6B-Q8_0.gguf",
+    "reranker_model": "hf:ggml-org/Qwen3-Reranker-0.6B-Q8_0-GGUF/qwen3-reranker-0.6b-q8_0.gguf",
+    "query_expansion_model": "hf:tobil/qmd-query-expansion-1.7B-gguf/qmd-query-expansion-1.7B-q4_k_m.gguf",
+    "models_sha256": {
+      "hf_ggml-org_qwen3-reranker-0.6b-q8_0.gguf": "22C9979CE4FBCDC5ACDC310C6641C32797EFF1AA980B8F7A2DB8A8EA23429A48",
+      "hf_Qwen_Qwen3-Embedding-0.6B-Q8_0.gguf": "06507C7B42688469C4E7298B0A1E16DEFF06CAF291CF0A5B278C308249C3E439",
+      "hf_tobil_qmd-query-expansion-1.7B-q4_k_m.gguf": "000DFB1C06EFA6A049E9F64BA921C3740E2454F62ABAB6FA10E77BD30BB2BCC0"
+    },
+    "query_mode": "QMD native expansion + BM25/vector hybrid + RRF; default mode adds local reranking",
+    "no_rerank_definition": "Final reranker disabled; query expansion, BM25, dense retrieval, and RRF remain enabled",
+    "returned_limit": 50,
+    "candidate_limit": 120,
+    "echo_configured_return_limit": 120,
+    "paired_bootstrap": {
+      "unit": "query",
+      "iterations": 10000,
+      "seed": 20260926
+    },
+    "qmd_rerank_context_size_tokens": 4096,
+    "qmd_rerank_context_env": "QMD_RERANK_CONTEXT_SIZE unset; installed QMD default applies",
+    "api_calls": 0,
+    "indexing": {
+      "langchain": {
+        "elapsed": "approximately 3h 42m",
+        "database_size": "approximately 1.0 GB"
+      },
+      "godot": {
+        "embed_pass_elapsed_sum": "1h 19m 04s",
+        "database_size": "552.3 MB"
+      }
+    }
+  },
+  "index_audits": {
+    "langchain": {
+      "documents": 49505,
+      "exact_texts": 49505,
+      "unique_content_hashes": 44529,
+      "vector_chunks": 117121,
+      "missing_vector_hashes": 0,
+      "partial_vector_hashes": 0,
+      "vector_models": [
+        [
+          "hf:Qwen/Qwen3-Embedding-0.6B-GGUF/Qwen3-Embedding-0.6B-Q8_0.gguf",
+          117121
+        ]
+      ],
+      "embedding_model": "hf:Qwen/Qwen3-Embedding-0.6B-GGUF/Qwen3-Embedding-0.6B-Q8_0.gguf",
+      "corpus_manifest_sha256": "478ef81433e860a80b59d30fa2dc65c09b7216c811cce83c6b003f27e6d3ec4b",
+      "map_sha256": "6a6cbc71b238fccd190df4b6ffda3c7c3286c54bc3918c5d3cedca8196db4425"
+    },
+    "godot": {
+      "documents": 25477,
+      "exact_texts": 25477,
+      "unique_content_hashes": 24970,
+      "vector_chunks": 62852,
+      "missing_vector_hashes": 0,
+      "partial_vector_hashes": 0,
+      "vector_models": [
+        [
+          "hf:Qwen/Qwen3-Embedding-0.6B-GGUF/Qwen3-Embedding-0.6B-Q8_0.gguf",
+          62852
+        ]
+      ],
+      "embedding_model": "hf:Qwen/Qwen3-Embedding-0.6B-GGUF/Qwen3-Embedding-0.6B-Q8_0.gguf",
+      "corpus_manifest_sha256": "478ef81433e860a80b59d30fa2dc65c09b7216c811cce83c6b003f27e6d3ec4b",
+      "map_sha256": "9a475077bdb6cdfbf37a59a206344adcf2b02756f7a73b08e3909337360d6c5d"
+    }
+  },
+  "runs": {
+    "langchain": {
+      "no-rerank": {
+        "status": "complete",
+        "questions": 203,
+        "query_errors": 0,
+        "result_sha256": "3451ad658f705a24bd37aed6aa071172fdbeb0bc380ee47c73ece1db91900ca9",
+        "corpus_sha256": "2ff7decdfb682c7fcf07a30dc5043c8fe646df378c65a7121a6d206297d359ec",
+        "queries_sha256": "9b4f5a7e200263a011e8f79e402a5fab870f8263b0e54ca17152a4b92d6f8fc3",
+        "map_sha256": "6a6cbc71b238fccd190df4b6ffda3c7c3286c54bc3918c5d3cedca8196db4425",
+        "config_sha256": "13063dfab06f0b5ed331b63fed6af1ef47b95c23e64e7801e653fa1e05e30da4",
+        "started_at": "2026-09-25T21:54:02.665Z",
+        "finished_at": "2026-09-25T22:34:30.532Z",
+        "wall_duration_ms": 2427866,
+        "script_sha256": "2cdba937eb6c4af818cc4150c8fb22a78cca468833bff5e03b8563d86d7a9e5a"
+      },
+      "default": {
+        "status": "complete",
+        "questions": 203,
+        "query_errors": 3,
+        "result_sha256": "d96523360d8ab98c215a16f565b86b39b7abd598bf8ebfa17ee200b12c04d675",
+        "corpus_sha256": "2ff7decdfb682c7fcf07a30dc5043c8fe646df378c65a7121a6d206297d359ec",
+        "queries_sha256": "9b4f5a7e200263a011e8f79e402a5fab870f8263b0e54ca17152a4b92d6f8fc3",
+        "map_sha256": "6a6cbc71b238fccd190df4b6ffda3c7c3286c54bc3918c5d3cedca8196db4425",
+        "config_sha256": "13063dfab06f0b5ed331b63fed6af1ef47b95c23e64e7801e653fa1e05e30da4",
+        "mcp_request_timeout_ms": 600000,
+        "started_at": "2026-09-26T06:31:57.281Z",
+        "finished_at": "2026-09-26T09:08:18.834Z",
+        "wall_duration_ms": 9381551,
+        "stderr_truncation_warnings": 7,
+        "stderr_embedding_errors": 0,
+        "script_sha256": "23cc82c901c4a35318e83060a7727ca2ad9884845511acca868668f269ac59c1"
+      }
+    },
+    "godot": {
+      "no-rerank": {
+        "status": "complete",
+        "questions": 99,
+        "query_errors": 0,
+        "result_sha256": "b852732034e6fabf57b48bd118cb1d2e96d3e64d92f4318188e1ce9193627448",
+        "corpus_sha256": "7a9b4298afa291b4a78a2d8443c45f1fa7d50af4fd57e6a7abbb9151314399be",
+        "queries_sha256": "16d04521b076ffaf7f9fb1ca6ee4e480da27022c92d82ade2c0811817ba48bad",
+        "map_sha256": "9a475077bdb6cdfbf37a59a206344adcf2b02756f7a73b08e3909337360d6c5d",
+        "config_sha256": "1ac3cb69c91af5ac002eaa588155eb854b4885d54aad567a2c62c5681b327508",
+        "mcp_request_timeout_ms": 600000,
+        "started_at": "2026-09-26T10:46:29.785Z",
+        "finished_at": "2026-09-26T11:04:54.341Z",
+        "wall_duration_ms": 1104554,
+        "stderr_truncation_warnings": 0,
+        "stderr_embedding_errors": 0,
+        "script_sha256": "23cc82c901c4a35318e83060a7727ca2ad9884845511acca868668f269ac59c1"
+      },
+      "default": {
+        "status": "complete",
+        "questions": 99,
+        "query_errors": 0,
+        "result_sha256": "7b76c093839ef2ab4bf800a1084c7f5cbeadd49d04796f338b8af27fd116f102",
+        "corpus_sha256": "7a9b4298afa291b4a78a2d8443c45f1fa7d50af4fd57e6a7abbb9151314399be",
+        "queries_sha256": "16d04521b076ffaf7f9fb1ca6ee4e480da27022c92d82ade2c0811817ba48bad",
+        "map_sha256": "9a475077bdb6cdfbf37a59a206344adcf2b02756f7a73b08e3909337360d6c5d",
+        "config_sha256": "1ac3cb69c91af5ac002eaa588155eb854b4885d54aad567a2c62c5681b327508",
+        "mcp_request_timeout_ms": 600000,
+        "started_at": "2026-09-26T11:05:34.554Z",
+        "finished_at": "2026-09-26T11:58:54.367Z",
+        "wall_duration_ms": 3199812,
+        "stderr_truncation_warnings": 0,
+        "stderr_embedding_errors": 0,
+        "script_sha256": "23cc82c901c4a35318e83060a7727ca2ad9884845511acca868668f269ac59c1"
+      }
+    }
+  },
+  "metrics": {
+    "langchain": {
+      "no-rerank": {
+        "questions": 203,
+        "documents": 49505,
+        "alpha_nDCG@10": 0.2169,
+        "nDCG@10": 0.1424550408858774,
+        "Coverage@20": 0.4968,
+        "Recall@10": 0.1297338477137318,
+        "Recall@50": 0.27011063114756906,
+        "official_recall@10": 0.1297,
+        "official_recall@50": 0.2701,
+        "MRR@10": 0.3276837634401353,
+        "Hit@10": 0.7733990147783252,
+        "query_errors": 0,
+        "mean_returned": 49.3743842364532,
+        "mean_query_chars": 1963,
+        "latency_ms": {
+          "mean": 11950.408866995074,
+          "p50": 7374,
+          "p95": 31459,
+          "max": 36842
+        }
+      },
+      "default": {
+        "questions": 203,
+        "documents": 49505,
+        "alpha_nDCG@10": 0.2426,
+        "nDCG@10": 0.167525858947657,
+        "Coverage@20": 0.5634,
+        "Recall@10": 0.16335133584277095,
+        "Recall@50": 0.30685488189613963,
+        "official_recall@10": 0.1634,
+        "official_recall@50": 0.3069,
+        "MRR@10": 0.35917375643821686,
+        "Hit@10": 0.8029556650246306,
+        "query_errors": 3,
+        "mean_returned": 48.82266009852217,
+        "mean_query_chars": 1963,
+        "latency_ms": {
+          "mean": 46188.19704433498,
+          "p50": 38517,
+          "p95": 92780,
+          "max": 120966
+        }
+      }
+    },
+    "godot": {
+      "no-rerank": {
+        "questions": 99,
+        "documents": 25477,
+        "alpha_nDCG@10": 0.1616,
+        "nDCG@10": 0.12466068085748852,
+        "Coverage@20": 0.3646,
+        "Recall@10": 0.1404914183223593,
+        "Recall@50": 0.2994292434483822,
+        "official_recall@10": 0.1405,
+        "official_recall@50": 0.2994,
+        "MRR@10": 0.2550425763818017,
+        "Hit@10": 0.7171717171717171,
+        "query_errors": 0,
+        "mean_returned": 49.37373737373738,
+        "mean_query_chars": 1456.6060606060605,
+        "latency_ms": {
+          "mean": 11137.525252525253,
+          "p50": 6471,
+          "p95": 27113,
+          "max": 37511
+        }
+      },
+      "default": {
+        "questions": 99,
+        "documents": 25477,
+        "alpha_nDCG@10": 0.2331,
+        "nDCG@10": 0.18479253862248163,
+        "Coverage@20": 0.4768,
+        "Recall@10": 0.20417697518973435,
+        "Recall@50": 0.32499294225769504,
+        "official_recall@10": 0.2042,
+        "official_recall@50": 0.325,
+        "MRR@10": 0.34520951733777666,
+        "Hit@10": 0.7474747474747475,
+        "query_errors": 0,
+        "mean_returned": 49.45454545454545,
+        "mean_query_chars": 1456.6060606060605,
+        "latency_ms": {
+          "mean": 32294.747474747473,
+          "p50": 29985,
+          "p95": 55690,
+          "max": 81988
+        }
+      }
+    }
+  },
+  "comparisons": {
+    "langchain": {
+      "rerank_vs_no_rerank": {
+        "alpha-nDCG@10": {
+          "left_minus_right": 0.025644365443729913,
+          "bootstrap_ci95": [-0.0018694152406422372, 0.05360697270784227],
+          "wins": 81,
+          "losses": 67,
+          "ties": 55
+        },
+        "nDCG@10": {
+          "left_minus_right": 0.02507081806177959,
+          "bootstrap_ci95": [0.00454922207776851, 0.046096988146981585],
+          "wins": 84,
+          "losses": 64,
+          "ties": 55
+        },
+        "Coverage@20": {
+          "left_minus_right": 0.0666665024630542,
+          "bootstrap_ci95": [0.021182019704433497, 0.11297206896551724],
+          "wins": 40,
+          "losses": 21,
+          "ties": 142
+        },
+        "Recall@10": {
+          "left_minus_right": 0.03361748812903915,
+          "bootstrap_ci95": [0.008315301066456544, 0.059944915505411],
+          "wins": 70,
+          "losses": 44,
+          "ties": 89
+        },
+        "Recall@50": {
+          "left_minus_right": 0.0367442507485706,
+          "bootstrap_ci95": [0.01699441473055721, 0.05918500681289016],
+          "wins": 56,
+          "losses": 23,
+          "ties": 124
+        },
+        "MRR@10": {
+          "left_minus_right": 0.03148999299808158,
+          "bootstrap_ci95": [-0.011989818622007454, 0.07358669884588688],
+          "wins": 79,
+          "losses": 51,
+          "ties": 73
+        }
+      },
+      "qmd_default_vs_echo": {
+        "alpha-nDCG@10": {
+          "left_minus_right": -0.10916656104470204,
+          "bootstrap_ci95": [-0.14228903062998652, -0.07592466918068434],
+          "wins": 48,
+          "losses": 117,
+          "ties": 38
+        },
+        "nDCG@10": {
+          "left_minus_right": -0.0869440198426092,
+          "bootstrap_ci95": [-0.11287184499499643, -0.06178760591565651],
+          "wins": 43,
+          "losses": 122,
+          "ties": 38
+        },
+        "Coverage@20": {
+          "left_minus_right": -0.10959433262960355,
+          "bootstrap_ci95": [-0.15844500586441473, -0.06082576120103213],
+          "wins": 25,
+          "losses": 64,
+          "ties": 114
+        },
+        "Recall@10": {
+          "left_minus_right": -0.07524640595771037,
+          "bootstrap_ci95": [-0.10115633450440265, -0.05102827078742519],
+          "wins": 27,
+          "losses": 93,
+          "ties": 83
+        },
+        "Recall@50": {
+          "left_minus_right": -0.14572137103209482,
+          "bootstrap_ci95": [-0.17380057714788213, -0.11801956453883897],
+          "wins": 19,
+          "losses": 133,
+          "ties": 51
+        },
+        "MRR@10": {
+          "left_minus_right": -0.15127272100333447,
+          "bootstrap_ci95": [-0.2084401370093305, -0.09481321499729589],
+          "wins": 45,
+          "losses": 99,
+          "ties": 59
+        }
+      }
+    },
+    "godot": {
+      "rerank_vs_no_rerank": {
+        "alpha-nDCG@10": {
+          "left_minus_right": 0.0714976690877356,
+          "bootstrap_ci95": [0.04039574905728644, 0.10364327713158704],
+          "wins": 43,
+          "losses": 13,
+          "ties": 43
+        },
+        "nDCG@10": {
+          "left_minus_right": 0.0601318577649931,
+          "bootstrap_ci95": [0.03524822642600012, 0.08633123874304612],
+          "wins": 43,
+          "losses": 14,
+          "ties": 42
+        },
+        "Coverage@20": {
+          "left_minus_right": 0.11212131313131313,
+          "bootstrap_ci95": [0.057407373737373736, 0.1710439393939394],
+          "wins": 23,
+          "losses": 4,
+          "ties": 72
+        },
+        "Recall@10": {
+          "left_minus_right": 0.06368555686737505,
+          "bootstrap_ci95": [0.03825994432055038, 0.09020435232556445],
+          "wins": 33,
+          "losses": 3,
+          "ties": 63
+        },
+        "Recall@50": {
+          "left_minus_right": 0.02556369880931284,
+          "bootstrap_ci95": [0.0026841092630566278, 0.0488707036952651],
+          "wins": 23,
+          "losses": 7,
+          "ties": 69
+        },
+        "MRR@10": {
+          "left_minus_right": 0.09016694095597495,
+          "bootstrap_ci95": [0.036705857547898645, 0.1438869596471336],
+          "wins": 41,
+          "losses": 14,
+          "ties": 44
+        }
+      },
+      "qmd_default_vs_echo": {
+        "alpha-nDCG@10": {
+          "left_minus_right": -0.0616652458359752,
+          "bootstrap_ci95": [-0.10333332872148855, -0.019298749280000825],
+          "wins": 21,
+          "losses": 45,
+          "ties": 33
+        },
+        "nDCG@10": {
+          "left_minus_right": -0.0550626191078664,
+          "bootstrap_ci95": [-0.09082144317684486, -0.018859432919016608],
+          "wins": 21,
+          "losses": 45,
+          "ties": 33
+        },
+        "Coverage@20": {
+          "left_minus_right": -0.07020222222222222,
+          "bootstrap_ci95": [-0.13518555555555556, -0.006902659932659926],
+          "wins": 15,
+          "losses": 26,
+          "ties": 58
+        },
+        "Recall@10": {
+          "left_minus_right": -0.04979198838847961,
+          "bootstrap_ci95": [-0.0868462094937374, -0.014290202089245151],
+          "wins": 13,
+          "losses": 28,
+          "ties": 58
+        },
+        "Recall@50": {
+          "left_minus_right": -0.12854225784847795,
+          "bootstrap_ci95": [-0.17601008183145345, -0.08191691349586086],
+          "wins": 11,
+          "losses": 54,
+          "ties": 34
+        },
+        "MRR@10": {
+          "left_minus_right": -0.1396750425467832,
+          "bootstrap_ci95": [-0.21296875220412922, -0.06824464914669284],
+          "wins": 19,
+          "losses": 40,
+          "ties": 40
+        }
+      }
+    }
+  },
+  "rerank_context_failures": [
+    {
+      "query_id": "77457590",
+      "title": "creating chat agent with langchain and openai getting no attribute error",
+      "query_chars": 12090,
+      "minimum_context_tokens_reported": 5495,
+      "error": "The input lengths of some of the given documents exceed the context size. Try to increase the context size to at least 5495 or use another model that supports longer contexts."
+    },
+    {
+      "query_id": "77759618",
+      "title": "TypeError: expected string or buffer - Langchain, OpenAI Embeddings",
+      "query_chars": 13518,
+      "minimum_context_tokens_reported": 6217,
+      "error": "The input lengths of some of the given documents exceed the context size. Try to increase the context size to at least 6217 or use another model that supports longer contexts."
+    },
+    {
+      "query_id": "78439451",
+      "title": "create_sql_agent with AzureOpenAI?",
+      "query_chars": 13253,
+      "minimum_context_tokens_reported": 4807,
+      "error": "The input lengths of some of the given documents exceed the context size. Try to increase the context size to at least 4807 or use another model that supports longer contexts."
+    }
+  ],
+  "echo_baseline": {
+    "langchain": {
+      "questions": 203,
+      "configured_return_limit": 120,
+      "metrics": {
+        "nDCG@10": 0.2544698787902662,
+        "Recall@10": 0.23859774180048132,
+        "MRR@10": 0.5104464774415514,
+        "Hit@10": 0.7881773399014779,
+        "Recall@50": 0.45257625292823445,
+        "alpha-nDCG@10": 0.3517568747812155,
+        "Coverage@10": 0.5829697396199859
+      },
+      "official_rounded": {
+        "alpha-nDCG@10": 0.3518,
+        "Coverage@10": 0.583,
+        "Coverage@20": 0.673
+      }
+    },
+    "godot": {
+      "questions": 99,
+      "configured_return_limit": 120,
+      "metrics": {
+        "nDCG@10": 0.23985515773034802,
+        "Recall@10": 0.25396896357821397,
+        "MRR@10": 0.48488455988455986,
+        "Hit@10": 0.6767676767676768,
+        "Recall@50": 0.453535200106173,
+        "alpha-nDCG@10": 0.29474367019936715,
+        "Coverage@10": 0.4348484848484849
+      },
+      "official_rounded": {
+        "alpha-nDCG@10": 0.2947,
+        "Coverage@10": 0.4348,
+        "Coverage@20": 0.547
+      }
+    },
+    "model": {
+      "name": "qwen3.7-text-embedding",
+      "dimensions": 1024
+    },
+    "retrieval_config": {
+      "lexical_engine": "minisearch",
+      "topk": 10,
+      "max_chunks_per_source": 6,
+      "bm25_candidates": 60,
+      "dense_candidates": 60,
+      "title_weight": 2,
+      "dense_weight": 1,
+      "min_dense_similarity": 0.3,
+      "max_context_chars": 20000,
+      "mode": "hybrid",
+      "minisearch_k": 1.2,
+      "minisearch_b": 0.7,
+      "minisearch_d": 0.5,
+      "bm25_weight": 0.5,
+      "rrf_k": 10,
+      "fixed_return_limit": 120
+    }
+  },
+  "interpretation": {
+    "reranker_effect": "Default reranking improved every reported metric on both datasets; paired bootstrap intervals for LangChain alpha-nDCG@10 and MRR@10 include zero, while the other four exclude zero. All six Godot intervals exclude zero.",
+    "echo_comparison": "QMD default was lower than Echo on all compared metrics on both test sets; this is a system-level comparison because embedding models and retrieval pipelines differ.",
+    "failure_scoring": "All 203 LangChain questions remain in the denominator; the three native rerank errors contribute zero results and are separately counted.",
+    "scope_limit": "FreshStack LangChain and Godot are technical/code-support corpora, not personal-notes or diary benchmarks."
+  },
+  "excluded_attempts": {
+    "langchain_default_initial": {
+      "status": "partial; excluded from metrics",
+      "questions_recorded": 19,
+      "mcp_request_timeout_ms": 60000,
+      "archive": "runs-public/attempts/default-request-timeout-60s-partial/langchain.jsonl",
+      "final_run_restarted_from_zero": true,
+      "final_mcp_request_timeout_ms": 600000
+    }
+  }
+}

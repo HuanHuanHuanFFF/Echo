@@ -48,8 +48,6 @@ export async function initializeWorkspace(path: string) {
     );
     const files: Record<string, string> = {
       'chunkers/markdown-structure-v1.mjs': structureStrategy,
-      'chunkers/heading-1000.mjs': headingStrategy(1000),
-      'chunkers/heading-500.mjs': headingStrategy(500),
       'tokenizers/icu-zh.mjs': defaultTokenizer,
       'config/embedding/default.json': json({
         id: 'default',
@@ -60,7 +58,6 @@ export async function initializeWorkspace(path: string) {
         id: 'balanced',
         ...retrievalSchema.parse({}),
       }),
-      'config/retrieval/bm25.json': json({ id: 'bm25', mode: 'bm25' }),
       'config/sources.json': json({ collections: [] }),
       'config/runtime.json': json({
         search_timeout_ms: 120000,
@@ -103,7 +100,7 @@ export async function initializeWorkspace(path: string) {
     status: 'ok',
     config: configPath,
     created,
-    next: 'Configure config/sources.json and embedding/default.json, then run echo-mcp sync. For local keyword search select retrieval bm25.',
+    next: 'Configure config/sources.json and config/embedding/default.json, then run echo-mcp sync. For local keyword search set mode=bm25 in config/retrieval/balanced.json.',
   };
 }
 

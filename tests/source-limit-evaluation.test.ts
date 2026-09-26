@@ -54,9 +54,15 @@ describe('single source-limit experiment', () => {
       const defaults = retrievalSchema.parse({});
       const historical = retrievalSchema.parse({
         rrf_k: 60,
+        max_chunks_per_source: 3,
         max_context_chars: 12000,
       });
-      const reference = { ...defaults, rrf_k: 10 };
+      const reference = {
+        ...defaults,
+        rrf_k: 10,
+        max_context_chars: 16000,
+        max_chunks_per_source: 3,
+      };
       const candidate = experimentRetrieval(historical, name, weight);
       expect(candidate).toEqual({ ...reference, bm25_weight: weight });
       expect(experimentMetadata(name).values).toEqual([weight]);
@@ -98,9 +104,14 @@ describe('single source-limit experiment', () => {
     (name, field, value) => {
       const historical = retrievalSchema.parse({
         rrf_k: 60,
+        max_chunks_per_source: 3,
         max_context_chars: 12000,
       });
-      const baseline = retrievalSchema.parse({ rrf_k: 30 });
+      const baseline = retrievalSchema.parse({
+        rrf_k: 30,
+        max_chunks_per_source: 3,
+        max_context_chars: 16000,
+      });
       const candidate = experimentRetrieval(historical, name, value);
       expect(candidate).toEqual({ ...baseline, [field]: value });
       expect(experimentMetadata(name).values).toEqual([value]);
@@ -141,12 +152,15 @@ describe('single source-limit experiment', () => {
   it('runs only RRF40 at the adopted16000 budget and leaves product defaults unchanged', () => {
     const frozenBase = retrievalSchema.parse({
       rrf_k: 60,
+      max_chunks_per_source: 3,
       max_context_chars: 12000,
     });
     const current = retrievalSchema.parse({});
     expect(experimentRetrieval(frozenBase, 'rrf40-budget16000', 40)).toEqual({
       ...current,
+      max_chunks_per_source: 3,
       rrf_k: 40,
+      max_context_chars: 16000,
     });
     expect(experimentMetadata('rrf40-budget16000').values).toEqual([40]);
     expect(experimentMetadata('rrf40-budget16000').authorization).toContain(
@@ -160,7 +174,11 @@ describe('single source-limit experiment', () => {
     ).toThrow();
   });
   it('runs only the explicitly requested joint condition without changing other values', () => {
-    const base = retrievalSchema.parse({ rrf_k: 60, max_context_chars: 12000 });
+    const base = retrievalSchema.parse({
+      rrf_k: 60,
+      max_context_chars: 12000,
+      max_chunks_per_source: 3,
+    });
     const joint = experimentRetrieval(base, 'rrf-budget-combined', 'joint');
     expect(joint).toEqual({ ...base, rrf_k: 30, max_context_chars: 16000 });
     expect(experimentMetadata('rrf-budget-combined').values).toEqual(['joint']);
@@ -174,7 +192,11 @@ describe('single source-limit experiment', () => {
     ['dense-threshold', 'min_dense_similarity', 0.25],
     ['context-budget', 'max_context_chars', 16000],
   ] as const)('isolates %s from the same baseline', (name, field, value) => {
-    const base = retrievalSchema.parse({ rrf_k: 60, max_context_chars: 12000 }),
+    const base = retrievalSchema.parse({
+        rrf_k: 60,
+        max_context_chars: 12000,
+        max_chunks_per_source: 3,
+      }),
       before = structuredClone(base);
     const candidate = experimentRetrieval(base, name, value);
     expect(candidate).toEqual({ ...base, [field]: value });
@@ -188,11 +210,11 @@ describe('single source-limit experiment', () => {
   });
   it('permits per-request response-budget overrides without mutating defaults', () => {
     const base = retrievalSchema.parse({});
-    const result = retrievalOptions(base, { max_context_chars: 20000 });
-    expect(result.max_context_chars).toBe(20000);
-    expect(base.max_context_chars).toBe(16000);
+    const result = retrievalOptions(base, { max_context_chars: 24000 });
+    expect(result.max_context_chars).toBe(24000);
+    expect(base.max_context_chars).toBe(20000);
     expect(result.topk).toBe(10);
-    expect(result.max_chunks_per_source).toBe(3);
+    expect(result.max_chunks_per_source).toBe(6);
   });
   it('checks the total request plus response budget and permits only its derived override', () => {
     const payload = {

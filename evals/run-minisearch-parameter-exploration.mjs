@@ -81,6 +81,42 @@ async function writeJsonLines(file, rows) {
 }
 
 const arms = Object.freeze({
+  'default20-cap5': makeOtherParamArm(
+    'default20-cap5',
+    { max_chunks_per_source: 5, max_context_chars: 20000 },
+    '固定当前默认BM25=0.5、dense=1、RRF10、预算20000，补测cap5。',
+    { bm25_weight: 0.5 },
+  ),
+  'recall20-cap6': makeOtherParamArm(
+    'recall20-cap6',
+    { max_chunks_per_source: 6, max_context_chars: 20000 },
+    '复测此前BM25=0.31、dense=0.8、RRF5、cap6高召回组合，仅提高累计预算至20000。',
+    { bm25_weight: 0.31, dense_weight: 0.8, rrf_k: 5 },
+  ),
+  'public-A': makeOtherParamArm(
+    'public-A',
+    { max_chunks_per_source: 6, max_context_chars: 20000 },
+    '公开全量主臂A：新综合1.0.1、MiniSearch无匹配词乘数、BM25=0.5、dense=1、RRF10、cap6、预算20000。',
+    { bm25_weight: 0.5, dense_weight: 1, rrf_k: 10 },
+  ),
+  'public-B': makeOtherParamArm(
+    'public-B',
+    { max_chunks_per_source: 6, max_context_chars: 20000 },
+    '公开全量主臂B：除BM25=0.31、dense=0.8、RRF5外与公开全量主臂A相同。',
+    { bm25_weight: 0.31, dense_weight: 0.8, rrf_k: 5 },
+  ),
+  'default20-cap3': makeOtherParamArm(
+    'default20-cap3',
+    { max_chunks_per_source: 3, max_context_chars: 20000 },
+    '当前产品默认：BM25=0.5、dense=1、RRF10、预算20000、cap3。',
+    { bm25_weight: 0.5 },
+  ),
+  'default20-cap6': makeOtherParamArm(
+    'default20-cap6',
+    { max_chunks_per_source: 6, max_context_chars: 20000 },
+    '固定当前产品其他默认，只将cap3提高到cap6。',
+    { bm25_weight: 0.5 },
+  ),
   default: Object.freeze({
     id: 'default',
     minisearch_k: 1.2,
@@ -581,7 +617,18 @@ const finalCombinationArmIds = [
   'bm25w031-cap6-rrf10',
   'bm25w031-cap4-k16-rrf05-dw08',
 ];
-let armIds = Object.keys(arms);
+const budget20CapArmIds = ['default20-cap3', 'default20-cap6'];
+const budget20FollowupArmIds = ['default20-cap5', 'recall20-cap6'];
+const publicFullArmIds = ['public-A', 'public-B'];
+const historicalArmIds = Object.keys(arms).filter(
+  (id) =>
+    ![
+      ...budget20CapArmIds,
+      ...budget20FollowupArmIds,
+      ...publicFullArmIds,
+    ].includes(id),
+);
+let armIds = historicalArmIds;
 const defaultArm = arms.default;
 const fixedRetrieval = Object.freeze({
   lexical_engine: 'minisearch',
@@ -899,15 +946,16 @@ function filterKey(filters) {
 
 async function lane(context, queryId, text, filters, arm, mode) {
   text = text.trim();
-  const key = compact([
-    queryId,
-    text,
-    filterKey(filters),
-    mode,
-    arm.minisearch_k,
-    arm.minisearch_b,
-    arm.minisearch_d,
-  ]);
+  const options = armOptions(arm, mode);
+  // Only final packing limits are irrelevant to candidate generation/scoring.
+  // Keep every other effective option in the key, including RRF metadata.
+  const {
+    topk: _topk,
+    max_chunks_per_source: _sourceCap,
+    max_context_chars: _budget,
+    ...candidateOptions
+  } = options;
+  const key = compact([queryId, text, filterKey(filters), candidateOptions]);
   if (context.laneCache.has(key)) return context.laneCache.get(key);
   const result = await retrieveQuery(
     context.db,
@@ -915,7 +963,7 @@ async function lane(context, queryId, text, filters, arm, mode) {
     queryId,
     text,
     filters ?? {},
-    armOptions(arm, mode),
+    options,
     mode === 'dense' ? context.provider : null,
     undefined,
     undefined,
@@ -1405,7 +1453,7 @@ async function runPublicRankingScope({
         id,
         text,
         filters,
-        defaultArm,
+        arm,
         'dense',
       );
       const hy = fuse(id, bm, den, arm);
@@ -1419,11 +1467,19 @@ async function runPublicRankingScope({
           id,
           query_terms: await context.index.tokenize(text),
           dense: laneExport(den),
-          [armId]: { bm25: laneExport(bm), hybrid: laneExport(hy) },
+          [armId]: {
+            bm25: laneExport(bm),
+            dense: laneExport(den),
+            hybrid: laneExport(hy),
+          },
         });
       else {
         const pool = pools.find((item) => item.id === id);
-        pool[armId] = { bm25: laneExport(bm), hybrid: laneExport(hy) };
+        pool[armId] = {
+          bm25: laneExport(bm),
+          dense: laneExport(den),
+          hybrid: laneExport(hy),
+        };
       }
     }
     await writeCondition(`${armId}-bm25`, bm25Rows);
@@ -1798,6 +1854,26 @@ async function buildFreeze(privateRoot, publicRoot, out, variant = 'v1') {
       'Do not change product defaults from this experiment.',
     ],
   };
+  if (variant === 'budget20-cap-v1' || variant === 'budget20-followup-v1') {
+    freeze.fixed.max_context_chars_utf16 = 20000;
+    delete freeze.fixed.max_chunks_per_source;
+    freeze.varied =
+      variant === 'budget20-cap-v1'
+        ? { max_chunks_per_source: [3, 6] }
+        : {
+            max_chunks_per_source: [5, 6],
+            bm25_weight: [0.5, 0.31],
+            dense_weight: [1, 0.8],
+            rrf_k: [10, 5],
+          };
+    if (variant === 'budget20-followup-v1') delete freeze.fixed.dense_weight;
+    freeze.reference = {
+      label: 'dense-reference',
+      max_chunks_per_source: 3,
+      max_context_chars_utf16: 16000,
+      role: 'Historical diagnostic only; not a same-budget comparison',
+    };
+  }
   const distHashes = {};
   for (const name of [
     'config.js',
@@ -1991,6 +2067,8 @@ async function execute(privateRoot, publicRoot, out, mode) {
   const freeze = await readJson(path.join(out, 'freeze.json'));
   await verifyFreezeInputs(freeze, privateRoot, publicRoot, false);
   const vectorBeforeSha =
+    mode === 'budget20-cap' ||
+    mode === 'budget20-followup' ||
     mode === 'full' ||
     mode === 'extension' ||
     mode === 'extension2' ||
@@ -2183,6 +2261,39 @@ async function main() {
     'Usage: node evals/run-minisearch-parameter-exploration.mjs PRIVATE_ROOT PUBLIC_ROOT OUT [freeze|smoke|full]',
   );
   const out = path.resolve(outArg);
+  const followupBatch =
+    mode === 'freeze-budget20-followup' || mode === 'budget20-followup';
+  if (
+    mode === 'freeze-budget20-cap' ||
+    mode === 'budget20-cap' ||
+    followupBatch
+  ) {
+    armIds = followupBatch ? budget20FollowupArmIds : budget20CapArmIds;
+    globalThis.fetch = async () => {
+      throw new Error('Network forbidden in budget20-cap replay');
+    };
+    if (mode === 'freeze-budget20-cap' || mode === 'freeze-budget20-followup') {
+      assert.ok(
+        !(await fs.stat(out).catch(() => null)),
+        'Output directory already exists',
+      );
+      await buildFreeze(
+        path.resolve(privateRoot),
+        path.resolve(publicRoot),
+        out,
+        followupBatch ? 'budget20-followup-v1' : 'budget20-cap-v1',
+      );
+      console.log(
+        JSON.stringify({ status: 'frozen', output: out, arms: armIds }),
+      );
+      return;
+    }
+    const frozen = await readJson(path.join(out, 'freeze.json'));
+    assert.deepEqual(
+      frozen.arms,
+      Object.fromEntries(armIds.map((id) => [id, arms[id]])),
+    );
+  }
   if (
     mode === 'freeze' ||
     mode === 'freeze-extension' ||
@@ -2214,7 +2325,7 @@ async function main() {
                       ? cap6PlusArmIds
                       : mode === 'freeze-final-combos'
                         ? finalCombinationArmIds
-                        : Object.keys(arms);
+                        : historicalArmIds;
     assert.ok(
       !(await fs.stat(out).catch(() => null)),
       'Output directory already exists',
@@ -2350,4 +2461,29 @@ if (
 )
   await main();
 
-export { arms, discoverTables, fuse, requestFor };
+function setArmIdsForExternal(ids) {
+  armIds = [...ids];
+}
+
+export {
+  armOptions,
+  makeContext,
+  closeContext,
+  queryCandidates,
+  loadPrivateVectorCache,
+  createPrivateProvider,
+  arms,
+  discoverTables,
+  fuse,
+  requestFor,
+  lane,
+  publicPaths,
+  publicQueryText,
+  publicQueryId,
+  loadPublicQueries,
+  runPublicRankingScope,
+  runQasper,
+  makeEmbeddingConfig,
+  createPublicProvider,
+  setArmIdsForExternal,
+};

@@ -24,6 +24,7 @@ import { syncIndex } from '../src/sync.js';
 import { configurationRuntime } from '../src/config-runtime.js';
 import { createLogger } from '../src/logging.js';
 import { runEvaluation } from '../src/evaluation.js';
+import { installOptionalProfiles } from './helpers/optional-profiles.js';
 const dirs: string[] = [];
 afterEach(async () => {
   for (const dir of dirs.splice(0))
@@ -36,6 +37,7 @@ async function fixture() {
   dirs.push(dir);
   const path = join(dir, 'echo.config.json');
   await initializeWorkspace(path);
+  await installOptionalProfiles(dir);
   await mkdir(join(dir, 'notes'));
   await writeFile(
     join(dir, 'notes/a.md'),
@@ -75,7 +77,7 @@ it('CLI initializes, discovers, switches and shows profiles without exposing key
   expect(show.embedding.api_key_env).toBe('ECHO_EMBEDDING_API_KEY');
   expect(show.retrieval.mode).toBe('bm25');
   expect(show.retrieval.rrf_k).toBe(10);
-  expect(show.retrieval.max_context_chars).toBe(16000);
+  expect(show.retrieval.max_context_chars).toBe(20000);
   expect(show).not.toHaveProperty('api_key');
   expect(
     JSON.parse((await run('search', '--query', 'apple')).stdout).results.length,

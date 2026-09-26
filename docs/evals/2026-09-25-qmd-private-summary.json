@@ -1,0 +1,173 @@
+{
+  "schema": "echo-qmd-mcp-private-score-v1",
+  "corpus_manifest_sha256": "478ef81433e860a80b59d30fa2dc65c09b7216c811cce83c6b003f27e6d3ec4b",
+  "context": "One native QMD MCP query per parent, 300-character snippets before get; same frozen private questions and 20k common packing",
+  "modes": {
+    "rrf": {
+      "questions": 200,
+      "answerable": 196,
+      "no_answer": 4,
+      "facts": 403,
+      "evidence_complete": 4,
+      "evidence_facts": 19,
+      "evidence_hit": 12,
+      "evidence_rr_sum": 7.95,
+      "file_complete": 188,
+      "file_facts": 387,
+      "file_hit": 191,
+      "file_rr_sum": 183.25000000000003,
+      "no_answer_nonempty": 4,
+      "native_calls": 200,
+      "native_errors": 3,
+      "candidate_unmapped": 0,
+      "selected_unmapped": 0,
+      "total_context_chars": 756278,
+      "total_results": 1970,
+      "scopes": {
+        "A-test": {
+          "questions": 50,
+          "answerable": 48,
+          "evidence_complete": 3,
+          "evidence_facts": 15,
+          "file_complete": 47,
+          "file_facts": 123,
+          "native_errors": 0,
+          "candidate_unmapped": 0
+        },
+        "B-test": {
+          "questions": 35,
+          "answerable": 35,
+          "evidence_complete": 1,
+          "evidence_facts": 1,
+          "file_complete": 35,
+          "file_facts": 65,
+          "native_errors": 0,
+          "candidate_unmapped": 0
+        },
+        "C-test": {
+          "questions": 25,
+          "answerable": 25,
+          "evidence_complete": 0,
+          "evidence_facts": 1,
+          "file_complete": 25,
+          "file_facts": 46,
+          "native_errors": 0,
+          "candidate_unmapped": 0
+        },
+        "D-test": {
+          "questions": 30,
+          "answerable": 30,
+          "evidence_complete": 0,
+          "evidence_facts": 0,
+          "file_complete": 29,
+          "file_facts": 56,
+          "native_errors": 1,
+          "candidate_unmapped": 0
+        },
+        "mixed-test": {
+          "questions": 60,
+          "answerable": 58,
+          "evidence_complete": 0,
+          "evidence_facts": 2,
+          "file_complete": 52,
+          "file_facts": 97,
+          "native_errors": 2,
+          "candidate_unmapped": 0
+        }
+      },
+      "evidence_mrr": 0.04056122448979592,
+      "file_mrr": 0.9349489795918369,
+      "mean_context_chars": 3781.39,
+      "mean_results": 9.85,
+      "latency_ms": {
+        "mean": 251.41,
+        "p50": 41,
+        "p95": 79,
+        "max": 8778
+      }
+    },
+    "rerank": {
+      "questions": 200,
+      "answerable": 196,
+      "no_answer": 4,
+      "facts": 403,
+      "evidence_complete": 4,
+      "evidence_facts": 20,
+      "evidence_hit": 13,
+      "evidence_rr_sum": 8.75,
+      "file_complete": 189,
+      "file_facts": 388,
+      "file_hit": 191,
+      "file_rr_sum": 183.33333333333334,
+      "no_answer_nonempty": 4,
+      "native_calls": 200,
+      "native_errors": 3,
+      "candidate_unmapped": 0,
+      "selected_unmapped": 0,
+      "total_context_chars": 755396,
+      "total_results": 1970,
+      "scopes": {
+        "A-test": {
+          "questions": 50,
+          "answerable": 48,
+          "evidence_complete": 3,
+          "evidence_facts": 16,
+          "file_complete": 47,
+          "file_facts": 123,
+          "native_errors": 0,
+          "candidate_unmapped": 0
+        },
+        "B-test": {
+          "questions": 35,
+          "answerable": 35,
+          "evidence_complete": 1,
+          "evidence_facts": 1,
+          "file_complete": 35,
+          "file_facts": 65,
+          "native_errors": 0,
+          "candidate_unmapped": 0
+        },
+        "C-test": {
+          "questions": 25,
+          "answerable": 25,
+          "evidence_complete": 0,
+          "evidence_facts": 1,
+          "file_complete": 25,
+          "file_facts": 46,
+          "native_errors": 0,
+          "candidate_unmapped": 0
+        },
+        "D-test": {
+          "questions": 30,
+          "answerable": 30,
+          "evidence_complete": 0,
+          "evidence_facts": 0,
+          "file_complete": 29,
+          "file_facts": 56,
+          "native_errors": 1,
+          "candidate_unmapped": 0
+        },
+        "mixed-test": {
+          "questions": 60,
+          "answerable": 58,
+          "evidence_complete": 0,
+          "evidence_facts": 2,
+          "file_complete": 53,
+          "file_facts": 98,
+          "native_errors": 2,
+          "candidate_unmapped": 0
+        }
+      },
+      "evidence_mrr": 0.044642857142857144,
+      "file_mrr": 0.935374149659864,
+      "mean_context_chars": 3776.98,
+      "mean_results": 9.85,
+      "latency_ms": {
+        "mean": 1840.245,
+        "p50": 476,
+        "p95": 5635,
+        "max": 18061
+      }
+    }
+  }
+}

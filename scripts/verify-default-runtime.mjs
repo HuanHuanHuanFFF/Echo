@@ -4,6 +4,7 @@ import {
   mkdir,
   mkdtemp,
   readFile,
+  readdir,
   realpath,
   rm,
   writeFile,
@@ -60,14 +61,14 @@ try {
     minisearch_b: 0.7,
     minisearch_d: 0.5,
     topk: 10,
-    max_chunks_per_source: 3,
+    max_chunks_per_source: 6,
     bm25_candidates: 60,
     dense_candidates: 60,
     rrf_k: 10,
     title_weight: 2,
     bm25_weight: 0.5,
     dense_weight: 1,
-    max_context_chars: 16000,
+    max_context_chars: 20000,
     min_dense_similarity: 0.3,
   });
   const hash = (bytes) => createHash('sha256').update(bytes).digest('hex');
@@ -85,10 +86,26 @@ try {
       ),
     ),
   );
-  // Existing explicit RRF and chunk selection must survive repeated init.
+  // Existing explicit retrieval settings and chunk selection survive repeated init.
+  assert.deepEqual(await readdir(join(work, 'chunkers')), [
+    'markdown-structure-v1.mjs',
+  ]);
+  assert.deepEqual(await readdir(join(work, 'config/retrieval')), [
+    'balanced.json',
+  ]);
+  await writeFile(
+    join(work, 'chunkers/heading-1000.mjs'),
+    "export default { id: 'heading-1000', version: '1', chunk(input) { return input.headingLines(1000); } };\n",
+  );
   await writeFile(
     retrievalPath,
-    JSON.stringify({ ...retrieval, rrf_k: 30, lexical_engine: 'sqlite' }),
+    JSON.stringify({
+      ...retrieval,
+      rrf_k: 30,
+      lexical_engine: 'sqlite',
+      max_context_chars: 16000,
+      max_chunks_per_source: 3,
+    }),
   );
   await writeFile(
     configPath,
@@ -99,6 +116,14 @@ try {
   );
   assert.deepEqual((await invoke('init')).created, []);
   assert.equal(JSON.parse(await readFile(retrievalPath, 'utf8')).rrf_k, 30);
+  assert.equal(
+    JSON.parse(await readFile(retrievalPath, 'utf8')).max_chunks_per_source,
+    3,
+  );
+  assert.equal(
+    JSON.parse(await readFile(retrievalPath, 'utf8')).max_context_chars,
+    16000,
+  );
   assert.equal(
     JSON.parse(await readFile(retrievalPath, 'utf8')).lexical_engine,
     'sqlite',
@@ -118,13 +143,18 @@ try {
     join(work, 'config/sources.json'),
     JSON.stringify({ collections: [{ id: 'smoke', root: 'notes' }] }),
   );
-  await invoke('config', 'use', '--retrieval', 'bm25');
+  await writeFile(
+    retrievalPath,
+    JSON.stringify({ ...retrieval, mode: 'bm25' }),
+  );
   assert.equal((await invoke('sync')).status, 'ok');
   const found = await invoke('search', '--query', 'rollback');
   assert.equal(found.status, 'ok');
   assert.equal(found.selection.chunker, 'markdown-structure-v1');
   assert.equal(found.applied.rrf_k, 10);
   assert.equal(found.applied.lexical_engine, 'minisearch');
+  assert.equal(found.applied.max_context_chars, 20000);
+  assert.equal(found.applied.max_chunks_per_source, 6);
   assert.ok(found.results.length > 0);
   for (const piece of found.results)
     assert.equal(

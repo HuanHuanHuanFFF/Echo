@@ -3,7 +3,7 @@
 本地 Markdown 证据检索 MCP：TypeScript + 嵌入式 SQLite，支持本地 BM25、API embedding、RRF 和 Agent 子问题查询。
 Agent 负责拆问题、补读与回答；Echo 返回原文证据和定位。
 
-**前四阶段已合并并通过 Windows/Linux CI。个人笔记与公开数据的真实 API 评测已有结果；默认采用与剩余产品验收分别记录。** 当前默认统一见[冻结记录](docs/project/2026-09-21-minisearch-default.md)，效果与限制见[公开评测总结](docs/evals/2026-09-20-public-full-results.md)。
+**前四阶段已合并并通过 Windows/Linux CI。个人笔记与公开数据的真实 API 评测已有结果；默认采用与剩余产品验收分别记录。** 当前默认统一见[最终默认记录](docs/project/2026-09-26-final-default-profile.md)，效果与限制见[公开评测总结](docs/evals/2026-09-20-public-full-results.md)。
 
 ## 先跑一个无 key 的样本
 
@@ -37,10 +37,10 @@ node /absolute/path/to/echo/dist/cli.js config show
 ```powershell
 $env:ECHO_EMBEDDING_API_KEY = '<你的 key>'
 node /absolute/path/to/echo/dist/cli.js sync
-node /absolute/path/to/echo/dist/cli.js config use --chunker heading-500 --retrieval balanced
+node /absolute/path/to/echo/dist/cli.js config use --retrieval balanced
 ```
 
-没有模型时可显式选择 --retrieval bm25 后同步。切换不会隐式构建索引，config show 会显示是否需要 sync。sync 会给缺少 echo_id 的笔记补写 UUID v4；已有身份不变，失败保留旧索引。
+没有模型时可将 config/retrieval/balanced.json 的 mode 设为 bm25 后同步。新初始化只提供新综合和 balanced，其他配置可自行添加。切换不会隐式构建索引，config show 会显示是否需要 sync。sync 会给缺少 echo_id 的笔记补写 UUID v4；已有身份不变，失败保留旧索引。
 
 [完整 v2 配置、策略接口与迁移说明](docs/design/configuration-profiles.md)。旧配置可执行 config migrate；迁移前可先备份数据库。参数会固化进新的固定策略，不被静默丢弃。
 
@@ -80,7 +80,7 @@ node /absolute/path/to/echo/dist/cli.js serve --config /absolute/path/to/echo/ec
 ## 默认与自定义方案
 
 默认：新综合 markdown-structure-v1@1.0.1（目标1000/常规最大1500字符），hybrid，每路候选60，RRF k=10、BM25/向量权重0.5/1，
-topk=10、每篇最多 3、最低余弦相似度 0.3、完整结果 JSON 预算 16000 字符。
+topk=10、每篇最多 6、最低余弦相似度 0.3、完整结果 JSON 预算 20000 字符。
 2026-09-21已按用户决定采用MiniSearch（k=1.2、b=0.7、d=0.5，取消匹配查询词数量乘数）并冻结，完整规则见[默认冻结记录](docs/project/2026-09-21-minisearch-default.md)。新init完整写出召回参数并安装对应策略；已有显式配置不自动覆盖，省略字段仍继承内置默认。历史评测保持各自冻结条件。
 
 召回配置支持部分覆盖；单次搜索可传 overrides 和 filters。切块策略的规则固定，改变数字应另建策略 ID。

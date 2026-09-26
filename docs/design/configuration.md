@@ -12,6 +12,8 @@
 
 2026-09-20：RRF内置默认按用户决定改为10，显式旧值保持。新v2工作区采用新综合，旧格式heading helper和迁移语义保留；完整当前组合见[默认冻结](../project/2026-09-20-default-freeze.md)。
 
+2026-09-21：用户确认返回JSON默认预算提高到20000，已有显式值优先；本条替代上述16000预算默认，其他历史决定保留。见[当前默认与预算修订](../project/2026-09-21-minisearch-default.md)。
+
 ## 配置与覆盖
 
 [config.ts](../../src/config.ts)是可执行字段校验依据。JSON 包含 database、collections、chunker、
@@ -28,7 +30,7 @@ lexical、embedding、retrieval、runtime。相对路径以配置文件目录解
 | title_weight                       | 2       | 0–20，正文权重为 1                           |
 | bm25_weight / dense_weight         | 0.5 / 1 | 0–10，不同时为 0                             |
 | min_dense_similarity               | 0.3     | -1–1                                         |
-| max_context_chars                  | 16000   | 256–100000，实际紧凑结果 JSON 的 UTF-16 长度 |
+| max_context_chars                  | 20000   | 256–100000，实际紧凑结果 JSON 的 UTF-16 长度 |
 
 单次 filters 支持 collections、source_ids、path_prefix；空 ID 数组表示空范围。
 UUID 规范成小写；两路在范围内取候选。当前不开放任意召回算法插件或重排器。

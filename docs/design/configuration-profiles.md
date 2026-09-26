@@ -1,6 +1,8 @@
 # 配置目录、策略与索引契约（v2）
 
-2026-09-21更新：[MiniSearch默认采用](../project/2026-09-21-minisearch-default.md)已获用户确认，取消匹配词乘数，新增可配置k/b/d；只替代词法引擎默认范围，其余已确认参数保持。
+2026-09-26更新：[最终默认与精简初始化](../project/2026-09-26-final-default-profile.md)采用新综合、balanced、每篇6；新初始化不再附带 heading-1000/500 和纯 BM25 配置文件，自定义与旧配置兼容保留。
+
+2026-09-21更新：[MiniSearch默认采用](../project/2026-09-21-minisearch-default.md)已获用户确认，取消匹配词乘数，新增可配置k/b/d；只替代词法引擎默认范围。同日预算修订将完整响应JSON默认上调至20000，已有显式值优先；其余已确认参数保持。
 
 日期：2026-09-16。状态：实现与隔离回归已具备，最终验证见[修订开发记录](../development/2026-09-16-configuration-revision.md)。本文落实[用户确认决定](../project/2026-09-16-configuration-decisions.md)，替代[旧配置契约](configuration.md)的配置组织与索引选择部分；证据定位、RRF、数量和预算规则延续。
 
@@ -14,21 +16,18 @@
 node /absolute/path/to/echo/dist/cli.js init
 node /absolute/path/to/echo/dist/cli.js config list
 node /absolute/path/to/echo/dist/cli.js config show
-node /absolute/path/to/echo/dist/cli.js config use --retrieval bm25
+node /absolute/path/to/echo/dist/cli.js config use --retrieval balanced
 node /absolute/path/to/echo/dist/cli.js sync
 ```
 
-所有命令都支持 --config /absolute/path/echo.config.json。仓库中可直接运行的无 key 样本是 [examples/profiles/example.json](../../examples/profiles/example.json)。init 保留已有文件，不调用模型、不导入笔记；填好 sources 和需要的 embedding 设置后再显式 sync。
+所有命令都支持 --config /absolute/path/echo.config.json。仓库中可直接运行的无 key 样本是 [examples/profiles/example.json](../../examples/profiles/example.json)。init 保留已有文件，不调用模型、不导入笔记；无 key 时可将 balanced 的 mode 设为 bm25，或自行新建并选择纯词法配置；填好 sources 和需要的 embedding 设置后再显式 sync。
 
 ```text
 echo.config.json
 chunkers/markdown-structure-v1.mjs
-chunkers/heading-1000.mjs
-chunkers/heading-500.mjs
 tokenizers/icu-zh.mjs
 config/embedding/default.json
 config/retrieval/balanced.json
-config/retrieval/bm25.json
 config/sources.json
 config/runtime.json
 config/logging.json
@@ -75,7 +74,7 @@ export default {
 
 input 提供 sourceId、path、带完整原文件行号的 lines，以及只读 resources。headingLines(maxChars) 是兼容标题切块 helper；也可完全自行返回 startLine/endLine/headingPath 和成对的 sectionStartLine/sectionEndLine。行号 1-based、两端包含；范围必须是未过滤的连续原文。Echo 从捕获的原文生成证据，不接受插件自造正文。原 frontmatter 整体不进入切块。
 
-新默认markdown-structure-v1@1.0.1的规则以[冻结记录](../project/2026-09-20-default-freeze.md)为准。可选heading-1000与heading-500分别固定 1000/500 字符软上限，ATX 标题、整行聚合、不重叠，围栏代码中的伪标题不分章节；超长单行允许超过软上限，表格/代码块可按行分段。
+新默认markdown-structure-v1@1.0.1的规则以[冻结记录](../project/2026-09-20-default-freeze.md)为准。仓库 examples 中的 heading-1000与heading-500（不再由 init 自动安装）分别固定 1000/500 字符软上限，ATX 标题、整行聚合、不重叠，围栏代码中的伪标题不分章节；超长单行允许超过软上限，表格/代码块可按行分段。
 
 分词模块返回原始词项字符串，Echo 统一 NFKC、小写和十六进制编码后持久化到SQLite词项表，供MiniSearch或显式SQLite引擎复用：
 
@@ -110,13 +109,15 @@ export default {
 
 不自动重试计费请求。API key、超时和 batch_size 不影响向量身份；服务端点、模型、维度、前缀、维度字段和向量变换规则影响身份。空模板可以保存，实际 dense/hybrid 同步必须配置模型；已有向量完整时，同步不因 key 缺失而重新请求模型。
 
-召回 JSON 也包含 id，支持多套配置。字段/范围沿用 [retrievalSchema](../../src/config.ts)：mode、lexical_engine、minisearch_k/b/d、topk、max_chunks_per_source、两路 candidates、rrf_k、title_weight、两路 weight、min_dense_similarity、max_context_chars。优先级：内置默认 → 选中的召回配置 → 单次 overrides。默认 hybrid、topk=10、每篇上限=3、候选=60/60、RRF k=10、BM25/向量权重=0.5/1、标题权重=2、最低余弦=0.3、完整 JSON 预算=16000 字符。topk 和单篇上限同时约束，不凑满数量。召回配置不参与表身份。
+召回 JSON 也包含 id，支持多套配置。字段/范围沿用 [retrievalSchema](../../src/config.ts)：mode、lexical_engine、minisearch_k/b/d、topk、max_chunks_per_source、两路 candidates、rrf_k、title_weight、两路 weight、min_dense_similarity、max_context_chars。优先级：内置默认 → 选中的召回配置 → 单次 overrides。默认 hybrid、topk=10、每篇上限=3、候选=60/60、RRF k=10、BM25/向量权重=0.5/1、标题权重=2、最低余弦=0.3、完整 JSON 预算=20000 字符。topk 和单篇上限同时约束，不凑满数量。召回配置不参与表身份。
 
 2026-09-18 用户确认：RRF k改为30，完整返回JSON预算改为16000；支持单次overrides。省略字段时继承新默认，已有显式值继续优先；旧冻结评测不回写，当前新综合联合验证见[联合对照](../evals/2026-09-18-rrf-budget-joint.md)。这替代此前仅把30/16000列为候选、默认仍60/12000的状态，仅涉及这两项。
 
 2026-09-17 用户确认：topk 8→10、每篇上限 2→3、BM25 权重 1→0.5，替代本节与旧格式契约中的这三项默认值。实现归属 [retrievalSchema](../../src/config.ts)；初始化未指定字段时继承它，样例配置同步更新，单次 overrides 继续优先。已有显式配置、E盘冻结评测安装与历史报告不自动修改。这是默认行为调整，该组合的真实效果尚未验收。
 
 验证（2026-09-17）：npm run check 通过格式、类型、110项隔离测试（1项原有跳过）和构建；既有 [配置覆盖测试](../../tests/foundation.test.ts)、[MCP运行测试](../../tests/profile-runtime.test.ts)通过。直接检查构建产物确认10/3/0.5默认值、单次覆盖、已有显式配置优先级及三份使用样例。未运行真实模型评测。
+
+[PR #16的原始说明草稿](../development/2026-09-17-pr16-default-limits-description.md)保留该次默认值调整的实现、验证与当时的评测边界；其“尚未完成真实模型效果评测”仅描述2026-09-17的状态，不覆盖后续评测。
 
 ## 扫描、运行与日志
 

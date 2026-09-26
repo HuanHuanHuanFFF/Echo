@@ -1,0 +1,136 @@
+{
+  "status": "complete",
+  "experiment": "2026-09-22-cap6-public-full-v2",
+  "created_at": "2026-09-22T05:36:54.150Z",
+  "freeze": {
+    "path": "E:\\幻\\Documents\\八股-Echo测试\\2026-09-22-cap6-public-full-v2\\freeze.json",
+    "sha256": "29b4c766e70c76d3be01aaecc2e2b002185e6273b256adaf7369fdde56ae9d8c"
+  },
+  "run_receipt": {
+    "path": "E:\\幻\\Documents\\八股-Echo测试\\2026-09-22-cap6-public-full-v2\\run-receipt.json",
+    "sha256": "716124eae8e7955d0debfa827eccfb2f82198f429f735532990a276506385ce2"
+  },
+  "public_score": {
+    "path": "E:\\幻\\Documents\\八股-Echo测试\\2026-09-22-cap6-public-full-v2\\public-score.json",
+    "sha256": "453a90392e01f81bf1a5e42b3747d50f633a6b6e86601b3c6e9ffeba5f78c482"
+  },
+  "independent_audit": {
+    "path": "E:\\幻\\Documents\\八股-Echo测试\\2026-09-22-cap6-public-full-v2\\independent-audit.json",
+    "sha256": "525c6e5f8fd190b5f1c04199e9044944a2f75f29f06241f7290a7b541aaea74b",
+    "status": "complete",
+    "new_main_jsonl": 11,
+    "all_public_jsonl": 23
+  },
+  "corrected_analysis": {
+    "path": "E:\\幻\\Documents\\八股-Echo测试\\2026-09-22-cap6-public-full-v2\\analysis\\public-full-analysis.json",
+    "sha256": "a8ec8be8c8dcf509cffc779d3495370f396bc763f2794f6b1db3d5fbaaa07463",
+    "preserved_v1": "E:\\幻\\Documents\\八股-Echo测试\\2026-09-22-cap6-public-full-v2\\analysis\\public-full-analysis-v1.json"
+  },
+  "result_report": {
+    "path": "E:\\幻\\Documents\\八股-Echo测试\\2026-09-22-cap6-public-full-v2\\delivery\\reviewed-results.md",
+    "sha256": "161e2cbe2280a072fd59e43e682a56817b9c99bf0d6517b254d4792684ce9cfd",
+    "bytes": 11932
+  },
+  "format_equivalence": {
+    "path": "E:\\幻\\Documents\\八股-Echo测试\\2026-09-22-cap6-public-full-v2\\format-equivalence.json",
+    "sha256": "7e914e968c9fd5aeee85469d03cdf30216884f293a4c8d8c09f1aa3c2a1a9a56",
+    "prettier": "3.9.6"
+  },
+  "execution_source": {
+    "root": "E:\\幻\\Documents\\八股-Echo测试\\2026-09-22-cap6-public-full-v2\\execution-source",
+    "files": {
+      "dist/config.js": {
+        "path": "E:\\幻\\Documents\\八股-Echo测试\\2026-09-22-cap6-public-full-v2\\execution-source\\dist\\config.js",
+        "sha256": "6e9611e775e82c7c2cce3df12464bdb0b721e4d85f59f14a301ad98340509828",
+        "bytes": 5176
+      },
+      "dist/database.js": {
+        "path": "E:\\幻\\Documents\\八股-Echo测试\\2026-09-22-cap6-public-full-v2\\execution-source\\dist\\database.js",
+        "sha256": "f221927d10790da8ee534598543b076e7c625bcf140f376a94e78f5825e17753",
+        "bytes": 1189
+      },
+      "dist/embedding.js": {
+        "path": "E:\\幻\\Documents\\八股-Echo测试\\2026-09-22-cap6-public-full-v2\\execution-source\\dist\\embedding.js",
+        "sha256": "b977edab1bb54a88bf3693ad46845ed61e66d5b69179e5fe95e3961adbc9787d",
+        "bytes": 6513
+      },
+      "dist/lexical.js": {
+        "path": "E:\\幻\\Documents\\八股-Echo测试\\2026-09-22-cap6-public-full-v2\\execution-source\\dist\\lexical.js",
+        "sha256": "58588607613bd8f5b2af75216098042e5e878d99b3faf731531f39442dd47943",
+        "bytes": 1863
+      },
+      "dist/minisearch.js": {
+        "path": "E:\\幻\\Documents\\八股-Echo测试\\2026-09-22-cap6-public-full-v2\\execution-source\\dist\\minisearch.js",
+        "sha256": "5f212188d3b4661eb6bff21f8d924ab829f1a1fa05c8f49d1914a964eb8f4e1c",
+        "bytes": 3549
+      },
+      "dist/retrieval.js": {
+        "path": "E:\\幻\\Documents\\八股-Echo测试\\2026-09-22-cap6-public-full-v2\\execution-source\\dist\\retrieval.js",
+        "sha256": "120b9c5e06f8ac5d4c2290d58787de320d8153f1148812ecd7ad22bc6138554d",
+        "bytes": 17961
+      },
+      "dist/store.js": {
+        "path": "E:\\幻\\Documents\\八股-Echo测试\\2026-09-22-cap6-public-full-v2\\execution-source\\dist\\store.js",
+        "sha256": "3b12765d8b52327cf03c9788530356b2bb0a69f8e172dba806ae13fa324c8770",
+        "bytes": 2168
+      },
+      "evals/run-minisearch-parameter-exploration.mjs": {
+        "path": "E:\\幻\\Documents\\八股-Echo测试\\2026-09-22-cap6-public-full-v2\\execution-source\\evals\\run-minisearch-parameter-exploration.mjs",
+        "sha256": "5dc034c63a758d036a51b845f042025aa2da53efd27784c00219729a8447bf4b",
+        "bytes": 77623
+      },
+      "evals/run-public-full-cap6.mjs": {
+        "path": "E:\\幻\\Documents\\八股-Echo测试\\2026-09-22-cap6-public-full-v2\\execution-source\\evals\\run-public-full-cap6.mjs",
+        "sha256": "d06b6430e8d734b0de89b3cae1cfbd75cc7fd995578a173565a06503f41bec6d",
+        "bytes": 13568
+      },
+      "evals/score-public-full-cap6.py": {
+        "path": "E:\\幻\\Documents\\八股-Echo测试\\2026-09-22-cap6-public-full-v2\\execution-source\\evals\\score-public-full-cap6.py",
+        "sha256": "7d69572bc20e7dcc8b9e94b1b44deb177c1ca4ce2f68451a2787df1e75cca8fa",
+        "bytes": 27687
+      }
+    }
+  },
+  "delivery": {
+    "runner": [
+      {
+        "file": "evals/run-public-full-cap6.mjs",
+        "execution_sha256": "d06b6430e8d734b0de89b3cae1cfbd75cc7fd995578a173565a06503f41bec6d",
+        "delivery_sha256": "db9e7f34e0f04d62cdde683ea211e5bf92ef2aa5aca78088248c5c89700091ac",
+        "only_prettier_formatting": true
+      },
+      {
+        "file": "evals/run-minisearch-parameter-exploration.mjs",
+        "execution_sha256": "5dc034c63a758d036a51b845f042025aa2da53efd27784c00219729a8447bf4b",
+        "delivery_sha256": "b149ceecc7266620bdb0ad9565a62dab40761848f358c6035b1bd283da674395",
+        "only_prettier_formatting": true
+      }
+    ],
+    "scorer_sha256": "7d69572bc20e7dcc8b9e94b1b44deb177c1ca4ce2f68451a2787df1e75cca8fa",
+    "analysis_script": "3cc9a27f5f81ce7b9230b5ce85cb55c868677364e28211ea10f58ce5408eca3f",
+    "private_sha_verified": true,
+    "node": "v24.15.0",
+    "python": "3.12.13"
+  },
+  "scope": {
+    "questions": 3307,
+    "executions": 6614,
+    "arms": ["public-A", "public-B"],
+    "old_opened_sample": 331,
+    "remaining_diagnostic": 2976,
+    "network": "forbidden; frozen-cache-only provider",
+    "new_embedding_calls": 0
+  },
+  "qasper": {
+    "papers": 281,
+    "questions": 1005,
+    "strict_text_eligible": 800,
+    "all_annotation_unanswerable": 60,
+    "document_bindings_sha256": "b78a3f540d2b3ce1588ed36e6e808d144fc9eb289862af1ba1cdb1ee207d6de8"
+  },
+  "artifact_manifest": {
+    "path": "E:\\幻\\Documents\\八股-Echo测试\\2026-09-22-cap6-public-full-v2\\manifest-reviewed.json",
+    "sha256": "a2fbc32fdce8013e2b83a35ae04e5dd505057258a70cff7155892f8528ba769e"
+  },
+  "integrity_note": "Acyclic final receipt: provenance -> manifest -> raw artifacts/execution sources/report snapshot. Superseded draft receipts remain outside this artifact set."
+}
