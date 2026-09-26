@@ -67,6 +67,7 @@ it('adds alternative evidence without altering old labels, questions, or old sco
 });
 it('rejects accidental parameter drift while producing separate fixed-mode arms', () => {
   const original = retrievalSchema.parse({
+    max_chunks_per_source: 3,
     rrf_k: 60,
     max_context_chars: 12000,
   });

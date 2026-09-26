@@ -10,6 +10,7 @@ import {
 import { loadConfig } from '../src/config.js';
 import { profileChunker, profileTokenizer } from '../src/profiles.js';
 import { runChunker } from '../src/chunker.js';
+import { installOptionalProfiles } from './helpers/optional-profiles.js';
 const dirs: string[] = [];
 afterEach(async () => {
   for (const d of dirs.splice(0)) await rm(d, { recursive: true, force: true });
@@ -52,13 +53,18 @@ it('initializes without model calls and preserves user files on repeated initial
   expect((await initializeWorkspace(path)).created).toEqual([]);
   expect((await loadConfig(path)).retrieval.topk).toBe(3);
   expect((await listProfiles(path)).available.chunkers).toEqual([
-    'heading-1000',
-    'heading-500',
     'markdown-structure-v1',
   ]);
+  expect((await listProfiles(path)).available.retrieval).toEqual(['balanced']);
 });
 it('selects profiles atomically and rejects mismatched IDs and parameter overlays', async () => {
   const { dir, path } = await fixture();
+  await installOptionalProfiles(dir);
+  const custom = await readFile(join(dir, 'chunkers/heading-500.mjs'), 'utf8');
+  expect((await initializeWorkspace(path)).created).toEqual([]);
+  expect(await readFile(join(dir, 'chunkers/heading-500.mjs'), 'utf8')).toBe(
+    custom,
+  );
   await useProfiles(path, { chunker: 'heading-500', retrieval: 'bm25' });
   expect((await loadConfig(path)).profile!.active.chunker).toBe('heading-500');
   const old = await readFile(path, 'utf8');

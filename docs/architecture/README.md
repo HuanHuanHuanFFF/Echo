@@ -1,6 +1,6 @@
 # Echo 架构与模块
 
-日期：2026-09-26。状态：当前实现说明，按本地源码提交 `62df00f` 核对；参数以[最新默认决定](../project/2026-09-21-minisearch-default.md)和运行配置为准。本文说明现有模块及边界，不替代[配置契约](../design/configuration-profiles.md)或阶段验收记录。
+日期：2026-09-26。状态：当前实现说明，按本地源码提交 `62df00f` 核对；参数以[最新默认决定](../project/2026-09-26-final-default-profile.md)和运行配置为准。本文说明现有模块及边界，不替代[配置契约](../design/configuration-profiles.md)或阶段验收记录。
 
 ![Echo 本地索引与证据检索概览](assets/echo-architecture.svg)
 
@@ -58,6 +58,6 @@ SQLite 是持久层：保存来源、原文 chunk、FTS 词项和向量。v2 登
 
 ## 当前默认与未实现范围
 
-**新建 v2 工作区**默认 `markdown-structure-v1@1.0.1`、`icu-zh@1`、MiniSearch 7.2.0、`hybrid`；MiniSearch k/b/d 为 1.2/0.7/0.5，BM25/dense 权重 0.5/1、RRF k=10、两路候选各 60、topk=10、每篇最多 3、完整结果 JSON 预算 20000。已有显式配置优先，重复初始化不覆盖旧文件。[完整参数及升级边界](../project/2026-09-21-minisearch-default.md)。
+**新建 v2 工作区**默认 `markdown-structure-v1@1.0.1`、`icu-zh@1`、MiniSearch 7.2.0、`hybrid`；MiniSearch k/b/d 为 1.2/0.7/0.5，BM25/dense 权重 0.5/1、RRF k=10、两路候选各 60、topk=10、每篇最多 6、完整结果 JSON 预算 20000。初始化只生成这一套切块与召回配置；已有显式配置优先，重复初始化不覆盖或删除旧文件。[完整参数及升级边界](../project/2026-09-26-final-default-profile.md)。
 
 游标翻页、独立预算硬上限、rerank/MMR、索引预览后再由 Echo 补读、专用读取工具尚未实现。图中返回“证据 JSON”只表示检索结果；答案生成与证据充分性判断仍由 Agent 负责。[当前决定](../project/2026-09-21-minisearch-default.md#后续调参纪律与剩余边界)。

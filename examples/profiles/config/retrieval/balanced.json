@@ -2,7 +2,7 @@
   "id": "balanced",
   "mode": "hybrid",
   "topk": 10,
-  "max_chunks_per_source": 3,
+  "max_chunks_per_source": 6,
   "bm25_candidates": 60,
   "dense_candidates": 60,
   "rrf_k": 10,

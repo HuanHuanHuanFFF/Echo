@@ -4,6 +4,7 @@ import {
   mkdir,
   mkdtemp,
   readFile,
+  readdir,
   realpath,
   rm,
   writeFile,
@@ -60,7 +61,7 @@ try {
     minisearch_b: 0.7,
     minisearch_d: 0.5,
     topk: 10,
-    max_chunks_per_source: 3,
+    max_chunks_per_source: 6,
     bm25_candidates: 60,
     dense_candidates: 60,
     rrf_k: 10,
@@ -86,6 +87,16 @@ try {
     ),
   );
   // Existing explicit retrieval settings and chunk selection survive repeated init.
+  assert.deepEqual(await readdir(join(work, 'chunkers')), [
+    'markdown-structure-v1.mjs',
+  ]);
+  assert.deepEqual(await readdir(join(work, 'config/retrieval')), [
+    'balanced.json',
+  ]);
+  await writeFile(
+    join(work, 'chunkers/heading-1000.mjs'),
+    "export default { id: 'heading-1000', version: '1', chunk(input) { return input.headingLines(1000); } };\n",
+  );
   await writeFile(
     retrievalPath,
     JSON.stringify({
@@ -93,6 +104,7 @@ try {
       rrf_k: 30,
       lexical_engine: 'sqlite',
       max_context_chars: 16000,
+      max_chunks_per_source: 3,
     }),
   );
   await writeFile(
@@ -104,6 +116,10 @@ try {
   );
   assert.deepEqual((await invoke('init')).created, []);
   assert.equal(JSON.parse(await readFile(retrievalPath, 'utf8')).rrf_k, 30);
+  assert.equal(
+    JSON.parse(await readFile(retrievalPath, 'utf8')).max_chunks_per_source,
+    3,
+  );
   assert.equal(
     JSON.parse(await readFile(retrievalPath, 'utf8')).max_context_chars,
     16000,
@@ -127,7 +143,10 @@ try {
     join(work, 'config/sources.json'),
     JSON.stringify({ collections: [{ id: 'smoke', root: 'notes' }] }),
   );
-  await invoke('config', 'use', '--retrieval', 'bm25');
+  await writeFile(
+    retrievalPath,
+    JSON.stringify({ ...retrieval, mode: 'bm25' }),
+  );
   assert.equal((await invoke('sync')).status, 'ok');
   const found = await invoke('search', '--query', 'rollback');
   assert.equal(found.status, 'ok');
@@ -135,6 +154,7 @@ try {
   assert.equal(found.applied.rrf_k, 10);
   assert.equal(found.applied.lexical_engine, 'minisearch');
   assert.equal(found.applied.max_context_chars, 20000);
+  assert.equal(found.applied.max_chunks_per_source, 6);
   assert.ok(found.results.length > 0);
   for (const piece of found.results)
     assert.equal(

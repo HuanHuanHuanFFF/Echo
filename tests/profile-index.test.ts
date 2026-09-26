@@ -18,6 +18,7 @@ import { embeddingFingerprint } from '../src/embedding.js';
 import { profileTables, sqlName } from '../src/profile-store.js';
 import { openDatabase } from '../src/database.js';
 import type { EmbeddingProvider } from '../src/contracts.js';
+import { installOptionalProfiles } from './helpers/optional-profiles.js';
 const dirs: string[] = [];
 afterEach(async () => {
   for (const dir of dirs.splice(0))
@@ -30,6 +31,7 @@ async function fixture() {
   dirs.push(dir);
   const path = join(dir, 'echo.config.json');
   await initializeWorkspace(path);
+  await installOptionalProfiles(dir);
   const notes = join(dir, 'notes');
   await mkdir(notes);
   await writeFile(

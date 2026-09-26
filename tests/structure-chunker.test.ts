@@ -5,6 +5,7 @@ import { join, resolve } from 'node:path';
 import { loadChunker, runChunker } from '../src/chunker.js';
 import { loadConfig } from '../src/config.js';
 import { initializeWorkspace, useProfiles } from '../src/profile-manager.js';
+import { installOptionalProfiles } from './helpers/optional-profiles.js';
 import { syncIndex } from '../src/sync.js';
 import { searchIndex } from '../src/retrieval.js';
 
@@ -177,6 +178,7 @@ it('loads as a v2 strategy, indexes locally and returns exact source evidence', 
   dirs.push(dir);
   const configPath = join(dir, 'echo.config.json');
   await initializeWorkspace(configPath);
+  await installOptionalProfiles(dir);
   expect((await loadConfig(configPath)).profile!.active.chunker).toBe(
     'markdown-structure-v1',
   );

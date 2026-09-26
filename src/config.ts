@@ -12,7 +12,7 @@ export const retrievalSchema = z
     minisearch_b: z.number().min(0).max(1).default(0.7),
     minisearch_d: z.number().min(0).max(100).default(0.5),
     topk: positive(100).default(10),
-    max_chunks_per_source: positive(100).default(3),
+    max_chunks_per_source: positive(100).default(6),
     bm25_candidates: positive(1000).default(60),
     dense_candidates: positive(1000).default(60),
     rrf_k: positive(1000).default(10),

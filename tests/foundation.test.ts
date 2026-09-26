@@ -74,14 +74,19 @@ describe('foundation', () => {
       retrieval: { topk: 3 },
       chunker: { options: { custom: true } },
     });
-    expect(cfg.retrieval.max_chunks_per_source).toBe(3);
+    expect(cfg.retrieval.max_chunks_per_source).toBe(6);
     expect(cfg.retrieval.rrf_k).toBe(10);
     expect(cfg.retrieval.max_context_chars).toBe(20000);
     const explicit = parseConfig({
-      retrieval: { rrf_k: 60, max_context_chars: 12000 },
+      retrieval: {
+        rrf_k: 60,
+        max_context_chars: 12000,
+        max_chunks_per_source: 3,
+      },
     });
     expect(explicit.retrieval.rrf_k).toBe(60);
     expect(explicit.retrieval.max_context_chars).toBe(12000);
+    expect(explicit.retrieval.max_chunks_per_source).toBe(3);
     expect(
       retrievalOptions(cfg.retrieval, { rrf_k: 15, max_context_chars: 24000 }),
     ).toMatchObject({ rrf_k: 15, max_context_chars: 24000 });

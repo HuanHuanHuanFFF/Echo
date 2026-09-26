@@ -6,6 +6,7 @@ import { initializeWorkspace, useProfiles } from '../src/profile-manager.js';
 import { loadConfig } from '../src/config.js';
 import { syncIndex } from '../src/sync.js';
 import { hash } from '../src/identity.js';
+import { installOptionalProfiles } from './helpers/optional-profiles.js';
 import {
   runRetrievalEvaluation,
   snapshotRetrievalCorpus,
@@ -20,6 +21,7 @@ async function fixture() {
     '---\necho_id: 10000000-0000-4000-8000-000000000001\n---\n# 索引事务\n\n失败时回滚未提交的修改。\n';
   await writeFile(join(notes, 'transaction.md'), raw);
   await initializeWorkspace(configPath);
+  await installOptionalProfiles(root);
   await writeFile(
     join(root, 'config', 'sources.json'),
     JSON.stringify({

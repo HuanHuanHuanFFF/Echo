@@ -1,5 +1,7 @@
 # 配置目录、策略与索引契约（v2）
 
+2026-09-26更新：[最终默认与精简初始化](../project/2026-09-26-final-default-profile.md)采用新综合、balanced、每篇6；新初始化不再附带 heading-1000/500 和纯 BM25 配置文件，自定义与旧配置兼容保留。
+
 2026-09-21更新：[MiniSearch默认采用](../project/2026-09-21-minisearch-default.md)已获用户确认，取消匹配词乘数，新增可配置k/b/d；只替代词法引擎默认范围。同日预算修订将完整响应JSON默认上调至20000，已有显式值优先；其余已确认参数保持。
 
 日期：2026-09-16。状态：实现与隔离回归已具备，最终验证见[修订开发记录](../development/2026-09-16-configuration-revision.md)。本文落实[用户确认决定](../project/2026-09-16-configuration-decisions.md)，替代[旧配置契约](configuration.md)的配置组织与索引选择部分；证据定位、RRF、数量和预算规则延续。
@@ -14,21 +16,18 @@
 node /absolute/path/to/echo/dist/cli.js init
 node /absolute/path/to/echo/dist/cli.js config list
 node /absolute/path/to/echo/dist/cli.js config show
-node /absolute/path/to/echo/dist/cli.js config use --retrieval bm25
+node /absolute/path/to/echo/dist/cli.js config use --retrieval balanced
 node /absolute/path/to/echo/dist/cli.js sync
 ```
 
-所有命令都支持 --config /absolute/path/echo.config.json。仓库中可直接运行的无 key 样本是 [examples/profiles/example.json](../../examples/profiles/example.json)。init 保留已有文件，不调用模型、不导入笔记；填好 sources 和需要的 embedding 设置后再显式 sync。
+所有命令都支持 --config /absolute/path/echo.config.json。仓库中可直接运行的无 key 样本是 [examples/profiles/example.json](../../examples/profiles/example.json)。init 保留已有文件，不调用模型、不导入笔记；无 key 时可将 balanced 的 mode 设为 bm25，或自行新建并选择纯词法配置；填好 sources 和需要的 embedding 设置后再显式 sync。
 
 ```text
 echo.config.json
 chunkers/markdown-structure-v1.mjs
-chunkers/heading-1000.mjs
-chunkers/heading-500.mjs
 tokenizers/icu-zh.mjs
 config/embedding/default.json
 config/retrieval/balanced.json
-config/retrieval/bm25.json
 config/sources.json
 config/runtime.json
 config/logging.json
@@ -75,7 +74,7 @@ export default {
 
 input 提供 sourceId、path、带完整原文件行号的 lines，以及只读 resources。headingLines(maxChars) 是兼容标题切块 helper；也可完全自行返回 startLine/endLine/headingPath 和成对的 sectionStartLine/sectionEndLine。行号 1-based、两端包含；范围必须是未过滤的连续原文。Echo 从捕获的原文生成证据，不接受插件自造正文。原 frontmatter 整体不进入切块。
 
-新默认markdown-structure-v1@1.0.1的规则以[冻结记录](../project/2026-09-20-default-freeze.md)为准。可选heading-1000与heading-500分别固定 1000/500 字符软上限，ATX 标题、整行聚合、不重叠，围栏代码中的伪标题不分章节；超长单行允许超过软上限，表格/代码块可按行分段。
+新默认markdown-structure-v1@1.0.1的规则以[冻结记录](../project/2026-09-20-default-freeze.md)为准。仓库 examples 中的 heading-1000与heading-500（不再由 init 自动安装）分别固定 1000/500 字符软上限，ATX 标题、整行聚合、不重叠，围栏代码中的伪标题不分章节；超长单行允许超过软上限，表格/代码块可按行分段。
 
 分词模块返回原始词项字符串，Echo 统一 NFKC、小写和十六进制编码后持久化到SQLite词项表，供MiniSearch或显式SQLite引擎复用：
 
