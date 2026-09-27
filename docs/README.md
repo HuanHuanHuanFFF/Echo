@@ -6,7 +6,7 @@
 
 - [由 Agent 配置 Echo MCP](guides/agent-setup.md)：先初始化和准备本地配置，再集中补齐模型、API key 等外部条件，完成同步与 MCP 验证。
 
-- [npm 安装、MCP 接入与发布](guides/npm-release.md)：安装环境、工作区初始化、包验收与发布步骤；本轮是发布准备，不代表已经上架。
+- [npm 安装、MCP 接入与发布](guides/npm-release.md)：安装环境、工作区初始化、包验收与发布步骤。
 - [配置与策略契约](design/configuration-profiles.md)：目录隔离、模型、召回覆盖、切块/分词接口与同步。
 - [最终默认](project/2026-09-26-final-default-profile.md)：新综合、BM25/dense 0.5/1、RRF10、topk10、每篇6、预算20000。
 - [Agent 查询说明](guides/agent-usage.md)：工具选择、子问题、补读、来源新鲜度及错误处理。

@@ -1,6 +1,6 @@
 # npm 安装与发布
 
-日期：2026-09-27。状态：发布准备；包名 @huanf/echo，首版0.1.0，MIT。本页中的公共安装步骤在 npm 上架后可用；当前 PR 不执行发布。根 README 已按用户草稿整理，当前供 PR 预览；正式发布前确认最终内容。
+包名 `@huanf/echo`，首版 `0.1.0`，MIT。本文说明安装、MCP 接入和维护者发布流程；可用版本以 npm registry 为准。
 
 ## 使用者安装
 
@@ -62,7 +62,7 @@ echo-mcp config show
 
 ## 维护者验证与发布
 
-1. 从已审查且 CI 通过的最新 main 准备发布。先完成根 README 的正式安装说明和用户草稿；确认包名权限、版本号、MIT 声明及第三方许可保留。
+1. 从已审查且 CI 通过的最新 main 准备发布。核对根 README 的安装说明与文档链接；确认包名权限、版本号、MIT 声明及第三方许可保留。
 2. 执行 npm ci、npm run check、npm run smoke:package。后者实际打包并安装到仓库外的临时目录，验证 bin、原生依赖、初始化说明、同步、搜索、MCP 和原文新鲜度；不使用个人语料或模型 key。
 3. 执行 npm pack --dry-run 检查清单。允许打包 dist、package.json、README、LICENSE；仓库历史 docs/evals、个人配置、笔记与生成索引不分发。
 4. 用 npm whoami --registry=https://registry.npmjs.org 确认 huanf 账户，npm view @huanf/echo version 检查已有版本。公开版本不能原地覆盖。同步 package.json/package-lock.json 版本并重新验证；MCP 服务版本也需同步。

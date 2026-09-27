@@ -51,3 +51,9 @@
 新增回归见[目录说明](../../tests/workspace-guides.test.ts)，安装验证见[脚本](../../scripts/verify-package-install.mjs)，原文一致性与错误行为继续使用既有[接口回归](../../tests/agent-interface.test.ts)。
 
 根 README 正式文案、实际 npm 账户发布验证、registry 安装及 GitHub Release 仍待完成。本轮只提交发布准备 PR，不发布 npm、不合并 PR；不改个人笔记、旧索引，不新增模型调用或效果成绩。
+
+## 首次发布执行补充（2026-09-27）
+
+用户已确认 README 文案、角色图与黄金比例布局，并授权最终 CI 通过后合并 PR、发布 `@huanf/echo@0.1.0`。该授权替代上文“仅准备、不合并、不发布”的执行范围；实际发布完成以 npm registry 与版本 Release 为准。
+
+移除使用入口的发布占位提示，README 的图片和文档使用主分支公开地址；补齐 Agent 初始化指南。二次只读发布复审未发现运行或打包阻断，修复 README 评测命令未声明源码检出前提的问题。npm 账户校验为 huanf；本地完整检查282项通过、1项既有跳过，仓库外tarball安装验证111文件，CLI/MCP、定位、变化检查与初始化保留均通过，无模型调用。最终提交与合并后主分支仍分别核对CI；正式registry安装验证在发布后执行，不用本地tarball结果代替。

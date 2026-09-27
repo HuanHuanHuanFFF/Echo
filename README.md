@@ -24,7 +24,7 @@
       <p>Echo 负责检索和返回证据；问题拆解、证据判断与回答生成由 Agent 完成。</p>
     </td>
     <td width="38.2%" align="center" valign="middle">
-      <img src="docs/assets/echo-mascot-tight.png" width="480" alt="Echo 拟人角色" />
+      <img src="https://raw.githubusercontent.com/HuanHuanHuanFFF/Echo/main/docs/assets/echo-mascot-tight.png" width="480" alt="Echo 拟人角色" />
     </td>
   </tr>
 </table>
@@ -40,8 +40,6 @@ npm install -g @huanf/echo@0.1.0
 把下面这段话发给能操作本地文件和终端的 Agent，让它完成配置：
 
 > 请阅读并按照 [Echo Agent 配置指南](https://github.com/HuanHuanHuanFFF/Echo/blob/main/docs/guides/agent-setup.md) 帮我配置 Echo MCP。先在当前工作目录完成初始化和能自动完成的配置，保留已有设置。需要我提供的笔记目录、Embedding 服务、模型、API key 或客户端操作，请在本地准备完成后一次性告诉我；已有信息直接复用。条件齐全后完成同步、MCP 接入和一次真实检索验证，并说明实际完成情况。
-
-> 发布准备中：npm 安装命令在 `@huanf/echo@0.1.0` 正式上架后可用。
 
 ## 请求与返回
 
@@ -106,7 +104,7 @@ flowchart TD
 3. **融合与打包**：两路候选通过加权 RRF 融合，去重后同时应用 `topk`、`max_chunks_per_source` 与完整响应 JSON 预算。
 4. **证据消费**：Echo 返回原文证据和定位。Agent 判断证据是否充分、按需补读并生成答案。
 
-[架构图与模块职责](docs/architecture/README.md) · [配置与索引依赖](docs/design/configuration-profiles.md)
+[架构图与模块职责](https://github.com/HuanHuanHuanFFF/Echo/blob/main/docs/architecture/README.md) · [配置与索引依赖](https://github.com/HuanHuanHuanFFF/Echo/blob/main/docs/design/configuration-profiles.md)
 
 ## 评测结果
 
@@ -122,21 +120,21 @@ flowchart TD
 
 这组题集已用于调参与分析，结果反映固定条件下的检索效果，不是独立盲测，也不等同于 Agent 回答正确率。更换资料、模型或返回预算后，效果可能变化。
 
-| 评测资料                                                                                                                            | 内容                                     |
-| ----------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| [个人知识库 200 题](docs/evals/2026-09-21-default-budget20-cap-comparison.md)                                                       | 分库结果、事实覆盖、上下文用量与参数条件 |
-| [公开数据集全量评测](docs/evals/2026-09-22-cap6-public-full-results.md)                                                             | 不同资料类型上的检索表现与取舍           |
-| [QMD 私有题集对照](docs/evals/2026-09-25-qmd-private-comparison.md)                                                                 | 个人知识库场景对照与实验条件             |
-| [QMD 公开固定单元对照](docs/evals/2026-09-26-qmd-public-fixed-results.md)                                                           | 保留官方检索单元的排名对照               |
-| [Agent 接口复验](https://github.com/HuanHuanHuanFFF/Echo/blob/codex/npm-release-preparation/docs/evals/2026-09-26-agent-recheck.md) | 实际 MCP 调用、定位、新鲜度与错误反馈    |
+| 评测资料                                                                                                                        | 内容                                     |
+| ------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| [个人知识库 200 题](https://github.com/HuanHuanHuanFFF/Echo/blob/main/docs/evals/2026-09-21-default-budget20-cap-comparison.md) | 分库结果、事实覆盖、上下文用量与参数条件 |
+| [公开数据集全量评测](https://github.com/HuanHuanHuanFFF/Echo/blob/main/docs/evals/2026-09-22-cap6-public-full-results.md)       | 不同资料类型上的检索表现与取舍           |
+| [QMD 私有题集对照](https://github.com/HuanHuanHuanFFF/Echo/blob/main/docs/evals/2026-09-25-qmd-private-comparison.md)           | 个人知识库场景对照与实验条件             |
+| [QMD 公开固定单元对照](https://github.com/HuanHuanHuanFFF/Echo/blob/main/docs/evals/2026-09-26-qmd-public-fixed-results.md)     | 保留官方检索单元的排名对照               |
+| [Agent 接口复验](https://github.com/HuanHuanHuanFFF/Echo/blob/main/docs/evals/2026-09-26-agent-recheck.md)                      | 实际 MCP 调用、定位、新鲜度与错误反馈    |
 
 公开固定单元的排名评测与个人知识库的端到端证据覆盖采用不同口径，请结合各报告中的条件阅读。
 
-[查看评测与文档索引](docs/README.md)
+[查看评测与文档索引](https://github.com/HuanHuanHuanFFF/Echo/blob/main/docs/README.md)
 
 ### 在自己的知识库上评测
 
-使用脚本冻结语料、查询与证据标签，比较 BM25、dense、hybrid 或自定义参数；记录证据覆盖、排名、延迟和累计上下文，无需逐题运行完整 Agent。
+评测脚本需在源码仓库中运行：先按下方开发步骤克隆仓库并执行 `npm ci`，再从仓库根目录调用。可冻结语料、查询与证据标签，比较 BM25、dense、hybrid 或自定义参数；记录证据覆盖、排名、延迟和累计上下文，无需逐题运行完整 Agent。
 
 ```sh
 npm run eval:retrieval -- --help
@@ -144,7 +142,7 @@ npm run eval:retrieval -- --help
 
 比较时固定语料、Embedding、题集和上下文预算，明确哪些数据已用于调参。公开固定单元评测可用于比较排序，不能直接证明重新切块的收益。
 
-[评测接口与题集格式](docs/design/retrieval-evaluation.md)
+[评测接口与题集格式](https://github.com/HuanHuanHuanFFF/Echo/blob/main/docs/design/retrieval-evaluation.md)
 
 ## 配置与扩展
 
@@ -162,7 +160,7 @@ npm run eval:retrieval -- --help
 
 Chunk 尺寸是结构切分的软约束，overlap 只用于超长单元回退，不是每个块都重复前文。返回预算包含正文和元数据，不是 token 数量；数量不足时返回实际结果，不放宽约束补满。
 
-[完整默认与适用边界](docs/project/2026-09-26-final-default-profile.md)
+[完整默认与适用边界](https://github.com/HuanHuanHuanFFF/Echo/blob/main/docs/project/2026-09-26-final-default-profile.md)
 
 ### 按职责拆分配置
 
@@ -215,18 +213,20 @@ echo-mcp config use --retrieval my-profile
 
 优先级为 **内置默认 → 当前召回配置 → 本次 overrides**。未传字段保留配置值，`path_prefix` 相对 collection 根目录解析。
 
-[配置 Schema、策略接口与迁移](docs/design/configuration-profiles.md)
+[配置 Schema、策略接口与迁移](https://github.com/HuanHuanHuanFFF/Echo/blob/main/docs/design/configuration-profiles.md)
 
 ## 开发与验证
 
 开发环境：Node.js `>=24.15.0 <25`，npm 11。已验证 Windows x64 / Linux x64。
 
 ```sh
+git clone https://github.com/HuanHuanHuanFFF/Echo.git
+cd Echo
 npm ci
 npm run check
 ```
 
-发布准备分支还提供实际安装包验证：
+验证实际 npm 安装包：
 
 ```sh
 npm run smoke:package
@@ -242,8 +242,8 @@ npm run smoke:package
 | `evals/`    | 检索评测脚本、评分器与固定样本          |
 | `docs/`     | 使用指南、设计契约、实验报告与历史记录  |
 
-[文档索引](docs/README.md) · [开发与历史实验](https://github.com/HuanHuanHuanFFF/Echo/blob/codex/npm-release-preparation/docs/history.md)
+[文档索引](https://github.com/HuanHuanHuanFFF/Echo/blob/main/docs/README.md) · [开发与历史实验](https://github.com/HuanHuanHuanFFF/Echo/blob/main/docs/history.md)
 
 ## License
 
-Echo 自有代码采用 [MIT License](https://github.com/HuanHuanHuanFFF/Echo/blob/codex/npm-release-preparation/LICENSE)。第三方代码与资料保留各自许可。
+Echo 自有代码采用 [MIT License](https://github.com/HuanHuanHuanFFF/Echo/blob/main/LICENSE)。第三方代码与资料保留各自许可。
