@@ -13,7 +13,7 @@ export function createServer(
   reload?: () => Promise<EchoConfig | undefined>,
 ) {
   const snapshot = async () => (reload ? reload() : initialConfig);
-  const server = new McpServer({ name: 'echo', version: '0.1.0' });
+  const server = new McpServer({ name: 'echo', version: '0.1.1' });
   const searches = new SearchWorkerPool();
   const close = server.close.bind(server);
   server.close = async () => {
