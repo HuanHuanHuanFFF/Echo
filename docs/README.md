@@ -21,6 +21,7 @@
 - [私有200题与默认cap6对照](evals/2026-09-21-default-budget20-cap-comparison.md)、[公开全量cap6对照](evals/2026-09-22-cap6-public-full-results.md)：参数、评分口径和预算按各报告冻结，不能跨口径直接比较。
 - [QMD 私有题对照](evals/2026-09-25-qmd-private-comparison.md)、[固定补读](evals/2026-09-26-echo-qmd-supplement-results.md)、[公开固定单元](evals/2026-09-26-qmd-public-fixed-results.md)。
 - [Dify 对照](evals/2026-09-24-echo-dify-results.md)：产品范围和模型条件不同，按原协议解释结果。
+- [Dify 父块分隔符 A/C 探索](evals/2026-09-25-dify-parent-separator-pilot.md)：75 题局部对照；后续因耗时停止，不替代全量对照或修改默认配置。
 
 真实模型检索评测已有冻结结果；完整 Agent 日常任务的回答、补读、引用与累计成本验收仍独立。游标翻页、rerank/MMR、自动同步未实现。
 
