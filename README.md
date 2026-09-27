@@ -32,7 +32,7 @@
 ## 快速开始
 
 ```sh
-npm install -g @huanf/echo@0.1.1
+npm install -g @huanf/echo
 ```
 
 默认混合检索需要外接 **Embedding 模型**，配置服务地址、模型、向量维度和 API key。无需下载本地模型。
