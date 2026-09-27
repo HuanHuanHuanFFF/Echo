@@ -24,7 +24,7 @@
       <p>Echo 负责检索和返回证据；问题拆解、证据判断与回答生成由 Agent 完成。</p>
     </td>
     <td width="38.2%" align="center" valign="middle">
-      <img src="docs/assets/echo-mascot.png" width="480" alt="Echo 拟人角色" />
+      <img src="docs/assets/echo-mascot-tight.png" width="480" alt="Echo 拟人角色" />
     </td>
   </tr>
 </table>
