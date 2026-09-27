@@ -9,6 +9,7 @@ import {
   stat,
   writeFile,
 } from 'node:fs/promises';
+import { workspaceGuides } from './workspace-guides.js';
 import { dirname, resolve } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { loadConfig, retrievalSchema } from './config.js';
@@ -47,6 +48,7 @@ export async function initializeWorkspace(path: string) {
       'utf8',
     );
     const files: Record<string, string> = {
+      ...(await workspaceGuides()),
       'chunkers/markdown-structure-v1.mjs': structureStrategy,
       'tokenizers/icu-zh.mjs': defaultTokenizer,
       'config/embedding/default.json': json({

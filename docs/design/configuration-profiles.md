@@ -1,26 +1,20 @@
 # 配置目录、策略与索引契约（v2）
 
-2026-09-26更新：[最终默认与精简初始化](../project/2026-09-26-final-default-profile.md)采用新综合、balanced、每篇6；新初始化不再附带 heading-1000/500 和纯 BM25 配置文件，自定义与旧配置兼容保留。
-
-2026-09-21更新：[MiniSearch默认采用](../project/2026-09-21-minisearch-default.md)已获用户确认，取消匹配词乘数，新增可配置k/b/d；只替代词法引擎默认范围。同日预算修订将完整响应JSON默认上调至20000，已有显式值优先；其余已确认参数保持。
-
-日期：2026-09-16。状态：实现与隔离回归已具备，最终验证见[修订开发记录](../development/2026-09-16-configuration-revision.md)。本文落实[用户确认决定](../project/2026-09-16-configuration-decisions.md)，替代[旧配置契约](configuration.md)的配置组织与索引选择部分；证据定位、RRF、数量和预算规则延续。
-
-2026-09-20：[默认冻结记录](../project/2026-09-20-default-freeze.md)确认新综合＋BM25 0.5＋RRF10，替代旧初始化heading/RRF30默认。新init完整保存召回参数并安装新综合，重复init保留已有文件；不批量改写旧安装或冻结评测。
+更新：2026-09-27。状态：当前使用契约。新初始化只提供新综合和 balanced，默认每篇6、预算20000；完整参数见[最终默认](../project/2026-09-26-final-default-profile.md)。此文替代[旧格式说明](configuration.md)的配置组织与索引选择部分，历史变更单列于末尾。发布安装入口见[npm指南](../guides/npm-release.md)。
 
 ## 初始化与选择
 
-先构建，再在自己的工作目录执行：
+安装后在自己的工作目录执行（源码安装也可用 node dist/cli.js）：
 
 ```sh
-node /absolute/path/to/echo/dist/cli.js init
-node /absolute/path/to/echo/dist/cli.js config list
-node /absolute/path/to/echo/dist/cli.js config show
-node /absolute/path/to/echo/dist/cli.js config use --retrieval balanced
-node /absolute/path/to/echo/dist/cli.js sync
+echo-mcp init
+echo-mcp config list
+echo-mcp config show
+echo-mcp config use --retrieval balanced
+echo-mcp sync
 ```
 
-所有命令都支持 --config /absolute/path/echo.config.json。仓库中可直接运行的无 key 样本是 [examples/profiles/example.json](../../examples/profiles/example.json)。init 保留已有文件，不调用模型、不导入笔记；无 key 时可将 balanced 的 mode 设为 bm25，或自行新建并选择纯词法配置；填好 sources 和需要的 embedding 设置后再显式 sync。
+所有命令都支持 --config /absolute/path/echo.config.json。仓库中可直接运行的无 key 样本是 [examples/profiles/example.json](../../examples/profiles/example.json)。init 保留已有文件，不调用模型、不导入笔记；无 key 时可将 balanced 的 mode 设为 bm25，或自行新建并选择纯词法配置；填好 sources 和需要的 embedding 设置后再显式 sync。新初始化同时创建五份目录 README；召回参数表由运行 schema 生成，重复 init 不覆盖已有说明，也不为已有主入口回填文件。
 
 ```text
 echo.config.json
@@ -109,15 +103,7 @@ export default {
 
 不自动重试计费请求。API key、超时和 batch_size 不影响向量身份；服务端点、模型、维度、前缀、维度字段和向量变换规则影响身份。空模板可以保存，实际 dense/hybrid 同步必须配置模型；已有向量完整时，同步不因 key 缺失而重新请求模型。
 
-召回 JSON 也包含 id，支持多套配置。字段/范围沿用 [retrievalSchema](../../src/config.ts)：mode、lexical_engine、minisearch_k/b/d、topk、max_chunks_per_source、两路 candidates、rrf_k、title_weight、两路 weight、min_dense_similarity、max_context_chars。优先级：内置默认 → 选中的召回配置 → 单次 overrides。默认 hybrid、topk=10、每篇上限=3、候选=60/60、RRF k=10、BM25/向量权重=0.5/1、标题权重=2、最低余弦=0.3、完整 JSON 预算=20000 字符。topk 和单篇上限同时约束，不凑满数量。召回配置不参与表身份。
-
-2026-09-18 用户确认：RRF k改为30，完整返回JSON预算改为16000；支持单次overrides。省略字段时继承新默认，已有显式值继续优先；旧冻结评测不回写，当前新综合联合验证见[联合对照](../evals/2026-09-18-rrf-budget-joint.md)。这替代此前仅把30/16000列为候选、默认仍60/12000的状态，仅涉及这两项。
-
-2026-09-17 用户确认：topk 8→10、每篇上限 2→3、BM25 权重 1→0.5，替代本节与旧格式契约中的这三项默认值。实现归属 [retrievalSchema](../../src/config.ts)；初始化未指定字段时继承它，样例配置同步更新，单次 overrides 继续优先。已有显式配置、E盘冻结评测安装与历史报告不自动修改。这是默认行为调整，该组合的真实效果尚未验收。
-
-验证（2026-09-17）：npm run check 通过格式、类型、110项隔离测试（1项原有跳过）和构建；既有 [配置覆盖测试](../../tests/foundation.test.ts)、[MCP运行测试](../../tests/profile-runtime.test.ts)通过。直接检查构建产物确认10/3/0.5默认值、单次覆盖、已有显式配置优先级及三份使用样例。未运行真实模型评测。
-
-[PR #16的原始说明草稿](../development/2026-09-17-pr16-default-limits-description.md)保留该次默认值调整的实现、验证与当时的评测边界；其“尚未完成真实模型效果评测”仅描述2026-09-17的状态，不覆盖后续评测。
+召回 JSON 也包含 id，支持多套配置。字段/范围沿用 [retrievalSchema](../../src/config.ts)：mode、lexical_engine、minisearch_k/b/d、topk、max_chunks_per_source、两路 candidates、rrf_k、title_weight、两路 weight、min_dense_similarity、max_context_chars。优先级：内置默认 → 选中的召回配置 → 单次 overrides。默认 hybrid、topk=10、每篇上限=6、候选=60/60、RRF k=10、BM25/向量权重=0.5/1、标题权重=2、最低余弦=0.3、完整 JSON 预算=20000 字符。topk 和单篇上限同时约束，不凑满数量。召回配置不参与表身份。
 
 ## 扫描、运行与日志
 
@@ -167,7 +153,7 @@ logging 文件包含 level（off/error/warn/info/debug）、可选 file、max_fi
 
 code/next 区分 CONFIG_RELOAD、RESTART_REQUIRED、SOURCE_LIMIT、INDEX_REQUIRED、INDEX_STALE、MODEL_CONFIG、MODEL_KEY_MISSING、MODEL_UNAVAILABLE、BUSY、TIMEOUT、CANCELLED 和 CONTEXT_BUDGET。正常无命中是 queries 中的 empty；模型部分失败保留仍可用证据。echo_status 展示活动组合、ready、原因与上次同步，不进行付费健康检查。
 
-真实模型效果仍需用户提供 API 配置和调用额度；本轮确定性模型回归只证明配置、复用和调用流程。
+真实模型检索评测见[历史索引](../history.md)；普通 CI 的确定性模型只验证配置与调用流程。用户实际运行 API 仍需自行配置服务并承担用量费用。
 
 ## 实现依据
 
@@ -176,3 +162,15 @@ Node 24.15 已提供稳定的 [path.matchesGlob](https://nodejs.org/api/path.htm
 ## Agent 接口补充（2026-09-26，用户已确认）
 
 状态支持显式 check_sources 只读 hash 检查，默认不扫描原文；ready 与原文新鲜度分开表达。搜索默认紧凑，完整 applied/selection/排名等仅在 diagnostics:true 返回，并在预算装箱前选择格式。overrides 在工具定义中公开类型和范围；未知 collection、绝对 path_prefix 明确报错。详细契约、兼容范围和验证见[本轮记录](../development/2026-09-26-agent-interface-polish.md)。
+
+## 历史默认修订（不作为当前默认）
+
+以下段落保留原日期的决定与验证；已由[最终默认](../project/2026-09-26-final-default-profile.md)替代相应参数范围。
+
+2026-09-18 用户确认：RRF k改为30，完整返回JSON预算改为16000；支持单次overrides。省略字段时继承新默认，已有显式值继续优先；旧冻结评测不回写，当前新综合联合验证见[联合对照](../evals/2026-09-18-rrf-budget-joint.md)。这替代此前仅把30/16000列为候选、默认仍60/12000的状态，仅涉及这两项。
+
+2026-09-17 用户确认：topk 8→10、每篇上限 2→3、BM25 权重 1→0.5，替代本节与旧格式契约中的这三项默认值。实现归属 [retrievalSchema](../../src/config.ts)；初始化未指定字段时继承它，样例配置同步更新，单次 overrides 继续优先。已有显式配置、E盘冻结评测安装与历史报告不自动修改。这是默认行为调整，该组合的真实效果尚未验收。
+
+验证（2026-09-17）：npm run check 通过格式、类型、110项隔离测试（1项原有跳过）和构建；既有 [配置覆盖测试](../../tests/foundation.test.ts)、[MCP运行测试](../../tests/profile-runtime.test.ts)通过。直接检查构建产物确认10/3/0.5默认值、单次覆盖、已有显式配置优先级及三份使用样例。未运行真实模型评测。
+
+[PR #16的原始说明草稿](../development/2026-09-17-pr16-default-limits-description.md)保留该次默认值调整的实现、验证与当时的评测边界；其“尚未完成真实模型效果评测”仅描述2026-09-17的状态，不覆盖后续评测。
