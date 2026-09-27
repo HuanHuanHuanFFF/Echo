@@ -21,6 +21,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
+      - name: Verify packed installation (no model key)
+        run: npm run smoke:package
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'

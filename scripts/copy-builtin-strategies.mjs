@@ -1,4 +1,4 @@
-import { copyFile, mkdir } from 'node:fs/promises';
+import { copyFile, mkdir, cp } from 'node:fs/promises';
 const destination = new URL('../dist/strategies/', import.meta.url);
 await mkdir(destination, { recursive: true });
 await copyFile(
@@ -7,4 +7,10 @@ await copyFile(
     import.meta.url,
   ),
   new URL('markdown-structure-v1.mjs', destination),
+);
+
+await cp(
+  new URL('../templates/workspace/', import.meta.url),
+  new URL('../dist/templates/workspace/', import.meta.url),
+  { recursive: true },
 );

@@ -1,7 +1,6 @@
 {
-  "name": "@huan/echo",
+  "name": "@huanf/echo",
   "version": "0.1.0",
-  "private": true,
   "description": "Local evidence-only Markdown retrieval MCP",
   "type": "module",
   "bin": {
@@ -22,7 +21,10 @@
     "eval:retrieval": "npm run build && node dist/retrieval-eval-cli.js",
     "eval:compare": "npm run build && node dist/retrieval-compare-cli.js",
     "smoke:default": "node scripts/verify-default-runtime.mjs",
-    "check:paths": "node scripts/check-public-paths.mjs"
+    "check:paths": "node scripts/check-public-paths.mjs",
+    "prepack": "node scripts/clean-package-dist.mjs && npm run build",
+    "smoke:package": "node scripts/verify-package-install.mjs",
+    "prepublishOnly": "npm run check && npm run smoke:package"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.30.0",
@@ -39,5 +41,23 @@
     "tsx": "4.23.13",
     "typescript": "7.0.2",
     "vitest": "5.0.0"
+  },
+  "license": "MIT",
+  "author": "huanf",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HuanHuanHuanFFF/Echo.git"
+  },
+  "homepage": "https://github.com/HuanHuanHuanFFF/Echo#readme",
+  "bugs": {
+    "url": "https://github.com/HuanHuanHuanFFF/Echo/issues"
+  },
+  "files": [
+    "dist/",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

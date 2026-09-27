@@ -1,6 +1,6 @@
 # Echo 架构与模块
 
-日期：2026-09-26。状态：当前实现说明，按本地源码提交 `62df00f` 核对；参数以[最新默认决定](../project/2026-09-26-final-default-profile.md)和运行配置为准。本文说明现有模块及边界，不替代[配置契约](../design/configuration-profiles.md)或阶段验收记录。
+更新：2026-09-27。状态：当前实现说明，原架构按源码提交 `62df00f` 核对，本轮同步精简响应和初始化文档边界；参数以[最新默认决定](../project/2026-09-26-final-default-profile.md)和运行配置为准。本文说明现有模块及边界，不替代[配置契约](../design/configuration-profiles.md)或阶段验收记录。
 
 ![Echo 本地索引与证据检索概览](assets/echo-architecture.svg)
 
@@ -46,9 +46,9 @@ SQLite 是持久层：保存来源、原文 chunk、FTS 词项和向量。v2 登
 
 `echo_search` 接收一个 `query`，或最多 8 个带唯一 `query_id` 的独立 `queries`，每个最多 3 个由调用方提供的同意图 `variants`。集合、来源 UUID、相对路径前缀过滤在候选截断之前生效。词法默认 MiniSearch BM25+，取消其原生“匹配查询词数量”乘数；向量路在 SQLite 中用余弦距离精确检索。两路按 `weight / (rrf_k + rank)` 融合，排名从 1 开始；RRF 分数不是答案置信度。[输入与实现](../../src/retrieval.ts)、[默认决定](../project/2026-09-21-minisearch-default.md)。
 
-同意图变体的贡献按表达式数平均、按 chunk ID 合并；不同问题保留各自候选榜，最终按名次轮流取完整片段并去重。`topk`、每篇来源上限和 `max_context_chars` 同时约束输出，数量不足不会强行填满。预算计算对象是完整业务结果 JSON 的 UTF-16 长度，包含定位、选择和诊断；它不是 token 预算，也没有独立的请求加响应硬上限。各问题明确标为 `ok`、`empty`、`partial_failure` 或 `error`，向量服务部分失败时仍可保留可用证据。[结果装箱](../../src/retrieval.ts)、[阶段 4 契约](../development/phase-04-agent-mcp.md)。
+同意图变体的贡献按表达式数平均、按 chunk ID 合并；不同问题保留各自候选榜，最终按名次轮流取完整片段并去重。`topk`、每篇来源上限和 `max_context_chars` 同时约束输出，数量不足不会强行填满。预算计算对象是完整业务结果 JSON 的 UTF-16 长度，包含定位，以及显式开启时的选择和诊断；它不是 token 预算，也没有独立的请求加响应硬上限。各问题明确标为 `ok`、`empty`、`partial_failure` 或 `error`，向量服务部分失败时仍可保留可用证据。[结果装箱](../../src/retrieval.ts)、[阶段 4 契约](../development/phase-04-agent-mcp.md)。
 
-每条证据包含 `source_id`、集合、绝对真实路径、相对路径、`source_version`、标题路径，以及从完整原文计数的 1-based、两端包含的片段行与可选章节行范围。Agent 可使用宿主文件工具按路径与行号补读；Echo 没有专用读取工具，也不保证搜索后原文未被外部程序再修改。[证据结构](../../src/retrieval.ts)、[原文身份](../../src/identity.ts)。
+每条证据包含 `source_id`、集合、绝对真实路径、`source_version`、标题路径，以及从完整原文计数的 1-based、两端包含的片段行与可选章节行范围。相对路径和排名仅在 diagnostics=true 返回。Agent 可使用宿主文件工具按路径与行号补读；Echo 没有专用读取工具，也不保证搜索后原文未被外部程序再修改。[证据结构](../../src/retrieval.ts)、[原文身份](../../src/identity.ts)。
 
 ### 运行配置与热切换
 
@@ -58,7 +58,7 @@ SQLite 是持久层：保存来源、原文 chunk、FTS 词项和向量。v2 登
 
 ## 当前默认与未实现范围
 
-**新建 v2 工作区**默认 `markdown-structure-v1@1.0.1`、`icu-zh@1`、MiniSearch 7.2.0、`hybrid`；MiniSearch k/b/d 为 1.2/0.7/0.5，BM25/dense 权重 0.5/1、RRF k=10、两路候选各 60、topk=10、每篇最多 6、完整结果 JSON 预算 20000。初始化只生成这一套切块与召回配置；已有显式配置优先，重复初始化不覆盖或删除旧文件。[完整参数及升级边界](../project/2026-09-26-final-default-profile.md)。
+**新建 v2 工作区**默认 `markdown-structure-v1@1.0.1`、`icu-zh@1`、MiniSearch 7.2.0、`hybrid`；MiniSearch k/b/d 为 1.2/0.7/0.5，BM25/dense 权重 0.5/1、RRF k=10、两路候选各 60、topk=10、每篇最多 6、完整结果 JSON 预算 20000。初始化只生成这一套切块与召回配置及五份目录说明；已有显式配置优先，重复初始化不覆盖或删除旧文件。[完整参数及升级边界](../project/2026-09-26-final-default-profile.md)。
 
 游标翻页、独立预算硬上限、rerank/MMR、索引预览后再由 Echo 补读、专用读取工具尚未实现。图中返回“证据 JSON”只表示检索结果；答案生成与证据充分性判断仍由 Agent 负责。[当前决定](../project/2026-09-21-minisearch-default.md#后续调参纪律与剩余边界)。
 

@@ -87,12 +87,18 @@ try {
     ),
   );
   // Existing explicit retrieval settings and chunk selection survive repeated init.
-  assert.deepEqual(await readdir(join(work, 'chunkers')), [
-    'markdown-structure-v1.mjs',
-  ]);
-  assert.deepEqual(await readdir(join(work, 'config/retrieval')), [
-    'balanced.json',
-  ]);
+  assert.deepEqual(
+    (await readdir(join(work, 'chunkers'))).filter((file) =>
+      file.endsWith('.mjs'),
+    ),
+    ['markdown-structure-v1.mjs'],
+  );
+  assert.deepEqual(
+    (await readdir(join(work, 'config/retrieval'))).filter((file) =>
+      file.endsWith('.json'),
+    ),
+    ['balanced.json'],
+  );
   await writeFile(
     join(work, 'chunkers/heading-1000.mjs'),
     "export default { id: 'heading-1000', version: '1', chunk(input) { return input.headingLines(1000); } };\n",
