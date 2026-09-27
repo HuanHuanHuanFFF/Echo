@@ -1,7 +1,19 @@
 {
   "name": "@huanf/echo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Local evidence-only Markdown retrieval MCP",
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "markdown",
+    "knowledge-base",
+    "retrieval",
+    "hybrid-search",
+    "bm25",
+    "vector-search",
+    "sqlite"
+  ],
   "type": "module",
   "bin": {
     "echo-mcp": "dist/cli.js"

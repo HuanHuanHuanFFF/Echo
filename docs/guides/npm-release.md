@@ -7,7 +7,7 @@
 要求 Node.js >=24.15.0 <25（当前 CI 固定24.15.0）、npm 11；验证平台为 Windows x64 和 Linux x64。包含 better-sqlite3/sqlite-vec 原生依赖，不能据此承诺所有系统架构均可免编译安装。
 
 ```sh
-npm install -g @huanf/echo@0.1.0
+npm install -g @huanf/echo@0.1.1
 echo-mcp init
 echo-mcp config show
 ```
@@ -48,7 +48,7 @@ echo-mcp config show
       "command": "npx",
       "args": [
         "-y",
-        "@huanf/echo@0.1.0",
+        "@huanf/echo@0.1.1",
         "serve",
         "--config",
         "/absolute/path/to/knowledge/echo.config.json"
