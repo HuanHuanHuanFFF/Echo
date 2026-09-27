@@ -1,6 +1,6 @@
 <table width="100%">
   <tr>
-    <td width="50%" valign="top">
+    <td width="61.8%" valign="top">
       <h1>Echo</h1>
       <p><strong>专注个人 Markdown 知识库的轻量 MCP Retrieval Engine。</strong></p>
       <p>让你的笔记、学习记录和个人资料成为 Agent 随时可查的知识库。Echo 帮你找到相关原文及出处，让回答有据可依。</p>
@@ -23,7 +23,7 @@
       </ul>
       <p>Echo 负责检索和返回证据；问题拆解、证据判断与回答生成由 Agent 完成。</p>
     </td>
-    <td width="50%" align="center" valign="middle">
+    <td width="38.2%" align="center" valign="middle">
       <img src="docs/assets/echo-mascot.png" width="480" alt="Echo 拟人角色" />
     </td>
   </tr>
