@@ -238,6 +238,7 @@ try {
   await client.close();
   client = undefined;
   let registryReceipt;
+  let verifiedPack = packed;
   if (registryVersion) {
     const response = await fetch(
       `https://registry.npmjs.org/@huanf%2Fecho/${registryVersion}`,
@@ -246,6 +247,32 @@ try {
     const metadata = await response.json();
     assert.equal(metadata.name, packageInfo.name);
     assert.equal(metadata.version, registryVersion);
+    const registryDirectory = join(base, 'registry-download');
+    await mkdir(registryDirectory);
+    const registryPack = JSON.parse(
+      (
+        await npm(
+          [
+            'pack',
+            installSpec,
+            '--json',
+            '--ignore-scripts',
+            '--pack-destination',
+            registryDirectory,
+          ],
+          repository,
+        )
+      ).stdout,
+    )[0];
+    const registryPaths = registryPack.files.map((file) => file.path);
+    verifyPackageFiles(registryPaths);
+    assert.deepEqual(
+      [...registryPaths].sort(),
+      [...paths].sort(),
+      'Registry file set differs from verified candidate',
+    );
+    assert.equal(registryPack.integrity, metadata.dist.integrity);
+    verifiedPack = registryPack;
     const tarballUrl = new URL(metadata.dist.tarball);
     assert.equal(tarballUrl.protocol, 'https:');
     assert.equal(tarballUrl.hostname, 'registry.npmjs.org');
@@ -255,7 +282,7 @@ try {
     const integrity =
       'sha512-' + createHash('sha512').update(bytes).digest('base64');
     assert.equal(integrity, metadata.dist.integrity);
-    for (const file of paths.filter(
+    for (const file of registryPaths.filter(
       (p) => p.startsWith('dist/') || p === 'README.md' || p === 'LICENSE',
     ))
       assert.deepEqual(
@@ -280,11 +307,21 @@ try {
     platform: process.platform,
     arch: process.arch,
     node: process.version,
-    packed_files: paths.length,
-    packed_bytes: packed.size,
-    tarball_sha256: createHash('sha256')
-      .update(await readFile(join(base, packed.filename)))
-      .digest('hex'),
+    packed_files: verifiedPack.files.length,
+    packed_bytes: verifiedPack.size,
+    tarball_sha256:
+      registryReceipt?.tarball_sha256 ??
+      createHash('sha256')
+        .update(await readFile(join(base, packed.filename)))
+        .digest('hex'),
+    ...(registryVersion
+      ? {
+          local_candidate: {
+            integrity: packed.integrity,
+            packed_files: paths.length,
+          },
+        }
+      : {}),
     isolated_install: true,
     bin_shim: true,
     cli_and_mcp: true,
