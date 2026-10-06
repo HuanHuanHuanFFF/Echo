@@ -53,11 +53,17 @@ it('runs the full fixed lexical dataset without a model and enforces cumulative 
         row.request_chars + row.search_chars + row.read_chars,
       );
       expect(row.total_context_chars).toBeLessThanOrEqual(8000);
+      if (row.status === 'error') {
+        expect(
+          row.result.queries.every((q) => q.code === 'CONTEXT_BUDGET'),
+        ).toBe(true);
+        expect(row.covered_facts).toEqual([]);
+      }
     }
     expect(report.corpus_sha256).toMatch(/^[a-f0-9]{64}$/);
-    expect(Object.values(report.strategies).every((s) => s.errors === 0)).toBe(
-      true,
-    );
+    expect(
+      Object.values(report.strategies).reduce((n, s) => n + s.errors, 0),
+    ).toBe(report.rows.filter((r) => r.status === 'error').length);
   } finally {
     await rm(dir, { recursive: true, force: true });
   }
@@ -66,6 +72,38 @@ it('requires an explicit API configuration and request budget for real evaluatio
   await expect(runEvaluation({ lexicalOnly: false })).rejects.toThrow(
     'Real evaluation requires',
   );
+});
+
+it('records metadata budget failures as errors and completes evaluation at the requested budget', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'echo-evaluation-errors-'));
+  try {
+    for (const budget of [2000, 20000]) {
+      const { report } = await runEvaluation({
+        lexicalOnly: true,
+        outputDir: join(dir, String(budget)),
+        budgetChars: budget,
+      });
+      expect(report.rows).toHaveLength(42);
+      const errors = report.rows.filter((r) => r.status === 'error');
+      if (budget === 2000) expect(errors.length).toBeGreaterThan(0);
+      else expect(errors).toEqual([]);
+      for (const row of errors) {
+        expect(
+          row.result.queries.every((q) => q.code === 'CONTEXT_BUDGET'),
+        ).toBe(true);
+        expect(row.result.results).toEqual([]);
+        expect(row.covered_facts).toEqual([]);
+      }
+      expect(
+        Object.values(report.strategies).reduce((n, s) => n + s.errors, 0),
+      ).toBe(errors.length);
+      expect(report.rows.every((r) => r.total_context_chars <= budget)).toBe(
+        true,
+      );
+    }
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
 });
 
 it('stops before exceeding the authorized API call count and records failure usage', async () => {

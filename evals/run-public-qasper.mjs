@@ -57,6 +57,7 @@ try {
       await put('config/retrieval/rrf' + k + '.json', {
         id: 'rrf' + k,
         ...ctx.parseConfig({}).retrieval,
+        packing_mode: 'whole',
         rrf_k: k,
       });
     for (const [arm, strategy, k] of [
@@ -111,7 +112,9 @@ try {
       let n = 0;
       try {
         for (const q of queries) {
-          const request = boundedRequest(q.text, q.source_id);
+          const request = boundedRequest(q.text, q.source_id, 16000, {
+            packing_mode: 'whole',
+          });
           const started = performance.now();
           const result = await ctx.searchIndex(
             config,

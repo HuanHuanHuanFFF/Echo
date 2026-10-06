@@ -3,15 +3,110 @@ import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import { parseConfig } from '../src/config.js';
 import { syncIndex } from '../src/sync.js';
 import { openDatabase } from '../src/database.js';
 import { tokenize } from '../src/lexical.js';
 import type { EmbeddingProvider } from '../src/contracts.js';
 
-const { lane } = await import(
-  pathToFileURL(resolve('evals/run-minisearch-parameter-exploration.mjs')).href
-);
+const { lane, armOptions, requestFor, packingRuntimeFiles, verifyPackingCode } =
+  await import(
+    pathToFileURL(resolve('evals/run-minisearch-parameter-exploration.mjs'))
+      .href
+  );
+
+it('binds whole mode and preview runtime identity before a new frozen evaluation', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'echo-packing-freeze-'));
+  try {
+    await mkdir(join(root, 'dist'));
+    await mkdir(join(root, 'evals'));
+    const sha = (text: string) =>
+      createHash('sha256').update(text).digest('hex');
+    const frozen = {
+      fixed: { packing_mode: 'whole' },
+      code: { script: sha('script'), dist: {} as Record<string, string> },
+    };
+    await writeFile(
+      join(root, 'evals/run-minisearch-parameter-exploration.mjs'),
+      'script',
+    );
+    for (const name of packingRuntimeFiles) {
+      await writeFile(join(root, 'dist', name), name);
+      frozen.code.dist[name] = sha(name);
+    }
+    await expect(verifyPackingCode(frozen, root)).resolves.toBeUndefined();
+    await writeFile(join(root, 'dist/preview.js'), 'changed');
+    await expect(verifyPackingCode(frozen, root)).rejects.toThrow('preview.js');
+    await writeFile(join(root, 'dist/preview.js'), 'preview.js');
+    await expect(
+      verifyPackingCode({ ...frozen, fixed: {} }, root),
+    ).rejects.toThrow('whole-mode freeze');
+    await writeFile(
+      join(root, 'evals/run-minisearch-parameter-exploration.mjs'),
+      'changed',
+    );
+    await expect(verifyPackingCode(frozen, root)).rejects.toThrow(
+      'script changed',
+    );
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+it('checks the freeze before single-scope execution or finalization reads any experiment data', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'echo-freeze-entry-'));
+  try {
+    await writeFile(
+      join(root, 'freeze.json'),
+      JSON.stringify({ fixed: {}, code: {} }),
+    );
+    for (const args of [['full', 'private:A-test'], ['finalize']]) {
+      let stderr = '';
+      try {
+        execFileSync(
+          process.execPath,
+          [
+            resolve('evals/run-minisearch-parameter-exploration.mjs'),
+            join(root, 'missing-private'),
+            join(root, 'missing-public'),
+            root,
+            ...args,
+          ],
+          {
+            encoding: 'utf8',
+            stdio: ['ignore', 'pipe', 'pipe'],
+            windowsHide: true,
+          },
+        );
+      } catch (error) {
+        stderr = String((error as { stderr: unknown }).stderr);
+      }
+      expect(stderr).toContain('whole-mode freeze');
+      expect(stderr).not.toContain('ENOENT');
+    }
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+it('freezes whole-block output in traditional parameter evaluation and records it in requests', () => {
+  const arm = {
+    minisearch_k: 1.2,
+    minisearch_b: 0.7,
+    minisearch_d: 0.5,
+    bm25_weight: 0.5,
+    dense_weight: 1,
+    rrf_k: 10,
+  };
+  expect(armOptions(arm, 'hybrid').packing_mode).toBe('whole');
+  const request = requestFor({ query: 'Question' }, 16000, 16000);
+  expect(request.overrides.packing_mode).toBe('whole');
+  expect(
+    JSON.stringify(request).length + request.overrides.max_context_chars,
+  ).toBeLessThanOrEqual(16000);
+});
 
 it('isolates actual cached lexical results across RRF, candidate cap and title-weight arms', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'echo-eval-cache-'));

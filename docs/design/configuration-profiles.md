@@ -103,7 +103,13 @@ export default {
 
 不自动重试计费请求。API key、超时和 batch_size 不影响向量身份；服务端点、模型、维度、前缀、维度字段和向量变换规则影响身份。空模板可以保存，实际 dense/hybrid 同步必须配置模型；已有向量完整时，同步不因 key 缺失而重新请求模型。
 
-召回 JSON 也包含 id，支持多套配置。字段/范围沿用 [retrievalSchema](../../src/config.ts)：mode、lexical_engine、minisearch_k/b/d、topk、max_chunks_per_source、两路 candidates、rrf_k、title_weight、两路 weight、min_dense_similarity、max_context_chars。优先级：内置默认 → 选中的召回配置 → 单次 overrides。默认 hybrid、topk=10、每篇上限=6、候选=60/60、RRF k=10、BM25/向量权重=0.5/1、标题权重=2、最低余弦=0.3、完整 JSON 预算=20000 字符。topk 和单篇上限同时约束，不凑满数量。召回配置不参与表身份。
+召回 JSON 也包含 id，支持多套配置。字段/范围沿用 [retrievalSchema](../../src/config.ts)：mode、lexical_engine、minisearch_k/b/d、topk、max_results、max_chunks_per_source、两路 candidates、rrf_k、title_weight、两路 weight、min_dense_similarity、max_context_chars。优先级：内置默认 → 选中的召回配置 → 单次 overrides，但 max_results 仅允许配置修改。默认 hybrid、topk=10、配置返回上限 max_results=20（1–100）、每篇上限=6、候选=60/60、RRF k=10、BM25/向量权重=0.5/1、标题权重=2、最低余弦=0.3、完整 JSON 预算=20000 字符。topk 必须不超过 max_results，单篇上限也生效，不凑满数量。召回配置不参与表身份。
+
+2026-10-06 已确认并实现：替代此前预算不足时丢弃整块的行为。选中块的定位完整保留，正文超限改为从头按字符预览，正文空间均分并回收短块余量；元数据放不下时明确报错。start_line/end_line 保持完整块语义，新增 preview_range 和 text_truncated 区分实际预览；操作步骤见 [Agent 查询说明](../guides/agent-usage.md)，实现与验证见[预览预算记录](../development/2026-10-06-budget-previews.md)。旧配置缺少 max_results 时继承 20；旧显式 topk>20 需在配置中增大 max_results 或降低 topk，不静默修改。仅改变召回装箱与配置，无须重建索引，历史评测输出与数字不回写。
+
+packing_mode 是与检索通道 mode 独立的装箱参数：preview / whole，默认 preview；支持配置和单次 overrides，省略时继承配置，响应顶层报告生效值。preview 先选块、保留定位、均分并裁剪正文；whole 只装完整块，预算不足整块跳过并继续尝试后续候选，来源名额仅由成功装入的块占用。whole 的预算剔除可造成 budget 空命中；preview 的完整元数据放不下则报错。两个模式都计完整 JSON，并受 topk、max_results 和来源上限约束。
+
+传统参数评测和 Qasper 运行器显式使用 whole，继续要求返回文字等于完整行范围；这替代之前无条件使用产品默认装箱的调用方式。新参数与响应字段也计入预算，因此历史已冻结数字仍保留原工件，不预设新运行与旧结果完全相同。已有冻结运行需保留其旧脚本/运行时，新模式运行应重新冻结代码身份；不回写旧报告。
 
 ## 扫描、运行与日志
 

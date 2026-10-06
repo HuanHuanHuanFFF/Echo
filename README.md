@@ -56,6 +56,7 @@ npm install -g @huanf/echo
 ```json
 {
   "status": "ok",
+  "packing_mode": "preview",
   "results": [
     {
       "collection_id": "notes",
@@ -66,7 +67,14 @@ npm install -g @huanf/echo
       "section_start_line": 10,
       "section_end_line": 18,
       "text": "事务执行失败时，使用 undo log 撤销未提交的修改。\n应用层重试需保证幂等，避免重复执行。",
-      "matched_query_ids": ["q0"]
+      "matched_query_ids": ["q0"],
+      "text_truncated": false,
+      "preview_range": {
+        "start_line": 12,
+        "start_column": 1,
+        "end_line": 13,
+        "end_column": 19
+      }
     }
   ],
   "queries": [
@@ -79,7 +87,7 @@ npm install -g @huanf/echo
 }
 ```
 
-行号从 1 开始，两端包含。Agent 可以直接使用返回的证据，也可以按绝对路径和章节范围，通过宿主文件工具补读。`status: ok` 表示检索执行成功，不代表证据足够回答问题。
+start_line/end_line 定位完整块，行号从 1 开始、两端包含。text 可能被裁剪：检查 text_truncated，实际预览位置由 preview_range 表示（1-based 行/UTF-16 列，终点不包含）。Agent 按绝对路径和完整块或章节范围，用宿主文件工具补读后判断证据；不能把预览外的内容当作已读。`status: ok` 表示检索执行成功，不代表证据足够回答问题。[预览、补读与更新说明](https://github.com/HuanHuanHuanFFF/Echo/blob/main/docs/guides/agent-usage.md)。
 
 ## 架构与检索流程
 
@@ -101,14 +109,14 @@ flowchart TD
 
 1. **同步与切块**：以 UUID v4 标识来源，检测内容和路径变化；按 Markdown 结构切块，保存原文行号与章节范围。
 2. **双路召回**：默认使用本地 ICU 分词与 MiniSearch BM25 词法评分；向量存储与相似度检索使用 SQLite / sqlite-vec。MiniSearch 运行时索引驻留进程内存，由本地持久化数据构建并缓存。
-3. **融合与打包**：两路候选通过加权 RRF 融合，去重后同时应用 `topk`、`max_chunks_per_source` 与完整响应 JSON 预算。
+3. **融合与打包**：两路候选通过加权 RRF 融合，按数量和来源限制选块；定位完整保留，正文超预算时均分预览空间并回收短块余量。
 4. **证据消费**：Echo 返回原文证据和定位。Agent 判断证据是否充分、按需补读并生成答案。
 
 [架构图与模块职责](https://github.com/HuanHuanHuanFFF/Echo/blob/main/docs/architecture/README.md) · [配置与索引依赖](https://github.com/HuanHuanHuanFFF/Echo/blob/main/docs/design/configuration-profiles.md)
 
 ## 评测结果
 
-默认方案经过个人笔记、学习资料与公开数据集评测。以下为当前采用方案对应的自建题集冻结结果：
+默认检索参数经过个人笔记、学习资料与公开数据集评测。以下为此前整块返回版本的自建题集冻结结果；2026-10-06 新增的预览装箱尚未重跑这些语义评测，不能直接把旧数字当作新版本成绩：
 
 | 指标         |                      结果 |
 | ------------ | ------------------------: |
@@ -148,15 +156,15 @@ npm run eval:retrieval -- --help
 
 ### 默认检索配置
 
-| 层级      | 当前默认                                                                                     |
-| --------- | -------------------------------------------------------------------------------------------- |
-| Chunking  | `markdown-structure-v1@1.0.1`：目标 1000、常规最大 1500 字符；超长单元回退时 overlap 80 字符 |
-| Tokenizer | `icu-zh@1`，本地分词，无额外词典                                                             |
-| Lexical   | MiniSearch，`k=1.2`、`b=0.7`、`d=0.5`；取消匹配词数量乘数，标题 / 正文权重 `2 / 1`           |
-| Retrieval | `hybrid`；BM25 / dense 各取 60 个候选，最低向量余弦相似度 `0.3`                              |
-| Fusion    | RRF `k=10`，BM25 / dense 权重 `0.5 / 1`                                                      |
-| Packing   | `topk=10`，单篇最多 6 块，完整业务响应 JSON 预算 20,000 个 UTF-16 码元                       |
-| Embedding | 服务、模型与维度由用户配置，不绑定提供方                                                     |
+| 层级      | 当前默认                                                                                                    |
+| --------- | ----------------------------------------------------------------------------------------------------------- |
+| Chunking  | `markdown-structure-v1@1.0.1`：目标 1000、常规最大 1500 字符；超长单元回退时 overlap 80 字符                |
+| Tokenizer | `icu-zh@1`，本地分词，无额外词典                                                                            |
+| Lexical   | MiniSearch，`k=1.2`、`b=0.7`、`d=0.5`；取消匹配词数量乘数，标题 / 正文权重 `2 / 1`                          |
+| Retrieval | `hybrid`；BM25 / dense 各取 60 个候选，最低向量余弦相似度 `0.3`                                             |
+| Fusion    | RRF `k=10`，BM25 / dense 权重 `0.5 / 1`                                                                     |
+| Packing   | `topk=10`，配置返回上限 `max_results=20`，单篇最多 6 块；完整 JSON 预算 20,000 个 UTF-16 码元，超限裁剪正文 |
+| Embedding | 服务、模型与维度由用户配置，不绑定提供方                                                                    |
 
 Chunk 尺寸是结构切分的软约束，overlap 只用于超长单元回退，不是每个块都重复前文。返回预算包含正文和元数据，不是 token 数量；数量不足时返回实际结果，不放宽约束补满。
 
@@ -211,7 +219,9 @@ echo-mcp config use --retrieval my-profile
 }
 ```
 
-优先级为 **内置默认 → 当前召回配置 → 本次 overrides**。未传字段保留配置值，`path_prefix` 相对 collection 根目录解析。
+优先级为 **内置默认 → 当前召回配置 → 本次 overrides**。`max_results` 是配置专属上限，不能单次覆盖，`topk` 超过它时报错。未传字段保留配置值，`path_prefix` 相对 collection 根目录解析。preview 中完整定位元数据放不下时明确报预算过小，应增大预算或降低 `topk`；whole 可按预算减少完整块数量。
+
+`packing_mode` 可配置或单次覆盖：默认 `preview` 保留选中块的定位，正文超预算时均分并裁剪；`whole` 只装完整块，超预算整块跳过并继续尝试后续候选。传统检索评测使用 `whole`；Agent 按预览选择补读的效果另行评测。
 
 [配置 Schema、策略接口与迁移](https://github.com/HuanHuanHuanFFF/Echo/blob/main/docs/design/configuration-profiles.md)
 

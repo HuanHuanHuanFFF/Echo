@@ -200,29 +200,25 @@ it('keeps configured override values and removes metadata before packing the vis
     query,
     overrides: { max_context_chars: budget },
   });
+  const debugBudget = JSON.stringify(debug).length - 5;
   const boundedDebug = await searchIndex(config, {
     query,
     diagnostics: true,
-    overrides: { max_context_chars: budget },
+    overrides: { max_context_chars: debugBudget },
   });
   expect(bounded.results).toHaveLength(compact.results.length);
-  expect(boundedDebug.results.length).toBeLessThan(bounded.results.length);
+  expect(boundedDebug.results.length).toBe(bounded.results.length);
   expect(JSON.stringify(bounded).length).toBeLessThanOrEqual(budget);
-  expect(JSON.stringify(boundedDebug).length).toBeLessThanOrEqual(budget);
+  expect(JSON.stringify(boundedDebug).length).toBeLessThanOrEqual(debugBudget);
 });
-it('explains budget-empty and no-candidate results without pretending to judge answerability', async () => {
+it('rejects a budget that cannot hold locators and distinguishes no candidates', async () => {
   const { config } = await fixture();
-  const small = await searchIndex(config, {
-    query: 'apple',
-    overrides: { max_context_chars: 256 },
-  });
-  expect(small).toMatchObject({
-    status: 'ok',
-    results: [],
-    queries: [{ status: 'ok', returned: 0, empty_reason: 'budget' }],
-    limits: ['budget'],
-  });
-  expect(JSON.stringify(small).length).toBeLessThanOrEqual(256);
+  await expect(
+    searchIndex(config, {
+      query: 'apple',
+      overrides: { max_context_chars: 256 },
+    }),
+  ).rejects.toMatchObject({ code: 'CONTEXT_BUDGET' });
   const none = await searchIndex(config, { query: 'xyzznomatch' });
   expect(none.queries[0]).toMatchObject({
     status: 'empty',
@@ -272,7 +268,7 @@ it('rejects unknown collections and absolute/traversing path prefixes while pres
   ).toBeGreaterThan(0);
 });
 it('exposes typed tools and runs source checks, compact search and diagnostics through MCP and CLI', async () => {
-  const { configPath } = await fixture();
+  const { dir, configPath } = await fixture();
   // Index and MCP both use the built runtime's strategy fingerprint.
   execFileSync(process.execPath, [
     'dist/cli.js',
@@ -304,6 +300,16 @@ it('exposes typed tools and runs source checks, compact search and diagnostics t
       'default',
     );
     expect(schema.properties.overrides.additionalProperties).toBe(false);
+    expect(schema.properties.overrides.properties.packing_mode.enum).toEqual([
+      'preview',
+      'whole',
+    ]);
+    expect(
+      schema.properties.overrides.properties.packing_mode,
+    ).not.toHaveProperty('default');
+    expect(schema.properties.overrides.properties).not.toHaveProperty(
+      'max_results',
+    );
     expect(
       schema.properties.filters.properties.path_prefix.description,
     ).toContain('relative');
@@ -338,6 +344,82 @@ it('exposes typed tools and runs source checks, compact search and diagnostics t
       const lines = (await readFile(e.path, 'utf8')).split(/\r\n|\n|\r/);
       expect(lines.slice(e.start_line - 1, e.end_line).join('\n')).toBe(e.text);
     }
+    const previewBudget = JSON.stringify(search).length - 10;
+    const previewReply = await client.callTool({
+      name: 'echo_search',
+      arguments: {
+        ...request,
+        overrides: { max_context_chars: previewBudget },
+      },
+    });
+    const previews = decode(previewReply);
+    expect(previewReply.isError).not.toBe(true);
+    expect(previews.results.map((e: any) => e.chunk_id)).toEqual(
+      search.results.map((e: any) => e.chunk_id),
+    );
+    expect(previews.results.some((e: any) => e.text_truncated)).toBe(true);
+    expect(JSON.stringify(previews).length).toBeLessThanOrEqual(previewBudget);
+    for (const [i, e] of previews.results.entries()) {
+      expect(search.results[i].text.startsWith(e.text)).toBe(true);
+      expect(e.start_line).toBe(search.results[i].start_line);
+      expect(e.end_line).toBe(search.results[i].end_line);
+      expect(e.preview_range.start_column).toBe(1);
+    }
+    expect(previews.packing_mode).toBe('preview');
+    const configuredPath = join(dir, 'config/retrieval/balanced.json');
+    const configured = JSON.parse(await readFile(configuredPath, 'utf8'));
+    await writeFile(
+      configuredPath,
+      JSON.stringify({ ...configured, packing_mode: 'whole' }),
+    );
+    const inheritedWhole = decode(
+      await client.callTool({
+        name: 'echo_search',
+        arguments: {
+          ...request,
+          overrides: { max_context_chars: previewBudget },
+        },
+      }),
+    );
+    expect(inheritedWhole.packing_mode).toBe('whole');
+    expect(inheritedWhole.results.every((e: any) => !e.text_truncated)).toBe(
+      true,
+    );
+    expect(inheritedWhole.results.length).toBeLessThan(previews.results.length);
+    const overriddenPreview = decode(
+      await client.callTool({
+        name: 'echo_search',
+        arguments: {
+          ...request,
+          overrides: {
+            packing_mode: 'preview',
+            max_context_chars: previewBudget,
+          },
+        },
+      }),
+    );
+    expect(overriddenPreview.packing_mode).toBe('preview');
+    expect(overriddenPreview.results.map((e: any) => e.chunk_id)).toEqual(
+      previews.results.map((e: any) => e.chunk_id),
+    );
+    const invalidPacking = await client.callTool({
+      name: 'echo_search',
+      arguments: { ...request, overrides: { packing_mode: 'invalid' } },
+    });
+    expect(invalidPacking.isError).toBe(true);
+    await writeFile(configuredPath, JSON.stringify(configured));
+    const overCap = await client.callTool({
+      name: 'echo_search',
+      arguments: { query: 'apple', overrides: { topk: 21 } },
+    });
+    expect(overCap.isError).toBe(true);
+    expect(decode(overCap).code).toBe('INVALID_REQUEST');
+    const tooSmall = await client.callTool({
+      name: 'echo_search',
+      arguments: { ...request, overrides: { max_context_chars: 256 } },
+    });
+    expect(tooSmall.isError).toBe(true);
+    expect(decode(tooSmall).code).toBe('CONTEXT_BUDGET');
     const bad = await client.callTool({
       name: 'echo_search',
       arguments: { query: 'apple', filters: { collections: ['typo'] } },

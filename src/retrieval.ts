@@ -12,6 +12,13 @@ import {
 } from './profile-store.js';
 import { profileTokenizer } from './profiles.js';
 import { uuidV4 } from './identity.js';
+import {
+  escapedTextCost,
+  previewRange,
+  textBudgets,
+  textPrefix,
+  type PreviewRange,
+} from './preview.js';
 import type { EchoConfig, RetrievalConfig } from './config.js';
 import { retrievalOptions, retrievalOverridesSchema } from './config.js';
 import type { EmbeddingProvider } from './contracts.js';
@@ -92,6 +99,8 @@ export interface Evidence {
 }
 export type SearchEvidence = Omit<Evidence, 'relative_path'> & {
   relative_path?: string;
+  text_truncated: boolean;
+  preview_range: PreviewRange;
 };
 export interface Candidate {
   evidence: Evidence;
@@ -354,6 +363,14 @@ export function packResults(
     perSource = new Map<string, number>();
   const counts = { source_limit: 0, duplicate: 0, budget: 0, topk: 0 };
   const budgetRejected = new Set<string>();
+  const previews = new Map<
+    string,
+    {
+      text: string;
+      text_truncated: boolean;
+      preview_range: PreviewRange;
+    }
+  >();
   const reports = () =>
     queries.map((q) => ({
       query_id: q.query_id,
@@ -384,16 +401,23 @@ export function packResults(
       returned: results.filter((e) => e.matched_query_ids.includes(q.query_id))
         .length,
     }));
-  const response = () => ({
+  const response = (reserveBudget = false, includeText = true) => ({
+    packing_mode: options.packing_mode,
     status: queries.every((q) => q.status === 'error')
       ? 'error'
       : queries.some((q) => q.error)
         ? 'partial_failure'
         : 'ok',
     results: results.map((e): SearchEvidence => {
-      if (diagnostics) return e;
+      const preview = previews.get(e.chunk_id) ?? {
+        text: e.text,
+        text_truncated: false,
+        preview_range: previewRange(e.start_line, e.text),
+      };
+      const body = { ...preview, text: includeText ? preview.text : '' };
+      if (diagnostics) return { ...e, ...body };
       const { relative_path: _relative, rankings: _rankings, ...essential } = e;
-      return essential;
+      return { ...essential, ...body };
     }),
     queries: reports(),
     ...(diagnostics
@@ -403,14 +427,36 @@ export function packResults(
           ...(selection ? { selection } : {}),
         }
       : {}),
-    ...(!diagnostics && (counts.budget || counts.source_limit || counts.topk)
+    ...(!diagnostics &&
+    (reserveBudget ||
+      counts.budget ||
+      [...previews.values()].some((p) => p.text_truncated) ||
+      counts.source_limit ||
+      counts.topk)
       ? {
-          limits: (['budget', 'source_limit', 'topk'] as const).filter(
-            (key) => counts[key] > 0,
+          limits: (['budget', 'source_limit', 'topk'] as const).filter((key) =>
+            key === 'budget'
+              ? counts.budget > 0 ||
+                reserveBudget ||
+                [...previews.values()].some((p) => p.text_truncated)
+              : counts[key] > 0,
           ),
         }
       : {}),
   });
+  const responseFits = () => {
+    let remaining =
+      options.max_context_chars - JSON.stringify(response(false, false)).length;
+    if (remaining < 0) return false;
+    for (const e of results) {
+      remaining -= escapedTextCost(
+        previews.get(e.chunk_id)?.text ?? e.text,
+        remaining,
+      );
+      if (remaining < 0) return false;
+    }
+    return true;
+  };
   const matching = new Map<string, string[]>();
   const rankingMap = new Map<string, NonNullable<Evidence['rankings']>>();
   for (const q of queries)
@@ -456,7 +502,7 @@ export function packResults(
         rankings,
       };
       results.push(evidence);
-      if (JSON.stringify(response()).length > options.max_context_chars) {
+      if (options.packing_mode === 'whole' && !responseFits()) {
         results.pop();
         counts.budget++;
         budgetRejected.add(evidence.chunk_id);
@@ -468,17 +514,60 @@ export function packResults(
         (perSource.get(evidence.source_id) ?? 0) + 1,
       );
     }
-  while (
-    results.length &&
-    JSON.stringify(response()).length > options.max_context_chars
-  ) {
-    budgetRejected.add(results.pop()!.chunk_id);
-    counts.budget++;
+  if (options.packing_mode === 'whole') {
+    // Final counters/query reports also count toward the complete JSON budget.
+    while (results.length && !responseFits()) {
+      budgetRejected.add(results.pop()!.chunk_id);
+      counts.budget++;
+    }
+    if (!responseFits())
+      throw new EchoError(
+        'CONTEXT_BUDGET',
+        'max_context_chars is too small for query status and configuration',
+        'Increase max_context_chars or submit fewer subquestions',
+      );
+    return response();
   }
-  if (JSON.stringify(response()).length > options.max_context_chars)
-    throw new Error(
-      'max_context_chars is too small for query status and configuration',
+  if (responseFits()) return response();
+  for (const e of results)
+    previews.set(e.chunk_id, {
+      text: '',
+      text_truncated: e.text.length > 0,
+      preview_range: previewRange(e.start_line, ''),
+    });
+  if (!responseFits())
+    throw new EchoError(
+      'CONTEXT_BUDGET',
+      'max_context_chars is too small for complete selected-hit metadata',
+      'Increase max_context_chars or lower topk; selected hits are not dropped',
     );
+  // Reserve the largest possible location/flag fields before budgeting text.
+  // If only the actual empty-preview metadata fits, return all locators with empty text.
+  for (const e of results)
+    previews.set(e.chunk_id, {
+      text: '',
+      text_truncated: false,
+      preview_range: {
+        ...previewRange(e.start_line, e.text),
+        end_column: e.text.length + 1,
+      },
+    });
+  const remaining = Math.max(
+    0,
+    options.max_context_chars - JSON.stringify(response(true)).length,
+  );
+  const allowances = textBudgets(
+    results.map((e) => escapedTextCost(e.text, remaining)),
+    remaining,
+  );
+  for (const [i, e] of results.entries()) {
+    const text = textPrefix(e.text, allowances[i]!);
+    previews.set(e.chunk_id, {
+      text,
+      text_truncated: text.length < e.text.length,
+      preview_range: previewRange(e.start_line, text),
+    });
+  }
   return response();
 }
 export const querySpecSchema = z

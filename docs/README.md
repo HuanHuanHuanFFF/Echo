@@ -1,6 +1,6 @@
 # Echo 文档入口
 
-更新日期：2026-10-04。Echo 是本地 Markdown 证据检索 MCP：Agent 拆题、补读和回答，Echo 返回证据与定位。当前实现包含显式同步、BM25/API向量、混合检索、多配置、只读新鲜度检查与精简响应。
+更新日期：2026-10-06。Echo 是本地 Markdown 证据检索 MCP：Agent 拆题、补读和回答，Echo 返回证据与定位。当前实现包含显式同步、BM25/API向量、混合检索、多配置、只读新鲜度检查、完整定位和预算预览。
 
 ## 安装与使用
 
@@ -10,6 +10,7 @@
 - [配置与策略契约](design/configuration-profiles.md)：目录隔离、模型、召回覆盖、切块/分词接口与同步。
 - [最终默认](project/2026-09-26-final-default-profile.md)：新综合、BM25/dense 0.5/1、RRF10、topk10、每篇6、预算20000。
 - [Agent 查询说明](guides/agent-usage.md)：工具选择、子问题、补读、来源新鲜度及错误处理。
+- [预览预算与返回上限](development/2026-10-06-budget-previews.md)：完整定位、字符预览、均分余量、配置上限和验证边界。
 - [架构与模块](architecture/README.md)：图、模块职责和持久化边界。
 - [根 README](../README.md)：项目介绍、角色图、Agent 配置入口、请求与返回示例、架构、评测和扩展。
 

@@ -6,9 +6,15 @@
 
 <!-- RETRIEVAL_PARAMETERS -->
 
+packing_mode 默认 preview，可在配置或本次 overrides 中选择。preview 保留选中块定位、均分并裁剪正文；whole 只返回完整块，放不下就整块跳过并继续尝试后续候选，不凑满数量。响应 packing_mode 报告生效值。传统检索评测显式用 whole，两模式的结果不能混作同一口径；mode 是检索通道，与装箱模式独立。
+
 两路权重合并后不能同时为0；权重不是占比或概率。MiniSearch 参数只影响 minisearch，SQLite FTS5 的 k1/b 固定。候选量是每个问题表达式融合前的数量，不是最终返回量。纯 bm25/dense 模式仅使用相应一路。
 
-topk、max_chunks_per_source 和 max_context_chars 对一次请求中的所有子问题共同生效。预算为完整业务响应 JSON 的 UTF-16 长度，包括元数据；不是 token 数，不含请求与 MCP 外层包装。片段整体装入，不截断正文，不足时返回实际数量。100000 是参数校验上限，目前没有另一项管理员可配置硬上限。
+topk、max_chunks_per_source 和 max_context_chars 对所有子问题共同生效。max_results 是配置专属的返回块数上限，默认 20（1–100）；topk 默认 10，超过上限时报错，不凑满数量。max_results 小于 10 时也需调小配置 topk。
+
+预算为完整业务 JSON 的 UTF-16 长度，含元数据和转义，不是 token，不含请求、MCP 外层或补读。preview 先固定选中的块，保留全部定位，剩余正文空间均分并回收短块余量；超限从头按字符裁剪，不丢块，完整正文放得下时不裁剪。元数据也放不下时报 CONTEXT_BUDGET，应增大预算或降低 topk。whole 可因预算返回更少的完整块，连状态/配置都放不下才报错。100000 是字符预算参数校验上限，没有独立配置字符硬上限。
+
+start_line/end_line 定位完整块，不保证 text 覆盖全部范围。检查 text_truncated 和 preview_range；预览位置为 1-based 行/UTF-16 列，终点不包含，空预览起终点相同。截断时用宿主工具补读完整范围，注意预览外的否定句或版本限定。文件已变动时核对 source_version、显式 sync/重新检索。Echo 不自动补读或判断充分性。
 
 MCP 单次覆盖示例：
 
@@ -19,4 +25,4 @@ MCP 单次覆盖示例：
 }
 ```
 
-只修改显式字段，其他参数继续使用当前配置。所有表中字段均可单次覆盖；常规查询无需传 overrides。diagnostics=true 会附加实际配置、候选与排名，诊断元数据也计入相同预算。先看每个子问题 returned/empty_reason 和整体 limits，再决定是否调整数量、预算或问题表达。当前没有翻页游标。
+只修改显式字段，其他参数继续使用当前配置。除 max_results 外的表中字段可单次覆盖；常规查询无需 overrides。diagnostics=true 增加配置、候选与排名，仍计入相同预算。先看 packing_mode、returned/empty_reason、limits 和 text_truncated；preview 的 budget 表示预览裁剪，whole 的 budget 表示整块被剔除。当前没有翻页游标。

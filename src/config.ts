@@ -6,6 +6,11 @@ import type { ProfileSnapshot } from './profile-types.js';
 const positive = (max: number) => z.number().int().min(1).max(max);
 const retrievalFields = {
   mode: z.enum(['hybrid', 'bm25', 'dense']).describe('Retrieval lanes to run.'),
+  packing_mode: z
+    .enum(['preview', 'whole'])
+    .describe(
+      'preview keeps selected locators and shares text space; whole skips blocks that do not fit, returning only complete text.',
+    ),
   lexical_engine: z
     .enum(['minisearch', 'sqlite'])
     .describe('Local keyword engine; both use the selected tokenizer.'),
@@ -74,7 +79,13 @@ export const retrievalOverridesSchema = z
   );
 export const retrievalSchema = z
   .object({
+    max_results: positive(100)
+      .default(20)
+      .describe(
+        'Configured maximum returned chunks; cannot be overridden per query.',
+      ),
     mode: retrievalFields.mode.default('hybrid'),
+    packing_mode: retrievalFields.packing_mode.default('preview'),
     lexical_engine: retrievalFields.lexical_engine.default('minisearch'),
     minisearch_k: retrievalFields.minisearch_k.default(1.2),
     minisearch_b: retrievalFields.minisearch_b.default(0.7),
@@ -94,6 +105,10 @@ export const retrievalSchema = z
   .refine(
     (v) => v.bm25_weight + v.dense_weight > 0,
     'At least one retrieval weight must be positive',
+  )
+  .refine(
+    (v) => v.topk <= v.max_results,
+    'topk must not exceed configured max_results',
   );
 const embeddingSchema = z
   .object({

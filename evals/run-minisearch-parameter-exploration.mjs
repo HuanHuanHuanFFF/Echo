@@ -630,7 +630,17 @@ const historicalArmIds = Object.keys(arms).filter(
 );
 let armIds = historicalArmIds;
 const defaultArm = arms.default;
+const packingRuntimeFiles = Object.freeze([
+  'config.js',
+  'database.js',
+  'embedding.js',
+  'lexical.js',
+  'minisearch.js',
+  'retrieval.js',
+  'preview.js',
+]);
 const fixedRetrieval = Object.freeze({
+  packing_mode: 'whole',
   lexical_engine: 'minisearch',
   topk: 10,
   max_chunks_per_source: 3,
@@ -929,6 +939,7 @@ function armOptions(arm, mode, responseLimit = 16000) {
   return {
     ...fixedRetrieval,
     ...(arm.retrieval ?? {}),
+    packing_mode: 'whole',
     mode,
     minisearch_k: arm.minisearch_k,
     minisearch_b: arm.minisearch_b,
@@ -953,6 +964,8 @@ async function lane(context, queryId, text, filters, arm, mode) {
     topk: _topk,
     max_chunks_per_source: _sourceCap,
     max_context_chars: _budget,
+    packing_mode: _packing,
+    max_results: _resultCap,
     ...candidateOptions
   } = options;
   const key = compact([queryId, text, filterKey(filters), candidateOptions]);
@@ -1041,7 +1054,7 @@ function requestFor(question, budget, responseLimit, filters) {
     const request = {
       ...body,
       ...(filters ? { filters } : {}),
-      overrides: { max_context_chars: allowance },
+      overrides: { packing_mode: 'whole', max_context_chars: allowance },
     };
     const next = budget - JSON.stringify(request).length;
     if (next >= allowance) return request;
@@ -1788,6 +1801,7 @@ async function buildFreeze(privateRoot, publicRoot, out, variant = 'v1') {
     experiment: `2026-09-21-minisearch-parameter-exploration-${variant}`,
     arms: Object.fromEntries(armIds.map((id) => [id, arms[id]])),
     fixed: {
+      packing_mode: 'whole',
       chunker: 'markdown-structure-v1@1.0.1',
       tokenizer: 'icu-zh@1 / zh-CN with existing expansions',
       model: embedding.model,
@@ -1830,16 +1844,7 @@ async function buildFreeze(privateRoot, publicRoot, out, variant = 'v1') {
           'run-minisearch-parameter-exploration.mjs',
         ),
       ),
-      dist: Object.fromEntries(
-        [
-          'config.js',
-          'database.js',
-          'embedding.js',
-          'lexical.js',
-          'minisearch.js',
-          'retrieval.js',
-        ].map(async () => []),
-      ),
+      dist: {},
     },
     environment: {
       node: process.version,
@@ -1875,19 +1880,33 @@ async function buildFreeze(privateRoot, publicRoot, out, variant = 'v1') {
     };
   }
   const distHashes = {};
-  for (const name of [
-    'config.js',
-    'database.js',
-    'embedding.js',
-    'lexical.js',
-    'minisearch.js',
-    'retrieval.js',
-  ])
+  for (const name of packingRuntimeFiles)
     distHashes[name] = await shaFile(path.join(repoRoot, 'dist', name));
   freeze.code.dist = distHashes;
   await fs.mkdir(out, { recursive: true });
   await writeJson(path.join(out, 'freeze.json'), freeze);
   return freeze;
+}
+
+async function verifyPackingCode(freeze, root = repoRoot) {
+  assert.equal(
+    freeze.fixed.packing_mode,
+    'whole',
+    'New evaluation requires a whole-mode freeze',
+  );
+  assert.equal(
+    await shaFile(
+      path.join(root, 'evals', 'run-minisearch-parameter-exploration.mjs'),
+    ),
+    freeze.code.script,
+    'Evaluation script changed since freeze',
+  );
+  for (const name of packingRuntimeFiles)
+    assert.equal(
+      await shaFile(path.join(root, 'dist', name)),
+      freeze.code.dist[name],
+      `Evaluation runtime changed since freeze: ${name}`,
+    );
 }
 
 async function verifyFreezeInputs(
@@ -1933,14 +1952,7 @@ async function verifyFreezeInputs(
       await shaFile(freeze.public.vector_cache),
       freeze.public.vector_cache_sha256,
     );
-  assert.equal(
-    await shaFile(path.join(repoRoot, 'dist', 'retrieval.js')),
-    freeze.code.dist['retrieval.js'],
-  );
-  assert.equal(
-    await shaFile(path.join(repoRoot, 'dist', 'minisearch.js')),
-    freeze.code.dist['minisearch.js'],
-  );
+  await verifyPackingCode(freeze);
 }
 
 async function loadPrivateSelection(root, scope) {
@@ -1974,6 +1986,7 @@ async function runScopeChild(privateRoot, publicRoot, out, mode, scope) {
 
 async function executeScope(privateRoot, publicRoot, out, mode, scopeArg) {
   const freeze = await readJson(path.join(out, 'freeze.json'));
+  await verifyPackingCode(freeze);
   if (scopeArg.startsWith('private:')) {
     const scope = scopeArg.slice('private:'.length);
     const vectorCache = await loadPrivateVectorCache(privateRoot);
@@ -2151,6 +2164,7 @@ async function finalizeFull(
   scopePrefix = 'full',
 ) {
   const freeze = await readJson(path.join(out, 'freeze.json'));
+  await verifyPackingCode(freeze);
   const scopes = [
     ...[...PRIVATE_SCOPE_ORDER, 'paired-test'].map(
       (scope) => `private:${scope}`,
@@ -2466,6 +2480,8 @@ function setArmIdsForExternal(ids) {
 }
 
 export {
+  packingRuntimeFiles,
+  verifyPackingCode,
   armOptions,
   makeContext,
   closeContext,

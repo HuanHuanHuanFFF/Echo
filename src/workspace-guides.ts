@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { z } from 'zod';
-import { retrievalOverridesSchema, retrievalSchema } from './config.js';
+import { retrievalSchema } from './config.js';
 
 export async function workspaceGuides(): Promise<Record<string, string>> {
   const root = new URL(
@@ -9,7 +9,7 @@ export async function workspaceGuides(): Promise<Record<string, string>> {
       : './templates/workspace/',
     import.meta.url,
   );
-  const properties = z.toJSONSchema(retrievalOverridesSchema).properties!;
+  const properties = z.toJSONSchema(retrievalSchema).properties!;
   const rows = Object.entries(retrievalSchema.parse({})).map(
     ([name, value]) => {
       const schema = properties[name]!;
