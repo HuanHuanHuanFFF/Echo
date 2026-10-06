@@ -89,6 +89,11 @@ try {
   assert.equal(packageInfo.name, '@huanf/echo');
   assert.equal(packageInfo.license, 'MIT');
   assert.notEqual(packageInfo.private, true);
+  const registryVersion = process.env.ECHO_VERIFY_REGISTRY_VERSION;
+  if (registryVersion) assert.equal(registryVersion, packageInfo.version);
+  const installSpec = registryVersion
+    ? `${packageInfo.name}@${registryVersion}`
+    : join(base, packed.filename);
   const paths = packed.files.map((file) => file.path);
   verifyPackageFiles(paths);
   const guides = guidePaths;
@@ -116,7 +121,7 @@ try {
       '--registry=https://registry.npmjs.org/',
       '--fetch-retries=1',
       '--fetch-timeout=30000',
-      join(base, packed.filename),
+      installSpec,
     ],
     consumer,
   );
@@ -211,6 +216,7 @@ try {
     }),
   );
   const listed = await client.listTools();
+  assert.equal(client.getServerVersion()?.version, packageInfo.version);
   assert.deepEqual(listed.tools.map((tool) => tool.name).sort(), [
     'echo_search',
     'echo_status',
@@ -231,10 +237,46 @@ try {
   assert.equal(JSON.parse(checked.content[0].text).freshness.state, 'changed');
   await client.close();
   client = undefined;
+  let registryReceipt;
+  if (registryVersion) {
+    const response = await fetch(
+      `https://registry.npmjs.org/@huanf%2Fecho/${registryVersion}`,
+    );
+    assert.ok(response.ok, 'Published version metadata unavailable');
+    const metadata = await response.json();
+    assert.equal(metadata.name, packageInfo.name);
+    assert.equal(metadata.version, registryVersion);
+    const tarballUrl = new URL(metadata.dist.tarball);
+    assert.equal(tarballUrl.protocol, 'https:');
+    assert.equal(tarballUrl.hostname, 'registry.npmjs.org');
+    const tarballResponse = await fetch(tarballUrl);
+    assert.ok(tarballResponse.ok, 'Published tarball unavailable');
+    const bytes = Buffer.from(await tarballResponse.arrayBuffer());
+    const integrity =
+      'sha512-' + createHash('sha512').update(bytes).digest('base64');
+    assert.equal(integrity, metadata.dist.integrity);
+    for (const file of paths.filter(
+      (p) => p.startsWith('dist/') || p === 'README.md' || p === 'LICENSE',
+    ))
+      assert.deepEqual(
+        await readFile(join(installed, file)),
+        await readFile(join(repository, file)),
+        `Registry package differs from verified source: ${file}`,
+      );
+    registryReceipt = {
+      version: metadata.version,
+      git_head: metadata.gitHead,
+      integrity,
+      tarball_sha256: createHash('sha256').update(bytes).digest('hex'),
+      installed_files_match: true,
+    };
+  }
   const receipt = {
     status: 'passed',
     package: packageInfo.name,
     version: packageInfo.version,
+    install_source: registryVersion ? 'registry' : 'local-tarball',
+    ...(registryReceipt ? { registry: registryReceipt } : {}),
     platform: process.platform,
     arch: process.arch,
     node: process.version,

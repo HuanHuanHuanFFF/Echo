@@ -7,7 +7,7 @@
 要求 Node.js >=24.15.0 <25（当前 CI 固定24.15.0）、npm 11；验证平台为 Windows x64 和 Linux x64。包含 better-sqlite3/sqlite-vec 原生依赖，不能据此承诺所有系统架构均可免编译安装。
 
 ```sh
-npm install -g @huanf/echo@0.1.1
+npm install -g @huanf/echo@0.2.0
 echo-mcp init
 echo-mcp config show
 ```
@@ -48,7 +48,7 @@ echo-mcp config show
       "command": "npx",
       "args": [
         "-y",
-        "@huanf/echo@0.1.1",
+        "@huanf/echo@0.2.0",
         "serve",
         "--config",
         "/absolute/path/to/knowledge/echo.config.json"
@@ -60,6 +60,12 @@ echo-mcp config show
 
 命令启动成功不等于模型服务可用。用 echo_status 查看集合和索引状态；[Agent 使用流程](agent-usage.md)。程序升级后重启 MCP；普通配置切换下一请求生效，数据库/runtime 改动也需重启。
 
+## 0.2.0 升级说明
+
+默认 packing_mode 为 preview：定位完整保留，预算不足时正文可能是前缀，应检查 text_truncated 和 preview_range，再按需补读。需要完整块返回时，在召回配置或本次 overrides 设置 packing_mode=whole。配置新增 max_results，默认 20，topk 默认仍为 10；已有 topk>20 的配置应显式增大 max_results 或调小 topk。
+
+装箱与版本变化不要求重建索引；升级程序后重启 MCP。init 继续保留已有配置与目录说明，不自动覆盖它们；新的模式和补读规则见[Agent 查询说明](agent-usage.md)。发布验证与实际状态见[0.2.0 记录](../development/2026-10-07-v0.2.0-release.md)。
+
 ## 维护者验证与发布
 
 1. 从已审查且 CI 通过的最新 main 准备发布。核对根 README 的安装说明与文档链接；确认包名权限、版本号、MIT 声明及第三方许可保留。
@@ -67,7 +73,7 @@ echo-mcp config show
 3. 执行 npm pack --dry-run 检查清单。允许打包 dist、package.json、README、LICENSE；仓库历史 docs/evals、个人配置、笔记与生成索引不分发。
 4. 用 npm whoami --registry=https://registry.npmjs.org 确认 huanf 账户，npm view @huanf/echo version 检查已有版本。公开版本不能原地覆盖。同步 package.json/package-lock.json 版本并重新验证；MCP 服务版本也需同步。
 5. 在获得发布授权后执行 npm publish --access public，按提示完成账户验证。prepublishOnly 会执行完整检查与安装包验收；普通 push/PR CI 不发布，无 npm 凭据。
-6. 从 registry 安装明确版本，复验 CLI/MCP，核对包版本与完整性；创建对应 Git 标签和 GitHub Release，记录实际发布提交。发布失败则记录状态，不宣称用户已经能安装。
+6. 从 registry 安装明确版本，复验 CLI/MCP，核对包版本与完整性。可将 ECHO_VERIFY_REGISTRY_VERSION 设为本版号再运行 npm run smoke:package：安装目标改为 registry 的明确版本，并验证握手、线上 tarball 的 SHA-512 完整性及已安装分发文件与本地已验证源的一致性；完成后清除该环境变量。创建对应 Git 标签和 GitHub Release，记录实际发布提交。发布失败则记录状态，不宣称用户已经能安装。
 
 本轮配置 publishConfig 指向公开 npm registry，prepack 验证 dist 为仓库内生成目录后清空并重新构建，避免历史产物混入。通过 npm pack 安装产物仍不等同于已完成 registry 发布验证。CI 不依赖个人笔记或模型 key，但依赖 npm/原生预编译包下载可用。
 
