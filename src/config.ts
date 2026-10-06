@@ -74,6 +74,11 @@ export const retrievalOverridesSchema = z
   );
 export const retrievalSchema = z
   .object({
+    max_results: positive(100)
+      .default(20)
+      .describe(
+        'Configured maximum returned chunks; cannot be overridden per query.',
+      ),
     mode: retrievalFields.mode.default('hybrid'),
     lexical_engine: retrievalFields.lexical_engine.default('minisearch'),
     minisearch_k: retrievalFields.minisearch_k.default(1.2),
@@ -94,6 +99,10 @@ export const retrievalSchema = z
   .refine(
     (v) => v.bm25_weight + v.dense_weight > 0,
     'At least one retrieval weight must be positive',
+  )
+  .refine(
+    (v) => v.topk <= v.max_results,
+    'topk must not exceed configured max_results',
   );
 const embeddingSchema = z
   .object({

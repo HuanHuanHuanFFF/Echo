@@ -12,6 +12,12 @@ import {
 } from './profile-store.js';
 import { profileTokenizer } from './profiles.js';
 import { uuidV4 } from './identity.js';
+import {
+  previewRange,
+  textBudgets,
+  textPrefix,
+  type PreviewRange,
+} from './preview.js';
 import type { EchoConfig, RetrievalConfig } from './config.js';
 import { retrievalOptions, retrievalOverridesSchema } from './config.js';
 import type { EmbeddingProvider } from './contracts.js';
@@ -92,6 +98,8 @@ export interface Evidence {
 }
 export type SearchEvidence = Omit<Evidence, 'relative_path'> & {
   relative_path?: string;
+  text_truncated: boolean;
+  preview_range: PreviewRange;
 };
 export interface Candidate {
   evidence: Evidence;
@@ -353,7 +361,14 @@ export function packResults(
   const selected = new Map<string, Evidence>(),
     perSource = new Map<string, number>();
   const counts = { source_limit: 0, duplicate: 0, budget: 0, topk: 0 };
-  const budgetRejected = new Set<string>();
+  const previews = new Map<
+    string,
+    {
+      text: string;
+      text_truncated: boolean;
+      preview_range: PreviewRange;
+    }
+  >();
   const reports = () =>
     queries.map((q) => ({
       query_id: q.query_id,
@@ -372,28 +387,27 @@ export function packResults(
       !results.some((e) => e.matched_query_ids.includes(q.query_id))
         ? {
             empty_reason:
-              q.candidates.length === 0
-                ? 'no_candidates'
-                : q.candidates.some((c) =>
-                      budgetRejected.has(c.evidence.chunk_id),
-                    )
-                  ? 'budget'
-                  : 'limits',
+              q.candidates.length === 0 ? 'no_candidates' : 'limits',
           }
         : {}),
       returned: results.filter((e) => e.matched_query_ids.includes(q.query_id))
         .length,
     }));
-  const response = () => ({
+  const response = (reserveBudget = false) => ({
     status: queries.every((q) => q.status === 'error')
       ? 'error'
       : queries.some((q) => q.error)
         ? 'partial_failure'
         : 'ok',
     results: results.map((e): SearchEvidence => {
-      if (diagnostics) return e;
+      const preview = previews.get(e.chunk_id) ?? {
+        text: e.text,
+        text_truncated: false,
+        preview_range: previewRange(e.start_line, e.text),
+      };
+      if (diagnostics) return { ...e, ...preview };
       const { relative_path: _relative, rankings: _rankings, ...essential } = e;
-      return essential;
+      return { ...essential, ...preview };
     }),
     queries: reports(),
     ...(diagnostics
@@ -403,10 +417,17 @@ export function packResults(
           ...(selection ? { selection } : {}),
         }
       : {}),
-    ...(!diagnostics && (counts.budget || counts.source_limit || counts.topk)
+    ...(!diagnostics &&
+    (reserveBudget ||
+      [...previews.values()].some((p) => p.text_truncated) ||
+      counts.source_limit ||
+      counts.topk)
       ? {
-          limits: (['budget', 'source_limit', 'topk'] as const).filter(
-            (key) => counts[key] > 0,
+          limits: (['budget', 'source_limit', 'topk'] as const).filter((key) =>
+            key === 'budget'
+              ? reserveBudget ||
+                [...previews.values()].some((p) => p.text_truncated)
+              : counts[key] > 0,
           ),
         }
       : {}),
@@ -456,29 +477,53 @@ export function packResults(
         rankings,
       };
       results.push(evidence);
-      if (JSON.stringify(response()).length > options.max_context_chars) {
-        results.pop();
-        counts.budget++;
-        budgetRejected.add(evidence.chunk_id);
-        continue;
-      }
       selected.set(evidence.chunk_id, evidence);
       perSource.set(
         evidence.source_id,
         (perSource.get(evidence.source_id) ?? 0) + 1,
       );
     }
-  while (
-    results.length &&
-    JSON.stringify(response()).length > options.max_context_chars
-  ) {
-    budgetRejected.add(results.pop()!.chunk_id);
-    counts.budget++;
-  }
+  if (JSON.stringify(response()).length <= options.max_context_chars)
+    return response();
+  for (const e of results)
+    previews.set(e.chunk_id, {
+      text: '',
+      text_truncated: e.text.length > 0,
+      preview_range: previewRange(e.start_line, ''),
+    });
   if (JSON.stringify(response()).length > options.max_context_chars)
-    throw new Error(
-      'max_context_chars is too small for query status and configuration',
+    throw new EchoError(
+      'CONTEXT_BUDGET',
+      'max_context_chars is too small for complete selected-hit metadata',
+      'Increase max_context_chars or lower topk; selected hits are not dropped',
     );
+  // Reserve the largest possible location/flag fields before budgeting text.
+  // If only the actual empty-preview metadata fits, return all locators with empty text.
+  for (const e of results)
+    previews.set(e.chunk_id, {
+      text: '',
+      text_truncated: false,
+      preview_range: {
+        ...previewRange(e.start_line, e.text),
+        end_column: e.text.length + 1,
+      },
+    });
+  const remaining = Math.max(
+    0,
+    options.max_context_chars - JSON.stringify(response(true)).length,
+  );
+  const allowances = textBudgets(
+    results.map((e) => JSON.stringify(e.text).length - 2),
+    remaining,
+  );
+  for (const [i, e] of results.entries()) {
+    const text = textPrefix(e.text, allowances[i]!);
+    previews.set(e.chunk_id, {
+      text,
+      text_truncated: text.length < e.text.length,
+      preview_range: previewRange(e.start_line, text),
+    });
+  }
   return response();
 }
 export const querySpecSchema = z

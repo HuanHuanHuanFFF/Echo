@@ -162,6 +162,7 @@ try {
     );
   assert.equal(retrieval.max_chunks_per_source, 6);
   assert.equal(retrieval.max_context_chars, 20000);
+  assert.equal(retrieval.max_results, 20);
   await writeFile(join(work, 'config/README.md'), 'user guide\n');
   assert.deepEqual((await invoke('init')).created, []);
   assert.equal(

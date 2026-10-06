@@ -154,12 +154,14 @@ it('filters before candidate limits and keeps empty scopes empty', async () => {
 });
 it('bounds the entire serialized result, exposes budget/source exclusions, and rejects invalid overrides', async () => {
   const { config } = await fixture();
+  const complete = await searchIndex(config, { query: '苹果' });
+  const budget = JSON.stringify(complete).length - 10;
   const result = await searchIndex(
     config,
     {
       query: '苹果',
       overrides: {
-        max_context_chars: 1300,
+        max_context_chars: budget,
         topk: 10,
         max_chunks_per_source: 10,
       },
@@ -167,7 +169,8 @@ it('bounds the entire serialized result, exposes budget/source exclusions, and r
     undefined,
     mock,
   );
-  expect(JSON.stringify(result).length).toBeLessThanOrEqual(1300);
+  expect(result.results).toHaveLength(complete.results.length);
+  expect(JSON.stringify(result).length).toBeLessThanOrEqual(budget);
   expect(result.limits).toContain('budget');
   await expect(
     searchIndex(
@@ -491,7 +494,7 @@ it.each([1e30, 1e-30])(
         query: 'same vector',
         overrides: {
           mode: 'dense',
-          topk: 100,
+          topk: 20,
           max_chunks_per_source: 100,
           min_dense_similarity: 0.999,
         },

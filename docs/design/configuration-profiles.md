@@ -103,7 +103,9 @@ export default {
 
 不自动重试计费请求。API key、超时和 batch_size 不影响向量身份；服务端点、模型、维度、前缀、维度字段和向量变换规则影响身份。空模板可以保存，实际 dense/hybrid 同步必须配置模型；已有向量完整时，同步不因 key 缺失而重新请求模型。
 
-召回 JSON 也包含 id，支持多套配置。字段/范围沿用 [retrievalSchema](../../src/config.ts)：mode、lexical_engine、minisearch_k/b/d、topk、max_chunks_per_source、两路 candidates、rrf_k、title_weight、两路 weight、min_dense_similarity、max_context_chars。优先级：内置默认 → 选中的召回配置 → 单次 overrides。默认 hybrid、topk=10、每篇上限=6、候选=60/60、RRF k=10、BM25/向量权重=0.5/1、标题权重=2、最低余弦=0.3、完整 JSON 预算=20000 字符。topk 和单篇上限同时约束，不凑满数量。召回配置不参与表身份。
+召回 JSON 也包含 id，支持多套配置。字段/范围沿用 [retrievalSchema](../../src/config.ts)：mode、lexical_engine、minisearch_k/b/d、topk、max_results、max_chunks_per_source、两路 candidates、rrf_k、title_weight、两路 weight、min_dense_similarity、max_context_chars。优先级：内置默认 → 选中的召回配置 → 单次 overrides，但 max_results 仅允许配置修改。默认 hybrid、topk=10、配置返回上限 max_results=20（1–100）、每篇上限=6、候选=60/60、RRF k=10、BM25/向量权重=0.5/1、标题权重=2、最低余弦=0.3、完整 JSON 预算=20000 字符。topk 必须不超过 max_results，单篇上限也生效，不凑满数量。召回配置不参与表身份。
+
+2026-10-06 已确认并实现：替代此前预算不足时丢弃整块的行为。选中块的定位完整保留，正文超限改为从头按字符预览，正文空间均分并回收短块余量；元数据放不下时明确报错。start_line/end_line 保持完整块语义，新增 preview_range 和 text_truncated 区分实际预览；操作步骤见 [Agent 查询说明](../guides/agent-usage.md)，实现与验证见[预览预算记录](../development/2026-10-06-budget-previews.md)。旧配置缺少 max_results 时继承 20；旧显式 topk>20 需在配置中增大 max_results 或降低 topk，不静默修改。仅改变召回装箱与配置，无须重建索引，历史评测输出与数字不回写。
 
 ## 扫描、运行与日志
 

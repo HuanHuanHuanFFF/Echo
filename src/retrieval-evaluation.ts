@@ -14,6 +14,7 @@ import { z } from 'zod';
 import { loadConfig, type EchoConfig } from './config.js';
 import { listMarkdown } from './sync.js';
 import { hash, parseSource } from './identity.js';
+import { previewRange } from './preview.js';
 import { openDatabase } from './database.js';
 import { profileStatus, profileTables, sqlName } from './profile-store.js';
 import {
@@ -279,6 +280,9 @@ function verifyPieces(pieces: SearchEvidence[], sources: Map<string, Source>) {
     const source = [...sources.values()].find(
       (s) => s.collection_id === e.collection_id && s.sourceId === e.source_id,
     );
+    const fullText = source?.lines
+      .slice(e.start_line - 1, e.end_line)
+      .join('\n');
     if (
       !source ||
       e.source_id !== source.sourceId ||
@@ -287,7 +291,10 @@ function verifyPieces(pieces: SearchEvidence[], sources: Map<string, Source>) {
       e.start_line <= source.frontmatterEnd + 1 ||
       e.end_line < e.start_line ||
       e.end_line > source.lines.length ||
-      source.lines.slice(e.start_line - 1, e.end_line).join('\n') !== e.text
+      !fullText?.startsWith(e.text) ||
+      e.text_truncated !== e.text.length < fullText.length ||
+      JSON.stringify(e.preview_range) !==
+        JSON.stringify(previewRange(e.start_line, e.text))
     )
       throw new Error('Returned evidence differs from frozen source');
   }
@@ -312,7 +319,13 @@ function covered(
           // Empty source lines are formatting; a split may trim them from chunk edges.
           if (
             source.lines[line - 1]!.trim() &&
-            !matching.some((e) => e.start_line <= line && e.end_line >= line)
+            !matching.some(
+              (e) =>
+                e.start_line <= line &&
+                e.end_line >= line &&
+                e.text.split('\n')[line - e.start_line] ===
+                  source.lines[line - 1],
+            )
           )
             return false;
         }

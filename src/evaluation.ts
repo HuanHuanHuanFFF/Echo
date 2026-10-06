@@ -21,6 +21,7 @@ import { hash, parseSource } from './identity.js';
 import { loadChunker } from './chunker.js';
 import { openDatabase } from './database.js';
 import { indexStatus } from './store.js';
+import { failureInfo } from './errors.js';
 
 const factSchema = z
   .object({ id: z.string(), source: z.string(), text: z.string().min(1) })
@@ -392,7 +393,28 @@ export async function runEvaluation(options: {
         input = { ...question, overrides };
         const requestChars = JSON.stringify(input).length;
         const start = performance.now();
-        const result = await searchIndex(config, input, undefined, provider);
+        let result: Awaited<ReturnType<typeof searchIndex>>;
+        try {
+          result = await searchIndex(config, input, undefined, provider);
+        } catch (error) {
+          const info = failureInfo(error);
+          if (info.code !== 'CONTEXT_BUDGET') throw error;
+          const ids =
+            'queries' in question
+              ? question.queries.map((q) => q.query_id)
+              : ['q0'];
+          result = {
+            status: 'error',
+            results: [],
+            queries: ids.map((query_id) => ({
+              query_id,
+              status: 'error',
+              returned: 0,
+              error: error instanceof Error ? error.message : String(error),
+              ...info,
+            })),
+          };
+        }
         const latency = performance.now() - start;
         if ((base?.usage?.().requests ?? 0) !== preparedRequests)
           throw new Error('Unexpected API call during warm retrieval timing');
@@ -490,6 +512,7 @@ export async function runEvaluation(options: {
     for (const name of [
       'chunker.ts',
       'retrieval.ts',
+      'preview.ts',
       'lexical.ts',
       'embedding.ts',
       'evaluation.ts',

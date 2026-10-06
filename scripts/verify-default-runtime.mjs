@@ -61,6 +61,7 @@ try {
     minisearch_b: 0.7,
     minisearch_d: 0.5,
     topk: 10,
+    max_results: 20,
     max_chunks_per_source: 6,
     bm25_candidates: 60,
     dense_candidates: 60,

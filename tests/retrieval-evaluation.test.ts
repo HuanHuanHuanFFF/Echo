@@ -83,6 +83,37 @@ async function fixture() {
     outputDir: join(root, 'run'),
   };
 }
+it('does not credit a fact hidden beyond a partial-line preview', async () => {
+  const f = await fixture();
+  try {
+    const line =
+      '事务回滚：' + '背景说明'.repeat(1500) + '失败时回滚未提交的修改。';
+    const raw =
+      '---\necho_id: 10000000-0000-4000-8000-000000000001\n---\n# 索引事务\n\n' +
+      line +
+      '\n';
+    await writeFile(join(f.notes, 'transaction.md'), raw);
+    f.dataset.corpus[0]!.sha256 = hash(raw);
+    f.dataset.facts[0]!.evidence[0]!.quote = line;
+    await writeFile(f.datasetPath, JSON.stringify(f.dataset));
+    await syncIndex(await loadConfig(f.configPath));
+    const { report } = await runRetrievalEvaluation({
+      ...f,
+      budgetChars: 1500,
+    });
+    const row = report.rows[0]!;
+    expect(row.result.results.length).toBeGreaterThan(0);
+    expect(row.result.results.some((e) => e.text_truncated)).toBe(true);
+    expect(
+      row.result.results.every(
+        (e) => !e.text.includes('失败时回滚未提交的修改。'),
+      ),
+    ).toBe(true);
+    expect(row.covered_facts).toEqual([]);
+  } finally {
+    await rm(f.root, { recursive: true, force: true });
+  }
+});
 it('scores actual indexed evidence from a frozen corpus without an Agent or source changes', async () => {
   const f = await fixture();
   try {
