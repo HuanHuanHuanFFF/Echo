@@ -1,6 +1,7 @@
 {
   "id": "balanced",
   "mode": "hybrid",
+  "packing_mode": "preview",
   "topk": 10,
   "max_results": 20,
   "max_chunks_per_source": 6,

@@ -36,17 +36,72 @@ function query(texts: string[], queryId = 'q'): QueryCandidates {
     })),
   };
 }
-function pack(texts: string[], budget = 20000, diagnostics = false) {
+function pack(
+  texts: string[],
+  budget = 20000,
+  diagnostics = false,
+  packingMode?: 'preview' | 'whole',
+) {
   return packResults(
     [query(texts)],
     retrievalSchema.parse({
       topk: texts.length,
       max_context_chars: budget,
+      ...(packingMode ? { packing_mode: packingMode } : {}),
     }),
     undefined,
     diagnostics,
   );
 }
+
+it('defaults to preview and supports configured or per-query whole-block packing', () => {
+  const base = retrievalSchema.parse({});
+  expect(base.packing_mode).toBe('preview');
+  const whole = retrievalSchema.parse({ packing_mode: 'whole' });
+  expect(retrievalOptions(whole).packing_mode).toBe('whole');
+  expect(
+    retrievalOptions(whole, { packing_mode: 'preview' }).packing_mode,
+  ).toBe('preview');
+  expect(retrievalOptions(base, { packing_mode: 'whole' }).packing_mode).toBe(
+    'whole',
+  );
+  expect(() =>
+    retrievalOverridesSchema.parse({ packing_mode: 'bad' }),
+  ).toThrow();
+});
+
+it('whole mode skips oversized blocks, continues to smaller hits and returns full text only', () => {
+  const texts = ['large '.repeat(5000), 'short second', 'short third'];
+  const result = pack(texts, 2000, false, 'whole');
+  expect(result.packing_mode).toBe('whole');
+  expect(result.results.map((e) => e.chunk_id)).toEqual(['chunk-1', 'chunk-2']);
+  expect(result.results.map((e) => e.text)).toEqual(texts.slice(1));
+  expect(result.results.every((e) => !e.text_truncated)).toBe(true);
+  expect(result.limits).toContain('budget');
+  expect(JSON.stringify(result).length).toBeLessThanOrEqual(2000);
+  const debug = pack(texts, 2000, true, 'whole');
+  expect(debug.excluded!.budget).toBe(1);
+});
+
+it('whole mode reports budget-empty results and budget skips do not consume source slots', () => {
+  const empty = pack(['x'.repeat(9000)], 256, false, 'whole');
+  expect(empty.results).toEqual([]);
+  expect(empty.queries[0]!.empty_reason).toBe('budget');
+  expect(JSON.stringify(empty).length).toBeLessThanOrEqual(256);
+  const q = query(['x'.repeat(9000), 'small']);
+  q.candidates[1]!.evidence.source_id = q.candidates[0]!.evidence.source_id;
+  const result = packResults(
+    [q],
+    retrievalSchema.parse({
+      packing_mode: 'whole',
+      max_chunks_per_source: 1,
+      max_context_chars: 1000,
+    }),
+    undefined,
+    false,
+  );
+  expect(result.results.map((e) => e.text)).toEqual(['small']);
+});
 
 it('keeps topk at 10 under a configured-only default cap of 20', () => {
   const base = retrievalSchema.parse({});
@@ -59,6 +114,48 @@ it('keeps topk at 10 under a configured-only default cap of 20', () => {
       .topk,
   ).toBe(25);
 });
+
+it('previews a large candidate set without serializing the combined full text first', () => {
+  const large = 'x'.repeat(6000000);
+  const q = query(Array.from({ length: 100 }, () => large));
+  const result = packResults(
+    [q],
+    retrievalSchema.parse({
+      topk: 100,
+      max_results: 100,
+      max_context_chars: 100000,
+    }),
+    undefined,
+    false,
+  );
+  expect(result.results).toHaveLength(100);
+  expect(
+    result.results.every((e) => e.text_truncated && e.text.length > 0),
+  ).toBe(true);
+  expect(JSON.stringify(result).length).toBeLessThanOrEqual(100000);
+}, 10000);
+
+it.each(['preview', 'whole'])(
+  'does not serialize oversized escaped text in %s mode',
+  (packingMode) => {
+    const large = '\u0000'.repeat(100000000);
+    const result = pack(
+      [large],
+      1000,
+      false,
+      packingMode as 'preview' | 'whole',
+    );
+    expect(JSON.stringify(result).length).toBeLessThanOrEqual(1000);
+    if (packingMode === 'preview') {
+      expect(result.results).toHaveLength(1);
+      expect(result.results[0]!.text_truncated).toBe(true);
+    } else {
+      expect(result.results).toEqual([]);
+      expect(result.queries[0]!.empty_reason).toBe('budget');
+    }
+  },
+  10000,
+);
 
 it('retains all 20 selected locators and divides text space instead of dropping hits', () => {
   const texts = Array.from({ length: 20 }, () => 'x'.repeat(9000));

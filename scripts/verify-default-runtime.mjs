@@ -56,6 +56,7 @@ try {
   assert.deepEqual(retrieval, {
     id: 'balanced',
     mode: 'hybrid',
+    packing_mode: 'preview',
     lexical_engine: 'minisearch',
     minisearch_k: 1.2,
     minisearch_b: 0.7,

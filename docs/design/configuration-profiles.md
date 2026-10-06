@@ -107,6 +107,10 @@ export default {
 
 2026-10-06 已确认并实现：替代此前预算不足时丢弃整块的行为。选中块的定位完整保留，正文超限改为从头按字符预览，正文空间均分并回收短块余量；元数据放不下时明确报错。start_line/end_line 保持完整块语义，新增 preview_range 和 text_truncated 区分实际预览；操作步骤见 [Agent 查询说明](../guides/agent-usage.md)，实现与验证见[预览预算记录](../development/2026-10-06-budget-previews.md)。旧配置缺少 max_results 时继承 20；旧显式 topk>20 需在配置中增大 max_results 或降低 topk，不静默修改。仅改变召回装箱与配置，无须重建索引，历史评测输出与数字不回写。
 
+packing_mode 是与检索通道 mode 独立的装箱参数：preview / whole，默认 preview；支持配置和单次 overrides，省略时继承配置，响应顶层报告生效值。preview 先选块、保留定位、均分并裁剪正文；whole 只装完整块，预算不足整块跳过并继续尝试后续候选，来源名额仅由成功装入的块占用。whole 的预算剔除可造成 budget 空命中；preview 的完整元数据放不下则报错。两个模式都计完整 JSON，并受 topk、max_results 和来源上限约束。
+
+传统参数评测和 Qasper 运行器显式使用 whole，继续要求返回文字等于完整行范围；这替代之前无条件使用产品默认装箱的调用方式。新参数与响应字段也计入预算，因此历史已冻结数字仍保留原工件，不预设新运行与旧结果完全相同。已有冻结运行需保留其旧脚本/运行时，新模式运行应重新冻结代码身份；不回写旧报告。
+
 ## 扫描、运行与日志
 
 sources JSON 形如：

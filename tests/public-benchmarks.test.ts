@@ -1,4 +1,5 @@
-import { mkdtemp, writeFile, rm } from 'node:fs/promises';
+import { mkdtemp, writeFile, readFile, mkdir, cp, rm } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -90,6 +91,128 @@ const { lastRowsById } = await import(
 const { qasperScore, boundedRequest } = await import(
   pathToFileURL(resolve('evals/lib/public-runtime.mjs')).href
 );
+
+it('configures a new isolated Qasper run with whole mode without a model call', async () => {
+  const { parseConfig } = await import('../src/config.js');
+  const { embeddingFingerprint } = await import('../src/embedding.js');
+  const { openDatabase } = await import('../src/database.js');
+  await mkdir(resolve('.echo'), { recursive: true });
+  const root = await mkdtemp(join(resolve('.echo'), 'qasper-mode-'));
+  try {
+    await mkdir(join(root, 'runtime'));
+    await cp(resolve('dist'), join(root, 'runtime/dist'), { recursive: true });
+    const embedding = parseConfig({
+      embedding: {
+        base_url: 'http://127.0.0.1:1/v1',
+        model: 'fixture',
+        dimensions: 2,
+      },
+    }).embedding;
+    await writeFile(
+      join(root, 'embedding-plan.json'),
+      JSON.stringify({
+        fingerprint: embeddingFingerprint(embedding),
+        config: embedding,
+      }),
+    );
+    const db = openDatabase(join(root, 'vectors.sqlite'));
+    try {
+      db.exec('CREATE TABLE entries (key TEXT, vector BLOB, vector_sha TEXT)');
+    } finally {
+      db.close();
+    }
+    const output = execFileSync(
+      process.execPath,
+      [resolve('evals/run-public-qasper.mjs'), root, 'configure'],
+      { encoding: 'utf8', windowsHide: true },
+    );
+    expect(output).toContain('QASPER_CONFIGURED');
+    for (const k of [10, 30]) {
+      const config = JSON.parse(
+        await readFile(
+          join(root, `qasper/config/retrieval/rrf${k}.json`),
+          'utf8',
+        ),
+      );
+      expect(config.packing_mode).toBe('whole');
+      expect(config.rrf_k).toBe(k);
+    }
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+it('scores complete whole-mode blocks after a long block is skipped under the response budget', async () => {
+  const { packResults } = await import('../src/retrieval.js');
+  const { retrievalSchema } = await import('../src/config.js');
+  const long = 'A'.repeat(25500) + '\nNOT enabled.';
+  const short = 'Target evidence';
+  const markdown = long + '\n' + short;
+  const base = {
+    source_id: 'source',
+    collection_id: 'notes',
+    path: '/notes/a.md',
+    relative_path: 'a.md',
+    source_version: 'a'.repeat(64),
+    heading_path: [],
+    section_start_line: 1,
+    section_end_line: 3,
+    matched_query_ids: [],
+  };
+  const result = packResults(
+    [
+      {
+        query_id: 'q',
+        status: 'ok',
+        counts: { bm25: 2, dense: 0, fused: 2 },
+        candidates: [
+          {
+            score: 2,
+            evidence: {
+              ...base,
+              chunk_id: 'long',
+              start_line: 1,
+              end_line: 2,
+              text: long,
+            },
+          },
+          {
+            score: 1,
+            evidence: {
+              ...base,
+              chunk_id: 'short',
+              start_line: 3,
+              end_line: 3,
+              text: short,
+            },
+          },
+        ],
+      },
+    ],
+    retrievalSchema.parse({ packing_mode: 'whole', max_context_chars: 16000 }),
+  );
+  expect(result.results.map((e) => e.chunk_id)).toEqual(['short']);
+  expect(result.results[0]!.text_truncated).toBe(false);
+  const doc = {
+    source_id: 'source',
+    paragraphs: [
+      { id: 0, text: long, start_line: 1, end_line: 2 },
+      { id: 1, text: short, start_line: 3, end_line: 3 },
+    ],
+  };
+  const q = {
+    eligible: true,
+    category: 'text_evidence',
+    annotations: [
+      { id: 'a', valid: true, evidence: [{ text: short, paragraph_ids: [1] }] },
+    ],
+  };
+  expect(qasperScore(q, doc, result, markdown).strict_complete).toBe(true);
+  q.annotations[0]!.evidence = [{ text: long, paragraph_ids: [0] }];
+  expect(qasperScore(q, doc, result, markdown).strict_complete).toBe(false);
+  expect(result.excluded!.budget).toBe(1);
+  expect(JSON.stringify(result).length).toBeLessThanOrEqual(16000);
+});
 it('uses the final row for an official duplicate corpus ID', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'echo-public-lastrow-'));
   try {

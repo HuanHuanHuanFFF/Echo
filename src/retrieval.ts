@@ -13,6 +13,7 @@ import {
 import { profileTokenizer } from './profiles.js';
 import { uuidV4 } from './identity.js';
 import {
+  escapedTextCost,
   previewRange,
   textBudgets,
   textPrefix,
@@ -361,6 +362,7 @@ export function packResults(
   const selected = new Map<string, Evidence>(),
     perSource = new Map<string, number>();
   const counts = { source_limit: 0, duplicate: 0, budget: 0, topk: 0 };
+  const budgetRejected = new Set<string>();
   const previews = new Map<
     string,
     {
@@ -387,13 +389,20 @@ export function packResults(
       !results.some((e) => e.matched_query_ids.includes(q.query_id))
         ? {
             empty_reason:
-              q.candidates.length === 0 ? 'no_candidates' : 'limits',
+              q.candidates.length === 0
+                ? 'no_candidates'
+                : q.candidates.some((c) =>
+                      budgetRejected.has(c.evidence.chunk_id),
+                    )
+                  ? 'budget'
+                  : 'limits',
           }
         : {}),
       returned: results.filter((e) => e.matched_query_ids.includes(q.query_id))
         .length,
     }));
-  const response = (reserveBudget = false) => ({
+  const response = (reserveBudget = false, includeText = true) => ({
+    packing_mode: options.packing_mode,
     status: queries.every((q) => q.status === 'error')
       ? 'error'
       : queries.some((q) => q.error)
@@ -405,9 +414,10 @@ export function packResults(
         text_truncated: false,
         preview_range: previewRange(e.start_line, e.text),
       };
-      if (diagnostics) return { ...e, ...preview };
+      const body = { ...preview, text: includeText ? preview.text : '' };
+      if (diagnostics) return { ...e, ...body };
       const { relative_path: _relative, rankings: _rankings, ...essential } = e;
-      return { ...essential, ...preview };
+      return { ...essential, ...body };
     }),
     queries: reports(),
     ...(diagnostics
@@ -419,19 +429,34 @@ export function packResults(
       : {}),
     ...(!diagnostics &&
     (reserveBudget ||
+      counts.budget ||
       [...previews.values()].some((p) => p.text_truncated) ||
       counts.source_limit ||
       counts.topk)
       ? {
           limits: (['budget', 'source_limit', 'topk'] as const).filter((key) =>
             key === 'budget'
-              ? reserveBudget ||
+              ? counts.budget > 0 ||
+                reserveBudget ||
                 [...previews.values()].some((p) => p.text_truncated)
               : counts[key] > 0,
           ),
         }
       : {}),
   });
+  const responseFits = () => {
+    let remaining =
+      options.max_context_chars - JSON.stringify(response(false, false)).length;
+    if (remaining < 0) return false;
+    for (const e of results) {
+      remaining -= escapedTextCost(
+        previews.get(e.chunk_id)?.text ?? e.text,
+        remaining,
+      );
+      if (remaining < 0) return false;
+    }
+    return true;
+  };
   const matching = new Map<string, string[]>();
   const rankingMap = new Map<string, NonNullable<Evidence['rankings']>>();
   for (const q of queries)
@@ -477,21 +502,40 @@ export function packResults(
         rankings,
       };
       results.push(evidence);
+      if (options.packing_mode === 'whole' && !responseFits()) {
+        results.pop();
+        counts.budget++;
+        budgetRejected.add(evidence.chunk_id);
+        continue;
+      }
       selected.set(evidence.chunk_id, evidence);
       perSource.set(
         evidence.source_id,
         (perSource.get(evidence.source_id) ?? 0) + 1,
       );
     }
-  if (JSON.stringify(response()).length <= options.max_context_chars)
+  if (options.packing_mode === 'whole') {
+    // Final counters/query reports also count toward the complete JSON budget.
+    while (results.length && !responseFits()) {
+      budgetRejected.add(results.pop()!.chunk_id);
+      counts.budget++;
+    }
+    if (!responseFits())
+      throw new EchoError(
+        'CONTEXT_BUDGET',
+        'max_context_chars is too small for query status and configuration',
+        'Increase max_context_chars or submit fewer subquestions',
+      );
     return response();
+  }
+  if (responseFits()) return response();
   for (const e of results)
     previews.set(e.chunk_id, {
       text: '',
       text_truncated: e.text.length > 0,
       preview_range: previewRange(e.start_line, ''),
     });
-  if (JSON.stringify(response()).length > options.max_context_chars)
+  if (!responseFits())
     throw new EchoError(
       'CONTEXT_BUDGET',
       'max_context_chars is too small for complete selected-hit metadata',
@@ -513,7 +557,7 @@ export function packResults(
     options.max_context_chars - JSON.stringify(response(true)).length,
   );
   const allowances = textBudgets(
-    results.map((e) => JSON.stringify(e.text).length - 2),
+    results.map((e) => escapedTextCost(e.text, remaining)),
     remaining,
   );
   for (const [i, e] of results.entries()) {

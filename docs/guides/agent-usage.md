@@ -37,6 +37,17 @@ query 与 queries 二选一；最多8个唯一 query_id，每个最多3个 varia
 
 ## 预览与补读
 
+packing_mode 默认 preview，既可写入召回配置，也可在单次 overrides 传入 preview 或 whole；省略时继承活动配置。响应顶层 packing_mode 报告实际选择。不要与 mode（bm25/dense/hybrid 检索通道）混淆。
+
+```json
+{
+  "query": "事务失败后如何恢复",
+  "overrides": { "packing_mode": "whole" }
+}
+```
+
+whole 只返回完整原文块，不裁正文。按原排序/子问题顺序尝试装入完整 JSON，放不下的块整块跳过并继续尝试后续较小候选；末尾状态和计数增加导致超限时继续移除尾块。预算剔除不占来源名额；只保留排前连续若干块不是这个模式的规则。没有块能放下时可返回 budget 空命中，连状态/配置都放不下才报 CONTEXT_BUDGET。传统整块检索评测显式用 whole；以下均分预览规则适用于 preview。
+
 先按 topk、去重及每篇上限选块，完整保留选中块的定位元数据。完整响应放得下时保留全部正文；否则预留定位、状态和诊断字段，剩余 JSON 正文空间均分，并将短块余量分给长块。正文按字符从头裁剪，允许截在行内，不生成摘要、省略号或拆坏 Unicode 代理对。转义字符也占预算，配额不等于固定汉字数。
 
 - text_truncated=true 表示 text 只是原文前缀；false 表示完整块。
@@ -49,7 +60,7 @@ max_context_chars 默认 20000，计入完整业务 JSON、元数据与转义，
 
 ## 结果不足与更新
 
-先看每个 queries 项的 returned/empty_reason 和整体 limits。no_candidates 表示无候选，limits 表示数量/来源限制；整体 limits 中 budget 表示存在截断预览，已选中的块仍在结果中。diagnostics 的 excluded.budget 保留兼容字段且为 0，裁剪看每块 text_truncated。元数据放不下是错误而非空命中。当前没有游标翻页。错误看 code/next；partial_failure 中成功证据仍可使用，需保留失败方面的不确定性。
+先看 packing_mode、每个 queries 项的 returned/empty_reason 和整体 limits。no_candidates 表示无候选，limits 表示数量/来源限制。preview 的 limits.budget 表示正文裁剪，diagnostics.excluded.budget 为 0；whole 的 budget 表示整块被剔除，剔除数见 excluded.budget，零命中可有 empty_reason=budget。两种模式都只能引用实际返回/核对的文字。当前没有游标翻页。错误看 code/next；partial_failure 中成功证据仍可使用，需保留失败方面的不确定性。
 
 echo_status 默认不扫描原文：ready 仅表示所选索引可查询，freshness=unchecked 不表示笔记最新。编辑后可调用：
 

@@ -268,7 +268,7 @@ it('rejects unknown collections and absolute/traversing path prefixes while pres
   ).toBeGreaterThan(0);
 });
 it('exposes typed tools and runs source checks, compact search and diagnostics through MCP and CLI', async () => {
-  const { configPath } = await fixture();
+  const { dir, configPath } = await fixture();
   // Index and MCP both use the built runtime's strategy fingerprint.
   execFileSync(process.execPath, [
     'dist/cli.js',
@@ -300,6 +300,13 @@ it('exposes typed tools and runs source checks, compact search and diagnostics t
       'default',
     );
     expect(schema.properties.overrides.additionalProperties).toBe(false);
+    expect(schema.properties.overrides.properties.packing_mode.enum).toEqual([
+      'preview',
+      'whole',
+    ]);
+    expect(
+      schema.properties.overrides.properties.packing_mode,
+    ).not.toHaveProperty('default');
     expect(schema.properties.overrides.properties).not.toHaveProperty(
       'max_results',
     );
@@ -358,6 +365,49 @@ it('exposes typed tools and runs source checks, compact search and diagnostics t
       expect(e.end_line).toBe(search.results[i].end_line);
       expect(e.preview_range.start_column).toBe(1);
     }
+    expect(previews.packing_mode).toBe('preview');
+    const configuredPath = join(dir, 'config/retrieval/balanced.json');
+    const configured = JSON.parse(await readFile(configuredPath, 'utf8'));
+    await writeFile(
+      configuredPath,
+      JSON.stringify({ ...configured, packing_mode: 'whole' }),
+    );
+    const inheritedWhole = decode(
+      await client.callTool({
+        name: 'echo_search',
+        arguments: {
+          ...request,
+          overrides: { max_context_chars: previewBudget },
+        },
+      }),
+    );
+    expect(inheritedWhole.packing_mode).toBe('whole');
+    expect(inheritedWhole.results.every((e: any) => !e.text_truncated)).toBe(
+      true,
+    );
+    expect(inheritedWhole.results.length).toBeLessThan(previews.results.length);
+    const overriddenPreview = decode(
+      await client.callTool({
+        name: 'echo_search',
+        arguments: {
+          ...request,
+          overrides: {
+            packing_mode: 'preview',
+            max_context_chars: previewBudget,
+          },
+        },
+      }),
+    );
+    expect(overriddenPreview.packing_mode).toBe('preview');
+    expect(overriddenPreview.results.map((e: any) => e.chunk_id)).toEqual(
+      previews.results.map((e: any) => e.chunk_id),
+    );
+    const invalidPacking = await client.callTool({
+      name: 'echo_search',
+      arguments: { ...request, overrides: { packing_mode: 'invalid' } },
+    });
+    expect(invalidPacking.isError).toBe(true);
+    await writeFile(configuredPath, JSON.stringify(configured));
     const overCap = await client.callTool({
       name: 'echo_search',
       arguments: { query: 'apple', overrides: { topk: 21 } },

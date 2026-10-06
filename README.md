@@ -56,6 +56,7 @@ npm install -g @huanf/echo
 ```json
 {
   "status": "ok",
+  "packing_mode": "preview",
   "results": [
     {
       "collection_id": "notes",
@@ -218,7 +219,9 @@ echo-mcp config use --retrieval my-profile
 }
 ```
 
-优先级为 **内置默认 → 当前召回配置 → 本次 overrides**。`max_results` 是配置专属上限，不能单次覆盖，`topk` 超过它时报错。未传字段保留配置值，`path_prefix` 相对 collection 根目录解析。若完整定位元数据放不下，明确报预算过小，应增大预算或降低 `topk`。
+优先级为 **内置默认 → 当前召回配置 → 本次 overrides**。`max_results` 是配置专属上限，不能单次覆盖，`topk` 超过它时报错。未传字段保留配置值，`path_prefix` 相对 collection 根目录解析。preview 中完整定位元数据放不下时明确报预算过小，应增大预算或降低 `topk`；whole 可按预算减少完整块数量。
+
+`packing_mode` 可配置或单次覆盖：默认 `preview` 保留选中块的定位，正文超预算时均分并裁剪；`whole` 只装完整块，超预算整块跳过并继续尝试后续候选。传统检索评测使用 `whole`；Agent 按预览选择补读的效果另行评测。
 
 [配置 Schema、策略接口与迁移](https://github.com/HuanHuanHuanFFF/Echo/blob/main/docs/design/configuration-profiles.md)
 

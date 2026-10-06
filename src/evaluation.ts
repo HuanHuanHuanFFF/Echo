@@ -404,6 +404,7 @@ export async function runEvaluation(options: {
               ? question.queries.map((q) => q.query_id)
               : ['q0'];
           result = {
+            packing_mode: config.retrieval.packing_mode,
             status: 'error',
             results: [],
             queries: ids.map((query_id) => ({
